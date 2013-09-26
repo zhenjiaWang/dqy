@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="tomcat">
+    <CLASSES>
+      <root url="jar://D:/tomcat/lib/jasper.jar!/" />
+      <root url="jar://D:/tomcat/lib/jsp-api.jar!/" />
+      <root url="jar://D:/tomcat/lib/servlet-api.jar!/" />
+      <root url="jar://D:/tomcat/lib/mysql-connector-java-5.0.8-bin.jar!/" />
+      <root url="jar://D:/tomcat/lib/ojdbc6.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

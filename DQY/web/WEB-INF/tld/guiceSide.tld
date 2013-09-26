@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<taglib>
+    <tlib-version>1.1.2</tlib-version>
+    <jsp-version>2.0</jsp-version>
+    <short-name>wangzhenjia</short-name>
+    <uri>guiceSide_tag</uri>
+    <description>guiceSide Tag Library Descriptor</description>
+
+
+    <tag>
+        <name>token</name>
+        <tag-class>
+            org.guiceside.web.jsp.taglib.Token
+        </tag-class>
+        <body-content>JSP</body-content>
+        <description>token tag</description>
+    </tag>
+    <tag>
+        <name>tokenValue</name>
+        <tag-class>
+            org.guiceside.web.jsp.taglib.TokenValue
+        </tag-class>
+        <body-content>JSP</body-content>
+        <description>token tag</description>
+    </tag>
+    <tag>
+        <name>time</name>
+        <tag-class>
+            org.guiceside.web.jsp.taglib.Time
+        </tag-class>
+        <body-content>JSP</body-content>
+        <description>time tag</description>
+    </tag>
+    <tag>
+        <name>urlEncode</name>
+        <tag-class>
+            org.guiceside.web.jsp.taglib.UrlEncode
+        </tag-class>
+        <body-content>JSP</body-content>
+        <description>urlcode tag</description>
+        <attribute>
+            <name>url</name>
+            <required>true</required>
+        </attribute>
+    </tag>
+    <tag>
+        <name>property</name>
+        <tag-class>
+            org.guiceside.web.jsp.taglib.PropertyTag
+        </tag-class>
+        <body-content>JSP</body-content>
+        <description>Property tag</description>
+        <attribute>
+            <name>value</name>
+            <required>true</required>
+        </attribute>
+    </tag>
+    <tag>
+        <name>sessionProperty</name>
+        <tag-class>
+            com.dqy.web.jsp.taglib.SessionPropertyTag
+        </tag-class>
+        <body-content>JSP</body-content>
+        <description>SessionProperty tag</description>
+        <attribute>
+            <name>value</name>
+            <required>true</required>
+        </attribute>
+    </tag>
+    <tag>
+        <name>sessionId</name>
+        <tag-class>
+            com.dqy.web.jsp.taglib.SessionIdTag
+        </tag-class>
+        <body-content>JSP</body-content>
+        <description>sessionId tag</description>
+    </tag>
+    <tag>
+        <name>request</name>
+        <tag-class>
+            com.dqy.web.jsp.taglib.RequestSupport
+        </tag-class>
+        <body-content>JSP</body-content>
+        <description>RequestSupport tag</description>
+        <attribute>
+            <name>key</name>
+            <required>true</required>
+        </attribute>
+    </tag>
+    <tag>
+        <name>errorMsg</name>
+        <tag-class>
+            com.dqy.web.jsp.taglib.ErrorMsgTag
+        </tag-class>
+        <body-content>JSP</body-content>
+        <description>ErrorMsgTag tag</description>
+        <attribute>
+            <name>value</name>
+            <required>true</required>
+        </attribute>
+    </tag>
+
+    <tag>
+        <name>sessionAttribute</name>
+        <tag-class>
+            com.dqy.web.jsp.taglib.SessionAttributeTag
+        </tag-class>
+        <body-content>JSP</body-content>
+        <description>SessionAttributeTag tag</description>
+        <attribute>
+            <name>value</name>
+            <required>true</required>
+        </attribute>
+    </tag>
+</taglib>

@@ -1,0 +1,42 @@
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+    <title>dyq-登录页</title>
+    <link type="text/css" href="../css/global.css" rel="stylesheet">
+    <link type="text/css" href="../css/dqy-style.css" rel="stylesheet">
+    <script src="/js/jquery.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#loginBtn').off('click').on('click',function(){
+                document.location.href='/common/login.dhtml';
+            });
+        });
+    </script>
+</head>
+<body>
+<div class="container login-bg">
+    <div class="login">
+        <div class="login-main">
+            <div class="login-box">
+                <h2 class="font24 aligncenter">登&nbsp;&nbsp;录</h2>
+                <table class="mart10">
+                    <tbody><tr>
+                        <th>机构码</th>
+                        <td><span class="int"><input type="text"></span></td>
+                    </tr>
+                    <tr>
+                        <th>用户名</th>
+                        <td><span class="int"><input type="text"></span></td>
+                    </tr>
+                    <tr>
+                        <th>密&nbsp;&nbsp;码</th>
+                        <td><span class="int"><input type="password"></span></td>
+                    </tr>
+                    </tbody></table>
+                <p class="aligncenter"><a class="login-btn"  id="loginBtn"></a></p>
+            </div>
+            <div class="login-bt"><img src="../images/cssimg/login-box-bt.png"></div>
+        </div>
+    </div>
+</div>
+
+</body></html>
