@@ -25,6 +25,7 @@ public class LoginAction extends BaseAction {
     @PageFlow(result = {@Result(name = "success", path = "/common/login!index.dhtml", type = Dispatcher.Redirect),
             @Result(name = "login", path = "/view/authorize.ftl", type = Dispatcher.FreeMarker)})
     public String execute() throws Exception {
+        System.out.println("wz121j");
         return "success";  //To change body of implemented methods use File | Settings | File Templates.
     }
 
