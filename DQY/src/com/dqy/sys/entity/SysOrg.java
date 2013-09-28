@@ -25,7 +25,7 @@ public class SysOrg extends IdEntity implements Tracker {
 
     private SysOrgGroup groupId;
 
-    private String orgId;
+    private String orgNo;
 
     private String orgName;
 
@@ -106,13 +106,13 @@ public class SysOrg extends IdEntity implements Tracker {
         this.groupId = groupId;
     }
 
-    @Column(name = "ORG_ID")
-    public String getOrgId() {
-        return orgId;
+    @Column(name = "ORG_NO")
+    public String getOrgNo() {
+        return orgNo;
     }
 
-    public void setOrgId(String orgId) {
-        this.orgId = orgId;
+    public void setOrgNo(String orgNo) {
+        this.orgNo = orgNo;
     }
 
     @Column(name = "ORG_NAME")

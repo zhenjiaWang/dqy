@@ -1,9 +1,8 @@
-<#import "/view/template/common.ftl" as common>
+<#import "/view/template/dqyCommon.ftl" as dqyCommon>
 <#import "/view/common/core.ftl" as c>
 <#macro sys_common>
-    <@common.html title="德清源办公">
+    <@dqyCommon.dqyCommon>
     <script type="text/javascript">
-
         $(document).ready(function () {
         });
     </script>
@@ -12,27 +11,27 @@
         <div class="side-left floatleft marl15">
             <div class="side-left-in font14">
                 <!--一组begin-->
-                <ul class="item-nav">
-                    <li><a class="cur" href="#">集团管理</a></li>
-                    <li>
-                        <a class="cur" href="#">机构管理</a>
-                        <dl class="font12" style="">
-                            <dd><a href="#">待审</a></dd>
-                            <dd><a href="#">已通过</a></dd>
-                            <dd><a href="#">已驳回</a></dd>
+                <ul class="item-nav current"><!--ul上的current是为了控制当前这一组的背景色，li上的current是为了控制二级菜单-->
+                    <li><a class="cur" href="#">事务申请</a></li>
+                    <li class="current">
+                        <a class="cur" href="#">费用报销</a>
+                        <dl class="font12">
+                            <dd class="current"><a href="/sys/orgGroup.dhtml"><i class="icon-hand-right"></i> 待审</a></dd>
+                            <dd><a href="/sys/org.dhtml"><i class="icon-hand-right"></i> 已通过</a></dd>
+                            <dd><a href="#"><i class="icon-hand-right"></i> 已驳回</a></dd>
                         </dl>
                     </li>
                 </ul>
                 <!--一组over-->
                 <!--一组begin-->
                 <ul class="item-nav">
-                    <li><a class="cur" href="#">管理员设置</a></li>
+                    <li><a class="cur" href="#">我的申请</a></li>
                     <li>
-                        <a class="cur" href="#">人员授权</a>
+                        <a class="cur" href="#">单据审批</a>
                         <dl class="font12">
-                            <dd><a href="#">待审</a></dd>
-                            <dd><a href="#">已通过</a></dd>
-                            <dd><a href="#">已驳回</a></dd>
+                            <dd><a href="#"><i class="icon-hand-right"></i>待审</a></dd>
+                            <dd><a href="#"><i class="icon-hand-right"></i>已通过</a></dd>
+                            <dd><a href="#"><i class="icon-hand-right"></i>已驳回</a></dd>
                         </dl>
                     </li>
                     <li><a class="cur" href="#">已审单据</a></li>
@@ -44,9 +43,9 @@
                     <li>
                         <a class="cur" href="#">预支审批</a>
                         <dl class="font12">
-                            <dd><a href="#">待审</a></dd>
-                            <dd><a href="#">已通过</a></dd>
-                            <dd><a href="#">已驳回</a></dd>
+                            <dd><a href="#"><i class="icon-hand-right"></i>待审</a></dd>
+                            <dd><a href="#"><i class="icon-hand-right"></i>已通过</a></dd>
+                            <dd><a href="#"><i class="icon-hand-right"></i>已驳回</a></dd>
                         </dl>
                     </li>
                     <li><a class="cur" href="#">还款审批</a></li>
@@ -80,5 +79,5 @@
         </div>
         <!--右侧over-->
     </div>
-    </@common.html>
+    </@dqyCommon.dqyCommon>
 </#macro>

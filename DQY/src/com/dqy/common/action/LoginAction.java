@@ -1,5 +1,7 @@
 package com.dqy.common.action;
 
+import com.dqy.common.UserInfo;
+import com.dqy.common.UserSession;
 import com.dqy.hr.service.HrUserService;
 import com.google.inject.Inject;
 import org.guiceside.web.action.BaseAction;
@@ -26,6 +28,9 @@ public class LoginAction extends BaseAction {
             @Result(name = "login", path = "/view/authorize.ftl", type = Dispatcher.FreeMarker)})
     public String execute() throws Exception {
         System.out.println("wz121j");
+        UserInfo userInfo = UserSession.create(getHttpServletRequest());
+        userInfo.setLoggedIn(true);
+        userInfo.setAuthorize(true);
         return "success";  //To change body of implemented methods use File | Settings | File Templates.
     }
 

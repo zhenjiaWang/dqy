@@ -266,29 +266,24 @@ WEBUTILS.validator = (function () {
     var refresh = function (result, elem, mode, msg) {
         _private.errorIds.put(mode.id, result);
         if (!result) {
-            $(elem).removeClass(validation_required_class).removeClass('validation-success').addClass(validation_failed_class).addClass('this-error');
-
-            $(elem).off('mouseover').on('mouseover', function () {
-                $('.formError').remove();
-                var left = $(elem).offset().left;
-                var top = $(elem).offset().top;
-                $('body').append(String.formatmodel(validateTipTemp, {left:left, top:top - 40, message:msg, forId:elem['id']}));
-                $('.formError').off('click').on('click', function (e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    $(this).fadeOut(300, function () {
-                        $(this).remove();
-                    });
-                });
-                $('.formError').fadeIn(500);
-            });
+            var controlGroup=$(elem).parents('.control-group');
+            if(controlGroup){
+                controlGroup.remove('warning');
+                controlGroup.remove('error');
+                controlGroup.remove('info');
+                controlGroup.remove('success');
+                controlGroup.addClass('error');
+                $('.help-inline',controlGroup).text(msg).fadeIn();
+            }
         } else {
-            $(elem).removeClass(validation_required_class).removeClass(validation_failed_class).removeClass('this-error')
-                .addClass('validation-success')
-                .unbind('mouseover');
-            $('.formError[forId="' + elem['id'] + '"]').fadeOut(300, function () {
-                $(this).remove();
-            });
+            var controlGroup=$(elem).parents('.control-group');
+            if(controlGroup){
+                controlGroup.remove('warning');
+                controlGroup.remove('error');
+                controlGroup.remove('info');
+                controlGroup.remove('success');
+                controlGroup.addClass('success');
+            }
         }
     };
 
@@ -417,13 +412,14 @@ WEBUTILS.validator = (function () {
         })
     };
     var showErrors = function () {
-        $('.' + validation_failed_class).trigger('mouseover');
+
     };
     return{
         init:function (options, diyClass) {
             if (diyClass) {
                 validation_failed_class = 'validation-failed-c';
                 validation_required_class = 'validation-required-c';
+                $('.help-inline','#editForm').hide();
             }
             _options = $.extend(_options, options);
             _private = {

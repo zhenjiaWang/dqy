@@ -262,3 +262,34 @@ var mobileModal='<div id="myModal" class="modal hide fade" tabindex="-1" role="d
     '<button class="btn btn-primary">保 存</button>' +
     '</div>' +
 '</div>';
+
+var alertSuccessDQY='<div class="alert fade in alert-success" id="myAlertSuccess" style="display: none;width: 350px;height: 40px;top: 50%;left: 50%;z-index: 99999;position: fixed;margin: -20px 0 0 -175px;">' +
+    '<button data-dismiss="alert" class="close" type="button">×</button>' +
+    '<strong>{text}</strong><span>{desc}</span>' +
+    '</div>';
+
+var alertWarningDQY='<div class="alert fade in alert-warning" id="myAlertWarning" style="display: none;width: 350px;height: 40px;top: 50%;left: 50%;z-index: 99999;position: fixed;margin: -20px 0 0 -175px;">' +
+    '<button data-dismiss="alert" class="close" type="button">×</button>' +
+    '<strong>{text}</strong><span>{desc}</span>' +
+    '</div>';
+
+
+var alertErrorDQY='<div class="alert fade in alert-error" id="myAlertError" style="display: none;width: 350px;height: 40px;top: 50%;left: 50%;z-index: 99999;position: fixed;margin: -20px 0 0 -175px;">' +
+    '<button data-dismiss="alert" class="close" type="button">×</button>' +
+    '<strong>{text}</strong><span>{desc}</span>' +
+    '</div>';
+
+var alertInfoDQY='<div class="alert fade in alert-info" id="myAlertInfo" style="display: none;width: 350px;height: 40px;top: 50%;left: 50%;z-index: 99999;position: fixed;margin: -20px 0 0 -175px;">' +
+    '<button data-dismiss="alert" class="close" type="button">×</button>' +
+    '<strong>{text}</strong><span>{desc}</span>' +
+    '</div>';
+
+var alertConfirmDQY=' <div class="alert alert-block alert-warning fade in" id="myAlertConfirm" style="display: none;width: 350px;height: 70px;top: 50%;left: 50%;z-index: 99999;position: fixed;margin: -35px 0 0 -175px;">' +
+    '<button data-dismiss="alert" class="close" type="button">×</button>' +
+    '<h4 class="alert-heading">{text}</h4>' +
+    '<p class="alert-desc">{desc}</p>' +
+    '<p>' +
+    '<a href="#" class="btn btn-danger" id="yesBtn">确 认</a> <a href="#" class="btn" id="noBtn">取 消</a>' +
+    '</p>' +
+    '</div>';
+

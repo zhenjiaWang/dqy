@@ -1,6 +1,6 @@
-<#import "/view/template/common.ftl" as common>
+<#import "/view/template/dqyCommon.ftl" as dqyCommon>
 <#import "/view/common/core.ftl" as c>
-<@common.html title="德清源办公">
+<@dqyCommon.dqyCommon>
 <script type="text/javascript">
     $(document).ready(function () {
     });
@@ -162,4 +162,4 @@
         <!--右侧两块over-->
     </div>
 </div>
-</@common.html>
+</@dqyCommon.dqyCommon>

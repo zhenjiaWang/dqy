@@ -2,9 +2,11 @@ package com.dqy.sys.service;
 
 import com.dqy.sys.entity.SysOrg;
 import com.google.inject.Singleton;
+import org.guiceside.commons.Page;
 import org.guiceside.persistence.TransactionType;
 import org.guiceside.persistence.Transactional;
 import org.guiceside.persistence.hibernate.dao.hquery.HQuery;
+import org.guiceside.persistence.hibernate.dao.hquery.Selector;
 
 import java.util.List;
 
@@ -16,6 +18,11 @@ import java.util.List;
 @Singleton
 public class SysOrgService extends HQuery {
 
+    @Transactional(type = TransactionType.READ_ONLY)
+    public Page<SysOrg> getPageList(int start,
+                                         int limit, List<Selector> selectorList) {
+        return $(selectorList).page(SysOrg.class, start, limit);
+    }
     /**
      * @param id
      * @return 根据Id获取代码
@@ -65,4 +72,13 @@ public class SysOrgService extends HQuery {
         $(sysOrgList).delete();
     }
 
+    @Transactional(type = TransactionType.READ_ONLY)
+    public Integer validateName(Long groupId,String orgName) {
+        return $($count("id"),$eq("groupId.id",groupId), $eq("orgName", orgName)).value(SysOrg.class, Integer.class);
+    }
+
+    @Transactional(type = TransactionType.READ_ONLY)
+    public Integer validateNo(Long groupId,String orgNo) {
+        return $($count("id"),$eq("groupId.id",groupId), $eq("orgNo", orgNo)).value(SysOrg.class, Integer.class);
+    }
 }

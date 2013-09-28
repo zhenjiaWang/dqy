@@ -1,0 +1,122 @@
+.validation-failed {
+    font-size: 12px;
+    padding: 2px 0px 0px 3px;
+    border: 1px solid #DD7870;
+    color: #555;
+    text-decoration: none;
+    background: #FFFFCC url(/css/validator/img/invalid_line.gif) repeat-x scroll center bottom;
+}
+
+.validation-failed-c {
+    font-size: 12px;
+    color: #555;
+    text-decoration: none;
+}
+
+.validation-required {
+    background-image: url(/css/validator/img/required03.gif);
+    background-position: top right;
+    background-repeat: no-repeat;
+}
+.validation-required-c {
+}
+
+.validation-success {
+    background-image: url(/css/validator/img/success.gif);
+    background-position: top right;
+    background-repeat: no-repeat;
+}
+
+.formError {
+    cursor: pointer;
+    display: none;
+    position: absolute;
+    z-index: 990;
+}
+
+.formError .formErrorContent {
+    background: none repeat scroll 0 0 #EE0101;
+    border: 2px solid #DDDDDD;
+    border-radius: 6px 6px 6px 6px;
+    box-shadow: 0 0 6px #000000;
+    color: #FFFFFF;
+    font-size: 11px;
+    padding: 4px 10px;
+    position: relative;
+    width: 150px;
+}
+
+.formError .formErrorContent {
+    z-index: 991;
+}
+
+.formError .formErrorArrow {
+    margin: -2px 0 0 13px;
+    position: relative;
+    width: 15px;
+}
+
+.formError .formErrorArrow {
+    z-index: 996;
+}
+
+.formError .formErrorArrow .line10 {
+    border: medium none;
+    width: 15px;
+}
+
+.formError .formErrorArrow .line9 {
+    border: medium none;
+    width: 13px;
+}
+
+.formError .formErrorArrow .line8 {
+    width: 11px;
+}
+
+.formError .formErrorArrow .line7 {
+    width: 9px;
+}
+
+.formError .formErrorArrow .line6 {
+    width: 7px;
+}
+
+.formError .formErrorArrow .line5 {
+    width: 5px;
+}
+
+.formError .formErrorArrow .line4 {
+    width: 3px;
+}
+
+.formError .formErrorArrow .line3 {
+    border-bottom: 0 solid #DDDDDD;
+    border-left: 2px solid #DDDDDD;
+    border-right: 2px solid #DDDDDD;
+    width: 1px;
+}
+
+.formError .formErrorArrow .line2 {
+    background: none repeat scroll 0 0 #DDDDDD;
+    border: medium none;
+    width: 3px;
+}
+
+.formError .formErrorArrow .line1 {
+    background: none repeat scroll 0 0 #DDDDDD;
+    border: medium none;
+    width: 1px;
+}
+
+.formError .formErrorArrow div {
+    background: none repeat scroll 0 0 #EE0101;
+    border-left: 2px solid #DDDDDD;
+    border-right: 2px solid #DDDDDD;
+    box-shadow: 0 2px 3px #444444;
+    display: block;
+    font-size: 0;
+    height: 1px;
+    line-height: 0;
+    margin: 0 auto;
+}

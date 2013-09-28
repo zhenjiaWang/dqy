@@ -5,7 +5,7 @@
 
 <script type="text/javascript">
     function pagerAction(start, rows) {
-        var searchUrl = '/sys/orgGroup.dhtml';
+        var searchUrl = '/sys/org.dhtml';
         searchUrl += '?start=' + start + '&rows=' + rows;
         searchUrl = encodeURI(searchUrl);
         document.location.href = searchUrl
@@ -13,7 +13,7 @@
     $(document).ready(function () {
         $('body').off('.data-api')
         $('#newBtn').off('click').on('click', function () {
-            WEBUTILS.popWindow.createPopWindow(550, null, '创建集团', '/sys/orgGroup!input.dhtml');
+            WEBUTILS.popWindow.createPopWindow(550, null, '创建机构', '/sys/org!input.dhtml');
             WEBUTILS.popWindow.okCallback(function () {
                 submitForm();
             });
@@ -21,7 +21,7 @@
         $('.dqy-eidt').off('click').on('click', function () {
             var uid = $(this).attr('uid');
             if (uid) {
-                WEBUTILS.popWindow.createPopWindow(550, null, '编辑集团', '/sys/orgGroup!input.dhtml?id='+uid);
+                WEBUTILS.popWindow.createPopWindow(550, null, '编辑机构', '/sys/org!input.dhtml?id='+uid);
                 WEBUTILS.popWindow.okCallback(function () {
                     submitForm();
                 });
@@ -30,8 +30,8 @@
         $('.dqy-del').off('click').on('click', function () {
             var uid = $(this).attr('uid');
             if (uid) {
-                WEBUTILS.alert.alertComfirm('删除数据','您确认要删除该集团?',function(){
-                   document.location.href='/sys/orgGroup!delete.dhtml?id='+uid;
+                WEBUTILS.alert.alertComfirm('删除数据','您确认要删除该组织机构?',function(){
+                   document.location.href='/sys/org!delete.dhtml?id='+uid;
                 });
             }
         });
@@ -52,20 +52,24 @@
     <table class="table table-bordered table-hover tableBgColor" style="min-height: 419px;">
         <thead>
         <tr class="thColor">
-            <th>集团名称</th>
+            <th width="100">机构编号</th>
+            <th width="120">机构名称</th>
+            <th>所属集团</th>
             <th width="80">启用</th>
             <th width="100">操作</th>
         </tr>
         </thead>
         <tbody>
-            <#if orgGroupList?exists&&orgGroupList?size gt 0>
-                <#list orgGroupList as orgGroup>
-                <tr <#if (orgGroup_index+1)%2!=0>class="oddBgColor"</#if>>
-                    <td>${orgGroup.groupName?if_exists}</td>
-                    <td style="text-align: center;"><#if orgGroup.useYn=="Y">是<#else>否</#if></td>
+            <#if orgList?exists&&orgList?size gt 0>
+                <#list orgList as org>
+                <tr <#if (org_index+1)%2!=0>class="oddBgColor"</#if>>
+                    <td>${org.orgNo?if_exists}</td>
+                    <td>${org.orgName?if_exists}</td>
+                    <td>${(org.groupId.groupName)?if_exists}</td>
+                    <td style="text-align: center;"><#if org.useYn=="Y">是<#else>否</#if></td>
                     <td style="text-align: center;">
-                        <a title="编辑" class="dqy-ico dqy-eidt" uid="${orgGroup.id?c}" href="#"></a>
-                        <a title="删除" class="dqy-ico dqy-del" uid="${orgGroup.id?c}" href="#"></a>
+                        <a title="编辑" class="dqy-ico dqy-eidt" uid="${org.id?c}" href="#"></a>
+                        <a title="删除" class="dqy-ico dqy-del" uid="${org.id?c}" href="#"></a>
                     </td>
                 </tr>
                 </#list>
