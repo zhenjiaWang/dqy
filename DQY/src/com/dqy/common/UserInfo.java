@@ -1,7 +1,10 @@
 package com.dqy.common;
 
 
+import com.dqy.sys.entity.SysOrg;
+
 import java.io.Serializable;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -35,29 +38,39 @@ public class UserInfo implements Serializable {
 
     private String sessionId;
 
-    private String userId;
-    
+    private Long userId;
+
+    private String userNo;
+
+    private Long groupId;
+
+    private String groupName;
+
+    private Long orgId;
+
+    private String orgNo;
+
+    private String orgName;
+
     private String userName;
     
     private String department;
     
     private String job;
     
-    private String companyName;
-    
-    private String companyNameEn;
-
-    private String companyId;
-    
-
     private String logo;
-
-
 
     private boolean admin;
 
     private String mobileTab;
 
+    private String topMenu;
+
+    private String leftMenu;
+
+    private String childMenu;
+
+    private List<SysOrg> authOrgList;
 
 
     public String getSessionId() {
@@ -102,21 +115,6 @@ public class UserInfo implements Serializable {
         this.loggedIn = loggedIn;
     }
 
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    public String getCompanyId() {
-        return companyId;
-    }
-
-    public void setCompanyId(String companyId) {
-        this.companyId = companyId;
-    }
 
 
     public String getUserName() {
@@ -127,13 +125,6 @@ public class UserInfo implements Serializable {
         this.userName = userName;
     }
 
-    public String getCompanyName() {
-        return companyName;
-    }
-
-    public void setCompanyName(String companyName) {
-        this.companyName = companyName;
-    }
 
     public String getDepartment() {
         return department;
@@ -151,14 +142,6 @@ public class UserInfo implements Serializable {
         this.job = job;
     }
 
-
-    public String getCompanyNameEn() {
-        return companyNameEn;
-    }
-
-    public void setCompanyNameEn(String companyNameEn) {
-        this.companyNameEn = companyNameEn;
-    }
 
     public String getLogo() {
         return logo;
@@ -182,5 +165,94 @@ public class UserInfo implements Serializable {
 
     public void setMobileTab(String mobileTab) {
         this.mobileTab = mobileTab;
+    }
+
+    public String getTopMenu() {
+        return topMenu;
+    }
+
+    public void setTopMenu(String topMenu) {
+        this.topMenu = topMenu;
+    }
+
+    public String getLeftMenu() {
+        return leftMenu;
+    }
+
+    public void setLeftMenu(String leftMenu) {
+        this.leftMenu = leftMenu;
+    }
+
+    public String getChildMenu() {
+        return childMenu;
+    }
+
+    public void setChildMenu(String childMenu) {
+        this.childMenu = childMenu;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    public String getUserNo() {
+        return userNo;
+    }
+
+    public void setUserNo(String userNo) {
+        this.userNo = userNo;
+    }
+
+    public Long getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(Long groupId) {
+        this.groupId = groupId;
+    }
+
+    public String getGroupName() {
+        return groupName;
+    }
+
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
+    }
+
+    public Long getOrgId() {
+        return orgId;
+    }
+
+    public void setOrgId(Long orgId) {
+        this.orgId = orgId;
+    }
+
+    public String getOrgName() {
+        return orgName;
+    }
+
+    public void setOrgName(String orgName) {
+        this.orgName = orgName;
+    }
+
+    public List<SysOrg> getAuthOrgList() {
+        return authOrgList;
+    }
+
+    public void setAuthOrgList(List<SysOrg> authOrgList) {
+        this.authOrgList = authOrgList;
+    }
+
+
+    public String getOrgNo() {
+        return orgNo;
+    }
+
+    public void setOrgNo(String orgNo) {
+        this.orgNo = orgNo;
     }
 }

@@ -31,22 +31,22 @@ public class ActionInterceptor implements MethodInterceptor {
         RequestData requestData = (RequestData) actionContext.getActionContext().get(ActionContext.REQUESTDATA);
         if (actionMapping.getNamespace().equals("/common")) {
             if (actionMapping.getName().equals("login")) {
-                if (actionMapping.getMethodName().equals("execute")) {
+                if (actionMapping.getMethodName().equals("execute")||actionMapping.getMethodName().equals("validateUser")) {
                     result = invocation.proceed();
                     return result;
                 }
+
             }
         }
-//        UserInfo userInfo = null;
-//        try {
-//            userInfo = UserSession.getUserInfo(httpServletRequest);
-//
-//        } catch (UserSessionException e) {
-//            httpServletResponse.sendRedirect("/view/common/urlGoLogin.html");
-//            return null;
-//        } catch (Exception e) {
-//
-//        }
+        UserInfo userInfo = null;
+        try {
+            userInfo = UserSession.getUserInfo(httpServletRequest);
+        } catch (UserSessionException e) {
+            httpServletResponse.sendRedirect("/view/common/urlGoLogin.html");
+            return null;
+        } catch (Exception e) {
+
+        }
         result = invocation.proceed();
         return result;
     }

@@ -11,7 +11,6 @@
         document.location.href = searchUrl
     }
     $(document).ready(function () {
-        $('body').off('.data-api')
         $('#newBtn').off('click').on('click', function () {
             WEBUTILS.popWindow.createPopWindow(550, null, '创建机构', '/sys/org!input.dhtml');
             WEBUTILS.popWindow.okCallback(function () {
@@ -49,7 +48,7 @@
 <!--搜索over-->
 
 <div style="min-height: 419px;height: 419px;" class="mart10">
-    <table class="table table-bordered table-hover tableBgColor" style="min-height: 419px;">
+    <table class="table table-bordered table-hover tableBgColor" >
         <thead>
         <tr class="thColor">
             <th width="100">机构编号</th>

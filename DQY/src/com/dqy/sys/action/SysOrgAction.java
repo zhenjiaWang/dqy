@@ -60,6 +60,8 @@ public class SysOrgAction extends ActionSupport<SysOrg> {
     public String execute() throws Exception {
         UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
         if (userInfo != null) {
+            userInfo.setTopMenu("sys");
+            userInfo.setLeftMenu("org");
             pageObj = this.sysOrgService.getPageList(getStart(), rows, searchModeCallback());
             if(pageObj!=null){
                 orgList=pageObj.getResultList();

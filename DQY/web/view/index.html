@@ -5,10 +5,128 @@
     <link type="text/css" href="../css/dqy-style.css" rel="stylesheet">
     <script src="/js/jquery.js"></script>
     <script type="text/javascript">
-        $(document).ready(function () {
-            $('#loginBtn').off('click').on('click',function(){
-                document.location.href='/common/login.dhtml';
+        function SetCookie(name, value) {
+            var Days = 60;   //cookie 将被保存两个月
+            var exp = new Date();  //获得当前时间
+            exp.setTime(exp.getTime() + Days * 24 * 60 * 60 * 1000);  //换成毫秒
+            document.cookie = name + "=" + escape(value) + ";expires=" + exp.toGMTString();
+        }
+
+        function getCookie(name) {
+            var arr = document.cookie.match(new RegExp("(^| )" + name + "=([^;]*)(;|$)"));
+            if (arr != null)
+                return unescape(arr[2]);
+            return '';
+
+        }
+        function getLoginData() {
+            var orgNo = $('#orgNo').val();
+            var userNo = $('#userNo').val();
+            var userPwd = $('#userPwd').val();
+            return {orgNo:orgNo, userNo:userNo,userPwd:userPwd};
+        }
+        function createLoginCookie() {
+            var loginData = getLoginData();
+            var date = new Date();
+            date.setTime(date.getTime() + 365 * 24 * 3600 * 1000);
+            SetCookie('orgNo', loginData.orgNo);
+            SetCookie('userNo', loginData.userNo);
+        }
+        function accountShow() {
+            try {
+                if (document.cookie != '') {
+                    var orgNo = getCookie('orgNo');
+                    $('#orgNo').val(orgNo);
+                    var userNo = getCookie('userNo');
+                    $('#userNo').val(userNo);
+                } else {
+                }
+            } catch (e) {
+            }
+        }
+        function initLoginEvent() {
+            accountShow();
+            $('#orgNo').focus();
+            if ($('#orgNo').val() != "") {
+                $('#userNo').focus();
+            }
+            if ($('#userNo').val() != "") {
+                $('#userPwd').focus();
+            }
+            $('#orgNo').off('keydown').on('keydown', function (e) {
+                if (e.keyCode == 13) {
+                    if ($.trim($(this).val()) != '') {
+                        $('#userNo').focus();
+                    }
+                }
             });
+            $('#userNo').off('keydown').on('keydown', function (e) {
+                if (e.keyCode == 13) {
+                    if ($.trim($(this).val()) != '') {
+                        $('#userPwd').focus();
+                    }
+                }
+            });
+            $('#userPwd').off('keydown').on('keydown', function (e) {
+                if (e.keyCode == 13) {
+                    if ($('#orgNo').val() != ""&&$('#userNo').val() != ""&&$.trim($(this).val()) != '') {
+                        login();
+                    }
+                }
+            });
+            $('#loginBtn').off('click').on('click',function(){
+                login();
+            });
+        }
+        function login() {
+            var loginData = getLoginData();
+            if (loginData.orgNo != '' && loginData.userNo != ''&&loginData.userPwd != '') {
+                $.ajax({
+                    type:'POST',
+                    url:'/common/login!validateUser.dhtml',
+                    data:{
+                        'orgNo':loginData.orgNo,
+                        'userNo':loginData.userNo
+                    },
+                    success:function (jsonData) {
+                        if (jsonData) {
+                            if (jsonData.userCount!= "0") {
+                                $.ajax({
+                                    type:'POST',
+                                    url:'/common/login.dhtml',
+                                    data:{
+                                        'orgNo':loginData.orgNo,
+                                        'userNo':loginData.userNo,
+                                        'userPwd':loginData.userPwd
+                                    },
+                                    success:function (jsonData) {
+                                        if (jsonData) {
+                                            if (jsonData["login"] == "0") {
+                                                createLoginCookie();
+                                                var url=jsonData['url'];
+                                                document.location.href=url;
+                                            }else{
+                                                alert('密码错误');
+                                            }
+                                        }
+                                    },
+                                    error:function(){
+                                        alert('网络问题 请重新登陆');
+                                    }
+                                });
+                            } else {
+                               alert('帐号错误');
+                            }
+                        }
+                    },
+                    error:function(){
+                        alert('网络问题 请重新登陆');
+                    }
+                });
+            }
+        }
+        $(document).ready(function () {
+            initLoginEvent();
         });
     </script>
 </head>
@@ -21,15 +139,15 @@
                 <table class="mart10">
                     <tbody><tr>
                         <th>机构码</th>
-                        <td><span class="int"><input type="text"></span></td>
+                        <td><span class="int"><input type="text" id="orgNo" name="orgNo"></span></td>
                     </tr>
                     <tr>
                         <th>用户名</th>
-                        <td><span class="int"><input type="text"></span></td>
+                        <td><span class="int"><input type="text" id="userNo" name="userNo"></span></td>
                     </tr>
                     <tr>
                         <th>密&nbsp;&nbsp;码</th>
-                        <td><span class="int"><input type="password"></span></td>
+                        <td><span class="int"><input type="password" id="userPwd" name="userPwd"></span></td>
                     </tr>
                     </tbody></table>
                 <p class="aligncenter"><a class="login-btn"  id="loginBtn"></a></p>

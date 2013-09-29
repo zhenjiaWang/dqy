@@ -46,6 +46,8 @@ public class SysOrgGroupAction extends ActionSupport<SysOrgGroup> {
     public String execute() throws Exception {
         UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
         if (userInfo != null) {
+            userInfo.setTopMenu("sys");
+            userInfo.setLeftMenu("orgGroup");
             pageObj = this.sysOrgGroupService.getPageList(getStart(), rows, searchModeCallback());
             if(pageObj!=null){
                 orgGroupList=pageObj.getResultList();

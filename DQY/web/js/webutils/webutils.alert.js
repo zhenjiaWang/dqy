@@ -6,6 +6,7 @@ WEBUTILS.alert = (function () {
             }
             $('body').append(String.formatmodel(alertInfoDQY,{'text':text,'desc':desc}));
             $('#myAlertInfo').alert();
+            $('#myAlertInfo').show();
             $.doTimeout('myAlertInfoClose', time, function () {
                 $('#myAlertInfo').alert('close');
                 $('#myAlertInfo').remove();
@@ -17,6 +18,7 @@ WEBUTILS.alert = (function () {
             }
             $('body').append(String.formatmodel(alertSuccessDQY,{'text':text,'desc':desc}));
             $('#myAlertSuccess').alert();
+            $('#myAlertSuccess').show();
             $.doTimeout('myAlertSuccessClose', time, function () {
                 $('#myAlertSuccess').alert('close');
                 $('#myAlertSuccess').remove();
@@ -28,6 +30,7 @@ WEBUTILS.alert = (function () {
             }
             $('body').append(String.formatmodel(alertErrorDQY,{'text':text,'desc':desc}));
             $('#myAlertError').alert();
+            $('#myAlertError').show();
             $.doTimeout('myAlertErrorClose', time, function () {
                 $('#myAlertError').alert('close');
                 $('#myAlertError').remove();
@@ -39,6 +42,7 @@ WEBUTILS.alert = (function () {
             }
             $('body').append(String.formatmodel(alertWarningDQY,{'text':text,'desc':desc}));
             $('#myAlertWarning').alert();
+            $('#myAlertWarning').show();
             $.doTimeout('myAlertWarningClose', time, function () {
                 $('#myAlertWarning').alert('close');
                 $('#myAlertWarning').remove();

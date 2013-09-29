@@ -65,4 +65,10 @@ public class SysAdminService extends HQuery {
         $(sysAdminList).delete();
     }
 
+    @Transactional(type = TransactionType.READ_WRITE)
+    public Integer validateAdmin(Long orgId,Long userId) {
+        return $($eq("orgId.id", orgId), $eq("userId.id", userId),
+                $count("id")).value(SysAdmin.class, Integer.class);
+    }
+
 }

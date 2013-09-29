@@ -65,4 +65,19 @@ public class HrUserService extends HQuery {
         $(hrUserList).delete();
     }
 
+    @Transactional(type = TransactionType.READ_WRITE)
+    public Integer validateUserAccount(String orgNo, String userNo) {
+        return $($alias("orgId", "orgId"), $eq("orgId.orgNo", orgNo), $eq("userNo", userNo),
+                $count("id")).value(HrUser.class, Integer.class);
+    }
+    @Transactional(type = TransactionType.READ_WRITE)
+    public Integer validateUser(String orgNo, String userNo, String userPwd) {
+        return $($alias("orgId", "orgId"), $eq("orgId.orgNo", orgNo), $eq("userNo", userNo), $eq("userPwd", userPwd),
+                $count("id")).value(HrUser.class, Integer.class);
+    }
+
+    @Transactional(type = TransactionType.READ_WRITE)
+    public HrUser getLoginUser(String orgNo, String userNo, String userPwd) {
+        return $($alias("orgId", "orgId"), $eq("orgId.orgNo", orgNo), $eq("userNo", userNo), $eq("userPwd", userPwd)).get(HrUser.class);
+    }
 }

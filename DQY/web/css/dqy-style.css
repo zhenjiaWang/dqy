@@ -11,7 +11,9 @@
 .login-box table td span.int{display:block;width:219px;height:39px;background:url(../images/cssimg/int-bg.png);}
 .login-box table td span.int input{color: #91a8bf;width:202px;height:33px;padding:0 5px;border-radius:5px;line-height: 34px;border: none;background:none;position:relative;top:3px;left:3px;}
 .login-btn{width:171px;height:39px;background: url(../images/cssimg/logg-in.png);display:inline-block;cursor: pointer;font-size:0;line-height:0;margin:20px 0 0 30px;}
-.dqy-ico{display:inline-block;font-size:0;line-height: 0;width:18px;height:20px;background: url(../images/cssimg/dqy-ico.png); vertical-align:middle;margin-right:3px;background-repeat: no-repeat;}
+a.more {position: relative;bottom:-5px;line-height: 15px;}
+.dqy-ico{display:inline-block;font-size:0;line-height: 0;width:18px;height:20px;background: url(../images/cssimg/dqy-ico.png); vertical-align:middle;
+    margin-right:3px;background-repeat: no-repeat;position: relative;top:-2px;}
 .dqy-ico-set{background-position:0 -80px;}
 .dqy-ico-out{background-position:0 -100px;}
 .dqy-ico-board{background-position:0 0;}
@@ -74,7 +76,7 @@ a.triangle{display:inline-block;border-width:6px;border-color:#95c42d #f9f9f9  #
 .left-count{width:546px;}
 .right-count{width:184px;}
 .item{width:263px;height:165px;background: url(../images/cssimg/item.gif);float:left;margin:5px;}
-.item h2,.item2 h2{padding-top:10px;}
+.item h2,.item2 h2{height:32px;}
 .news{padding:13px 8px 0 8px;}
 .news li{background: url(../images/cssimg/li-c.jpg) no-repeat left center;padding-left:7px;line-height: 20px;margin:2px 0;}
 .news li a{color:#424242;}
@@ -87,7 +89,7 @@ a.triangle{display:inline-block;border-width:6px;border-color:#95c42d #f9f9f9  #
 .item2 h2{color:#f07e02;}
 /*SysteMange*/
 .side-left{width:168px;}
-.side-left-in{width:160px;border: 1px solid #cbcbcb;background:#f5f5f5;}
+.side-left-in{width:160px;border: 1px solid #cbcbcb;background:#f5f5f5;padding-bottom:30px;}
 .item-nav{border-bottom:1px solid #cbcbcb;padding:5px 0;margin:0;}
 .item-nav li a{display: block;color:#767676;padding-left:47px;line-height:25px;height:25px;margin:5px 0;}
 .item-nav dl{padding:1px 0;display: none;}
@@ -114,9 +116,8 @@ a.triangle{display:inline-block;border-width:6px;border-color:#95c42d #f9f9f9  #
 .change{width:58px;background:url("../images/cssimg/change.gif");}
 .leave{width:58px;background:url("../images/cssimg/out.gif");}
 
-.dqy-table{background:#faf3f3;}
 .dqy-table thead th{font-size: 14px;color:#898989;font-weight:bold;background:#fafafa;}
-.dqy-table th,.dqy-table td{border:1px solid #ccc;line-height:35px;text-align: center;}
+.dqy-table th,.dqy-table td{text-align: center;}
 a.choose,a.choosed{display: inline-block;width:30px;height:20px;background-position:-18px 0;}
 a.choosed{background-position:-18px -19px;}
 a.arrow-down,a.arrow-up{line-height:0;font-size:0;display:inline-block;border-style:solid;border-width:6px;border-color:#acacac #f7f7f7 #f7f7f7 #f7f7f7;width:0;height:0;position: relative;bottom:-5px;right:-10px;}
@@ -179,3 +180,24 @@ td .dqy-eidt{position: relative;top:2px;}
 .modal-footer{padding:10px;}
 .modal{width:400px;margin-left:-200px;top:35%;}
 .input-append, .input-prepend{margin-bottom:0;}
+.pay-col .int1{height: auto;line-height: normal;margin:0;}
+.pay-colinner{border:1px solid #ABADB3;height:350px;overflow-y: scroll;}
+.pay-colinner ul li{margin:5px 0;}
+.pay-colinner ul li a{padding:0 0 0 10px;line-height: 20px;display: block;}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
