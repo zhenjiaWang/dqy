@@ -65,4 +65,37 @@ public class HrDepartmentService extends HQuery {
         $(hrDepartmentList).delete();
     }
 
+
+    @Transactional(type = TransactionType.READ_ONLY)
+    public List<HrDepartment> getDeptListByLevel(Long orgId,Integer level, boolean ignoreUse) {
+        if (ignoreUse) {
+            return $($eq("orgId.id", orgId), $eq("deptLevel", level), $order("displayOrder")).list(HrDepartment.class);
+        } else {
+            return $($eq("orgId.id", orgId),$eq("deptLevel", level), $eq("useYn", "Y"), $order("displayOrder")).list(HrDepartment.class);
+        }
+    }
+
+    @Transactional(type = TransactionType.READ_ONLY)
+    public List<HrDepartment> getDeptListByParentId(Long orgId,Long parentId, boolean ignoreUse) {
+        if (ignoreUse) {
+            return $($eq("orgId.id", orgId),$eq("parentId.id", parentId), $order("displayOrder")).list(HrDepartment.class);
+        } else {
+            return $($eq("orgId.id", orgId),$eq("parentId.id", parentId), $eq("useYn", "Y"), $order("displayOrder")).list(HrDepartment.class);
+        }
+    }
+
+    @Transactional(type = TransactionType.READ_ONLY)
+    public Integer getCountByParentId(Long orgId,Long parentId, boolean ignoreUse) {
+        if (ignoreUse) {
+            return $($eq("orgId.id", orgId),$eq("parentId.id", parentId), $count("id")).value(HrDepartment.class, Integer.class);
+        } else {
+            return $($eq("orgId.id", orgId),$eq("parentId.id", parentId), $eq("useYn", "Y"), $count("id")).value(HrDepartment.class, Integer.class);
+        }
+    }
+
+
+    @Transactional(type = TransactionType.READ_ONLY)
+    public Integer validateName(Long orgId,String deptName) {
+        return $($count("id"),$eq("orgId.id", orgId), $eq("deptName", deptName)).value(HrDepartment.class, Integer.class);
+    }
 }
