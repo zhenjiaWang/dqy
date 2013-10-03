@@ -25,6 +25,11 @@ public class HrUserDetailService extends HQuery {
         return $(id).get(HrUserDetail.class);
     }
 
+    @Transactional(type = TransactionType.READ_ONLY)
+    public HrUserDetail getByUserId(Long userId) {
+        return $($eq("userId.id",userId)).get(HrUserDetail.class);
+    }
+
 
     /**
      * 保存对象

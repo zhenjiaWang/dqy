@@ -26,6 +26,8 @@ public class SysFinancialTitle extends IdEntity implements Tracker {
 
     private SysOrg orgId;
 
+    private String titleNo;
+
     private String titleName;
 
     private Integer titleLevel;
@@ -147,5 +149,14 @@ public class SysFinancialTitle extends IdEntity implements Tracker {
 
     public void setDisplayOrder(Integer displayOrder) {
         this.displayOrder = displayOrder;
+    }
+
+    @Column(name = "TITLE_NO")
+    public String getTitleNo() {
+        return titleNo;
+    }
+
+    public void setTitleNo(String titleNo) {
+        this.titleNo = titleNo;
     }
 }

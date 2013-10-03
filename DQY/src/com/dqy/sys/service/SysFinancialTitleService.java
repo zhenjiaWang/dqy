@@ -2,9 +2,11 @@ package com.dqy.sys.service;
 
 import com.dqy.sys.entity.SysFinancialTitle;
 import com.google.inject.Singleton;
+import org.guiceside.commons.Page;
 import org.guiceside.persistence.TransactionType;
 import org.guiceside.persistence.Transactional;
 import org.guiceside.persistence.hibernate.dao.hquery.HQuery;
+import org.guiceside.persistence.hibernate.dao.hquery.Selector;
 
 import java.util.List;
 
@@ -15,6 +17,17 @@ import java.util.List;
  */
 @Singleton
 public class SysFinancialTitleService extends HQuery {
+
+    @Transactional(type = TransactionType.READ_ONLY)
+    public Page<SysFinancialTitle> getPageList(int start,
+                                               int limit, List<Selector> selectorList) {
+        return $(selectorList).page(SysFinancialTitle.class, start, limit);
+    }
+
+    @Transactional(type = TransactionType.READ_ONLY)
+    public List<SysFinancialTitle> getAllList(List<Selector> selectorList) {
+        return $(selectorList).list(SysFinancialTitle.class);
+    }
 
     /**
      * @param id
@@ -63,6 +76,31 @@ public class SysFinancialTitleService extends HQuery {
     @Transactional(type = TransactionType.READ_WRITE)
     public void delete(List<SysFinancialTitle> sysFinancialTitleList) {
         $(sysFinancialTitleList).delete();
+    }
+
+    @Transactional(type = TransactionType.READ_ONLY)
+    public Integer validateName(Long orgId, Long parentId, String titleName) {
+        if (parentId == null) {
+            return $($count("id"), $eq("orgId.id", orgId), $eq("titleLevel", 1), $eq("titleName", titleName)).value(SysFinancialTitle.class, Integer.class);
+        } else {
+            return $($count("id"), $eq("orgId.id", orgId), $eq("parentId.id", parentId), $eq("titleName", titleName)).value(SysFinancialTitle.class, Integer.class);
+        }
+    }
+
+    @Transactional(type = TransactionType.READ_ONLY)
+    public Integer validateNo(Long orgId, String titleNo) {
+        return $($count("id"), $eq("orgId.id", orgId), $eq("titleNo", titleNo)).value(SysFinancialTitle.class, Integer.class);
+    }
+
+
+    @Transactional(type = TransactionType.READ_ONLY)
+    public Integer getMaxOrderByOrgId(Long orgId) {
+        return $($eq("orgId.id", orgId), $eq("titleLevel", 1), $max("displayOrder")).value(SysFinancialTitle.class, Integer.class);
+    }
+
+    @Transactional(type = TransactionType.READ_ONLY)
+    public Integer getMaxOrderByOrgId(Long orgId, Long parentId) {
+        return $($eq("orgId.id", orgId), $eq("parentId.id", parentId),  $max("displayOrder")).value(SysFinancialTitle.class, Integer.class);
     }
 
 }

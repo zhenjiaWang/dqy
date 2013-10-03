@@ -190,8 +190,8 @@ public abstract class ActionSupport<T> extends BaseAction {
             UserInfo userInfo = UserSession.getUserInfo(this.getHttpServletRequest());
             BeanUtils.setValue(entity, "updated", DateFormatUtil.getCurrentDate(true));
             if (userInfo != null) {
-                BeanUtils.setValue(entity, "createdBy", userInfo.getUserId());
-                BeanUtils.setValue(entity, "updatedBy", userInfo.getUserId());
+                BeanUtils.setValue(entity, "createdBy", userInfo.getUserNo());
+                BeanUtils.setValue(entity, "updatedBy", userInfo.getUserNo());
             }
         }
         try {

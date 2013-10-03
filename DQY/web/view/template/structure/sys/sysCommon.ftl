@@ -14,10 +14,10 @@
                 <#if userInfo?exists>
                     $('li', '.side-left-in').removeClass('current');
                     $('.${userInfo['leftMenu']?if_exists}', '.side-left-in').addClass('current');
-
+                    $('.${userInfo['leftMenu']?if_exists}', '.side-left-in').parent().addClass('current');
 
                     var topLocation=$('.current', '#topMenu').text();
-                    var leftLocation=$('.current', '.side-left-in').text();
+                    var leftLocation=$('li.current', '.side-left-in').text();
                     if(topLocation&&leftLocation){
                         $('.currentLocation','.location').text(leftLocation);
                         $('.topLocation','.location').text(topLocation);
@@ -50,15 +50,15 @@
                         <a class="cur" href="/hr/department.dhtml">组织机构</a>
                     </li>
                     <li class="user">
-                        <a class="cur" href="/sys/org.dhtml">员工信息</a>
+                        <a class="cur" href="/hr/user.dhtml">员工信息</a>
                     </li>
                 </ul>
                 <ul class="item-nav"><!--ul上的current是为了控制当前这一组的背景色，li上的current是为了控制二级菜单-->
-                    <li class="financial">
-                        <a class="cur" href="/sys/orgGroup.dhtml">财务科目</a>
+                    <li class="financialTitle">
+                        <a class="cur" href="/sys/financialTitle.dhtml">财务科目</a>
                     </li>
                     <li class="budgetType">
-                        <a class="cur" href="/sys/org.dhtml">预算类别</a>
+                        <a class="cur" href="/sys/budgetType.dhtml">预算类别</a>
                     </li>
                     <li class=budgetTitle>
                         <a class="cur" href="/sys/org.dhtml">预算科目</a>

@@ -2,9 +2,11 @@ package com.dqy.sys.service;
 
 import com.dqy.sys.entity.SysBudgetType;
 import com.google.inject.Singleton;
+import org.guiceside.commons.Page;
 import org.guiceside.persistence.TransactionType;
 import org.guiceside.persistence.Transactional;
 import org.guiceside.persistence.hibernate.dao.hquery.HQuery;
+import org.guiceside.persistence.hibernate.dao.hquery.Selector;
 
 import java.util.List;
 
@@ -16,6 +18,12 @@ import java.util.List;
 @Singleton
 public class SysBudgetTypeService extends HQuery {
 
+
+    @Transactional(type = TransactionType.READ_ONLY)
+    public Page<SysBudgetType> getPageList(int start,
+                                         int limit, List<Selector> selectorList) {
+        return $(selectorList).page(SysBudgetType.class, start, limit);
+    }
     /**
      * @param id
      * @return 根据Id获取代码

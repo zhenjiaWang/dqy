@@ -183,7 +183,7 @@ td .dqy-eidt{position: relative;top:2px;}
 .modal-header{padding:3px 0;border-bottom:none;}
 .close{margin-right:10px;}
 .modal-footer{padding:10px;}
-.modal{width:400px;margin-left:-200px;top:35%;}
+/*.modal{width:400px;margin-left:-200px;top:35%;}*/
 .input-append, .input-prepend{margin-bottom:0;}
 .pay-col .int1{height: auto;line-height: normal;margin:0;}
 .pay-colinner{border:1px solid #ABADB3;height:350px;overflow-y: scroll;}

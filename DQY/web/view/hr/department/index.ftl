@@ -22,19 +22,6 @@
         srcNode=treeNode;
         $('#frameDetail').attr('src','/hr/department!view.dhtml?id='+treeNode.id);
     };
-    function refreshNode(e) {
-        var zTree = $.fn.zTree.getZTreeObj("treeDemo"),
-                type = e.data.type,
-                silent = e.data.silent,
-                nodes = zTree.getSelectedNodes();
-        if (nodes.length == 0) {
-            alert("请先选择一个父节点");
-        }
-        for (var i=0, l=nodes.length; i<l; i++) {
-            zTree.reAsyncChildNodes(nodes[i], type, silent);
-            if (!silent) zTree.selectNode(nodes[i]);
-        }
-    }
     function reloadTree(b) {
         var parentNode = null;
         if (srcNode != null) {

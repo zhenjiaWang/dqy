@@ -23,6 +23,11 @@ public class SysOrgService extends HQuery {
                                          int limit, List<Selector> selectorList) {
         return $(selectorList).page(SysOrg.class, start, limit);
     }
+
+    @Transactional(type = TransactionType.READ_ONLY)
+    public List<SysOrg> getOrgListByGroupId(Long groupId) {
+        return $($eq("groupId.id",groupId),$eq("useYn","Y")).list(SysOrg.class);
+    }
     /**
      * @param id
      * @return 根据Id获取代码

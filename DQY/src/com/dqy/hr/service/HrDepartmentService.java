@@ -93,6 +93,23 @@ public class HrDepartmentService extends HQuery {
         }
     }
 
+    @Transactional(type = TransactionType.READ_ONLY)
+    public Integer getMaxOrderByParentId(Long orgId,Long parentId, boolean ignoreUse) {
+        if (ignoreUse) {
+            return $($eq("orgId.id", orgId),$eq("parentId.id", parentId), $max("displayOrder")).value(HrDepartment.class, Integer.class);
+        } else {
+            return $($eq("orgId.id", orgId),$eq("parentId.id", parentId), $eq("useYn", "Y"), $max("displayOrder")).value(HrDepartment.class, Integer.class);
+        }
+    }
+
+    @Transactional(type = TransactionType.READ_ONLY)
+    public Integer getMaxOrderByOrgId(Long orgId,boolean ignoreUse) {
+        if (ignoreUse) {
+            return $($eq("orgId.id", orgId),  $eq("deptLevel", 1),$max("displayOrder")).value(HrDepartment.class, Integer.class);
+        } else {
+            return $($eq("orgId.id", orgId), $eq("deptLevel", 1),$eq("useYn", "Y"), $max("displayOrder")).value(HrDepartment.class, Integer.class);
+        }
+    }
 
     @Transactional(type = TransactionType.READ_ONLY)
     public Integer validateName(Long orgId,String deptName) {

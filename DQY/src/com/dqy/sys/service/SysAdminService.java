@@ -71,4 +71,9 @@ public class SysAdminService extends HQuery {
                 $count("id")).value(SysAdmin.class, Integer.class);
     }
 
+    @Transactional(type = TransactionType.READ_WRITE)
+    public SysAdmin getAdminByOrgIdUserId(Long orgId,Long userId) {
+        return $($eq("orgId.id", orgId), $eq("userId.id", userId),$eq("useYn","Y")).get(SysAdmin.class);
+    }
+
 }

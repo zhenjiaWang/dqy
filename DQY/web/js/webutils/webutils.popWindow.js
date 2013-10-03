@@ -19,6 +19,11 @@ WEBUTILS.popWindow = (function () {
             $('#myModalOkBtn','#myModal').off('click').on('click',function(){
                 _okCallback();
             });
+            $('#myModal').on('hidden', function () {
+                $('.treeDiv').fadeOut();
+                $('#treeDemo','.treeDiv').empty();
+            })
+
         },
         okCallback:function (okFun) {
             _okCallback=okFun;

@@ -72,6 +72,15 @@
                 }, 500);
             }
         });
+
+        <#if reloadTree?exists>
+            <#if reloadTree==1>
+                parent.reloadTree(false);
+            <#elseif  reloadTree==2>
+                parent.reloadTree(true);
+            </#if>
+
+        </#if>
     });
 </script>
     <#if Session["userSession"]?exists>
@@ -106,7 +115,7 @@
                 <div class="control-group">
                     <label class="control-label" for="hrDepartment.displayOrder">显示顺序</label>
                     <div class="controls">
-                        <input type="text" id="hrDepartment.displayOrder" name="hrDepartment.displayOrder" placeholder="显示顺序">
+                        <input type="text" id="hrDepartment.displayOrder" name="hrDepartment.displayOrder" placeholder="显示顺序" value="${maxDisplayOrder?c}">
                         <span class="help-inline"></span>
                     </div>
                 </div>

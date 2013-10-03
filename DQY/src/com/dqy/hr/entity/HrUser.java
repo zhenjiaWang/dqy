@@ -39,7 +39,11 @@ public class HrUser extends IdEntity implements Tracker {
 
     private String jobName;
 
-    private String userState;
+    private Integer userState;
+
+    private Date entryDate;
+
+    private String workArea;
 
     private Date created;
 
@@ -51,6 +55,11 @@ public class HrUser extends IdEntity implements Tracker {
 
     private String useYn;
 
+    private Integer userSex;
+
+    private Date birthday;
+
+    private Integer eduLevel;
     @Id
     @GeneratedValue(generator="HR_USER")
     @GenericGenerator(name="HR_USER",strategy="seqhilo",parameters={@Parameter(name="sequence",value="SEQ_HR_USER")})
@@ -175,11 +184,56 @@ public class HrUser extends IdEntity implements Tracker {
     }
 
     @Column(name = "USER_STATE")
-    public String getUserState() {
+    public Integer getUserState() {
         return userState;
     }
 
-    public void setUserState(String userState) {
+    public void setUserState(Integer userState) {
         this.userState = userState;
+    }
+
+    @Column(name = "ENTRY_DATE")
+    public Date getEntryDate() {
+        return entryDate;
+    }
+
+    public void setEntryDate(Date entryDate) {
+        this.entryDate = entryDate;
+    }
+
+    @Column(name = "WORK_AREA")
+    public String getWorkArea() {
+        return workArea;
+    }
+
+    public void setWorkArea(String workArea) {
+        this.workArea = workArea;
+    }
+
+    @Transient
+    public Integer getUserSex() {
+        return userSex;
+    }
+
+    public void setUserSex(Integer userSex) {
+        this.userSex = userSex;
+    }
+
+    @Transient
+    public Date getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(Date birthday) {
+        this.birthday = birthday;
+    }
+
+    @Transient
+    public Integer getEduLevel() {
+        return eduLevel;
+    }
+
+    public void setEduLevel(Integer eduLevel) {
+        this.eduLevel = eduLevel;
     }
 }

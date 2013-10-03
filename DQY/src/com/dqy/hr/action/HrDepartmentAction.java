@@ -67,6 +67,9 @@ public class HrDepartmentAction extends ActionSupport<HrDepartment> {
     @ReqSet
     private Long reloadTree;
 
+    @ReqSet
+    private Integer maxDisplayOrder;
+
     @Override
     @PageFlow(result = {@Result(name = "success", path = "/view/hr/department/index.ftl", type = Dispatcher.FreeMarker)})
     public String execute() throws Exception {
@@ -119,10 +122,18 @@ public class HrDepartmentAction extends ActionSupport<HrDepartment> {
             if (id != null) {
                 hrDepartment = this.hrDepartmentService.getById(id);
                 parentDepartment=this.hrDepartment.getParentId();
+                maxDisplayOrder=hrDepartment.getDisplayOrder();
             }else{
                 if (parentId != null) {
                     parentDepartment = this.hrDepartmentService.getById(parentId);
+                    maxDisplayOrder=this.hrDepartmentService.getMaxOrderByParentId(userInfo.getOrgId(),parentDepartment.getId(),true);
+                }else{
+                    maxDisplayOrder=this.hrDepartmentService.getMaxOrderByOrgId(userInfo.getOrgId(),true);
                 }
+                if(maxDisplayOrder==null){
+                    maxDisplayOrder=0;
+                }
+                maxDisplayOrder+=1;
             }
 
         }
@@ -196,9 +207,10 @@ public class HrDepartmentAction extends ActionSupport<HrDepartment> {
      * @return
      * @throws Exception
      */
-    @PageFlow(result = {@Result(name = "success", path = "/hr/dept!input.dhtml", type = Dispatcher.Redirect)})
+    @PageFlow(result = {@Result(name = "success", path = "/hr/department!input.dhtml?reloadTree=${reloadTree}", type = Dispatcher.Redirect)})
     public String delete() throws Exception {
         if (id != null) {
+            reloadTree=2l;
             this.hrDepartmentService.deleteById(id);
         }
         return "success";
