@@ -61,10 +61,12 @@
                         <a class="cur" href="/sys/budgetType.dhtml">预算类别</a>
                     </li>
                     <li class=budgetTitle>
-                        <a class="cur" href="/sys/org.dhtml">预算科目</a>
+                        <a class="cur" href="/sys/budgetTitle.dhtml">预算科目</a>
                     </li>
-                    <li class=budgetOwen>
-                        <a class="cur" href="/sys/org.dhtml">科目关联</a>
+                </ul>
+                <ul class="item-nav"><!--ul上的current是为了控制当前这一组的背景色，li上的current是为了控制二级菜单-->
+                    <li class="variableGlobal">
+                        <a class="cur" href="/wf/variableGlobal.dhtml">审批岗位</a>
                     </li>
                 </ul>
                 <!--一组over-->

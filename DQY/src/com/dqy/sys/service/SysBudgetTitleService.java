@@ -2,9 +2,11 @@ package com.dqy.sys.service;
 
 import com.dqy.sys.entity.SysBudgetTitle;
 import com.google.inject.Singleton;
+import org.guiceside.commons.Page;
 import org.guiceside.persistence.TransactionType;
 import org.guiceside.persistence.Transactional;
 import org.guiceside.persistence.hibernate.dao.hquery.HQuery;
+import org.guiceside.persistence.hibernate.dao.hquery.Selector;
 
 import java.util.List;
 
@@ -15,6 +17,18 @@ import java.util.List;
  */
 @Singleton
 public class SysBudgetTitleService extends HQuery {
+
+    @Transactional(type = TransactionType.READ_ONLY)
+    public Page<SysBudgetTitle> getPageList(int start,
+                                           int limit, List<Selector> selectorList) {
+        return $(selectorList).page(SysBudgetTitle.class, start, limit);
+    }
+
+
+    @Transactional(type = TransactionType.READ_ONLY)
+    public List<SysBudgetTitle> getAllList(List<Selector> selectorList) {
+        return $(selectorList).list(SysBudgetTitle.class);
+    }
 
     /**
      * @param id
@@ -63,6 +77,11 @@ public class SysBudgetTitleService extends HQuery {
     @Transactional(type = TransactionType.READ_WRITE)
     public void delete(List<SysBudgetTitle> sysBudgetTitleList) {
         $(sysBudgetTitleList).delete();
+    }
+
+    @Transactional(type = TransactionType.READ_ONLY)
+    public Integer validateName(Long typeId,String titleName) {
+        return $($count("id"),$eq("typeId.id",typeId), $eq("titleName", titleName)).value(SysBudgetTitle.class, Integer.class);
     }
 
 }

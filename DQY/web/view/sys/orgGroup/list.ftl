@@ -13,17 +13,11 @@
     $(document).ready(function () {
         $('#newBtn').off('click').on('click', function () {
             WEBUTILS.popWindow.createPopWindow(550, null, '创建集团', '/sys/orgGroup!input.dhtml');
-            WEBUTILS.popWindow.okCallback(function () {
-                submitForm();
-            });
         });
         $('.dqy-eidt').off('click').on('click', function () {
             var uid = $(this).attr('uid');
             if (uid) {
                 WEBUTILS.popWindow.createPopWindow(550, null, '编辑集团', '/sys/orgGroup!input.dhtml?id='+uid);
-                WEBUTILS.popWindow.okCallback(function () {
-                    submitForm();
-                });
             }
         });
         $('.dqy-del').off('click').on('click', function () {

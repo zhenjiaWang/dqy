@@ -11,17 +11,21 @@ import com.dqy.hr.service.HrUserService;
 import com.dqy.sys.entity.SysAdmin;
 import com.dqy.sys.entity.SysAuthorized;
 import com.dqy.sys.entity.SysOrg;
+import com.dqy.sys.entity.SysOrgGroup;
 import com.dqy.sys.service.SysAdminService;
 import com.dqy.sys.service.SysAuthorizedService;
+import com.dqy.sys.service.SysOrgGroupService;
 import com.dqy.sys.service.SysOrgService;
 import com.dqy.web.support.ActionSupport;
 import com.google.inject.Inject;
+import org.guiceside.commons.lang.DateFormatUtil;
 import org.guiceside.commons.lang.StringUtils;
 import org.guiceside.persistence.entity.search.SelectorUtils;
 import org.guiceside.persistence.hibernate.dao.hquery.Selector;
 import org.guiceside.web.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -39,6 +43,9 @@ public class HrUserAction extends ActionSupport<HrUser> {
 
     @Inject
     private SysOrgService sysOrgService;
+
+    @Inject
+    private SysOrgGroupService sysOrgGroupService;
 
     @Inject
     private HrUserDetailService hrUserDetailService;
@@ -74,6 +81,9 @@ public class HrUserAction extends ActionSupport<HrUser> {
 
     @ReqSet
     private boolean isAdmin;
+
+    @ReqSet
+    private boolean isPassword;
 
     @ReqGet
     private String adminYn;
@@ -116,6 +126,11 @@ public class HrUserAction extends ActionSupport<HrUser> {
         if (userInfo != null && id != null) {
             hrUser = this.hrUserService.getById(id);
             if(hrUser!=null){
+                if(StringUtils.isBlank(hrUser.getUserPwd())){
+                    isPassword=false;
+                }else{
+                    isPassword=true;
+                }
                 hrUserDetail=this.hrUserDetailService.getByUserId(hrUser.getId());
                 isAdmin = false;
                 Integer adminCount=this.sysAdminService.validateAdmin(userInfo.getOrgId(),hrUser.getId());
@@ -168,6 +183,28 @@ public class HrUserAction extends ActionSupport<HrUser> {
         return "success";  //To change body of implemented methods use File | Settings | File Templates.
     }
 
+    @PageFlow(result = {@Result(name = "success", path = "/view/hr/user/pwd.ftl", type = Dispatcher.FreeMarker)})
+    public String changePwd() throws Exception {
+        UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
+        if (userInfo != null && id != null) {
+            hrUser = this.hrUserService.getById(id);
+        }
+        return "success";  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @PageFlow(result = {@Result(name = "success", path = "/hr/user!view.dhtml?id=${hrUser.id}", type = Dispatcher.Redirect)})
+    public String savePwd() throws Exception {
+        UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
+        if (userInfo != null && hrUser != null) {
+            HrUser old = this.hrUserService.getById(hrUser.getId());
+            old.setUserPwd(hrUser.getUserPwd());
+            old.setUseYn("Y");
+            bind(old);
+            hrUserService.save(old);
+        }
+        return "success";  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
     @PageFlow(result = {@Result(name = "success", path = "/view/hr/user/input.ftl", type = Dispatcher.FreeMarker)})
     public String input() throws Exception {
         UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
@@ -209,6 +246,58 @@ public class HrUserAction extends ActionSupport<HrUser> {
                 this.bind(old);
                 this.bind(hrUserDetail);
                 this.hrUserService.save(old,hrUserDetail);
+            }else{
+                Date entryDate=hrUser.getEntryDate();
+                if(entryDate!=null){
+                    Integer entryCount=this.hrUserService.getCountUserByEntryDate(userInfo.getOrgId(),userInfo.getGroupId(),entryDate);
+                    if(entryCount==null){
+                        entryCount=0;
+                    }
+                    entryCount+=1;
+                    Integer year=DateFormatUtil.getDayInYear(entryDate);
+                    Integer month=DateFormatUtil.getDayInMonth(entryDate)+1;
+                    String userNo;
+                    if(month.intValue()<10){
+                        userNo=year+"0"+month;
+                    }else{
+                        userNo=year+""+month;
+                    }
+                    if(entryCount.intValue()<10){
+                        userNo+="000"+entryCount;
+                    }else if(entryCount.intValue()<100){
+                        userNo+="00"+entryCount;
+                    }else if(entryCount.intValue()<1000){
+                        userNo+="0"+entryCount;
+                    }
+                    hrUser.setUserNo(userNo);
+                    if(hrUser.getDeptId()!=null){
+                        if(hrUser.getDeptId().getId()!=null){
+                            HrDepartment department=hrDepartmentService.getById(hrUser.getDeptId().getId());
+                            if(department!=null){
+                                hrUser.setDeptId(department);
+                            }
+                        }
+                    }
+                    SysOrg sysOrg=this.sysOrgService.getById(userInfo.getOrgId());
+                    if(sysOrg!=null){
+                        hrUser.setOrgId(sysOrg);
+                    }
+                    SysOrgGroup sysOrgGroup=this.sysOrgGroupService.getById(userInfo.getGroupId());
+                    if(sysOrgGroup!=null){
+                        hrUser.setGroupId(sysOrgGroup);
+                    }
+                    hrUser.setUseYn("Y");
+                    bind(hrUser);
+                    hrUserDetail=new HrUserDetail();
+                    hrUserDetail.setUserId(hrUser);
+                    hrUserDetail.setBirthday(hrUser.getBirthday());
+                    hrUserDetail.setEduLevel(hrUser.getEduLevel());
+                    hrUserDetail.setUserSex(hrUser.getUserSex());
+                    hrUserDetail.setUseYn("Y");
+                    bind(hrUserDetail);
+                    this.hrUserService.save(hrUser,hrUserDetail);
+                }
+
             }
         }
         return "success";

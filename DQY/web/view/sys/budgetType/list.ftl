@@ -13,17 +13,11 @@
     $(document).ready(function () {
         $('#newBtn').off('click').on('click', function () {
             WEBUTILS.popWindow.createPopWindow(550, null, '创建预算类别', '/sys/budgetType!input.dhtml');
-            WEBUTILS.popWindow.okCallback(function () {
-                submitForm();
-            });
         });
         $('.editBT').off('click').on('click', function () {
             var uid = $(this).attr('uid');
             if (uid) {
                 WEBUTILS.popWindow.createPopWindow(550, null, '编辑预算类别', '/sys/budgetType!input.dhtml?id='+uid);
-                WEBUTILS.popWindow.okCallback(function () {
-                    submitForm();
-                });
             }
         });
         $('.stopBT').off('click').on('click', function () {
@@ -38,6 +32,9 @@
                 document.location.href='/sys/budgetType!play.dhtml?id='+uid;
             }
         });
+        $('#budgetOwenBtn').off('click').on('click', function () {
+            WEBUTILS.popWindow.createPopWindow(650, null, '编辑科目', '/sys/budgetOwen.dhtml');
+        });
     });
 </script>
 <!--搜索begin-->
@@ -46,7 +43,7 @@
         <input type="text" id="appendedInputButton" class="span2">
         <button type="button" class="btn"><i class="icon-search"></i> 搜索</button>
     </div>
-    <button class="btn btn-danger floatright" type="button">删除</button>
+    <button class="btn btn-danger floatright" type="button" id="budgetOwenBtn">科目关系调整</button>
     <button class="btn btn-warning floatright marr10" type="button" id="newBtn">新增</button>
 </div>
 <!--搜索over-->
@@ -83,9 +80,4 @@
     </table>
 </div>
     <@pager.pagerCommon object=pageObj?if_exists max=10/>
-<div class="datepicker dropdown-menu treeDiv" style="display: none;width: 200px;height: 300px; z-index: 99999;">
-    <div>
-        <ul id="treeDemo" class="ztree"></ul>
-    </div>
-</div>
 </@sysCommon.sys_common>

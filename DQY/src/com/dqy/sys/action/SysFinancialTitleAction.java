@@ -147,8 +147,8 @@ public class SysFinancialTitleAction extends ActionSupport<SysFinancialTitle> {
                     jsonArray.add(item);
                 }
                 jsonObject.put("titleList", jsonArray);
-                jsonObject.put("result", 0);
             }
+            jsonObject.put("result", 0);
         }
         writeJsonByAction(jsonObject.toString());
         return null;

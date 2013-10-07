@@ -2,7 +2,7 @@
     <#if object?exists&&object.totalPage gt 1>
     <script type="text/javascript">
         $(document).ready(function () {
-            $('li', '.plus-page').each(function () {
+            $('li', '#plus-page').each(function () {
                 if (!$(this).hasClass('active')&&!$(this).hasClass('disabled')&&!$(this).hasClass('p-next')&&!$(this).hasClass('p-prev')) {
                     $(this).off('click').on('click', function () {
                         var p = $('a',this).text();
@@ -14,7 +14,7 @@
                     });
                 }
             });
-            $('.p-next', '.plus-page').off('click').on('click', function () {
+            $('.p-next', '#plus-page').off('click').on('click', function () {
                 if (!$(this).hasClass('disabled')) {
                     var last=$(this).prev();
                     var p = $(last).text();
@@ -25,7 +25,7 @@
                     eval(${actionJs}(start, rows));
                 }
             });
-            $('.p-prev', '.plus-page').off('click').on('click', function () {
+            $('.p-prev', '#plus-page').off('click').on('click', function () {
                 if (!$(this).hasClass('disabled')) {
                     var next=$(this).next();
                     var p = $(next).text();
@@ -37,7 +37,7 @@
                     eval(${actionJs}(start, rows));
                 }
             });
-            if($('.disabled', '.plus-page').size()>1){
+            if($('.disabled', '#plus-page').size()>1){
                 $('.md-p-next', '.plus-page').removeClass('disabled');
                 $('.md-p-next', '.plus-page').addClass('disabled');
             }

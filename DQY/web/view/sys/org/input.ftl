@@ -8,22 +8,20 @@
     var submited = false;
     function validatorName() {
         var url = '';
-        var groupId = $('#sysOrg\\.groupId\\.id').val();
         <#if !sysOrg?exists>
-            url = '/sys/org!validateName.dhtml?groupId='+groupId;
+            url = '/sys/org!validateName.dhtml?groupId=${groupId?c}';
         <#elseif sysOrg?exists>
-            url = '/sys/org!validateName.dhtml?ignore=${sysOrg.orgName?if_exists}&groupId='+groupId;
+            url = '/sys/org!validateName.dhtml?ignore=${sysOrg.orgName?if_exists}&groupId=${groupId?c}';
         </#if>
         return url;
     }
 
     function validatorNo() {
         var url = '';
-        var groupId = $('#sysOrg\\.groupId\\.id').val();
         <#if !sysOrg?exists>
-            url = '/sys/org!validateNo.dhtml?groupId='+groupId;
+            url = '/sys/org!validateNo.dhtml?groupId=${groupId?c}';
         <#elseif sysOrg?exists>
-            url = '/sys/org!validateNo.dhtml?ignore=${sysOrg.orgNo?if_exists}&groupId='+groupId;
+            url = '/sys/org!validateNo.dhtml?ignore=${sysOrg.orgNo?if_exists}&groupId=${groupId?c}';
         </#if>
         return url;
     }
@@ -58,23 +56,22 @@
             ]
         }, true);
     }
-
-    function submitForm(){
-        if (!submited) {
-            WEBUTILS.validator.checkAll();
-            window.setTimeout(function () {
-                var passed = WEBUTILS.validator.isPassed();
-                if (passed) {
-                    document.editForm.submit();
-                    submited = true;
-                } else {
-                    WEBUTILS.validator.showErrors();
-                }
-            }, 500);
-        }
-    }
     $(document).ready(function () {
         initValidator();
+        $('#myModalOkBtn','#myModal').off('click').on('click',function(){
+            if (!submited) {
+                WEBUTILS.validator.checkAll();
+                window.setTimeout(function () {
+                    var passed = WEBUTILS.validator.isPassed();
+                    if (passed) {
+                        document.editForm.submit();
+                        submited = true;
+                    } else {
+                        WEBUTILS.validator.showErrors();
+                    }
+                }, 500);
+            }
+        });
     });
 </script>
     <@c.joddForm bean="sysOrg" scope="request">

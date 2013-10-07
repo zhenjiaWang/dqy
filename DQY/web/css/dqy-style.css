@@ -159,12 +159,12 @@ textarea{height:auto; vertical-align: text-top;}
 .layout strong{padding:0 6px;}
 .table-scroll{width:745px;height:320px;overflow-y:scroll;border:1px solid #ccc;border-width:0 1px 1px 1px;}
 .table-scroll table.layout{border-width:0;}
-.application{width:725px;}
+.application{width:740px;}
 .application th{color:#898989;font-weight:bold;font-size:13px;}
 /*.application td{padding:6px 0;}*/
 .application a{margin-right:5px;}
 .application a:hover{text-decoration: underline;color:#78ab09;}
-.process-bar li{float: left;margin:0 3px;position: relative;margin-right: 10px;padding-right: 5px;}
+.process-bar li{float: left;margin:0 3px;position: relative;margin-right: 10px;padding-right: 5px;line-height: 35px;}
 .process-bar li .badge{margin-right: 5px;}
 .process-bar li a.del{display: none;top:2px;right:-13px; position: absolute;}
 .process-bar li:hover a.del{display: inline-block;}
@@ -186,7 +186,7 @@ td .dqy-eidt{position: relative;top:2px;}
 /*.modal{width:400px;margin-left:-200px;top:35%;}*/
 .input-append, .input-prepend{margin-bottom:0;}
 .pay-col .int1{height: auto;line-height: normal;margin:0;}
-.pay-colinner{border:1px solid #ABADB3;height:350px;overflow-y: scroll;}
+.pay-colinner{border:1px solid #ABADB3;height:300px;overflow-y: scroll;}
 .pay-colinner ul li{margin:5px 0;}
 .pay-colinner ul li a{padding:0 0 0 10px;line-height: 20px;display: block;}
 .table th, .table td{vertical-align: middle;padding:6px;}

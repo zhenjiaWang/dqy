@@ -293,3 +293,20 @@ var alertConfirmDQY=' <div class="alert alert-block alert-warning fade in" id="m
     '</p>' +
     '</div>';
 
+
+var flowApproveDQY=' <div class="control-group" nodeSeq="{nodeSeq}">' +
+    '<label class="control-label" for="node{nodeSeq}">第{nodeSeq}步审批人</label>' +
+    '<div class="controls">' +
+    '<input type="text"  id="node{nodeSeq}" name="node{nodeSeq}" placeholder="请选择审批人" readonly="readonly" nodeSeq="{nodeSeq}">' +
+    '<div class="btn-group" style="margin-left:6px;">' +
+    '&nbsp;<a class="btn approveBtn" href="#"><i class="icon-user"></i></a>' +
+    '</div>' +
+    '<span class="help-inline"></span>' +
+    '<input type="hidden" name="nodeType{nodeSeq}" id="nodeType{nodeSeq}" nodeSeq="{nodeSeq}">' +
+    '<input type="hidden" name="approveType{nodeSeq}" id="approveType{nodeSeq}" nodeSeq="{nodeSeq}">' +
+    '<input type="hidden" name="approve{nodeSeq}" id="approve{nodeSeq}" nodeSeq="{nodeSeq}">' +
+    '</div>' +
+    '</div>';
+
+
+var flowApproveNodeShow='<li nodeSeq="{nodeSeq}" nodeType="{nodeType}" approveType="{approveType}" approveId="{approveId}"><a href="#"><span class="badge">{nodeSeqText}</span>{text}</a></li><li><i class="dqy-ico dqy-r"></i></li>';

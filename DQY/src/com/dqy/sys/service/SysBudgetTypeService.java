@@ -24,6 +24,12 @@ public class SysBudgetTypeService extends HQuery {
                                          int limit, List<Selector> selectorList) {
         return $(selectorList).page(SysBudgetType.class, start, limit);
     }
+
+    @Transactional(type = TransactionType.READ_ONLY)
+    public List<SysBudgetType> getAllList(List<Selector> selectorList) {
+        return $(selectorList).list(SysBudgetType.class);
+    }
+
     /**
      * @param id
      * @return 根据Id获取代码

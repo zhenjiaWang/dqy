@@ -17,6 +17,9 @@
               document.location.href='/hr/user!view.dhtml?id='+uid;
             }
         });
+        $('#newBtn').off('click').on('click', function () {
+            WEBUTILS.popWindow.createPopWindow(800, null, '新增用户', '/hr/user!input.dhtml');
+        });
     });
 </script>
 <!--搜索begin-->

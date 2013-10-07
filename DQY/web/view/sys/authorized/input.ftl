@@ -7,13 +7,14 @@
 <script type="text/javascript">
     var submited = false;
 
-    function submitForm() {
-        if (!submited) {
-            document.editForm.submit();
-            submited = true;
-        }
-    }
+
     $(document).ready(function () {
+        $('#myModalOkBtn','#myModal').off('click').on('click',function(){
+            if (!submited) {
+                document.editForm.submit();
+                submited = true;
+            }
+        });
     });
 </script>
     <@c.joddForm bean="sysOrg" scope="request">

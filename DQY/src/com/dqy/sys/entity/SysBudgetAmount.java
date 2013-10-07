@@ -1,5 +1,6 @@
 package com.dqy.sys.entity;
 
+import com.dqy.hr.entity.HrDepartment;
 import org.guiceside.persistence.entity.IdEntity;
 import org.guiceside.persistence.entity.Tracker;
 import org.hibernate.annotations.GenericGenerator;
@@ -24,6 +25,8 @@ public class SysBudgetAmount extends IdEntity implements Tracker {
     private Long id;
 
     private SysOrg orgId;
+
+    private HrDepartment deptId;
 
     private SysBudgetTitle titleId;
 
@@ -146,5 +149,15 @@ public class SysBudgetAmount extends IdEntity implements Tracker {
 
     public void setAmount(Double amount) {
         this.amount = amount;
+    }
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "DEPT_ID")
+    public HrDepartment getDeptId() {
+        return deptId;
+    }
+
+    public void setDeptId(HrDepartment deptId) {
+        this.deptId = deptId;
     }
 }

@@ -5,6 +5,7 @@ import com.google.inject.Singleton;
 import org.guiceside.persistence.TransactionType;
 import org.guiceside.persistence.Transactional;
 import org.guiceside.persistence.hibernate.dao.hquery.HQuery;
+import org.guiceside.persistence.hibernate.dao.hquery.Selector;
 
 import java.util.List;
 
@@ -15,6 +16,11 @@ import java.util.List;
  */
 @Singleton
 public class SysBudgetOwenService extends HQuery {
+
+    @Transactional(type = TransactionType.READ_ONLY)
+    public List<SysBudgetOwen> getAllList(List<Selector> selectorList) {
+        return $(selectorList).list(SysBudgetOwen.class);
+    }
 
     /**
      * @param id
@@ -63,6 +69,11 @@ public class SysBudgetOwenService extends HQuery {
     @Transactional(type = TransactionType.READ_WRITE)
     public void delete(List<SysBudgetOwen> sysBudgetOwenList) {
         $(sysBudgetOwenList).delete();
+    }
+
+    @Transactional(type = TransactionType.READ_ONLY)
+    public List<Long> getBudgetIdList(Long orgId) {
+        return $($eq("orgId.id",orgId),$distinct("budgetTitle.id")).list(SysBudgetOwen.class,Long.class);
     }
 
 }

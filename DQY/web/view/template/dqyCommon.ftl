@@ -56,9 +56,9 @@
                 <!--天气over-->
                 <ul class="nav font18 clearfix floatleft" id="topMenu">
                     <li class="index"><a href="/common/login!index.dhtml"><em></em>首 页</a></li>
-                    <li class="apply"><a href="#"><em></em>申请平台</a></li>
+                    <li class="apply"><a href="/wf/advanceAccount.dhtml"><em></em>申请平台</a></li>
                     <li class="info"><a href="#"><em></em>信息平台</a></li>
-                    <li class="budget"><a href="#"><em></em>预算管理</a></li>
+                    <li class="budget"><a href="/sys/budgetAmount.dhtml"><em></em>预算管理</a></li>
                     <li class="sys"><a href="/sys/orgGroup.dhtml"><em></em>系统管理</a></li>
                 </ul>
             </div>
@@ -105,6 +105,10 @@
         </div>
     </div>
 
-
+    <div class="datepicker dropdown-menu treeDiv" style="display: none;width: 200px;height: 300px; z-index: 99999;">
+        <div>
+            <ul id="treeDemo" class="ztree"></ul>
+        </div>
+    </div>
     </@common.html>
 </#macro>

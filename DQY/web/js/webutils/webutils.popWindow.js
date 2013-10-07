@@ -1,8 +1,7 @@
 WEBUTILS.popWindow = (function () {
-    var _okCallback = false;
     return{
         closePopWindow:function () {
-            $('#myModal').modal('hide');
+            $('.modal-header','#myModal').find('.close').trigger('click');
         },
         createPopWindow:function (width, height, title, url) {
             if(width){
@@ -16,17 +15,12 @@ WEBUTILS.popWindow = (function () {
             }
             $('#myModal').modal({remote:url});
             $('#myModal').modal('show');
-            $('#myModalOkBtn','#myModal').off('click').on('click',function(){
-                _okCallback();
-            });
             $('#myModal').on('hidden', function () {
                 $('.treeDiv').fadeOut();
                 $('#treeDemo','.treeDiv').empty();
-            })
-
-        },
-        okCallback:function (okFun) {
-            _okCallback=okFun;
+                $('.modal-body','#myModal').empty();
+                $('#myModalOkBtn','#myModal').unbind();
+            });
         }
     }
 })();

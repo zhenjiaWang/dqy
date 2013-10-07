@@ -10,12 +10,13 @@
                 document.location.href = '/hr/user!changeAdmin.dhtml?id=${hrUser.id?c}&adminYn=Y';
             </#if>
         });
+        $('#passwordBtn').off('click').on('click', function () {
+            WEBUTILS.popWindow.createPopWindow(550, null, '设置密码', '/hr/user!changePwd.dhtml?id=${hrUser.id?c}');
+        });
+
         <#if isAuthorized>
             $('#authorizedBtn').off('click').on('click', function () {
                 WEBUTILS.popWindow.createPopWindow(420, null, '授权机构', '/sys/authorized!input.dhtml?userId=${hrUser.id?c}');
-                WEBUTILS.popWindow.okCallback(function () {
-                    submitForm();
-                });
             });
         </#if>
         $('.deleteAuthorized').off('click').on('click', function () {
@@ -28,9 +29,9 @@
         });
         $('#editBtn').off('click').on('click', function () {
             WEBUTILS.popWindow.createPopWindow(800, null, '编辑信息', '/hr/user!input.dhtml?id=${hrUser.id?c}');
-            WEBUTILS.popWindow.okCallback(function () {
-                submitForm();
-            });
+        });
+        $('#newBtn').off('click').on('click', function () {
+            WEBUTILS.popWindow.createPopWindow(800, null, '新增用户', '/hr/user!input.dhtml');
         });
     });
 </script>
@@ -139,16 +140,21 @@
     <table width="100%" class="layout nomar">
         <thead>
         <tr>
-            <td style="width: 70%;"><strong>授权信息</strong></td>
+            <td style="width: 50%;"><strong>授权信息</strong></td>
             <td style="text-align: right;">
+                <#if !isPassword>
+                    <button class="btn btn-primary" type="button" id="passwordBtn">设置密码</button>
+                <#else >
+                    <button class="btn btn-primary" type="button" id="passwordBtn">更改密码</button>
+                </#if>
                 <#if isAuthorized>
                     <button class="btn btn-success" type="button" id="authorizedBtn">授权</button>
                 </#if>
                 <#if isAdmin>
-                    <button class="btn btn-info changeAdmin" type="button"><i class="icon-remove"></i>&nbsp;关闭管理员
+                    <button class="btn btn-info changeAdmin" type="button"><i class="icon-remove icon-white"></i>&nbsp;关闭管理员
                     </button>
                 <#else >
-                    <button class="btn btn-info changeAdmin" type="button"><i class="icon-ok"></i>&nbsp;开通管理员</button>
+                    <button class="btn btn-info changeAdmin" type="button"><i class="icon-ok icon-white"></i>&nbsp;开通管理员</button>
                 </#if>
             </td>
         </tr>
@@ -178,10 +184,5 @@
             </tbody>
         </#if>
     </table>
-</div>
-<div class="datepicker dropdown-menu treeDiv" style="display: none;width: 200px;height: 300px; z-index: 99999;">
-    <div>
-        <ul id="treeDemo" class="ztree"></ul>
-    </div>
 </div>
 </@sysCommon.sys_common>

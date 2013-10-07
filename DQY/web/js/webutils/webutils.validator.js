@@ -163,13 +163,13 @@ WEBUTILS.validator = (function () {
                         break;
                     case 'ajax':
                         var URL = '';
-                        if (typeof(pattern.exp) == 'function') {
-                            URL = pattern.exp();
-                        } else {
-                            URL = pattern.exp;
-                        }
                         v = v.trim();
                         if (v > '') {
+                            if (typeof(pattern.exp) == 'function') {
+                                URL = pattern.exp();
+                            } else {
+                                URL = pattern.exp;
+                            }
                             var p = URL.indexOf("?");
                             var key = mode.id.replace('\\.', '.');
                             if (p != -1) {

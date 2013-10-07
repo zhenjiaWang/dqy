@@ -81,27 +81,12 @@
             ]
         }, true);
     }
-
-    function submitForm() {
-        if (!submited) {
-            WEBUTILS.validator.checkAll();
-            window.setTimeout(function () {
-                var passed = WEBUTILS.validator.isPassed();
-                if (passed) {
-                    document.editForm.submit();
-                    submited = true;
-                } else {
-                    WEBUTILS.validator.showErrors();
-                }
-            }, 500);
-        }
-    }
     $(document).ready(function () {
         initValidator();
         $.fn.zTree.init($("#treeDemo"), setting);
         $('#searchDept').off('click').on('click', function () {
-            var left = $(this).offset().left-$('#myModal').offset().left+232;
-            var top = $(this).offset().top-$('#myModal').offset().top-15;
+            var left = $(this).offset().left;
+            var top = $(this).offset().top+15;
             top += $(this).height();
             $('.treeDiv').css({
                         top: top,
@@ -123,6 +108,20 @@
         }).on('changeDate', function (ev) {
                     $('#birthdayBtn').datepicker('hide')
                 });
+        $('#myModalOkBtn','#myModal').off('click').on('click',function(){
+            if (!submited) {
+                WEBUTILS.validator.checkAll();
+                window.setTimeout(function () {
+                    var passed = WEBUTILS.validator.isPassed();
+                    if (passed) {
+                        document.editForm.submit();
+                        submited = true;
+                    } else {
+                        WEBUTILS.validator.showErrors();
+                    }
+                }, 500);
+            }
+        });
     });
 </script>
     <@c.joddForm bean="hrUser" scope="request">
@@ -146,7 +145,7 @@
                         <label class="control-label" for="hrUser.userNo" style="width: 60px;">员工编号</label>
 
                         <div class="controls" style="margin-left: 80px;">
-                            <input type="text" id="hrUser.userNo" name="hrUser.userNo" placeholder="员工编号" disabled>
+                            <input type="text" id="hrUser.userNo" name="hrUser.userNo" placeholder="自动生成" disabled>
                             <span class="help-inline"></span>
                         </div>
                     </div>
@@ -191,7 +190,7 @@
                     <div class="control-group">
                         <label class="control-label" for="hrUser.entryDate" style="width: 60px;">入职日期</label>
                         <div class="controls date" style="margin-left: 80px;" id="entryDateBtn" data-date-format="yyyy-mm-dd" data-date="<#if hrUser?exists>${hrUser.entryDate?string("yyyy-MM-dd")}</#if>">
-                            <input type="text" id="hrUser.entryDate" name="hrUser.entryDate" placeholder="工作地点" disabled>
+                            <input type="text" id="hrUser.entryDate" name="hrUser.entryDate" placeholder="入职日期" readonly="readonly">
                             <span class="add-on"  style="cursor: pointer;" ><i class="icon-calendar"></i></span>
                             <span class="help-inline"></span>
                         </div>
@@ -217,7 +216,7 @@
                         <label class="control-label" for="hrUser.birthday" style="width: 60px;">出生日期</label>
 
                         <div class="controls date" style="margin-left: 80px;" id="birthdayBtn" data-date-format="yyyy-mm-dd" data-date="<#if hrUser?exists>${hrUser.birthday?string("yyyy-MM-dd")}</#if>">
-                            <input type="text" id="hrUser.birthday" name="hrUser.birthday" placeholder="入职日期" disabled>
+                            <input type="text" id="hrUser.birthday" name="hrUser.birthday" placeholder="出生日期" readonly="readonly">
                             <span class="add-on" style="cursor: pointer;" ><i class="icon-calendar"></i></span>
                             <span class="help-inline"></span>
                         </div>

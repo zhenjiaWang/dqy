@@ -5,6 +5,7 @@
         <hibernate>
             <packages>
                 <value>com.dqy.sys.entity</value>
+                <value>com.dqy.wf.entity</value>
                 <value>com.dqy.hr.entity</value>
                 <value>com.dqy.common.entity</value>
             </packages>
@@ -64,6 +65,7 @@
         </view>
         <packages>
             <value>com.dqy.common.action</value>
+            <value>com.dqy.wf.action</value>
             <value>com.dqy.sys.action</value>
             <value>com.dqy.hr.action</value>
         </packages>

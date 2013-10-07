@@ -13,29 +13,17 @@
     $(document).ready(function () {
         $('#newBtn3').off('click').on('click', function () {
             WEBUTILS.popWindow.createPopWindow(550, null, '创建科目', '/sys/financialTitle!input.dhtml?level=3');
-            WEBUTILS.popWindow.okCallback(function () {
-                submitForm();
-            });
         });
         $('#newBtn2').off('click').on('click', function () {
             WEBUTILS.popWindow.createPopWindow(550, null, '创建科目', '/sys/financialTitle!input.dhtml?level=2');
-            WEBUTILS.popWindow.okCallback(function () {
-                submitForm();
-            });
         });
         $('#newBtn1').off('click').on('click', function () {
             WEBUTILS.popWindow.createPopWindow(550, null, '创建科目', '/sys/financialTitle!input.dhtml?level=1');
-            WEBUTILS.popWindow.okCallback(function () {
-                submitForm();
-            });
         });
         $('.editFT').off('click').on('click', function () {
             var uid = $(this).attr('uid');
             if (uid) {
                 WEBUTILS.popWindow.createPopWindow(550, null, '编辑科目', '/sys/financialTitle!input.dhtml?id='+uid);
-                WEBUTILS.popWindow.okCallback(function () {
-                    submitForm();
-                });
             }
         });
         $('.stopFT').off('click').on('click', function () {
@@ -50,6 +38,10 @@
                 document.location.href='/sys/financialTitle!play.dhtml?id='+uid;
             }
         });
+
+        $('#budgetOwenBtn').off('click').on('click', function () {
+            WEBUTILS.popWindow.createPopWindow(650, null, '编辑科目', '/sys/budgetOwen.dhtml');
+        });
     });
 </script>
 <!--搜索begin-->
@@ -58,7 +50,7 @@
         <input type="text" id="appendedInputButton" class="span2">
         <button type="button" class="btn"><i class="icon-search"></i> 搜索</button>
     </div>
-    <button class="btn btn-danger floatright" type="button">删除</button>
+    <button class="btn btn-danger floatright" type="button" id="budgetOwenBtn">科目关系调整</button>
     <button class="btn btn-primary floatright marr10" type="button" id="newBtn3">三级科目</button>
     <button class="btn btn-info floatright marr10" type="button" id="newBtn2">二级科目</button>
     <button class="btn btn-warning floatright marr10" type="button" id="newBtn1">一级科目</button>

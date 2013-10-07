@@ -86,10 +86,16 @@ public class SysOrgAction extends ActionSupport<SysOrg> {
         UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
         if (id != null && userInfo != null) {
             sysOrg = this.sysOrgService.getById(id);
+            groupId=sysOrg.getGroupId().getId();
         }
         List<Selector> selectorList=new ArrayList<Selector>();
         selectorList.add(SelectorUtils.$eq("useYn","Y"));
         orgGroupList=this.sysOrgGroupService.getListAll(selectorList);
+        if(groupId==null){
+            if(orgGroupList!=null&&!orgGroupList.isEmpty()){
+                groupId=orgGroupList.get(0).getId();
+            }
+        }
         return "success";  //To change body of implemented methods use File | Settings | File Templates.
     }
 

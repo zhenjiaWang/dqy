@@ -88,6 +88,8 @@ public class SysAuthorizedAction extends ActionSupport<SysAuthorized> {
                                 orgList.add(org);
                             }
                         }
+                    }else{
+                        orgList=orgAllList;
                     }
                 }
             }
