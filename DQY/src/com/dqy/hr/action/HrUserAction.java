@@ -192,7 +192,6 @@ public class HrUserAction extends ActionSupport<HrUser> {
         return "success";  //To change body of implemented methods use File | Settings | File Templates.
     }
 
-    @PageFlow(result = {@Result(name = "success", path = "/hr/user!view.dhtml?id=${hrUser.id}", type = Dispatcher.Redirect)})
     public String savePwd() throws Exception {
         UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
         if (userInfo != null && hrUser != null) {
@@ -202,7 +201,7 @@ public class HrUserAction extends ActionSupport<HrUser> {
             bind(old);
             hrUserService.save(old);
         }
-        return "success";  //To change body of implemented methods use File | Settings | File Templates.
+        return "saveSuccess";  //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @PageFlow(result = {@Result(name = "success", path = "/view/hr/user/input.ftl", type = Dispatcher.FreeMarker)})
@@ -222,7 +221,6 @@ public class HrUserAction extends ActionSupport<HrUser> {
         return "success";  //To change body of implemented methods use File | Settings | File Templates.
     }
     @Token
-    @PageFlow(result = {@Result(name = "success", path = "/hr/user!view.dhtml?id=${hrUser.id}", type = Dispatcher.Redirect)})
     public String save() throws Exception {
         UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
         if (userInfo != null && hrUser != null) {
@@ -300,6 +298,6 @@ public class HrUserAction extends ActionSupport<HrUser> {
 
             }
         }
-        return "success";
+        return "saveSuccess";
     }
 }

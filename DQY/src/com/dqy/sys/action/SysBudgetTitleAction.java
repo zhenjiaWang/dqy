@@ -110,7 +110,6 @@ public class SysBudgetTitleAction extends ActionSupport<SysBudgetTitle> {
     }
 
     @Token
-    @PageFlow(result = {@Result(name = "success", path = "/sys/budgetTitle.dhtml", type = Dispatcher.Redirect)})
     public String save() throws Exception {
         UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
         if (userInfo != null && sysBudgetTitle != null) {
@@ -126,7 +125,7 @@ public class SysBudgetTitleAction extends ActionSupport<SysBudgetTitle> {
             this.bind(sysBudgetTitle);
             this.sysBudgetTitleService.save(sysBudgetTitle);
         }
-        return "success";
+        return "saveSuccess";
     }
 
     @PageFlow(result = {@Result(name = "success", path = "/sys/budgetTitle.dhtml", type = Dispatcher.Redirect)})

@@ -25,6 +25,8 @@ public class WfReq extends IdEntity implements Tracker {
 
     private Long id;
 
+    private String subject;
+
     private SysOrg orgId;
 
     private HrUser userId;
@@ -247,5 +249,14 @@ public class WfReq extends IdEntity implements Tracker {
 
     public void setApplyId(String applyId) {
         this.applyId = applyId;
+    }
+
+    @Column(name = "SUBJECT")
+    public String getSubject() {
+        return subject;
+    }
+
+    public void setSubject(String subject) {
+        this.subject = subject;
     }
 }

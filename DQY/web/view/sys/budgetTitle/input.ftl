@@ -37,6 +37,20 @@
         }, true);
     }
 
+    function dataSubmit(){
+        if (!submited) {
+            WEBUTILS.validator.checkAll();
+            window.setTimeout(function () {
+                var passed = WEBUTILS.validator.isPassed();
+                if (passed) {
+                    document.editForm.submit();
+                    submited = true;
+                } else {
+                    WEBUTILS.validator.showErrors();
+                }
+            }, 500);
+        }
+    }
     $(document).ready(function () {
         initValidator();
         $('#sysBudgetTitle\\.typeId\\.id').change(function(){
@@ -45,20 +59,6 @@
             <#else >
                 WEBUTILS.popWindow.createPopWindow(550, null, '创建预算科目', '/sys/budgetTitle!input.dhtml?typeId='+$(this).val());
             </#if>
-        });
-        $('#myModalOkBtn','#myModal').off('click').on('click',function(){
-            if (!submited) {
-                WEBUTILS.validator.checkAll();
-                window.setTimeout(function () {
-                    var passed = WEBUTILS.validator.isPassed();
-                    if (passed) {
-                        document.editForm.submit();
-                        submited = true;
-                    } else {
-                        WEBUTILS.validator.showErrors();
-                    }
-                }, 500);
-            }
         });
     });
 </script>

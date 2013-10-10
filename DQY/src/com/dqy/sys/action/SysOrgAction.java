@@ -100,7 +100,6 @@ public class SysOrgAction extends ActionSupport<SysOrg> {
     }
 
     @Token
-    @PageFlow(result = {@Result(name = "success", path = "/sys/org.dhtml", type = Dispatcher.Redirect)})
     public String save() throws Exception {
         UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
         if (userInfo != null && sysOrg != null) {
@@ -116,7 +115,7 @@ public class SysOrgAction extends ActionSupport<SysOrg> {
             this.bind(sysOrg);
             this.sysOrgService.save(sysOrg);
         }
-        return "success";
+        return "saveSuccess";
     }
 
     @PageFlow(result = {@Result(name = "success", path = "/sys/org.dhtml", type = Dispatcher.Redirect)})

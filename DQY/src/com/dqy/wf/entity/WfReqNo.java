@@ -1,6 +1,5 @@
 package com.dqy.wf.entity;
 
-import com.dqy.hr.entity.HrUser;
 import com.dqy.sys.entity.SysOrg;
 import org.guiceside.persistence.entity.IdEntity;
 import org.guiceside.persistence.entity.Tracker;
@@ -18,24 +17,18 @@ import java.util.Date;
  * To change this template use File | Settings | File Templates.
  */
 @Entity
-@Table(name = "WF_REQ_NODE_APPROVE")
-public class WfReqNodeApprove extends IdEntity implements Tracker {
+@Table(name = "WF_REQ_NO")
+public class WfReqNo extends IdEntity implements Tracker {
 
     private static final long serialVersionUID = 1L;
 
     private Long id;
 
-    private WfReq reqId;
-
     private SysOrg orgId;
 
-    private Integer nodeSeq;
+    private String applyId;
 
-    private Integer nodeType;
-
-    private Integer approveType;
-    
-    private HrUser userId;
+    private String reqNo;
 
     private Date created;
 
@@ -48,8 +41,8 @@ public class WfReqNodeApprove extends IdEntity implements Tracker {
     private String useYn;
 
     @Id
-    @GeneratedValue(generator="WF_REQ_NODE_APPROVE")
-    @GenericGenerator(name="WF_REQ_NODE_APPROVE",strategy="seqhilo",parameters={@Parameter(name="sequence",value="SEQ_WF_REQ_NODE_APPROVE")})
+    @GeneratedValue(generator="WF_REQ_NO")
+    @GenericGenerator(name="WF_REQ_NO",strategy="seqhilo",parameters={@Parameter(name="sequence",value="SEQ_WF_REQ_NO")})
     public Long getId() {
         return id;
     }
@@ -106,54 +99,6 @@ public class WfReqNodeApprove extends IdEntity implements Tracker {
 
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "REQ_ID")
-    public WfReq getReqId() {
-        return reqId;
-    }
-
-    public void setReqId(WfReq reqId) {
-        this.reqId = reqId;
-    }
-
-    @Column(name = "NODE_SEQ")
-    public Integer getNodeSeq() {
-        return nodeSeq;
-    }
-
-    public void setNodeSeq(Integer nodeSeq) {
-        this.nodeSeq = nodeSeq;
-    }
-
-    @Column(name = "NODE_TYPE")
-    public Integer getNodeType() {
-        return nodeType;
-    }
-
-    public void setNodeType(Integer nodeType) {
-        this.nodeType = nodeType;
-    }
-
-    @Column(name = "APPROVE_TYPE")
-    public Integer getApproveType() {
-        return approveType;
-    }
-
-    public void setApproveType(Integer approveType) {
-        this.approveType = approveType;
-    }
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "USER_ID")
-    public HrUser getUserId() {
-        return userId;
-    }
-
-    public void setUserId(HrUser userId) {
-        this.userId = userId;
-    }
-
-
-    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ORG_ID")
     public SysOrg getOrgId() {
         return orgId;
@@ -161,5 +106,24 @@ public class WfReqNodeApprove extends IdEntity implements Tracker {
 
     public void setOrgId(SysOrg orgId) {
         this.orgId = orgId;
+    }
+
+    @Column(name = "APPLY_ID")
+    public String getApplyId() {
+        return applyId;
+    }
+
+    public void setApplyId(String applyId) {
+        this.applyId = applyId;
+    }
+
+
+    @Column(name = "REQ_NO")
+    public String getReqNo() {
+        return reqNo;
+    }
+
+    public void setReqNo(String reqNo) {
+        this.reqNo = reqNo;
     }
 }

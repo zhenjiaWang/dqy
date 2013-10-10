@@ -155,7 +155,8 @@ public class WfReqAction extends ActionSupport<WfReq> {
         UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
         if (userInfo != null) {
             userInfo.setTopMenu("apply");
-            userInfo.setLeftMenu("overrule");
+            userInfo.setLeftMenu("myReq");
+            userInfo.setChildMenu("overrule");
             Long orgId = userInfo.getOrgId();
             Long userId = userInfo.getUserId();
             if (orgId!=null&&userId!=null) {
@@ -207,7 +208,8 @@ public class WfReqAction extends ActionSupport<WfReq> {
         UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
         if (userInfo != null) {
             userInfo.setTopMenu("apply");
-            userInfo.setLeftMenu("pass");
+            userInfo.setLeftMenu("myReq");
+            userInfo.setChildMenu("pass");
             Long orgId = userInfo.getOrgId();
             Long userId = userInfo.getUserId();
             if (orgId!=null&&userId!=null) {
@@ -259,7 +261,8 @@ public class WfReqAction extends ActionSupport<WfReq> {
         UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
         if (userInfo != null) {
             userInfo.setTopMenu("apply");
-            userInfo.setLeftMenu("ing");
+            userInfo.setLeftMenu("myReq");
+            userInfo.setChildMenu("ing");
             Long orgId = userInfo.getOrgId();
             Long userId = userInfo.getUserId();
             if (orgId!=null&&userId!=null) {
@@ -292,7 +295,7 @@ public class WfReqAction extends ActionSupport<WfReq> {
         return selectorList;
     }
 
-    @PageFlow(result = {@Result(name = "success", path = "/view/req/result/ingList.ftl", type = Dispatcher.FreeMarker)})
+    @PageFlow(result = {@Result(name = "success", path = "/view/wf/req/ingList.ftl", type = Dispatcher.FreeMarker)})
     public String ingList() throws Exception {
         UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
         if (userInfo != null) {
@@ -350,287 +353,6 @@ public class WfReqAction extends ActionSupport<WfReq> {
 
 
 
-    private WfReqNoSeq buildReqNo(Long orgId, String applyId) throws Exception {
-        Date currentDate = DateFormatUtil.getCurrentDate(true);
-        int dateYear = DateFormatUtil.getDayInYear(currentDate);
-        WfReqNoSeq wfReqNoSeq = wfReqNoSeqService.getCurrentReqNoSeq(orgId, applyId, dateYear);
-        if (wfReqNoSeq == null) {
-            SysOrg sysOrg=this.sysOrgService.getById(orgId);
-            wfReqNoSeq = new WfReqNoSeq();
-            wfReqNoSeq.setOrgId(sysOrg);
-            wfReqNoSeq.setApplyId(applyId);
-            wfReqNoSeq.setDateYear(dateYear);
-            wfReqNoSeq.setNextSeq(1);
-            wfReqNoSeq.setUseYn("Y");
-        } else {
-            wfReqNoSeq.setNextSeq(wfReqNoSeq.getNextSeq() + 1);
-        }
-        bind(wfReqNoSeq);
-        return wfReqNoSeq;
-    }
-
-
-
-    @PageFlow(result = {@Result(name = "success", path = "/wf/req!ingList.dhtml", type = Dispatcher.Redirect)})
-    public synchronized String save() throws Exception {
-        UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
-        if (userInfo != null && applyId != null) {
-            if ( wfReq != null) {
-                HrUser user=hrUserService.getById(userInfo.getUserId());
-                SysOrg sysOrg=this.sysOrgService.getById(userInfo.getOrgId());
-                List<WfReqComments> wfReqCommentsList = new ArrayList<WfReqComments>();
-                List<WfReqNodeApprove> reqNodeApproveList = null;
-                List<WfReqTask> reqTaskList = null;
-                WfReqNoSeq wfReqNoSeq = null;
-                WfReqComments comments = new WfReqComments();
-                comments.setReqId(wfReq);
-                comments.setApprove(0);
-                comments.setUserId(user);
-                comments.setAction(0);
-                comments.setUseYn("Y");
-                bind(comments);
-                wfReqCommentsList.add(comments);
-
-                if (user != null) {
-                    defaultSubject = user.getUserName() + "的" + applyId;
-                }
-
-                wfReq.setTip(0);
-                wfReq.setApplyState(0);
-                wfReq.setApplyResult(0);
-                wfReq.setComplete(0);
-                wfReq.setApplyId(applyId);
-                wfReq.setUserId(user);
-                wfReq.setOrgId(sysOrg);
-                if (wfReq.getExigency() == null) {
-                    wfReq.setExigency(0);
-                }
-                wfReq.setUseYn("Y");
-                bind(wfReq);
-
-
-                wfReqNoSeq = buildReqNo(userInfo.getOrgId(), applyId);
-                int next = wfReqNoSeq.getNextSeq();
-                String no = null;
-                if (next < 10) {
-                    no = "000" + next;
-                } else if (next < 100) {
-                    no = "00" + next;
-                } else if (next < 1000) {
-                    no = "0" + next;
-                } else {
-                    no = String.valueOf(next);
-                }
-                String reqNo = applyId + "-" + wfReqNoSeq.getDateYear() + "-" + no;
-                wfReq.setReqNo(reqNo);
-                Date currentDate = DateFormatUtil.getCurrentDate(true);
-                wfReq.setSendDate(currentDate);
-                wfReq.setApplyState(1);
-                comments = new WfReqComments();
-                comments.setReqId(wfReq);
-                comments.setApprove(0);
-                comments.setUserId(user);
-                comments.setAction(1);
-                comments.setUseYn("Y");
-                bind(comments);
-                wfReqCommentsList.add(comments);
-                reqNodeApproveList = new ArrayList<WfReqNodeApprove>();
-                if (wfReq.getNodeCount().intValue() > 0) {
-                    for (int i = 1; i <= wfReq.getNodeCount(); i++) {
-                        Integer nodeSeq = getParameter("nodeSeq" + i, Integer.class);
-                        Integer nodeType = getParameter("nodeType" + i, Integer.class);
-                        if (nodeSeq != null) {
-                            if (nodeType.intValue() == 1) {
-                                Long approveId = getParameter("approveId" + i,Long.class);
-                                Integer approveType = getParameter("approveType" + i, Integer.class);
-                                if (approveId!=null && approveType != null) {
-                                    if (approveId.equals(wfReq.getUserId().getId())) {
-                                        continue;
-                                    }
-                                    HrUser approveUser=this.hrUserService.getById(approveId);
-                                    if(approveUser!=null){
-                                        WfReqNodeApprove nodeApprove = new WfReqNodeApprove();
-                                        nodeApprove.setReqId(wfReq);
-                                        nodeApprove.setNodeSeq(nodeSeq);
-                                        nodeApprove.setNodeType(nodeType);
-                                        nodeApprove.setUserId(approveUser);
-                                        nodeApprove.setApproveType(approveType);
-                                        nodeApprove.setUseYn("Y");
-                                        bind(nodeApprove);
-                                        reqNodeApproveList.add(nodeApprove);
-                                    }
-                                }
-                            } else if (nodeType.intValue() == 2) {
-                                String approveId = getParameter("approveId" + i);
-                                String approveType = getParameter("approveType" + i);
-                                if (StringUtils.isNotBlank(approveId) && StringUtils.isNotBlank(approveType)) {
-                                    String approveIds[] = approveId.split(",");
-                                    String approveTypes[] = approveType.split(",");
-                                    if (approveIds != null && approveTypes != null) {
-                                        if (approveIds.length == approveTypes.length) {
-                                            for (int j = 0; j < approveIds.length; j++) {
-                                                Long apId = BeanUtils.convertValue(approveIds[j], Long.class);
-                                                Integer apType = BeanUtils.convertValue(approveTypes[j], Integer.class);
-                                                if (apId!=null && apType != null) {
-                                                    if (apId.equals(wfReq.getUserId().getId())) {
-                                                        continue;
-                                                    }
-                                                    HrUser approveUser=this.hrUserService.getById(apId);
-                                                    if(approveUser!=null){
-                                                        WfReqNodeApprove nodeApprove = new WfReqNodeApprove();
-                                                        nodeApprove.setReqId(wfReq);
-                                                        nodeApprove.setNodeSeq(nodeSeq);
-                                                        nodeApprove.setNodeType(nodeType);
-                                                        nodeApprove.setUserId(approveUser);
-                                                        nodeApprove.setApproveType(apType);
-                                                        nodeApprove.setUseYn("Y");
-                                                        bind(nodeApprove);
-                                                        reqNodeApproveList.add(nodeApprove);
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-                for (int i = 9999; i <= 9999; i++) {
-                    Integer nodeSeq = getParameter("nodeSeq" + i, Integer.class);
-                    Integer nodeType = getParameter("nodeType" + i, Integer.class);
-                    if (nodeSeq != null) {
-                        if (nodeType.intValue() == 1) {
-                            Long approveId = getParameter("approveId" + i,Long.class);
-                            Integer approveType = getParameter("approveType" + i, Integer.class);
-                            if (approveId!=null && approveType != null) {
-                                if (approveId.equals(wfReq.getUserId().getId())) {
-                                    continue;
-                                }
-                                HrUser approveUser=this.hrUserService.getById(approveId);
-                                if(approveUser!=null){
-                                    WfReqNodeApprove nodeApprove = new WfReqNodeApprove();
-                                    nodeApprove.setReqId(wfReq);
-                                    nodeApprove.setNodeSeq(nodeSeq);
-                                    nodeApprove.setNodeType(nodeType);
-                                    nodeApprove.setUserId(approveUser);
-                                    nodeApprove.setApproveType(approveType);
-                                    nodeApprove.setUseYn("Y");
-                                    bind(nodeApprove);
-                                    reqNodeApproveList.add(nodeApprove);
-                                }
-                            }
-                        }
-                    }
-                }
-
-                Integer firstNodeSeq = null;
-                List<WfReqNodeApprove> firstNodeApproveList = new ArrayList<WfReqNodeApprove>();
-                if (reqNodeApproveList != null && !reqNodeApproveList.isEmpty()) {
-                    WfReqNodeApprove reqNodeApprove = reqNodeApproveList.get(0);
-                    if (reqNodeApprove != null) {
-                        firstNodeApproveList.add(reqNodeApprove);
-                        firstNodeSeq = reqNodeApprove.getNodeSeq();
-                    }
-                }
-                if (firstNodeApproveList != null && !firstNodeApproveList.isEmpty()) {
-                    if (firstNodeSeq.intValue() != 9999) {
-                        reqTaskList = new ArrayList<WfReqTask>();
-                        for (WfReqNodeApprove firstNodeApprove : firstNodeApproveList) {
-                            if (firstNodeApprove != null) {
-                                wfReq.setCurrentNode(firstNodeApprove);
-                                comments = new WfReqComments();
-                                comments.setReqId(wfReq);
-                                comments.setApprove(0);
-                                comments.setUserId(firstNodeApprove.getUserId());
-                                comments.setAction(2);
-                                comments.setUseYn("Y");
-                                bind(comments);
-                                wfReqCommentsList.add(comments);
-
-
-                                currentDate = DateFormatUtil.getCurrentDate(true);
-                                WfReqTask reqTask = new WfReqTask();
-                                reqTask.setReqId(wfReq);
-                                reqTask.setUserId(firstNodeApprove.getUserId());
-                                reqTask.setOrgId(sysOrg);
-                                reqTask.setNodeSeq(firstNodeApprove.getNodeSeq());
-                                reqTask.setReceiveDate(currentDate);
-                                reqTask.setTaskRead(0);
-                                reqTask.setTaskState(0);
-                                reqTask.setApproveIdea(0);
-                                reqTask.setNodeId(firstNodeApprove);
-                                reqTask.setUseYn("Y");
-                                bind(reqTask);
-                                reqTaskList.add(reqTask);
-                            }
-                        }
-                    } else {
-//                        reqExecuteList = new ArrayList<WfReqExecute>();
-//                        for (WfReqNodeApprove firstNodeApprove : firstNodeApproveList) {
-//                            if (firstNodeApprove != null) {
-//                                wfReq.setCurrentNode(firstNodeApprove);
-//                                wfReq.setComplete(1);
-//                                wfReq.setCompleteDate(currentDate);
-//                                wfReq.setApplyState(2);
-//                                wfReq.setApplyResult(1);
-//
-//                                WfReqComments doneComments = new WfReqComments();
-//                                doneComments.setReqId(wfReq);
-//                                doneComments.setApprove(0);
-//                                doneComments.setUserId(wfReq.getUserId());
-//                                doneComments.setAction(7);
-//                                doneComments.setUseYn("Y");
-//                                bind(doneComments);
-//                                wfReqCommentsList.add(doneComments);
-//
-//                                comments = new WfReqComments();
-//                                comments.setReqId(wfReq);
-//                                comments.setApprove(0);
-//                                comments.setUserId(firstNodeApprove.getUserId());
-//                                comments.setAction(10);
-//                                comments.setUseYn("Y");
-//                                bind(comments);
-//                                wfReqCommentsList.add(comments);
-//
-//
-//                                currentDate = DateFormatUtil.getCurrentDate(true);
-//                                WfReqExecute reqExecute = new WfReqExecute();
-//                                reqExecute.setReqId(wfReq);
-//                                reqExecute.setUserId(firstNodeApprove.getUserId());
-//                                reqExecute.setCompanyId(userInfo.getCompanyId());
-//                                reqExecute.setReceiveDate(currentDate);
-//                                reqExecute.setExecuteRead(0);
-//                                reqExecute.setExecuteState(0);
-//                                reqExecute.setNodeId(firstNodeApprove);
-//                                reqExecute.setUseYn("Y");
-//                                bind(reqExecute);
-//                                reqExecuteList.add(reqExecute);
-//                            }
-//                        }
-                    }
-                }
-                WfReqMyFlowLast wfReqMyFlowLast = null;
-                if (flowId != null) {
-                    WfReqMyFlow reqMyFlow = null;
-                    reqMyFlow = this.wfReqMyFlowService.getById(flowId);
-                    if (reqMyFlow != null) {
-                        wfReqMyFlowLast = wfReqMyFlowLastService.getByApplyId(userInfo.getOrgId(),applyId, userInfo.getUserId());
-                        if (wfReqMyFlowLast == null) {
-                            wfReqMyFlowLast = new WfReqMyFlowLast();
-                            wfReqMyFlowLast.setApplyId(applyId);
-                            wfReqMyFlowLast.setUserId(user);
-                            wfReqMyFlowLast.setUseYn("Y");
-                        }
-                        wfReqMyFlowLast.setFlowId(reqMyFlow);
-                        bind(wfReqMyFlowLast);
-                    }
-                }
-                this.wfReqService.save(wfReq,  wfReqCommentsList, wfReqNoSeq, reqNodeApproveList, reqTaskList, wfReqMyFlowLast);
-            }
-        }
-        return "success";
-    }
 
 
     public String getFlowNodeList() throws Exception {
@@ -663,10 +385,12 @@ public class WfReqAction extends ActionSupport<WfReq> {
                             approve = new JSONObject();
                             approve.put("nodeSeq", i);
                             String className = "";
-                            if (i == currentNode.getNodeSeq().intValue()) {
-                                className = "current";
+                            if (i < currentNode.getNodeSeq().intValue()) {
+                                className = "badge-success";
+                            }else if (i == currentNode.getNodeSeq().intValue()) {
+                                className = "badge-important";
                             } else if (i > currentNode.getNodeSeq().intValue()) {
-                                className = "no-ok";
+                                className = "";
                             }
                             approve.put("className", className);
                             if (approveList != null && !approveList.isEmpty()) {
@@ -708,5 +432,17 @@ public class WfReqAction extends ActionSupport<WfReq> {
         }
         writeJsonByAction(root.toString());
         return null;
+    }
+
+    @PageFlow(result = {@Result(name = "ADVANCE_ACCOUNT", path = "/wf/advanceAccount!view.dhtml?reqId=${wfReq.id}", type = Dispatcher.Redirect)})
+    public String view() throws Exception {
+        UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
+        if (userInfo != null&&id!=null) {
+            wfReq=this.wfReqService.getById(id);
+            if(wfReq!=null){
+                applyId=wfReq.getApplyId();
+            }
+        }
+        return applyId;
     }
 }

@@ -2,6 +2,9 @@
 <#import "/view/common/core.ftl" as c>
 <@sysCommon.sys_common>
 <script type="text/javascript">
+    function reload(){
+        document.location.reload();
+    }
     $(document).ready(function () {
         $('.changeAdmin').off('click').on('click', function () {
             <#if isAdmin>

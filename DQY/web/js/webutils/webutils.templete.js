@@ -309,4 +309,4 @@ var flowApproveDQY=' <div class="control-group" nodeSeq="{nodeSeq}">' +
     '</div>';
 
 
-var flowApproveNodeShow='<li nodeSeq="{nodeSeq}" nodeType="{nodeType}" approveType="{approveType}" approveId="{approveId}"><a href="#"><span class="badge">{nodeSeqText}</span>{text}</a></li><li><i class="dqy-ico dqy-r"></i></li>';
+var flowApproveNodeShow='<li class="nodeLi" nodeSeq="{nodeSeq}" nodeType="{nodeType}" approveType="{approveType}" approveId="{approveId}"><a href="#"><span class="badge {className}">{nodeSeqText}</span>{text}</a></li><li><i class="dqy-ico dqy-r"></i></li>';

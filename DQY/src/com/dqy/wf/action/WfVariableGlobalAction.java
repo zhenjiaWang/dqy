@@ -82,7 +82,6 @@ public class WfVariableGlobalAction extends ActionSupport<WfVariableGlobal> {
     }
 
     @Token
-    @PageFlow(result = {@Result(name = "success", path = "/wf/variableGlobal.dhtml", type = Dispatcher.Redirect)})
     public String save() throws Exception {
         UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
         if (userInfo != null && wfVariableGlobal != null) {
@@ -99,7 +98,7 @@ public class WfVariableGlobalAction extends ActionSupport<WfVariableGlobal> {
             this.bind(wfVariableGlobal);
             this.wfVariableGlobalService.save(wfVariableGlobal);
         }
-        return "success";
+        return "saveSuccess";
     }
 
     @PageFlow(result = {@Result(name = "success", path = "/wf/variableGlobal.dhtml", type = Dispatcher.Redirect)})

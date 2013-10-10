@@ -52,6 +52,20 @@
             ]
         }, true);
     }
+    function dataSubmit(){
+        if (!submited) {
+            WEBUTILS.validator.checkAll();
+            window.setTimeout(function () {
+                var passed = WEBUTILS.validator.isPassed();
+                if (passed) {
+                    document.editForm.submit();
+                    submited = true;
+                } else {
+                    WEBUTILS.validator.showErrors();
+                }
+            }, 500);
+        }
+    }
     $(document).ready(function () {
         initValidator();
         $.fn.zTree.init($("#treeDemo"), setting);
@@ -68,20 +82,6 @@
             );
             $('.treeDiv').fadeIn();
             $('.treeDiv').find('div').show();
-        });
-        $('#myModalOkBtn','#myModal').off('click').on('click',function(){
-            if (!submited) {
-                WEBUTILS.validator.checkAll();
-                window.setTimeout(function () {
-                    var passed = WEBUTILS.validator.isPassed();
-                    if (passed) {
-                        document.editForm.submit();
-                        submited = true;
-                    } else {
-                        WEBUTILS.validator.showErrors();
-                    }
-                }, 500);
-            }
         });
     });
 </script>

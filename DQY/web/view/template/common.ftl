@@ -33,6 +33,11 @@
 <body>
     <#setting number_format="#">
 <#nested />
+<div class="datepicker dropdown-menu treeDiv" style="display: none;width: 200px;height: 300px; z-index: 99999;">
+    <div>
+        <ul id="treeDemo" class="ztree"></ul>
+    </div>
+</div>
 </body>
 </html>
 </#macro>

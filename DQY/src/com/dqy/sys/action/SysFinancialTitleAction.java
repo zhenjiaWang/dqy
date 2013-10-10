@@ -233,7 +233,6 @@ public class SysFinancialTitleAction extends ActionSupport<SysFinancialTitle> {
     }
 
     @Token
-    @PageFlow(result = {@Result(name = "success", path = "/sys/financialTitle.dhtml", type = Dispatcher.Redirect)})
     public String save() throws Exception {
         UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
         if (userInfo != null && sysFinancialTitle != null) {
@@ -253,7 +252,7 @@ public class SysFinancialTitleAction extends ActionSupport<SysFinancialTitle> {
             this.bind(sysFinancialTitle);
             this.sysFinancialTitleService.save(sysFinancialTitle);
         }
-        return "success";
+        return "saveSuccess";
     }
 
     public String validateNo() throws Exception {

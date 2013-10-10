@@ -181,7 +181,7 @@ public class WfReqMyFlowAction extends ActionSupport<WfReqMyFlow> {
                 reqMyFlowList = wfReqMyFlowService.getByApplyId(userInfo.getOrgId(),applyId, userInfo.getUserId());
                 if (reqMyFlowList != null && !reqMyFlowList.isEmpty()) {
                     for (WfReqMyFlow reqMyFlow : reqMyFlowList) {
-                        if (StringUtils.isNotBlank(reqMyFlow.getFlowName())) {
+                        if (StringUtils.isBlank(reqMyFlow.getFlowName())) {
                             List<WfReqMyFlowNode> reqMyFlowNodeList = this.wfReqMyFlowNodeService.getByFlowId(reqMyFlow.getId());
                             if (reqMyFlowNodeList != null && !reqMyFlowNodeList.isEmpty()) {
                                 boolean flag = false;
@@ -308,6 +308,8 @@ public class WfReqMyFlowAction extends ActionSupport<WfReqMyFlow> {
         return "success";
     }
 
+    @Token
+    @PageFlow(result = {@Result(name = "success", path = "/wf/reqMyFlow!myFlowList.dhtml?applyId=${wfReqMyFlow.applyId}", type = Dispatcher.Redirect)})
     public String save() throws Exception {
         JSONObject root=new JSONObject();
         root.put("result","-1");
@@ -466,8 +468,7 @@ public class WfReqMyFlowAction extends ActionSupport<WfReqMyFlow> {
                 root.put("result","0");
             }
         }
-        writeJsonByAction(root.toString());
-        return null;
+        return "success";
     }
 
     public String getFlowNodeList() throws Exception {

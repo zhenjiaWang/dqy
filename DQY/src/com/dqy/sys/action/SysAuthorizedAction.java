@@ -98,7 +98,6 @@ public class SysAuthorizedAction extends ActionSupport<SysAuthorized> {
     }
 
     @Token
-    @PageFlow(result = {@Result(name = "success", path = "/hr/user!view.dhtml?id=${hrUser.id}", type = Dispatcher.Redirect)})
     public String save() throws Exception {
         UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
         List<SysAuthorized> authorizedList=null;
@@ -130,7 +129,7 @@ public class SysAuthorizedAction extends ActionSupport<SysAuthorized> {
                 this.sysAuthorizedService.save(authorizedList);
             }
         }
-        return "success";
+        return "saveSuccess";
     }
 
 

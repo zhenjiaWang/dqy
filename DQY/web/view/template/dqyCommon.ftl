@@ -97,7 +97,10 @@
             <p class="pop-title"></p>
         </div>
         <div class="modal-body">
-
+            <iframe
+                    id="myModalFrame" name="myModalFrame" src="/view/common/blank.html"
+                    width="100%" height="300"
+                    frameborder="0"></iframe>
         </div>
         <div class="modal-footer">
             <a class="btn btn-success" id="myModalOkBtn">确定</a>
@@ -105,10 +108,6 @@
         </div>
     </div>
 
-    <div class="datepicker dropdown-menu treeDiv" style="display: none;width: 200px;height: 300px; z-index: 99999;">
-        <div>
-            <ul id="treeDemo" class="ztree"></ul>
-        </div>
-    </div>
+
     </@common.html>
 </#macro>

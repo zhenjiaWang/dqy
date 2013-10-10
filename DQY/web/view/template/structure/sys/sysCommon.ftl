@@ -68,6 +68,9 @@
                     <li class="variableGlobal">
                         <a class="cur" href="/wf/variableGlobal.dhtml">审批岗位</a>
                     </li>
+                    <li class="reqNo">
+                        <a class="cur" href="/wf/reqNo.dhtml">申请编号</a>
+                    </li>
                 </ul>
                 <!--一组over-->
             </div>

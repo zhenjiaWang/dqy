@@ -13,9 +13,12 @@
                 <#assign userInfo=Session["userSession"]?if_exists>
                 <#if userInfo?exists>
                     $('li', '.side-left-in').removeClass('current');
+                    $('dd', '.side-left-in').removeClass('current');
                     $('.${userInfo['leftMenu']?if_exists}', '.side-left-in').addClass('current');
                     $('.${userInfo['leftMenu']?if_exists}', '.side-left-in').parent().addClass('current');
-
+                    <#if userInfo['childMenu']?exists>
+                        $('.${userInfo['childMenu']?if_exists}', '.side-left-in').addClass('current');
+                    </#if>
                     var topLocation=$('.current', '#topMenu').text();
                     var leftLocation=$('li.current', '.side-left-in').text();
                     if(topLocation&&leftLocation){
@@ -25,6 +28,20 @@
                     }
                 </#if>
             </#if>
+
+            $('.cur').each(function(){
+                var href=$(this).attr('href');
+                if(href=='##'){
+                    $(this).off('click').on('click',function(){
+                        if ( $(this).next().is(':visible')) {
+                            $(this).next().hide();
+                        }else{
+                            $('dl','.side-left-in').hide();
+                            $(this).next().show();
+                        }
+                    });
+                }
+            });
         });
     </script>
     <div class="p-top10 clearfix">
@@ -42,26 +59,39 @@
                         <a class="cur" href="/wf/advanceAccount.dhtml">预支申请</a>
                     </li>
                     <li class="org">
-                        <a class="cur" href="/sys/org.dhtml">机构管理</a>
+                        <a class="cur" href="#">还款申请</a>
                     </li>
                 </ul>
                 <ul class="item-nav"><!--ul上的current是为了控制当前这一组的背景色，li上的current是为了控制二级菜单-->
                     <li class="department">
-                        <a class="cur" href="/hr/department.dhtml">组织机构</a>
+                        <a class="cur" href="#">费用报销</a>
                     </li>
                     <li class="user">
-                        <a class="cur" href="/hr/user.dhtml">员工信息</a>
+                        <a class="cur" href="#">事务申请</a>
                     </li>
                 </ul>
                 <ul class="item-nav"><!--ul上的current是为了控制当前这一组的背景色，li上的current是为了控制二级菜单-->
-                    <li class="financialTitle">
-                        <a class="cur" href="/sys/financialTitle.dhtml">财务科目</a>
+                    <li class="myReq">
+                        <a class="cur" href="##">申请单据</a>
+                        <dl class="font12">
+                            <dd class="ing"><a href="/wf/req!ingList.dhtml"><i class="icon-hand-right"></i> 待审批</a></dd>
+                            <dd class="pass"><a href="/wf/req!passList.dhtml"><i class="icon-hand-right"></i> 已通过</a></dd>
+                            <dd class="overrule"><a href="/wf/req!overruleList.dhtml"><i class="icon-hand-right"></i> 已驳回</a></dd>
+                        </dl>
                     </li>
-                    <li class="budgetType">
-                        <a class="cur" href="/sys/budgetType.dhtml">预算类别</a>
+                    <li class="myTask">
+                        <a class="cur" href="##">审批单据</a>
+                        <dl class="font12">
+                            <dd class="approve"><a href="/wf/reqTask!approveList.dhtml"><i class="icon-hand-right"></i> 未审批</a></dd>
+                            <dd class="done"><a href="/wf/reqTask!doneList.dhtml"><i class="icon-hand-right"></i> 已审批</a></dd>
+                        </dl>
                     </li>
                     <li class=budgetTitle>
-                        <a class="cur" href="/sys/budgetTitle.dhtml">预算科目</a>
+                        <a class="cur" href="#">经办单据</a>
+                        <dl class="font12">
+                            <dd><a href="#"><i class="icon-hand-right"></i> 未处理</a></dd>
+                            <dd><a href="#"><i class="icon-hand-right"></i> 已处理</a></dd>
+                        </dl>
                     </li>
                 </ul>
                 <!--一组over-->

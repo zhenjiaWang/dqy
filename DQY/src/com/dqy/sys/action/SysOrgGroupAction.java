@@ -76,7 +76,6 @@ public class SysOrgGroupAction extends ActionSupport<SysOrgGroup> {
     }
 
     @Token
-    @PageFlow(result = {@Result(name = "success", path = "/sys/orgGroup.dhtml", type = Dispatcher.Redirect)})
     public String save() throws Exception {
         UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
         if (userInfo != null && sysOrgGroup != null) {
@@ -88,7 +87,7 @@ public class SysOrgGroupAction extends ActionSupport<SysOrgGroup> {
             this.bind(sysOrgGroup);
             this.sysOrgGroupService.save(sysOrgGroup);
         }
-        return "success";
+        return "saveSuccess";
     }
 
     @PageFlow(result = {@Result(name = "success", path = "/sys/orgGroup.dhtml", type = Dispatcher.Redirect)})

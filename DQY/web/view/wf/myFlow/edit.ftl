@@ -27,13 +27,13 @@
     };
     function zTreeOnClick(event, treeId, treeNode) {
         srcNode = treeNode;
-        if(treeNode&&treeNode['nodeType']=='1'&&treeNodeSeq){
-            var obj=$('.control-group[nodeSeq="'+treeNodeSeq+'"]');
-            if(obj){
-                $('#node'+treeNodeSeq).val(treeNode['name']);
-                $('#nodeType'+treeNodeSeq).val(1);
-                $('#approveType'+treeNodeSeq).val(treeNode['approveType']);
-                $('#approve'+treeNodeSeq).val(treeNode['id']);
+        if (treeNode && treeNode['nodeType'] == '1' && treeNodeSeq) {
+            var obj = $('.control-group[nodeSeq="' + treeNodeSeq + '"]');
+            if (obj) {
+                $('#node' + treeNodeSeq).val(treeNode['name']);
+                $('#nodeType' + treeNodeSeq).val(1);
+                $('#approveType' + treeNodeSeq).val(treeNode['approveType']);
+                $('#approve' + treeNodeSeq).val(treeNode['id']);
             }
             $('.treeDiv').fadeOut();
         }
@@ -51,11 +51,11 @@
             ]
         }, true);
     }
-    function approveTreeEvent(){
+    function approveTreeEvent() {
         $('.approveBtn').off('click').on('click', function () {
-            treeNodeSeq= $(this).parents('.control-group').attr('nodeSeq');
+            treeNodeSeq = $(this).parents('.control-group').attr('nodeSeq');
             var left = $(this).offset().left;
-            var top = $(this).offset().top+15;
+            var top = $(this).offset().top + 15;
             top += $(this).height();
             $('.treeDiv').css({
                         top: top,
@@ -67,82 +67,78 @@
             $('.treeDiv').find('div').show();
         });
     }
+    function dataSubmit() {
+        if (!submited) {
+            WEBUTILS.validator.checkAll();
+            window.setTimeout(function () {
+                var passed = WEBUTILS.validator.isPassed();
+                if (passed) {
+                    var currentNodeSeq = $('.control-group').last().attr('nodeSeq');
+                    if (currentNodeSeq) {
+                        $('#approveIndex').val(currentNodeSeq);
+                        document.approveForm.submit();
+                        submited = true;
+                    }
+                } else {
+                    WEBUTILS.validator.showErrors();
+                }
+            }, 500);
+        }
+    }
     $(document).ready(function () {
         initValidator();
         approveTreeEvent();
         $('#addNode').off('click').on('click', function () {
-            var currentNodeSeq=$('.control-group').last().attr('nodeSeq');
-            if(currentNodeSeq){
-                currentNodeSeq=parseInt(currentNodeSeq);
-                var nextNodeSeq=currentNodeSeq+1;
-                $('.control-group').last().after(String.formatmodel(flowApproveDQY,{nodeSeq:nextNodeSeq}));
+            var currentNodeSeq = $('.control-group').last().attr('nodeSeq');
+            if (currentNodeSeq) {
+                currentNodeSeq = parseInt(currentNodeSeq);
+                var nextNodeSeq = currentNodeSeq + 1;
+                $('.control-group').last().after(String.formatmodel(flowApproveDQY, {nodeSeq: nextNodeSeq}));
                 approveTreeEvent();
                 WEBUTILS.validator.addMode({
-                    id:'node'+nextNodeSeq,
-                    required:true,
-                    pattern:[
-                        {type:'blank', exp:'!=', msg:'不能为空'}
+                    id: 'node' + nextNodeSeq,
+                    required: true,
+                    pattern: [
+                        {type: 'blank', exp: '!=', msg: '不能为空'}
                     ]
                 });
                 submited = false;
             }
         });
         $('#deleteNode').off('click').on('click', function () {
-            var currentNodeSeq=$('.control-group').last().attr('nodeSeq');
-            if(currentNodeSeq){
-                currentNodeSeq=parseInt(currentNodeSeq);
-                if(currentNodeSeq>1){
+            var currentNodeSeq = $('.control-group').last().attr('nodeSeq');
+            if (currentNodeSeq) {
+                currentNodeSeq = parseInt(currentNodeSeq);
+                if (currentNodeSeq > 1) {
                     $('.control-group').last().remove();
                     WEBUTILS.validator.removeMode({
-                        id:'node'+currentNodeSeq
+                        id: 'node' + currentNodeSeq
                     });
                 }
             }
         });
         $.fn.zTree.init($("#treeDemo"), setting);
-        $('#myModalOkBtn','#myModal').off('click').on('click',function(){
-            if (!submited) {
-                WEBUTILS.validator.checkAll();
-                window.setTimeout(function () {
-                    var passed = WEBUTILS.validator.isPassed();
-                    if (passed) {
-                        var currentNodeSeq=$('.control-group').last().attr('nodeSeq');
-                        if(currentNodeSeq){
-                            $('#approveIndex').val(currentNodeSeq);
-                            $.post('/wf/reqMyFlow!save.dhtml',$('#approveForm').serialize(),function (jsonData) {
-                                if (jsonData) {
-                                    if (jsonData['result'] == '0') {
-                                        WEBUTILS.popWindow.closePopWindow();
-                                        window.setTimeout(function(){
-                                            $('#nextBtn').trigger('click');
-                                        },500);
-                                    }
-                                }
-                            });
-                            submited = true;
-                        }
-                    } else {
-                        WEBUTILS.validator.showErrors();
-                    }
-                }, 500);
-            }
-        });
+
     });
 </script>
-<div style="height: 500px;">
+<div style="min-height: 300px;">
     <form class="form-horizontal" action="/wf/reqMyFlow!save.dhtml" method="POST" name="approveForm"
           id="approveForm">
         <div class="control-group" nodeSeq="0">
             <label class="control-label" for="applyName">申请单据</label>
+
             <div class="controls">
-                <input type="text" id="applyName" name="applyName" placeholder="集团名称" disabled value="${applyId?if_exists}">
+                <input type="text" id="applyName" name="applyName" placeholder="集团名称" disabled
+                       value="${applyId?if_exists}">
                 <span class="help-inline"></span>
             </div>
         </div>
         <div class="control-group" nodeSeq="1">
             <label class="control-label" for="node1">第1步审批人</label>
+
             <div class="controls">
-                <input type="text"  id="node1" name="node1" placeholder="集团名称" readonly="readonly" nodeSeq="1">
+                <input type="text" id="node1" name="node1" placeholder="集团名称" readonly="readonly" nodeSeq="1">
+
                 <div class="btn-group">
                     <a class="btn approveBtn" href="#"><i class="icon-user"></i></a>
                 </div>
@@ -158,7 +154,7 @@
         <input type="hidden" name="wfReqMyFlow.id" id="wfReqMyFlow.id">
         <input type="hidden" name="wfReqMyFlow.applyId" id="wfReqMyFlow.applyId" value="${applyId?if_exists}">
 
-        <input type="hidden" name="approveIndex" id="approveIndex" >
+        <input type="hidden" name="approveIndex" id="approveIndex">
         <@c.token/>
     </form>
 </div>

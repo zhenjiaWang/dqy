@@ -8,10 +8,10 @@
     var submited = false;
     function validatorName() {
         var url = '';
-        <#if !sysOrgGroup?exists>
-            url = '/sys/orgGroup!validateName.dhtml';
-        <#elseif sysOrgGroup?exists>
-            url = '/sys/orgGroup!validateName.dhtml?ignore=${sysOrgGroup.groupName?if_exists}';
+        <#if !wfReqNo?exists>
+            url = '/wf/reqNo!validateReqNo.dhtml';
+        <#elseif wfReqNo?exists>
+            url = '/wf/reqNo!validateReqNo.dhtml?ignore=${wfReqNo.reqNo?if_exists}';
         </#if>
         return url;
     }
@@ -20,7 +20,7 @@
         WEBUTILS.validator.init({
             modes: [
                 {
-                    id: 'sysOrgGroup\\.groupName',
+                    id: 'wfReqNo\\.reqNo',
                     required: true,
                     pattern: [
                         {type: 'blank', exp: '!=', msg: '不能为空'},
@@ -52,24 +52,25 @@
         initValidator();
     });
 </script>
-    <@c.joddForm bean="sysOrgGroup" scope="request">
-    <form class="form-horizontal" action="/sys/orgGroup!save.dhtml" method="POST" name="editForm"
+    <@c.joddForm bean="wfReqNo" scope="request">
+    <form class="form-horizontal" action="/wf/reqNo!save.dhtml" method="POST" name="editForm"
           id="editForm">
         <div class="control-group">
-            <label class="control-label" for="sysOrgGroup.groupName">集团名称</label>
+            <label class="control-label" for="applyName">申请单据名称</label>
             <div class="controls">
-                <input type="text" id="sysOrgGroup.groupName" name="sysOrgGroup.groupName" placeholder="集团名称">
+                <input type="text" id="applyName" name="applyName" value="${applyName?if_exists}" disabled>
                 <span class="help-inline"></span>
             </div>
         </div>
         <div class="control-group">
+            <label class="control-label" for="wfReqNo.reqNo">申请单据编号</label>
             <div class="controls">
-                <label class="checkbox">
-                    <input type="checkbox" value="Y" id="sysOrgGroup.useYn" name="sysOrgGroup.useYn"> 启用
-                </label>
+                <input type="text" id="wfReqNo.reqNo" name="wfReqNo.reqNo" placeholder="集团名称">
+                <span class="help-inline"></span>
             </div>
         </div>
-        <input type="hidden" name="sysOrgGroup.id" id="sysOrgGroup.id">
+        <input type="hidden" name="wfReqNo.id" id="wfReqNo.id">
+        <input type="hidden" name="applyId" id="applyId" value="${applyId?if_exists}">
         <@c.token/>
     </form>
     </@c.joddForm>

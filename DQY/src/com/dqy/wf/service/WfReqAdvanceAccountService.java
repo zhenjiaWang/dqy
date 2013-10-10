@@ -1,6 +1,7 @@
 package com.dqy.wf.service;
 
-import com.dqy.wf.entity.WfReqAdvanceAccount;
+import com.dqy.wf.entity.*;
+import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import org.guiceside.persistence.TransactionType;
 import org.guiceside.persistence.Transactional;
@@ -16,6 +17,8 @@ import java.util.List;
 @Singleton
 public class WfReqAdvanceAccountService extends HQuery {
 
+    @Inject
+    private WfReqService wfReqService;
     /**
      * @param id
      * @return 根据Id获取代码
@@ -67,6 +70,13 @@ public class WfReqAdvanceAccountService extends HQuery {
         $(id).delete(WfReqAdvanceAccount.class);
     }
 
+    @Transactional(type = TransactionType.READ_WRITE)
+    public void save(WfReqAdvanceAccount wfReqAdvanceAccount, WfReq wfReq, List<WfReqComments> reqCommentsList,
+                     WfReqNoSeq wfReqNoSeq, List<WfReqNodeApprove> reqNodeApproveList, List<WfReqTask> reqTaskList,
+                     WfReqMyFlowLast wfReqMyFlowLast) {
+        this.wfReqService.save(wfReq,  reqCommentsList, wfReqNoSeq, reqNodeApproveList, reqTaskList, wfReqMyFlowLast);
+        this.save(wfReqAdvanceAccount);
+    }
 
 
 

@@ -84,24 +84,24 @@
         }, true);
     }
 
+    function dataSubmit(){
+        if (!submited) {
+            WEBUTILS.validator.checkAll();
+            window.setTimeout(function () {
+                var passed = WEBUTILS.validator.isPassed();
+                if (passed) {
+                    document.editForm.submit();
+                    submited = true;
+                } else {
+                    WEBUTILS.validator.showErrors();
+                }
+            }, 500);
+        }
+    }
     $(document).ready(function () {
         initValidator();
         $('#sysFinancialTitle\\.parentId\\.id').change(function(){
             buildTitleNo();
-        });
-        $('#myModalOkBtn','#myModal').off('click').on('click',function(){
-            if (!submited) {
-                WEBUTILS.validator.checkAll();
-                window.setTimeout(function () {
-                    var passed = WEBUTILS.validator.isPassed();
-                    if (passed) {
-                        document.editForm.submit();
-                        submited = true;
-                    } else {
-                        WEBUTILS.validator.showErrors();
-                    }
-                }, 500);
-            }
         });
     });
 </script>
