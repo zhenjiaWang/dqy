@@ -190,7 +190,7 @@ public class WfReqAction extends ActionSupport<WfReq> {
         return selectorList;
     }
 
-    @PageFlow(result = {@Result(name = "success", path = "/view/req/result/overruleList.ftl", type = Dispatcher.FreeMarker)})
+    @PageFlow(result = {@Result(name = "success", path = "/view/wf/req/overruleList.ftl", type = Dispatcher.FreeMarker)})
     public String overruleList() throws Exception {
         UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
         if (userInfo != null) {
@@ -242,7 +242,7 @@ public class WfReqAction extends ActionSupport<WfReq> {
         return selectorList;
     }
 
-    @PageFlow(result = {@Result(name = "success", path = "/view/req/result/passList.ftl", type = Dispatcher.FreeMarker)})
+    @PageFlow(result = {@Result(name = "success", path = "/view/wf/req/passList.ftl", type = Dispatcher.FreeMarker)})
     public String passList() throws Exception {
         UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
         if (userInfo != null) {

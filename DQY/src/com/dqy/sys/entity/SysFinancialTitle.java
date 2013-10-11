@@ -36,6 +36,8 @@ public class SysFinancialTitle extends IdEntity implements Tracker {
 
     private Integer displayOrder;
 
+    private Integer onLoan;
+
     private Date created;
 
     private String createdBy;
@@ -158,5 +160,15 @@ public class SysFinancialTitle extends IdEntity implements Tracker {
 
     public void setTitleNo(String titleNo) {
         this.titleNo = titleNo;
+    }
+
+
+    @Column(name = "ON_LOAN")
+    public Integer getOnLoan() {
+        return onLoan;
+    }
+
+    public void setOnLoan(Integer onLoan) {
+        this.onLoan = onLoan;
     }
 }

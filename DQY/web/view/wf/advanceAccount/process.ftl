@@ -2,6 +2,9 @@
 <#import "/view/common/core.ftl" as c>
 <@wfCommon.wf_common>
 <script type="text/javascript">
+    function setURL(url) {
+        document.location.href=url;
+    }
     function loadFlowNode() {
         $.ajax({
             type:'GET',
@@ -43,6 +46,20 @@
         $('#backBtn').off('click').on('click', function () {
             history.back();
         });
+        $('#okBtn').off('click').on('click', function () {
+            WEBUTILS.popWindow.createPopWindow(500, 300, '审批通过', '/wf/reqTask!reason.dhtml?id=${wfReqTask.id?c}&approveIdea=1');
+        });
+        $('#noBtn').off('click').on('click', function () {
+            WEBUTILS.popWindow.createPopWindow(500, 300, '审批否决', '/wf/reqTask!reason.dhtml?id=${wfReqTask.id?c}&approveIdea=2');
+        });
+        $('#forwardBtn').off('click').on('click', function () {
+            WEBUTILS.popWindow.createPopWindow(650, 500, '审批转审', '/wf/reqTask!forward.dhtml?id=${wfReqTask.id?c}&approveIdea=3');
+        });
+        <#if wfReqTask.nodeSeq gt 1>
+            $('#returnBtn').off('click').on('click', function () {
+                WEBUTILS.popWindow.createPopWindow(500, 300, '审批回退', '/wf/reqTask!reason.dhtml?id=${wfReqTask.id?c}&approveIdea=4');
+            });
+        </#if>
     });
 </script>
 <div class="r-top clearfix">

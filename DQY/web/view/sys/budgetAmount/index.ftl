@@ -110,7 +110,7 @@
     <input type="text" id="deptName" name="deptName" placeholder="预算部门" <#if hrDepartment?exists>
            value="${(hrDepartment.deptName)?if_exists}" </#if>disabled>
     <span class="add-on" style="cursor: pointer;" id="searchDept"><i class="icon-th"></i></span>
-    <select class="span2" id="currentYear" name="currentYear">
+    <select class="span2 marl15" id="currentYear" name="currentYear">
         <#if yearList?exists&&yearList?size gt 0>
             <#list yearList as year>
                 <option value="${year?c}" <#if currentYear?exists&&currentYear==year>

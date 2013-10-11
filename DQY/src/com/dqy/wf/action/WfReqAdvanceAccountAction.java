@@ -66,8 +66,6 @@ public class WfReqAdvanceAccountAction extends WfReqSupportAction<WfReqAdvanceAc
     @ReqSet
     public final String applyId="ADVANCE_ACCOUNT";
 
-    @ReqSet
-    private WfReq wfReq;
 
 
     @ReqSet

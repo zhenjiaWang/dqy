@@ -128,7 +128,7 @@
             <label class="control-label" for="applyName">申请单据</label>
 
             <div class="controls">
-                <input type="text" id="applyName" name="applyName" placeholder="集团名称" disabled
+                <input type="text" id="applyName" name="applyName"  disabled
                        value="${applyId?if_exists}">
                 <span class="help-inline"></span>
             </div>
@@ -137,8 +137,7 @@
             <label class="control-label" for="node1">第1步审批人</label>
 
             <div class="controls">
-                <input type="text" id="node1" name="node1" placeholder="集团名称" readonly="readonly" nodeSeq="1">
-
+                <input type="text" id="node1" name="node1"  readonly="readonly" nodeSeq="1">
                 <div class="btn-group">
                     <a class="btn approveBtn" href="#"><i class="icon-user"></i></a>
                 </div>

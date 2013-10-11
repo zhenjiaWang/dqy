@@ -62,11 +62,11 @@ div.width-120 .dqy-clander{position:absolute;right:0;top:4px;}
 .main{width:1024px;height:678px;background:url(../images/cssimg/body-bg.jpg) repeat-x;position: relative;}
 .content{width:740px;margin:0 auto;}
 .banner{width:730px;height:130px;margin:0 auto;}
-.top-bar{width:236px;height:81px;background:url(../images/cssimg/top-bar.png);position:absolute;top:0;right:10px;}
-.search-box{width:190px;height:24px;border:1px solid #d9d9d9;display:block;background:#f9f9f9;line-height:24px;color:#d9d9d9;position:relative;left:20px;top:15px;}
+.top-bar{width:236px;height:81px;background:url(../images/cssimg/top-bar.png);position:absolute;top:0;right:10px;z-index: 20;}
+.search-box{width:190px;height:24px;border:1px solid #d9d9d9;display:block;background:#f9f9f9;line-height:24px;color:#d9d9d9;position:relative;left:20px;top:15px;z-index: 20;}
 .search-box span{padding-left:5px;font-size: 14px;}
 a.triangle{display:inline-block;border-width:6px;border-color:#95c42d #f9f9f9  #f9f9f9 #f9f9f9;border-style: solid;position: absolute;right:12px;top:8px;line-height:0;font-size:0;}
-.search-box ul{border:1px solid #d9d9d9;border-top:0;background:#f9f9f9;width:190px;position: absolute;left:-1px;z-index:10;top:24px;display:none;}
+.search-box ul{border:1px solid #d9d9d9;border-top:0;background:#f9f9f9;width:190px;position: absolute;left:-1px;z-index:20;top:24px;display:none;}
 .search-box ul li a{line-height: 20px;padding-left:5px;color:#666;}
 .search-box ul li a:hover{padding-left:7px;}
 .search-box.current a.triangle{border-color:#f9f9f9 #f9f9f9 #95c42d #f9f9f9;top:2px;}
@@ -81,8 +81,8 @@ a.triangle{display:inline-block;border-width:6px;border-color:#95c42d #f9f9f9  #
 .news li{background: url(../images/cssimg/li-c.jpg) no-repeat left center;padding-left:7px;line-height: 20px;margin:2px 0;}
 .news li a{color:#424242;}
 .news li a:hover{color:#ffab03;}
-.news li span.time{color:#7e7e7e;}
-.cross,.noread{background: #f54c4c;border-radius:3px;color:#fff;font-size: 12px;padding:0 2px;line-height: 18px;margin-top:1px;}
+.news li span.time{color:#7e7e7e;*margin-top: -20px;}
+.cross,.noread{background: #f54c4c;border-radius:3px;color:#fff;font-size: 12px;padding:0 2px;line-height: 18px;margin-top:1px;*margin-top: -19px;}
 .nocross{background: #5ed23a;}
 .noread{background: #89afdb;}
 .item2{width:184px;height:165px;background: url(../images/cssimg/item2.gif);margin-top:5px;}
@@ -177,7 +177,7 @@ table.nopadding tr td{padding:0 10px;height: 35px;line-height: 35px;}
 .scroll-x{width:750px;overflow:scroll;height: 500px;border:1px solid #ccc;border-width:1px;}
 .scroll-x table{position: relative;top:-1px;left:-1px;}
 .scroll-x table,.scroll-x .table-scroll{width:1400px;}
-td .dqy-eidt{position: relative;top:2px;}
+td .dqy-eidt{position: relative;top:1px;*top:0;}
 /*2013-09-22*/
 .weather{height:40px;}
 .modal-header{padding:3px 0;border-bottom:none;}
@@ -193,7 +193,6 @@ td .dqy-eidt{position: relative;top:2px;}
 span.label{border-radius: 0;padding:5px 10px;}
 .well{padding:10px;margin-bottom: 10px;position: relative;background: none;box-shadow: none;border: 0;}
 .well-in{position: absolute;top:7px;right:10px;}
-.pro-in {}
 .pro-left{width:150px;min-height: 300px;border:1px solid #CBCBCB;background:#F5F5F5;}
 .pro-left ul li a{display:inline-block;}
 .pro-left ul li{margin:2px 0;}
@@ -212,5 +211,5 @@ span.label{border-radius: 0;padding:5px 10px;}
 .pro-right{border:1px solid #CBCBCB;min-height: 300px;width:520px;padding:10px;}
 .badge{padding:2px 5px;}
 .noborder td,.noborder th{border:0;}
-
-
+.btn{*margin-top: 1px;}
+input{height:25px;}

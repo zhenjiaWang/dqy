@@ -8,16 +8,16 @@
         document.location.reload();
     }
     function pagerAction(start, rows) {
-        var searchUrl = '/wf/reqTask!approveList.dhtml';
+        var searchUrl = '/wf/req!passList.dhtml';
         searchUrl += '?start=' + start + '&rows=' + rows;
         searchUrl = encodeURI(searchUrl);
         document.location.href = searchUrl
     }
     $(document).ready(function () {
-        $('.taskReq').off('click').on('click', function () {
+        $('.viewReq').off('click').on('click', function () {
             var uid = $(this).attr('uid');
             if (uid) {
-                document.location.href='/wf/reqTask!process.dhtml?id='+uid;
+                document.location.href='/wf/req!view.dhtml?id='+uid;
             }
         });
     });
@@ -38,28 +38,20 @@
             <th width="80">申请编号</th>
             <th>标题</th>
             <th width="60">申请人</th>
-            <th width="60">查看</th>
             <th width="110">日期</th>
             <th width="50">操作</th>
         </tr>
         </thead>
         <tbody>
-            <#if reqTaskList?exists&&reqTaskList?size gt 0>
-                <#list reqTaskList as reqTask>
-                <tr <#if (reqTask_index+1)%2!=0>class="oddBgColor"</#if>>
-                    <td style="text-align: center;">${(reqTask.reqId.reqNo)?if_exists}</td>
-                    <td>${(reqTask.reqId.subject)?if_exists}</td>
-                    <td style="text-align: center;">${(reqTask.reqId.userId.userName)?if_exists}</td>
+            <#if reqList?exists&&reqList?size gt 0>
+                <#list reqList as req>
+                <tr <#if (req_index+1)%2!=0>class="oddBgColor"</#if>>
+                    <td style="text-align: center;">${req.reqNo?if_exists}</td>
+                    <td>${req.subject?if_exists}</td>
+                    <td style="text-align: center;">${(req.userId.userName)?if_exists}</td>
+                    <td style="text-align: center;">${(req.sendDate)?string("yyyy-MM-dd HH:mm")}</td>
                     <td style="text-align: center;">
-                        <#if reqTask.taskRead==0>
-                        <i class="icon-eye-close"></i>未查看
-                        <#elseif reqTask.taskRead==1>
-                            <i class="icon-eye-open"></i>未查看
-                        </#if>
-                    </td>
-                    <td style="text-align: center;">${(reqTask.receiveDate)?string("yyyy-MM-dd HH:mm")}</td>
-                    <td style="text-align: center;">
-                        <span style="cursor: pointer;" class="taskReq"  uid="${reqTask.id?c}"><i class="icon-hand-down"></i>审批</span>
+                        <span style="cursor: pointer;" class="viewReq"  uid="${req.id?c}"><i class="icon-file"></i>查看</span>
                     </td>
                 </tr>
                 </#list>

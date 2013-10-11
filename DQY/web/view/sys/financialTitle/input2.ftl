@@ -151,6 +151,16 @@
             </div>
         </div>
         <div class="control-group">
+            <label class="control-label" for="sysFinancialTitle.titleName">余额方向</label>
+            <div class="controls">
+                <select id="sysFinancialTitle.onLoan" name="sysFinancialTitle.onLoan">
+                    <option value="0">借</option>
+                    <option value="1">贷</option>
+                </select>
+                <span class="help-inline"></span>
+            </div>
+        </div>
+        <div class="control-group">
             <label class="control-label" for="sysFinancialTitle.titleName">显示顺序</label>
             <div class="controls">
                 <input type="text" id="sysFinancialTitle.displayOrder" name="sysFinancialTitle.displayOrder" placeholder="显示顺序"

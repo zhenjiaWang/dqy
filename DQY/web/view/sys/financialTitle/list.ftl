@@ -67,8 +67,9 @@
             <th >科目编号</th>
             <th width="140">科目名称</th>
             <th width="140">上级科目</th>
+            <th width="60">余额方向</th>
             <th width="80">科目级别</th>
-            <th width="80">启用</th>
+            <th width="30">启用</th>
             <th width="100">操作</th>
         </tr>
         </thead>
@@ -79,6 +80,13 @@
                     <td>${financialTitle.titleNo?if_exists}</td>
                     <td>${financialTitle.titleName?if_exists}</td>
                     <td>${(financialTitle.parentId.titleName)?if_exists}</td>
+                    <td>
+                        <#if financialTitle.onLoan==0>
+                            借
+                        <#elseif financialTitle.onLoan==1>
+                            贷
+                        </#if>
+                    </td>
                     <td>
                         <#if financialTitle.titleLevel==1>
                             一级科目

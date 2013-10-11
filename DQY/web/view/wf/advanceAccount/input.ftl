@@ -84,8 +84,8 @@
                                    style="width: 60px;color: #898989;font-weight: bold;">申请标题</label>
 
                             <div class="controls" style="margin-left: 70px;">
-                                <input class="width-510" type="text" id="wfReq.subject" name="wfReq.subject"
-                                       placeholder="请输入标题">
+                                <input style="width: 95%;" type="text" id="wfReq.subject" name="wfReq.subject"
+                                       placeholder="请输入标题" maxlength="20">
                                 <span class="help-inline"></span>
                             </div>
                         </div>
@@ -120,7 +120,7 @@
                                    style="width: 60px;color: #898989;font-weight: bold;">预支金额</label>
 
                             <div class="controls" style="margin-left: 70px;">
-                                <input type="text" id="wfReqAdvanceAccount.amount" name="wfReqAdvanceAccount.amount" placeholder="预支金额">
+                                <input type="text" id="wfReqAdvanceAccount.amount" name="wfReqAdvanceAccount.amount" placeholder="预支金额" maxlength="10">
                                 <span class="help-inline"></span>
                             </div>
                         </div>
@@ -147,7 +147,7 @@
                                    style="width: 60px;color: #898989;font-weight: bold;">用途</label>
 
                             <div class="controls" style="margin-left: 70px;">
-                                <textarea rows="2" class="width-510 font12" id="wfReqAdvanceAccount.purpose" name="wfReqAdvanceAccount.purpose"></textarea>
+                                <textarea rows="2" style="width: 95%;" class=" font12" id="wfReqAdvanceAccount.purpose" name="wfReqAdvanceAccount.purpose" maxlength="100"></textarea>
                                 <span class="help-inline"></span>
                             </div>
                         </div>
@@ -160,7 +160,7 @@
                                    style="width: 60px;color: #898989;font-weight: bold;">备注</label>
 
                             <div class="controls" style="margin-left: 70px;">
-                                <textarea rows="4" class="width-510 font12" id="wfReqAdvanceAccount.remarks" name="wfReqAdvanceAccount.remarks"></textarea>
+                                <textarea rows="4" style="width: 95%;" class="font12" id="wfReqAdvanceAccount.remarks" name="wfReqAdvanceAccount.remarks" maxlength="400"></textarea>
                                 <span class="help-inline"></span>
                             </div>
                         </div>

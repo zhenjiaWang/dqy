@@ -123,7 +123,7 @@ public class WfReqTaskAction extends ActionSupport<WfReqTask> {
 
     @PageFlow(result = {@Result(name = "success", path = "/view/wf/reqTask/reason.ftl", type = Dispatcher.FreeMarker)})
     public String reason() throws Exception {
-        if (id != null) {
+        if (id != null&&approveIdea!=null) {
             wfReqTask = this.wfReqTaskService.getById(id);
             wfReqTask.setApproveIdea(approveIdea);
         }
@@ -132,7 +132,7 @@ public class WfReqTaskAction extends ActionSupport<WfReqTask> {
 
     @PageFlow(result = {@Result(name = "success", path = "/view/wf/reqTask/forward.ftl", type = Dispatcher.FreeMarker)})
     public String forward() throws Exception {
-        if (id != null) {
+        if (id != null&&approveIdea!=null) {
             wfReqTask = this.wfReqTaskService.getById(id);
             wfReqTask.setApproveIdea(approveIdea);
         }
@@ -560,6 +560,7 @@ public class WfReqTaskAction extends ActionSupport<WfReqTask> {
                                         HrUser approveUser = this.hrUserService.getById(approveUserId);
                                         WfReqNodeApprove forwardNodeApprove = new WfReqNodeApprove();
                                         forwardNodeApprove.setNodeSeq(currentNodeTask.getNodeSeq() + 1);
+                                        forwardNodeApprove.setOrgId(sysOrg);
                                         forwardNodeApprove.setNodeType(1);
                                         forwardNodeApprove.setApproveType(forwardType);
                                         forwardNodeApprove.setReqId(wfReq);
@@ -572,6 +573,7 @@ public class WfReqTaskAction extends ActionSupport<WfReqTask> {
                                             WfReqNodeApprove forwardMeNodeApprove = new WfReqNodeApprove();
                                             forwardMeNodeApprove.setNodeSeq(forwardNodeApprove.getNodeSeq() + 1);
                                             forwardMeNodeApprove.setNodeType(1);
+                                            forwardMeNodeApprove.setOrgId(sysOrg);
                                             forwardMeNodeApprove.setApproveType(3);
                                             forwardMeNodeApprove.setReqId(wfReq);
                                             forwardMeNodeApprove.setUserId(wfReqTask.getUserId());
