@@ -2,6 +2,8 @@ package com.dqy.hr.service;
 
 import com.dqy.hr.entity.HrUser;
 import com.dqy.hr.entity.HrUserDetail;
+import com.dqy.sys.entity.SysAuthorized;
+import com.dqy.sys.service.SysAuthorizedService;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import org.guiceside.commons.Page;
@@ -23,6 +25,9 @@ public class HrUserService extends HQuery {
 
     @Inject
     private HrUserDetailService hrUserDetailService;
+
+    @Inject
+    private SysAuthorizedService sysAuthorizedService;
 
 
     @Transactional(type = TransactionType.READ_ONLY)
@@ -114,14 +119,23 @@ public class HrUserService extends HQuery {
     }
 
 
-
-
-
     @Transactional(type = TransactionType.READ_WRITE)
     public void save(HrUser hrUser,HrUserDetail hrUserDetail) {
         $(hrUser).save();
         if(hrUserDetail!=null){
             hrUserDetailService.save(hrUserDetail);
+        }
+    }
+
+
+    @Transactional(type = TransactionType.READ_WRITE)
+    public void save(HrUser hrUser,HrUserDetail hrUserDetail,SysAuthorized sysAuthorized) {
+        $(hrUser).save();
+        if(hrUserDetail!=null){
+            hrUserDetailService.save(hrUserDetail);
+        }
+        if(sysAuthorized!=null){
+            sysAuthorizedService.save(sysAuthorized);
         }
     }
 }

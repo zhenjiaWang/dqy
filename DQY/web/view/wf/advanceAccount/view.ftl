@@ -71,7 +71,7 @@
                             <label class="control-label" for="wfReq.subject"
                                    style="width: 60px;color: #898989;font-weight: bold;">申请标题</label>
                             <div class="controls" style="margin-left: 70px;">
-                                <label style="margin-top: 5px;padding-left:5px;font-size: 14px;">${wfReq.subject?if_exists}</label>
+                                <label style="margin-top: 5px;padding-left:5px;font-size: 14px;word-wrap: break-word;word-break: break-all;">${wfReq.subject?if_exists}</label>
                             </div>
                         </div>
                     </td>
@@ -137,7 +137,7 @@
                                    style="width: 60px;color: #898989;font-weight: bold;">用途</label>
 
                             <div class="controls" style="margin-left: 70px;">
-                                <label style="margin-top: 5px;padding-left:5px;font-size: 14px;">${(wfReqAdvanceAccount.purpose)?if_exists}</label>
+                                <label style="margin-top: 5px;padding-left:5px;font-size: 14px;word-wrap: break-word;word-break: break-all;">${(wfReqAdvanceAccount.purpose)?if_exists}</label>
                             </div>
                         </div>
                     </td>
@@ -149,7 +149,7 @@
                                    style="width: 60px;color: #898989;font-weight: bold;">备注</label>
 
                             <div class="controls" style="margin-left: 70px;">
-                                <label style="margin-top: 5px;padding-left:5px;font-size: 14px;">${(wfReqAdvanceAccount.remarks)?if_exists}</label>
+                                <label style="margin-top: 5px;padding-left:5px;font-size: 14px;word-wrap: break-word;word-break: break-all;">${(wfReqAdvanceAccount.remarks)?if_exists}</label>
                             </div>
                         </div>
                     </td>
@@ -181,7 +181,7 @@
             </table>
         </div>
     </div>
-    <p class="mart10 marr15 clearfix">
+    <p class="mart10  clearfix">
         <button class="btn btn-inverse floatright " type="button" id="backBtn">返回</button>
     </p>
     </#if>

@@ -38,6 +38,11 @@ public class SysFinancialTitleService extends HQuery {
         return $(id).get(SysFinancialTitle.class);
     }
 
+    @Transactional(type = TransactionType.READ_ONLY)
+    public SysFinancialTitle getByNo(Long orgId,String titleNo) {
+        return $($eq("orgId.id",orgId),$eq("titleNo",titleNo)).get(SysFinancialTitle.class);
+    }
+
 
     /**
      * 保存对象
@@ -93,14 +98,52 @@ public class SysFinancialTitleService extends HQuery {
     }
 
 
+
+
     @Transactional(type = TransactionType.READ_ONLY)
-    public Integer getMaxOrderByOrgId(Long orgId) {
-        return $($eq("orgId.id", orgId), $eq("titleLevel", 1), $max("displayOrder")).value(SysFinancialTitle.class, Integer.class);
+    public Integer getMaxOrderByOrgId(Long orgId,boolean ignoreUse) {
+        if (ignoreUse) {
+            return $($eq("orgId.id", orgId),  $eq("titleLevel", 1),$max("displayOrder")).value(SysFinancialTitle.class, Integer.class);
+        } else {
+            return $($eq("orgId.id", orgId), $eq("titleLevel", 1),$eq("useYn", "Y"), $max("displayOrder")).value(SysFinancialTitle.class, Integer.class);
+        }
+    }
+    @Transactional(type = TransactionType.READ_ONLY)
+    public Integer getMaxOrderByParentId(Long orgId,Long parentId, boolean ignoreUse) {
+        if (ignoreUse) {
+            return $($eq("orgId.id", orgId),$eq("parentId.id", parentId), $max("displayOrder")).value(SysFinancialTitle.class, Integer.class);
+        } else {
+            return $($eq("orgId.id", orgId),$eq("parentId.id", parentId), $eq("useYn", "Y"), $max("displayOrder")).value(SysFinancialTitle.class, Integer.class);
+        }
+    }
+
+
+    @Transactional(type = TransactionType.READ_ONLY)
+    public List<SysFinancialTitle> getTitleListByLevel(Long orgId,Integer level, boolean ignoreUse) {
+        if (ignoreUse) {
+            return $($eq("orgId.id", orgId), $eq("titleLevel", level), $order("displayOrder")).list(SysFinancialTitle.class);
+        } else {
+            return $($eq("orgId.id", orgId),$eq("titleLevel", level), $eq("useYn", "Y"), $order("displayOrder")).list(SysFinancialTitle.class);
+        }
     }
 
     @Transactional(type = TransactionType.READ_ONLY)
-    public Integer getMaxOrderByOrgId(Long orgId, Long parentId) {
-        return $($eq("orgId.id", orgId), $eq("parentId.id", parentId),  $max("displayOrder")).value(SysFinancialTitle.class, Integer.class);
+    public List<SysFinancialTitle> getTitleListByParentId(Long orgId,Long parentId, boolean ignoreUse) {
+        if (ignoreUse) {
+            return $($eq("orgId.id", orgId),$eq("parentId.id", parentId), $order("displayOrder")).list(SysFinancialTitle.class);
+        } else {
+            return $($eq("orgId.id", orgId),$eq("parentId.id", parentId), $eq("useYn", "Y"), $order("displayOrder")).list(SysFinancialTitle.class);
+        }
+    }
+
+
+    @Transactional(type = TransactionType.READ_ONLY)
+    public Integer getCountByParentId(Long orgId,Long parentId, boolean ignoreUse) {
+        if (ignoreUse) {
+            return $($eq("orgId.id", orgId),$eq("parentId.id", parentId), $count("id")).value(SysFinancialTitle.class, Integer.class);
+        } else {
+            return $($eq("orgId.id", orgId),$eq("parentId.id", parentId), $eq("useYn", "Y"), $count("id")).value(SysFinancialTitle.class, Integer.class);
+        }
     }
 
 }

@@ -5,9 +5,10 @@ import com.dqy.common.UserSession;
 import com.dqy.hr.entity.HrUser;
 import com.dqy.hr.service.HrUserService;
 import com.dqy.sys.entity.SysAuthorized;
+import com.dqy.sys.entity.SysFinancialTitle;
 import com.dqy.sys.entity.SysOrg;
-import com.dqy.sys.service.SysAdminService;
 import com.dqy.sys.service.SysAuthorizedService;
+import com.dqy.sys.service.SysFinancialTitleService;
 import com.dqy.sys.service.SysOrgService;
 import com.google.inject.Inject;
 import net.sf.json.JSONObject;
@@ -37,7 +38,7 @@ public class LoginAction extends BaseAction {
     private SysOrgService sysOrgService;
 
     @Inject
-    private SysAdminService sysAdminService;
+    private SysFinancialTitleService sysFinancialTitleService;
 
     @Inject
     private SysAuthorizedService sysAuthorizedService;
@@ -69,6 +70,7 @@ public class LoginAction extends BaseAction {
                     userInfo.setUserId(hrUser.getId());
                     userInfo.setUserNo(hrUser.getUserNo());
                     userInfo.setUserName(hrUser.getUserName());
+                    userInfo.setDepartmentId(hrUser.getDeptId().getId());
                     userInfo.setDepartment(get(hrUser, "deptId.deptName"));
                     userInfo.setJob(hrUser.getJobName());
                     userInfo.setGroupId(hrUser.getGroupId().getId());
@@ -77,15 +79,7 @@ public class LoginAction extends BaseAction {
                     userInfo.setOrgName(get(hrUser, "orgId.orgName"));
                     userInfo.setOrgNo(get(hrUser, "orgId.orgNo"));
                     userInfo.setAuthorize(true);
-                    Integer adminCount=sysAdminService.validateAdmin(userInfo.getOrgId(),userInfo.getUserId());
-                    if(adminCount==null){
-                        adminCount=0;
-                    }
-                    if(adminCount.intValue()>0){
-                        userInfo.setAdmin(true);
-                    }else{
-                        userInfo.setAdmin(false);
-                    }
+
 
                     List<SysAuthorized> authorizedList= sysAuthorizedService.getAuthorizedList(userInfo.getGroupId(), userInfo.getUserId());
                     if(authorizedList!=null&&!authorizedList.isEmpty()){
@@ -98,6 +92,23 @@ public class LoginAction extends BaseAction {
                             authOrgList.add(authOrg);
                         }
                         userInfo.setAuthOrgList(authOrgList);
+                    }
+                    SysAuthorized authorized= this.sysAuthorizedService.getAuthOrg(userInfo.getGroupId(),userInfo.getOrgId(),userInfo.getUserId());
+                    userInfo.setRoleList(null);
+                    userInfo.setRoleId(null);
+                    if(authorized!=null){
+                        String roleId=authorized.getRoleId();
+                        if(StringUtils.isNotBlank(roleId)){
+                            userInfo.setRoleId(roleId);
+                            String[] roleIds=roleId.split(",");
+                            if(roleIds!=null&&roleIds.length>0){
+                                List<String> roleList=new ArrayList<String>();
+                                for(String r:roleIds){
+                                    roleList.add(r);
+                                }
+                                userInfo.setRoleList(roleList);
+                            }
+                        }
                     }
                     jsonObject.put("login", "0");
                     jsonObject.put("url", "/common/login!index.dhtml");
@@ -115,11 +126,13 @@ public class LoginAction extends BaseAction {
         UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
         if (userInfo != null) {
             userInfo.setTopMenu("index");
+
         }
         return "success";  //To change body of implemented methods use File | Settings | File Templates.
     }
 
-    @PageFlow(result = {@Result(name = "success", path = "/common/login!index.dhtml", type = Dispatcher.Redirect)})
+    @PageFlow(result = {@Result(name = "success", path = "/common/login!index.dhtml", type = Dispatcher.Redirect),
+            @Result(name = "logout", path = "/common/login!logout.dhtml", type = Dispatcher.Redirect)})
     public String authOrg() throws Exception {
         UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
         if (userInfo != null&&authOrgId!=null) {
@@ -133,7 +146,27 @@ public class LoginAction extends BaseAction {
                     userInfo.setOrgId(authOrgId);
                     userInfo.setOrgName(authOrg.getOrgName());
                     userInfo.setOrgNo(authOrg.getOrgNo());
+
+                    SysAuthorized authorized= this.sysAuthorizedService.getAuthOrg(userInfo.getGroupId(),authOrgId,userInfo.getUserId());
+                    userInfo.setRoleList(null);
+                    userInfo.setRoleId(null);
+                    if(authorized!=null){
+                        String roleId=authorized.getRoleId();
+                        if(StringUtils.isNotBlank(roleId)){
+                            userInfo.setRoleId(roleId);
+                            String[] roleIds=roleId.split(",");
+                            if(roleIds!=null&&roleIds.length>0){
+                                List<String> roleList=new ArrayList<String>();
+                                for(String r:roleIds){
+                                    roleList.add(r);
+                                }
+                                userInfo.setRoleList(roleList);
+                            }
+                        }
+                    }
                 }
+            }else{
+                return "logout";
             }
         }
         return "success";  //To change body of implemented methods use File | Settings | File Templates.

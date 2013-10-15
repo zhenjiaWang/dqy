@@ -6,13 +6,6 @@
         document.location.reload();
     }
     $(document).ready(function () {
-        $('.changeAdmin').off('click').on('click', function () {
-            <#if isAdmin>
-                document.location.href = '/hr/user!changeAdmin.dhtml?id=${hrUser.id?c}&adminYn=N';
-            <#else >
-                document.location.href = '/hr/user!changeAdmin.dhtml?id=${hrUser.id?c}&adminYn=Y';
-            </#if>
-        });
         $('#passwordBtn').off('click').on('click', function () {
             WEBUTILS.popWindow.createPopWindow(550, null, '设置密码', '/hr/user!changePwd.dhtml?id=${hrUser.id?c}');
         });
@@ -30,6 +23,13 @@
                 });
             }
         });
+        $('.addRole').off('click').on('click', function () {
+            var uid = $(this).attr('uid');
+            if (uid) {
+                WEBUTILS.popWindow.createPopWindow(420, null, '增加角色', '/sys/authorized!role.dhtml?id='+uid);
+            }
+        });
+
         $('#editBtn').off('click').on('click', function () {
             WEBUTILS.popWindow.createPopWindow(800, null, '编辑信息', '/hr/user!input.dhtml?id=${hrUser.id?c}');
         });
@@ -151,13 +151,7 @@
                     <button class="btn btn-primary" type="button" id="passwordBtn">更改密码</button>
                 </#if>
                 <#if isAuthorized>
-                    <button class="btn btn-success" type="button" id="authorizedBtn">授权</button>
-                </#if>
-                <#if isAdmin>
-                    <button class="btn btn-info changeAdmin" type="button"><i class="icon-remove icon-white"></i>&nbsp;关闭管理员
-                    </button>
-                <#else >
-                    <button class="btn btn-info changeAdmin" type="button"><i class="icon-ok icon-white"></i>&nbsp;开通管理员</button>
+                    <button class="btn btn-success" type="button" id="authorizedBtn">授权机构</button>
                 </#if>
             </td>
         </tr>
@@ -165,22 +159,27 @@
     </table>
     <table class="table table-hover  table-bordered" style="margin-top: 5px;">
         <thead>
-        <tr>
-            <th>授权机构</th>
-            <th>授权时间</th>
-            <th>授权人</th>
-            <th style="width: 75px;text-align: center;">操作</th>
+        <tr >
+            <th  style="width: 160px;text-align: center;">授权机构</th>
+            <th style="text-align: center;">授权时间</th>
+            <th  style="width: 330px; text-align: center;">权限</th>
+            <th style="width: 120px;text-align: center;">操作</th>
         </tr>
         </thead>
         <#if authorizedList?exists&&authorizedList?size gt 0>
             <tbody>
                 <#list authorizedList as authorized>
                 <tr <#if (authorized_index+1)%2!=0>class="oddBgColor"</#if>>
-                    <td>${(authorized.orgId.orgName)?if_exists}</td>
-                    <td>${(authorized.created)?string("yyyy-MM-dd")}</td>
-                    <td>${(authorized.createdBy)?if_exists}</td>
+                    <td class="txt_hidden" style="width: 160px; text-align: center;">${(authorized.orgId.orgName)?if_exists}</td>
+                    <td style="text-align: center;">${(authorized.created)?string("yyyy-MM-dd")}</td>
+                    <td class="txt_hidden" style="width:330px;text-align: left;">
+                    <span title="${(authorized.roleName)?if_exists}">${(authorized.roleName)?if_exists}</span>
+                    </td>
                     <td style="text-align: center;">
-                        <a href="###" title="删除" uid="${authorized.id?c}" class="deleteAuthorized"><i class="icon-trash"></i> 删除</a>
+                        <a href="###" title="增加角色" uid="${authorized.id?c}" class="addRole"><i class="icon-plus"></i>设置权限</a>
+                        <#if (authorized.orgId.id)!=(hrUser.orgId.id)&&(authorized.groupId.id)==(hrUser.groupId.id)>
+                            <a href="###" title="删除" uid="${authorized.id?c}" class="deleteAuthorized"><i class="icon-trash"></i> 删除</a>
+                        </#if>
                     </td>
                 </tr>
                 </#list>

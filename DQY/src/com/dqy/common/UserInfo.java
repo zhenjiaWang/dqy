@@ -55,6 +55,8 @@ public class UserInfo implements Serializable {
     private String userName;
     
     private String department;
+
+    private Long departmentId;
     
     private String job;
     
@@ -71,6 +73,10 @@ public class UserInfo implements Serializable {
     private String childMenu;
 
     private List<SysOrg> authOrgList;
+
+    private List<String> roleList;
+
+    private String roleId;
 
 
     public String getSessionId() {
@@ -254,5 +260,30 @@ public class UserInfo implements Serializable {
 
     public void setOrgNo(String orgNo) {
         this.orgNo = orgNo;
+    }
+
+
+    public List<String> getRoleList() {
+        return roleList;
+    }
+
+    public void setRoleList(List<String> roleList) {
+        this.roleList = roleList;
+    }
+
+    public String getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(String roleId) {
+        this.roleId = roleId;
+    }
+
+    public Long getDepartmentId() {
+        return departmentId;
+    }
+
+    public void setDepartmentId(Long departmentId) {
+        this.departmentId = departmentId;
     }
 }

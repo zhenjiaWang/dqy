@@ -958,6 +958,7 @@ table {
   text-align: left;
   vertical-align: top;
   border-top: 1px solid #dddddd;
+  word-wrap: break-word;word-break: break-all;
 }
 .table th {
   font-weight: bold;
@@ -3103,7 +3104,6 @@ input[type="submit"].btn.btn-mini {
 .nav > li > a:hover,
 .nav > li > a:focus {
   text-decoration: none;
-  background-color: #eeeeee;
 }
 .nav > li > a > img {
   max-width: none;

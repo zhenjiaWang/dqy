@@ -9,7 +9,7 @@
 .login-box table td{padding:7px 0;}
 .login-box table th{font-size: 14px;padding:0 5px;font-weight: bold;}
 .login-box table td span.int{display:block;width:219px;height:39px;background:url(../images/cssimg/int-bg.png);}
-.login-box table td span.int input{color: #91a8bf;width:202px;height:33px;padding:0 5px;border-radius:5px;line-height: 34px;border: none;background:none;position:relative;top:3px;left:3px;}
+.login-box table td span.int input{color: #91a8bf;width:202px;height:33px;padding:0 5px;border-radius:5px;line-height: 34px;border: none;background:none;position:relative;top:3px;left:1px;}
 .login-btn{width:171px;height:39px;background: url(../images/cssimg/logg-in.png);display:inline-block;cursor: pointer;font-size:0;line-height:0;margin:20px 0 0 30px;}
 a.more {position: relative;bottom:-5px;line-height:15px;}
 .dqy-ico{display:inline-block;font-size:0;line-height: 0;width:18px;height:20px;background: url(../images/cssimg/dqy-ico.png); vertical-align:middle;
@@ -212,4 +212,6 @@ span.label{border-radius: 0;padding:5px 10px;}
 .badge{padding:2px 5px;}
 .noborder td,.noborder th{border:0;}
 .btn{*margin-top: 1px;}
-input{height:25px;}
+input{height:25px!important;}
+label input{height:auto!important;}
+.login-box table td span.int input{height:33px!important;line-height: 33px;top:3px;border-radius:5px;}

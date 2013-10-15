@@ -198,7 +198,7 @@
             </table>
         </div>
     </div>
-    <p class="mart10 marr15 clearfix">
+    <p class="mart10  clearfix">
         <#if wfReqTask.taskState==0>
             <#if wfReqTask.nodeSeq gt 1>
                 <button class="btn btn-inverse floatright " type="button" id="returnBtn">回退</button>

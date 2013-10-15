@@ -11,7 +11,7 @@
         },
         async: {
             enable: true,
-            url:"/hr/department!treeData.dhtml",
+            url:"/sys/financialTitle!treeData.dhtml",
             autoParam:["id=parentId", "name=n", "level=lv"]
         },
         callback: {
@@ -20,7 +20,7 @@
     };
     function zTreeOnClick(event, treeId, treeNode) {
         srcNode=treeNode;
-        $('#frameDetail').attr('src','/hr/department!view.dhtml?id='+treeNode.id);
+        $('#frameDetail').attr('src','/sys/financialTitle!view.dhtml?id='+treeNode.id);
     };
     function reloadTree(b) {
         var parentNode = null;
@@ -56,7 +56,7 @@
             <td style="width: auto;text-align: left;vertical-align: top;">
                 <div style="width:100%; ">
                     <iframe
-                            id="frameDetail" name="frameDetail" src="/hr/department!input.dhtml"
+                            id="frameDetail" name="frameDetail" src="/sys/financialTitle!input.dhtml"
                             width="100%" height="550"
                             frameborder="0"></iframe>
                 </div>

@@ -59,7 +59,7 @@
                     <li class="apply"><a href="/wf/advanceAccount.dhtml"><em></em>申请平台</a></li>
                     <li class="info"><a href="#"><em></em>信息平台</a></li>
                     <li class="budget"><a href="/sys/budgetAmount.dhtml"><em></em>预算管理</a></li>
-                    <li class="sys"><a href="/sys/orgGroup.dhtml"><em></em>系统管理</a></li>
+                    <li class="sys"><a href="/common/common!sysIndex.dhtml"><em></em>系统管理</a></li>
                 </ul>
             </div>
             <!--右侧begin-->

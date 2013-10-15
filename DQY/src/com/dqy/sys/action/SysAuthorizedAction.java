@@ -19,7 +19,9 @@ import org.guiceside.persistence.hibernate.dao.hquery.Selector;
 import org.guiceside.web.annotation.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by IntelliJ IDEA.
@@ -63,6 +65,14 @@ public class SysAuthorizedAction extends ActionSupport<SysAuthorized> {
     @ReqSet
     private List<SysOrg> orgList;
 
+    @ReqSet
+    private List<String> roleList;
+
+    @ReqSet
+    private Map<String,String> roleNameMap;
+
+    @ReqSet
+    private List<String> myRoleList;
     @Override
     public String execute() throws Exception {
         return "success";  //To change body of implemented methods use File | Settings | File Templates.
@@ -97,6 +107,47 @@ public class SysAuthorizedAction extends ActionSupport<SysAuthorized> {
         return "success";  //To change body of implemented methods use File | Settings | File Templates.
     }
 
+    @PageFlow(result = {@Result(name = "success", path = "/view/sys/authorized/role.ftl", type = Dispatcher.FreeMarker)})
+    public String role() throws Exception {
+        UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
+        if (id != null && userInfo != null) {
+            sysAuthorized=this.sysAuthorizedService.getById(id);
+            if (sysAuthorized!=null) {
+                roleList=new ArrayList<String>();
+                roleList.add("SYS_GROUP");
+                roleList.add("SYS_USER");
+                roleList.add("SYS_APPROVE");
+                roleList.add("SYS_FINANCIAL");
+                roleList.add("SYS_BUDGET");
+                roleList.add("LOOK_BUDGET");
+                roleList.add("SET_BUDGET");
+                roleList.add("GENERAL");
+
+                roleNameMap=new HashMap<String, String>();
+                roleNameMap.put("SYS_GROUP","集团机构管理");
+                roleNameMap.put("SYS_USER","部门用户管理");
+                roleNameMap.put("SYS_APPROVE","审批岗位设置");
+                roleNameMap.put("SYS_FINANCIAL","财务科目管理");
+                roleNameMap.put("SYS_BUDGET","预算科目管理");
+                roleNameMap.put("LOOK_BUDGET","预算查看");
+                roleNameMap.put("SET_BUDGET","预算设置");
+                roleNameMap.put("GENERAL","普通用户");
+
+                String roleId=sysAuthorized.getRoleId();
+                if(StringUtils.isNotBlank(roleId)){
+                    String roleIds[]=roleId.split(",");
+                    if(roleIds!=null&&roleIds.length>0){
+                        myRoleList=new ArrayList<String>();
+                        for(String r:roleIds){
+                            myRoleList.add(r);
+                        }
+                    }
+                }
+            }
+        }
+        return "success";  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
     @Token
     public String save() throws Exception {
         UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
@@ -118,6 +169,7 @@ public class SysAuthorizedAction extends ActionSupport<SysAuthorized> {
                                 authorized.setUserId(hrUser);
                                 authorized.setOrgId(org);
                                 authorized.setUseYn("Y");
+                                authorized.setRoleId("GENERAL");
                                 bind(authorized);
                                 authorizedList.add(authorized);
                             }
@@ -127,6 +179,30 @@ public class SysAuthorizedAction extends ActionSupport<SysAuthorized> {
             }
             if(authorizedList!=null&&!authorizedList.isEmpty()){
                 this.sysAuthorizedService.save(authorizedList);
+            }
+        }
+        return "saveSuccess";
+    }
+
+    @Token
+    public String saveRole() throws Exception {
+        UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
+        if (userInfo != null && id!=null) {
+            sysAuthorized=this.sysAuthorizedService.getById(id);
+            if(sysAuthorized!=null){
+                String[] roleIds = getHttpServletRequest().getParameterValues("roleIds");
+                String role="";
+                if(roleIds!=null && roleIds.length > 0){
+                    for(String r:roleIds){
+                        role+=r+",";
+                    }
+                }
+                if(StringUtils.isBlank(role)){
+                    role="GENERAL";
+                }
+                sysAuthorized.setRoleId(role);
+                bind(sysAuthorized);
+                this.sysAuthorizedService.save(sysAuthorized);
             }
         }
         return "saveSuccess";

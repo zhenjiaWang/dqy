@@ -52,6 +52,9 @@ public class CommonAction extends BaseAction {
     @ReqSet
     private Long orgId;
 
+    @ReqSet
+    private String authUrl;
+
 
     @Override
     public String execute() throws Exception {
@@ -250,5 +253,33 @@ public class CommonAction extends BaseAction {
         }
         writeJsonByAction(jsonArray.toString());
         return null; //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @PageFlow(result = {@Result(name = "success", path = "${authUrl}", type = Dispatcher.Redirect),
+            @Result(name = "index", path = "/common/login!index.dhtml", type = Dispatcher.Redirect)})
+    public String sysIndex() throws Exception {
+        UserInfo userInfo=UserSession.getUserInfo(getHttpServletRequest());
+        if(userInfo!=null){
+            List<String> roleList=userInfo.getRoleList();
+            if(roleList!=null&&!roleList.isEmpty()){
+                if(roleList.contains("SYS_GROUP")){
+                    authUrl="/sys/orgGroup.dhtml";
+                }else if(roleList.contains("SYS_USER")){
+                    authUrl="/hr/department.dhtml";
+                }else if(roleList.contains("SYS_FINANCIAL")||roleList.contains("SYS_BUDGET")){
+                    if(roleList.contains("SYS_FINANCIAL")){
+                        authUrl="/sys/financialTitle.dhtml";
+                    }else if(roleList.contains("SYS_BUDGET")){
+                        authUrl="/sys/budgetType.dhtml";
+                    }
+                }else if(roleList.contains("SYS_APPROVE")){
+                    authUrl="/wf/variableGlobal.dhtml";
+                }
+                if(StringUtils.isNotBlank(authUrl)){
+                    return "success";
+                }
+            }
+        }
+        return "index";  //To change body of implemented methods use File | Settings | File Templates.
     }
 }

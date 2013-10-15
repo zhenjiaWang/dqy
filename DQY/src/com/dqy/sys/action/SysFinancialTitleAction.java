@@ -57,14 +57,20 @@ public class SysFinancialTitleAction extends ActionSupport<SysFinancialTitle> {
     private Long parentId;
 
     @ReqSet
+    private SysFinancialTitle parentTitle;
+
+    @ReqSet
+    private SysFinancialTitle rootTitle;
+
+    @ReqSet
     private Long lv1Id;
 
+    @ReqSet
+    private Long orgId;
 
     @ReqSet
     private String autoTitleNo;
 
-    @ReqSet
-    private Integer autoMaxDisplayOrder;
 
     @ReqSet
     private List<SysFinancialTitle> financialTitleList;
@@ -72,59 +78,26 @@ public class SysFinancialTitleAction extends ActionSupport<SysFinancialTitle> {
     @ReqSet
     private List<SysFinancialTitle> titleList;
 
+    @ReqSet
+    private Integer maxDisplayOrder;
+
+    @ReqSet
+    private Integer childCount = 0;
+
+    @ReqGet
+    @ReqSet
+    private Long reloadTree;
+
+
     @Override
-    @PageFlow(result = {@Result(name = "success", path = "/view/sys/financialTitle/list.ftl", type = Dispatcher.FreeMarker)})
+    @PageFlow(result = {@Result(name = "success", path = "/view/sys/financialTitle/index.ftl", type = Dispatcher.FreeMarker)})
     public String execute() throws Exception {
         UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
         if (userInfo != null) {
             userInfo.setTopMenu("sys");
             userInfo.setLeftMenu("financialTitle");
-            pageObj = this.sysFinancialTitleService.getPageList(getStart(), rows, searchModeCallback());
-            if (pageObj != null) {
-                financialTitleList = pageObj.getResultList();
-            }
         }
         return "success";  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-
-    private List<Selector> searchModeCallback() throws Exception {
-        List<Selector> selectorList = new ArrayList<Selector>();
-        UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
-        if (userInfo != null) {
-            selectorList.add(SelectorUtils.$eq("orgId.id", userInfo.getOrgId()));
-            selectorList.add(SelectorUtils.$order("titleNo"));
-            selectorList.add(SelectorUtils.$order("titleLevel"));
-            selectorList.add(SelectorUtils.$order("displayOrder"));
-        }
-        return selectorList;
-    }
-
-    public String buildTitleNo() throws Exception {
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("result", -1);
-        UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
-        if (parentId != null && userInfo != null) {
-            sysFinancialTitle = this.sysFinancialTitleService.getById(parentId);
-            if (sysFinancialTitle != null) {
-                autoMaxDisplayOrder = this.sysFinancialTitleService.getMaxOrderByOrgId(userInfo.getOrgId(), sysFinancialTitle.getId());
-                autoTitleNo = sysFinancialTitle.getTitleNo() + "-";
-            }
-            if (autoMaxDisplayOrder == null) {
-                autoMaxDisplayOrder = 0;
-            }
-            autoMaxDisplayOrder = autoMaxDisplayOrder + 1;
-            if (autoMaxDisplayOrder.intValue() < 10) {
-                autoTitleNo += "0" + autoMaxDisplayOrder;
-            } else {
-                autoTitleNo += +autoMaxDisplayOrder;
-            }
-            jsonObject.put("autoMaxDisplayOrder", autoMaxDisplayOrder);
-            jsonObject.put("autoTitleNo", autoTitleNo);
-            jsonObject.put("result", 0);
-        }
-        writeJsonByAction(jsonObject.toString());
-        return null;
     }
 
     public String getTitleList() throws Exception {
@@ -147,112 +120,132 @@ public class SysFinancialTitleAction extends ActionSupport<SysFinancialTitle> {
                     jsonArray.add(item);
                 }
                 jsonObject.put("titleList", jsonArray);
+                jsonObject.put("result", 0);
             }
-            jsonObject.put("result", 0);
         }
         writeJsonByAction(jsonObject.toString());
         return null;
     }
+    public String treeData() throws Exception {
+        UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
+        JSONArray jsonArray = new JSONArray();
+        JSONObject node = null;
+        if (userInfo != null) {
+            orgId = userInfo.getOrgId();
+            if (parentId == null) {
+                titleList = this.sysFinancialTitleService.getTitleListByLevel(userInfo.getOrgId(), 1, true);
+            } else {
+                titleList = this.sysFinancialTitleService.getTitleListByParentId(userInfo.getOrgId(), parentId, true);
+            }
+            if (titleList != null && !titleList.isEmpty()) {
+                for (SysFinancialTitle financialTitle : titleList) {
+                    node = new JSONObject();
+                    node.put("name", StringUtils.defaultIfEmpty(financialTitle.getTitleName()));
+                    node.put("id", StringUtils.defaultIfEmpty(financialTitle.getId()));
+                    Integer count = this.sysFinancialTitleService.getCountByParentId(userInfo.getOrgId(), financialTitle.getId(), true);
+                    if (count == null) {
+                        count = 0;
+                    }
+                    if (count.intValue() > 0) {
+                        node.put("isParent", true);
+                    } else {
+                        node.put("isParent", false);
+                    }
+                    jsonArray.add(node);
+                }
+            }
+        }
+        writeJsonByAction(jsonArray.toString());
+        return null; //To change body of implemented methods use File | Settings | File Templates.
+    }
 
-    @PageFlow(result = {@Result(name = "input1", path = "/view/sys/financialTitle/input1.ftl", type = Dispatcher.FreeMarker),
-            @Result(name = "input2", path = "/view/sys/financialTitle/input2.ftl", type = Dispatcher.FreeMarker),
-            @Result(name = "input3", path = "/view/sys/financialTitle/input3.ftl", type = Dispatcher.FreeMarker)})
+    @PageFlow(result = {@Result(name = "success", path = "/view/sys/financialTitle/input.ftl", type = Dispatcher.FreeMarker)})
     public String input() throws Exception {
         UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
         if (userInfo != null) {
-            if (id != null) {
-                sysFinancialTitle = this.sysFinancialTitleService.getById(id);
-                if (sysFinancialTitle != null) {
-                    level = sysFinancialTitle.getTitleLevel();
-                    if(level.intValue()==3){
-                        SysFinancialTitle lv2=sysFinancialTitle.getParentId();
-                        if(lv2!=null){
-                            SysFinancialTitle lv1=lv2.getParentId();
-                            if(lv1!=null){
-                                lv1Id=lv1.getId();
-                            }
-                        }
-                    }
-                }
-            }
-            List<Selector> selectorList = new ArrayList<Selector>();
-            selectorList.add(SelectorUtils.$eq("orgId.id", userInfo.getOrgId()));
-            selectorList.add(SelectorUtils.$order("displayOrder"));
-            if (level.intValue() == 2) {
-                selectorList.add(SelectorUtils.$eq("titleLevel", 1));
-                selectorList.add(SelectorUtils.$eq("useYn", "Y"));
-                financialTitleList = this.sysFinancialTitleService.getAllList(selectorList);
-            } else if (level.intValue() == 3) {
-                selectorList.add(SelectorUtils.$eq("titleLevel", 1));
-                selectorList.add(SelectorUtils.$eq("useYn", "Y"));
-                titleList = this.sysFinancialTitleService.getAllList(selectorList);
-
-                selectorList.clear();
-                selectorList.add(SelectorUtils.$eq("orgId.id", userInfo.getOrgId()));
-                selectorList.add(SelectorUtils.$order("displayOrder"));
-                selectorList.add(SelectorUtils.$eq("useYn", "Y"));
-                if (titleList != null && !titleList.isEmpty()) {
-                    if(lv1Id==null){
-                        SysFinancialTitle first = titleList.get(0);
-                        if (first != null) {
-                            selectorList.add(SelectorUtils.$eq("parentId.id", first.getId()));
-                            financialTitleList = this.sysFinancialTitleService.getAllList(selectorList);
-                        }
-                    }else{
-                        selectorList.add(SelectorUtils.$eq("parentId.id", lv1Id));
-                        financialTitleList = this.sysFinancialTitleService.getAllList(selectorList);
-                    }
-                }
-            }
             sysOrg = this.sysOrgService.getById(userInfo.getOrgId());
             autoTitleNo = sysOrg.getOrgNo() + "-";
-            if (level.intValue() == 1 && id == null) {
-                autoMaxDisplayOrder = this.sysFinancialTitleService.getMaxOrderByOrgId(sysOrg.getId());
-            } else if (level.intValue() > 1 && id == null) {
-                if (financialTitleList != null && !financialTitleList.isEmpty()) {
-                    SysFinancialTitle first = financialTitleList.get(0);
-                    if (first != null) {
-                        autoMaxDisplayOrder = this.sysFinancialTitleService.getMaxOrderByOrgId(sysOrg.getId(), first.getId());
-                        autoTitleNo = first.getTitleNo() + "-";
+            if (id != null) {
+                sysFinancialTitle = this.sysFinancialTitleService.getById(id);
+                parentTitle=this.sysFinancialTitle.getParentId();
+                maxDisplayOrder=sysFinancialTitle.getDisplayOrder();
+            }else{
+                if (parentId != null) {
+                    parentTitle = this.sysFinancialTitleService.getById(parentId);
+                    if(parentTitle!=null){
+                        autoTitleNo = parentTitle.getTitleNo() + "-";
+                        maxDisplayOrder=this.sysFinancialTitleService.getMaxOrderByParentId(userInfo.getOrgId(),parentTitle.getId(),true);
                     }
+                }else{
+                    maxDisplayOrder=this.sysFinancialTitleService.getMaxOrderByOrgId(userInfo.getOrgId(),true);
                 }
+                if(maxDisplayOrder==null){
+                    maxDisplayOrder=0;
+                }
+                maxDisplayOrder+=1;
             }
-            if (autoMaxDisplayOrder == null) {
-                autoMaxDisplayOrder = 0;
-            }
-            autoMaxDisplayOrder = autoMaxDisplayOrder + 1;
-            if (autoMaxDisplayOrder.intValue() < 10) {
-                autoTitleNo += "0" + autoMaxDisplayOrder;
+            if (maxDisplayOrder.intValue() < 10) {
+                autoTitleNo += "0" + maxDisplayOrder;
             } else {
-                autoTitleNo += +autoMaxDisplayOrder;
+                autoTitleNo += +maxDisplayOrder;
             }
 
         }
+        return "success";  //To change body of implemented methods use File | Settings | File Templates.
+    }
 
-        return "input" + level;  //To change body of implemented methods use File | Settings | File Templates.
+    @PageFlow(result = {@Result(name = "success", path = "/view/sys/financialTitle/view.ftl", type = Dispatcher.FreeMarker)})
+    public String view() throws Exception {
+        UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
+        if (userInfo != null) {
+            if (id != null) {
+                this.sysFinancialTitle = this.sysFinancialTitleService.getById(id);
+                if (sysFinancialTitle != null) {
+                    childCount = this.sysFinancialTitleService.getCountByParentId(userInfo.getOrgId(), sysFinancialTitle.getId(), true);
+                    parentTitle = sysFinancialTitle.getParentId();
+                }
+            }
+        }
+        return "success";
     }
 
     @Token
+    @PageFlow(result = {@Result(name = "success", path = "/sys/financialTitle!view.dhtml?id=${sysFinancialTitle.id}&reloadTree=${reloadTree}", type = Dispatcher.Redirect)})
     public String save() throws Exception {
         UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
-        if (userInfo != null && sysFinancialTitle != null) {
-            if (sysFinancialTitle.getId() != null) {
-                SysFinancialTitle old = this.sysFinancialTitleService.getById(sysFinancialTitle.getId());
-                sysFinancialTitle = this.copy(sysFinancialTitle, old);
-            }
-            sysOrg = sysOrgService.getById(userInfo.getOrgId());
-            if (sysOrg != null) {
-                sysFinancialTitle.setOrgId(sysOrg);
-            }
-            if (sysFinancialTitle.getParentId() != null) {
-                if (sysFinancialTitle.getParentId().getId() == null) {
-                    sysFinancialTitle.setParentId(null);
+        if (userInfo != null) {
+            if (sysFinancialTitle != null) {
+                if (sysFinancialTitle != null) {
+                    reloadTree=1l;
+                    if (sysFinancialTitle.getId() != null) {
+                        SysFinancialTitle old = this.sysFinancialTitleService.getById(sysFinancialTitle.getId());
+                        sysFinancialTitle = this.copy(sysFinancialTitle, old);
+                        reloadTree=2l;
+                    }
+                    if (sysFinancialTitle.getParentId() != null) {
+                        if (sysFinancialTitle.getParentId().getId() != null) {
+                            SysFinancialTitle parentId = this.sysFinancialTitleService.getById(sysFinancialTitle.getParentId().getId());
+                            if (parentId != null) {
+                                sysFinancialTitle.setTitleLevel(Integer.valueOf(parentId.getTitleLevel().intValue() + 1));
+                            }
+                        } else {
+                            sysFinancialTitle.setParentId(null);
+                            sysFinancialTitle.setTitleLevel(Integer.valueOf(1));
+                        }
+                    } else {
+                        sysFinancialTitle.setParentId(null);
+                        sysFinancialTitle.setTitleLevel(Integer.valueOf(1));
+                    }
+                    SysOrg org = this.sysOrgService.getById(userInfo.getOrgId());
+                    if(org!=null){
+                        sysFinancialTitle.setOrgId(org);
+                    }
                 }
+                this.bind(sysFinancialTitle);
+                this.sysFinancialTitleService.save(sysFinancialTitle);
             }
-            this.bind(sysFinancialTitle);
-            this.sysFinancialTitleService.save(sysFinancialTitle);
         }
-        return "saveSuccess";
+        return "success";
     }
 
     public String validateNo() throws Exception {
@@ -316,28 +309,4 @@ public class SysFinancialTitleAction extends ActionSupport<SysFinancialTitle> {
         writeJsonByAction(item.toString());
         return null;
     }
-
-    @PageFlow(result = {@Result(name = "success", path = "/sys/financialTitle.dhtml", type = Dispatcher.Redirect)})
-    public String stop() throws Exception {
-        if (id != null) {
-            sysFinancialTitle = this.sysFinancialTitleService.getById(id);
-            if (sysFinancialTitle != null) {
-                sysFinancialTitle.setUseYn("N");
-                sysFinancialTitleService.save(sysFinancialTitle);
-            }
-        }
-        return "success";
-    }
-    @PageFlow(result = {@Result(name = "success", path = "/sys/financialTitle.dhtml", type = Dispatcher.Redirect)})
-    public String play() throws Exception {
-        if (id != null) {
-            sysFinancialTitle = this.sysFinancialTitleService.getById(id);
-            if (sysFinancialTitle != null) {
-                sysFinancialTitle.setUseYn("Y");
-                sysFinancialTitleService.save(sysFinancialTitle);
-            }
-        }
-        return "success";
-    }
-
 }

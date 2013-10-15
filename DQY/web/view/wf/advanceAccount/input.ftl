@@ -168,6 +168,9 @@
                 </tr>
                 </tbody>
             </table>
+            <p class="mart10  clearfix" style="width: 725px;">
+                <button class="btn btn-success floatright " type="button" id="nextBtn">继续</button>
+            </p>
             <input type="hidden" name="wfReq.applyId" id="wfReq.applyId" value="${applyId?if_exists}">
             <input type="hidden" name="wfReq.id" id="wfReq.id">
             <input type="hidden" name="flowId" id="flowId">
@@ -175,8 +178,6 @@
             <div id="nodeFlowHidden"></div>
         </form>
     </div>
-    <p class="mart10 marr15 clearfix">
-        <button class="btn btn-success floatright " type="button" id="nextBtn">继续</button>
-    </p>
+
     </#if>
 </@wfCommon.wf_common>

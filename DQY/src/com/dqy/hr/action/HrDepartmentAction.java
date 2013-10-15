@@ -85,16 +85,16 @@ public class HrDepartmentAction extends ActionSupport<HrDepartment> {
         UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
         JSONArray jsonArray = new JSONArray();
         JSONObject node = null;
-        List<HrDepartment> depeList = null;
+        List<HrDepartment> deptList = null;
         if (userInfo != null) {
             orgId = userInfo.getOrgId();
             if (parentId == null) {
-                depeList = this.hrDepartmentService.getDeptListByLevel(userInfo.getOrgId(), 1, true);
+                deptList = this.hrDepartmentService.getDeptListByLevel(userInfo.getOrgId(), 1, true);
             } else {
-                depeList = this.hrDepartmentService.getDeptListByParentId(userInfo.getOrgId(), parentId, true);
+                deptList = this.hrDepartmentService.getDeptListByParentId(userInfo.getOrgId(), parentId, true);
             }
-            if (depeList != null && !depeList.isEmpty()) {
-                for (HrDepartment hrDepartment : depeList) {
+            if (deptList != null && !deptList.isEmpty()) {
+                for (HrDepartment hrDepartment : deptList) {
                     node = new JSONObject();
                     node.put("name", StringUtils.defaultIfEmpty(hrDepartment.getDeptName()));
                     node.put("id", StringUtils.defaultIfEmpty(hrDepartment.getId()));

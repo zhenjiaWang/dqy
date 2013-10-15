@@ -77,16 +77,17 @@ public class SysBudgetAmountAction extends ActionSupport<SysBudgetAmount> {
     private List<SysBudgetAmount> sysBudgetAmountList;
 
     @ReqSet
-    private Map<String,List<SysBudgetTitle>> budgetTitleMap;
+    private Map<String, List<SysBudgetTitle>> budgetTitleMap;
 
     @ReqSet
-    private Map<String,Double> budgetAmountMap;
+    private Map<String, Double> budgetAmountMap;
+
     @Override
     @PageFlow(result = {@Result(name = "success", path = "/view/sys/budgetAmount/index.ftl", type = Dispatcher.FreeMarker)})
     public String execute() throws Exception {
         UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
         if (userInfo != null) {
-            totalAmount=0.00d;
+            totalAmount = 0.00d;
             userInfo.setTopMenu("budget");
             userInfo.setLeftMenu("budgetAmount");
             Date currentDate = DateFormatUtil.getCurrentDate(false);
@@ -98,43 +99,43 @@ public class SysBudgetAmountAction extends ActionSupport<SysBudgetAmount> {
             yearList.add(currentYear);
             yearList.add(currentYear + 1);
             yearList.add(currentYear + 2);
-            if (deptId != null) {
-                hrDepartment = this.hrDepartmentService.getById(deptId);
-                if (hrDepartment != null) {
-                    List<Selector> selectorList = new ArrayList<Selector>();
-                    selectorList.add(SelectorUtils.$eq("orgId.id", userInfo.getOrgId()));
-                    selectorList.add(SelectorUtils.$eq("deptId.id", hrDepartment.getId()));
-                    selectorList.add(SelectorUtils.$eq("useYn", "Y"));
-                    selectorList.add(SelectorUtils.$order("expenseType"));
-                    budgetTypeList=sysBudgetTypeService.getAllList(selectorList);
-                    if(budgetTypeList!=null&&!budgetTypeList.isEmpty()){
-                        budgetTitleMap=new HashMap<String, List<SysBudgetTitle>>();
-                        budgetAmountMap=new HashMap<String, Double>();
-                        List<SysBudgetTitle> budgetTitleList=null;
-                        for(SysBudgetType budgetType:budgetTypeList){
-                            selectorList.clear();
-                            selectorList.add(SelectorUtils.$eq("typeId.id", budgetType.getId()));
-                            selectorList.add(SelectorUtils.$eq("useYn", "Y"));
-                            selectorList.add(SelectorUtils.$order("titleName"));
-                            budgetTitleList=this.sysBudgetTitleService.getAllList(selectorList);
-                            if(budgetTitleList!=null&&!budgetTitleList.isEmpty()){
-                                budgetTitleMap.put(budgetType.getId()+"_",budgetTitleList);
-                                if(budgetTitleList!=null&&!budgetTitleList.isEmpty()){
-                                    for(SysBudgetTitle budgetTitle:budgetTitleList){
-                                        for(int i=1;i<=12;i++){
-                                            budgetAmountMap.put(hrDepartment.getId()+"_"+budgetTitle.getId()+"_"+budgetType.getId()+"_"+i,0.00d);
-                                        }
+
+            hrDepartment = this.hrDepartmentService.getById(userInfo.getDepartmentId());
+            if (hrDepartment != null) {
+                deptId = hrDepartment.getId();
+                List<Selector> selectorList = new ArrayList<Selector>();
+                selectorList.add(SelectorUtils.$eq("orgId.id", userInfo.getOrgId()));
+                selectorList.add(SelectorUtils.$eq("deptId.id", hrDepartment.getId()));
+                selectorList.add(SelectorUtils.$eq("useYn", "Y"));
+                selectorList.add(SelectorUtils.$order("expenseType"));
+                budgetTypeList = sysBudgetTypeService.getAllList(selectorList);
+                if (budgetTypeList != null && !budgetTypeList.isEmpty()) {
+                    budgetTitleMap = new HashMap<String, List<SysBudgetTitle>>();
+                    budgetAmountMap = new HashMap<String, Double>();
+                    List<SysBudgetTitle> budgetTitleList = null;
+                    for (SysBudgetType budgetType : budgetTypeList) {
+                        selectorList.clear();
+                        selectorList.add(SelectorUtils.$eq("typeId.id", budgetType.getId()));
+                        selectorList.add(SelectorUtils.$eq("useYn", "Y"));
+                        selectorList.add(SelectorUtils.$order("titleName"));
+                        budgetTitleList = this.sysBudgetTitleService.getAllList(selectorList);
+                        if (budgetTitleList != null && !budgetTitleList.isEmpty()) {
+                            budgetTitleMap.put(budgetType.getId() + "_", budgetTitleList);
+                            if (budgetTitleList != null && !budgetTitleList.isEmpty()) {
+                                for (SysBudgetTitle budgetTitle : budgetTitleList) {
+                                    for (int i = 1; i <= 12; i++) {
+                                        budgetAmountMap.put(hrDepartment.getId() + "_" + budgetTitle.getId() + "_" + budgetType.getId() + "_" + i, 0.00d);
                                     }
                                 }
                             }
                         }
-                        totalAmount=this.sysBudgetAmountService.geTotalAmount(userInfo.getOrgId(),currentYear,hrDepartment.getId());
-                        sysBudgetAmountList=this.sysBudgetAmountService.getAmountList(userInfo.getOrgId(),currentYear,hrDepartment.getId());
-                        if(sysBudgetAmountList!=null&&!sysBudgetAmountList.isEmpty()){
-                            for(SysBudgetAmount budgetAmount:sysBudgetAmountList){
-                                sysBudgetAmount=budgetAmount;
-                                budgetAmountMap.put(hrDepartment.getId()+"_"+get(budgetAmount,"titleId.id")+"_"+get(budgetAmount,"titleId.typeId.id")+"_"+budgetAmount.getMonth(),budgetAmount.getAmount());
-                            }
+                    }
+                    totalAmount = this.sysBudgetAmountService.geTotalAmount(userInfo.getOrgId(), currentYear, hrDepartment.getId());
+                    sysBudgetAmountList = this.sysBudgetAmountService.getAmountList(userInfo.getOrgId(), currentYear, hrDepartment.getId());
+                    if (sysBudgetAmountList != null && !sysBudgetAmountList.isEmpty()) {
+                        for (SysBudgetAmount budgetAmount : sysBudgetAmountList) {
+                            sysBudgetAmount = budgetAmount;
+                            budgetAmountMap.put(hrDepartment.getId() + "_" + get(budgetAmount, "titleId.id") + "_" + get(budgetAmount, "titleId.typeId.id") + "_" + budgetAmount.getMonth(), budgetAmount.getAmount());
                         }
                     }
                 }
@@ -142,39 +143,40 @@ public class SysBudgetAmountAction extends ActionSupport<SysBudgetAmount> {
         }
         return "success";  //To change body of implemented methods use File | Settings | File Templates.
     }
+
     @PageFlow(result = {@Result(name = "success", path = "/sys/budgetAmount.dhtml?currentYear=${currentYear}&deptId=${deptId}", type = Dispatcher.Redirect)})
     public String save() throws Exception {
         UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
         if (userInfo != null) {
-            if(currentYear!=null&&deptId!=null){
+            if (currentYear != null && deptId != null) {
                 hrDepartment = this.hrDepartmentService.getById(deptId);
-                SysOrg sysOrg=this.sysOrgService.getById(userInfo.getOrgId());
+                SysOrg sysOrg = this.sysOrgService.getById(userInfo.getOrgId());
                 if (hrDepartment != null) {
                     List<Selector> selectorList = new ArrayList<Selector>();
                     selectorList.add(SelectorUtils.$eq("orgId.id", userInfo.getOrgId()));
                     selectorList.add(SelectorUtils.$eq("deptId.id", hrDepartment.getId()));
                     selectorList.add(SelectorUtils.$eq("useYn", "Y"));
                     selectorList.add(SelectorUtils.$order("expenseType"));
-                    budgetTypeList=sysBudgetTypeService.getAllList(selectorList);
-                    if(budgetTypeList!=null&&!budgetTypeList.isEmpty()){
-                        sysBudgetAmountList=new ArrayList<SysBudgetAmount>();
-                        List<SysBudgetTitle> budgetTitleList=null;
-                        for(SysBudgetType budgetType:budgetTypeList){
+                    budgetTypeList = sysBudgetTypeService.getAllList(selectorList);
+                    if (budgetTypeList != null && !budgetTypeList.isEmpty()) {
+                        sysBudgetAmountList = new ArrayList<SysBudgetAmount>();
+                        List<SysBudgetTitle> budgetTitleList = null;
+                        for (SysBudgetType budgetType : budgetTypeList) {
                             selectorList.clear();
                             selectorList.add(SelectorUtils.$eq("typeId.id", budgetType.getId()));
                             selectorList.add(SelectorUtils.$eq("useYn", "Y"));
                             selectorList.add(SelectorUtils.$order("titleName"));
-                            budgetTitleList=this.sysBudgetTitleService.getAllList(selectorList);
-                            if(budgetTitleList!=null&&!budgetTitleList.isEmpty()){
-                                for(SysBudgetTitle budgetTitle:budgetTitleList){
-                                    for(int i=1;i<=12;i++){
-                                        Double amount= getParameter(hrDepartment.getId()+"_"+budgetTitle.getId()+"_"+budgetType.getId()+"_"+i,Double.class);
-                                        if(amount==null){
-                                            amount=0d;
+                            budgetTitleList = this.sysBudgetTitleService.getAllList(selectorList);
+                            if (budgetTitleList != null && !budgetTitleList.isEmpty()) {
+                                for (SysBudgetTitle budgetTitle : budgetTitleList) {
+                                    for (int i = 1; i <= 12; i++) {
+                                        Double amount = getParameter(hrDepartment.getId() + "_" + budgetTitle.getId() + "_" + budgetType.getId() + "_" + i, Double.class);
+                                        if (amount == null) {
+                                            amount = 0d;
                                         }
-                                        sysBudgetAmount= this.sysBudgetAmountService.getAmount(userInfo.getOrgId(),hrDepartment.getId(),budgetTitle.getId(),currentYear,i);
-                                        if(sysBudgetAmount==null){
-                                            sysBudgetAmount=new SysBudgetAmount();
+                                        sysBudgetAmount = this.sysBudgetAmountService.getAmount(userInfo.getOrgId(), hrDepartment.getId(), budgetTitle.getId(), currentYear, i);
+                                        if (sysBudgetAmount == null) {
+                                            sysBudgetAmount = new SysBudgetAmount();
                                             sysBudgetAmount.setOrgId(sysOrg);
                                             sysBudgetAmount.setTitleId(budgetTitle);
                                             sysBudgetAmount.setYear(currentYear);
@@ -190,7 +192,7 @@ public class SysBudgetAmountAction extends ActionSupport<SysBudgetAmount> {
                             }
                         }
                     }
-                    if(sysBudgetAmountList!=null&&!sysBudgetAmountList.isEmpty()){
+                    if (sysBudgetAmountList != null && !sysBudgetAmountList.isEmpty()) {
                         this.sysBudgetAmountService.save(sysBudgetAmountList);
                     }
                 }
@@ -198,7 +200,6 @@ public class SysBudgetAmountAction extends ActionSupport<SysBudgetAmount> {
         }
         return "success";
     }
-
 
 
 }

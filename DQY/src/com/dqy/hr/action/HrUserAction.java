@@ -8,11 +8,9 @@ import com.dqy.hr.entity.HrUserDetail;
 import com.dqy.hr.service.HrDepartmentService;
 import com.dqy.hr.service.HrUserDetailService;
 import com.dqy.hr.service.HrUserService;
-import com.dqy.sys.entity.SysAdmin;
 import com.dqy.sys.entity.SysAuthorized;
 import com.dqy.sys.entity.SysOrg;
 import com.dqy.sys.entity.SysOrgGroup;
-import com.dqy.sys.service.SysAdminService;
 import com.dqy.sys.service.SysAuthorizedService;
 import com.dqy.sys.service.SysOrgGroupService;
 import com.dqy.sys.service.SysOrgService;
@@ -24,9 +22,7 @@ import org.guiceside.persistence.entity.search.SelectorUtils;
 import org.guiceside.persistence.hibernate.dao.hquery.Selector;
 import org.guiceside.web.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by IntelliJ IDEA.
@@ -53,8 +49,6 @@ public class HrUserAction extends ActionSupport<HrUser> {
     @Inject
     private HrDepartmentService hrDepartmentService;
 
-    @Inject
-    private SysAdminService sysAdminService;
 
     @Inject
     private SysAuthorizedService sysAuthorizedService;
@@ -80,14 +74,7 @@ public class HrUserAction extends ActionSupport<HrUser> {
     private List<SysAuthorized> authorizedList;
 
     @ReqSet
-    private boolean isAdmin;
-
-    @ReqSet
     private boolean isPassword;
-
-    @ReqGet
-    private String adminYn;
-
 
     @ReqSet
     private boolean isAuthorized;
@@ -132,16 +119,36 @@ public class HrUserAction extends ActionSupport<HrUser> {
                     isPassword=true;
                 }
                 hrUserDetail=this.hrUserDetailService.getByUserId(hrUser.getId());
-                isAdmin = false;
-                Integer adminCount=this.sysAdminService.validateAdmin(userInfo.getOrgId(),hrUser.getId());
-                if(adminCount==null){
-                    adminCount=0;
-                }
-                if(adminCount.intValue()>0){
-                    isAdmin=true;
-                }
                 List<SysOrg> orgAllList = this.sysOrgService.getOrgListByGroupId(userInfo.getGroupId());
                 authorizedList=this.sysAuthorizedService.getAuthorizedList(userInfo.getGroupId(),hrUser.getId());
+                if(authorizedList!=null&&!authorizedList.isEmpty()){
+                   Map<String,String> roleNameMap=new HashMap<String, String>();
+                    roleNameMap.put("SYS_GROUP","集团机构管理");
+                    roleNameMap.put("SYS_USER","部门用户管理");
+                    roleNameMap.put("SYS_APPROVE","审批岗位设置");
+                    roleNameMap.put("SYS_FINANCIAL","财务科目管理");
+                    roleNameMap.put("SYS_BUDGET","预算科目管理");
+                    roleNameMap.put("LOOK_BUDGET","预算查看");
+                    roleNameMap.put("SET_BUDGET","预算设置");
+                    roleNameMap.put("GENERAL","普通用户");
+
+                    for(SysAuthorized authorized:authorizedList){
+                        String roleName="";
+                        String roleId=authorized.getRoleId();
+                        if(StringUtils.isNotBlank(roleId)){
+                            String[] roleIds=roleId.split(",");
+                            if(roleIds!=null&&roleIds.length>0){
+                                for(String r:roleIds){
+                                    roleName+=roleNameMap.get(r)+",";
+                                }
+                            }
+                        }
+                        if(StringUtils.isBlank(roleName)){
+                            roleName="&nbsp;";
+                        }
+                        authorized.setRoleName(roleName);
+                    }
+                }
                 if(orgAllList!=null&&!orgAllList.isEmpty()){
                     if(authorizedList!=null&&!authorizedList.isEmpty()){
                         isAuthorized=orgAllList.size()==authorizedList.size()?false:true;
@@ -154,34 +161,6 @@ public class HrUserAction extends ActionSupport<HrUser> {
         return "success";  //To change body of implemented methods use File | Settings | File Templates.
     }
 
-    @PageFlow(result = {@Result(name = "success", path = "/hr/user!view.dhtml?id=${hrUser.id}", type = Dispatcher.Redirect)})
-    public String changeAdmin() throws Exception {
-        UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
-        if (userInfo != null && id != null&& StringUtils.isNotBlank(adminYn)) {
-            hrUser = this.hrUserService.getById(id);
-            if(hrUser!=null){
-                SysAdmin sysAdmin= sysAdminService.getAdminByOrgIdUserId(userInfo.getOrgId(), hrUser.getId());
-                if(adminYn.equals("N")){
-                    if(sysAdmin!=null){
-                        this.sysAdminService.delete(sysAdmin);
-                    }
-                }else if(adminYn.equals("Y")){
-                    if(sysAdmin==null){
-                        sysAdmin=new SysAdmin();
-                        SysOrg sysOrg=this.sysOrgService.getById(userInfo.getOrgId());
-                        if(sysOrg!=null){
-                            sysAdmin.setOrgId(sysOrg);
-                            sysAdmin.setUserId(hrUser);
-                            sysAdmin.setUseYn("Y");
-                            bind(sysAdmin);
-                        }
-                        this.sysAdminService.save(sysAdmin);
-                    }
-                }
-            }
-        }
-        return "success";  //To change body of implemented methods use File | Settings | File Templates.
-    }
 
     @PageFlow(result = {@Result(name = "success", path = "/view/hr/user/pwd.ftl", type = Dispatcher.FreeMarker)})
     public String changePwd() throws Exception {
@@ -293,7 +272,15 @@ public class HrUserAction extends ActionSupport<HrUser> {
                     hrUserDetail.setUserSex(hrUser.getUserSex());
                     hrUserDetail.setUseYn("Y");
                     bind(hrUserDetail);
-                    this.hrUserService.save(hrUser,hrUserDetail);
+
+                    SysAuthorized authorized = new SysAuthorized();
+                    authorized.setGroupId(sysOrgGroup);
+                    authorized.setUserId(hrUser);
+                    authorized.setOrgId(sysOrg);
+                    authorized.setUseYn("Y");
+                    authorized.setRoleId("GENERAL");
+                    bind(authorized);
+                    this.hrUserService.save(hrUser,hrUserDetail,authorized);
                 }
 
             }

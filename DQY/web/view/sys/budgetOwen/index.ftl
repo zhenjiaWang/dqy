@@ -219,7 +219,7 @@
             <select class="int1 width-160" id="typeId" name="typeId">
                 <#if budgetTypeList?exists&&budgetTypeList?size gt 0>
                     <#list budgetTypeList as type>
-                        <option value="${type.id?c}">${type.expenseType?if_exists}</option>
+                        <option value="${type.id?c}">${type.expenseType?if_exists}[${(type.deptId.deptName)?if_exists}]</option>
                     </#list>
                 </#if>
             </select>

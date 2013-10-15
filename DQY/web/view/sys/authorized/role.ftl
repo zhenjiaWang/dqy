@@ -15,33 +15,43 @@
         }
     }
     $(document).ready(function () {
+    <#if myRoleList?exists&&myRoleList?size gt 0>
+        <#list myRoleList as myRole>
+        $('input[value="${myRole?if_exists}"]').attr("checked",'true');
+        </#list>
+    </#if>
     });
 </script>
-    <form class="form-horizontal" action="/sys/authorized!save.dhtml" method="POST" name="editForm"
+    <form class="form-horizontal" action="/sys/authorized!saveRole.dhtml" method="POST" name="editForm"
           id="editForm">
         <table width="90%">
             <tbody>
             <tr>
                 <th><strong>姓名：</strong></th>
-                <td>${hrUser.userName?if_exists}</td>
+                <td>${(sysAuthorized.userId.userName)?if_exists}</td>
                 <th><strong>部门：</strong></th>
-                <td>${(hrUser.deptId.deptName)?if_exists}</td>
+                <td>${(sysAuthorized.userId.deptId.deptName)?if_exists}</td>
             </tr>
             </tbody>
         </table>
-        <#if orgList?exists&&orgList?size gt 0>
+
+        <#if roleList?exists&&roleList?size gt 0>
             <div class="pop-in mart10">
                 <table width="90%" class="sq-tb">
                     <tbody>
-                        <#list orgList as org>
-                            <#assign odd=org_index%3/>
+                        <#list roleList as role>
+                            <#assign odd=role_index%3/>
                             <#if odd==0>
                             <tr>
                             </#if>
-                            <td style="width: 123px;"><label><input type="checkbox"  name="orgId" value="${org.id?c}"> ${org.orgName?if_exists}</label></td>
+                            <td style="width: 123px;">
+                                <label>
+                                    <input type="checkbox"  name="roleIds" value="${role?if_exists}" <#if !role_has_next> checked="checked" disabled</#if> > ${roleNameMap[role]?if_exists}
+                                </label>
+                            </td>
                             <#if odd==2>
                             </tr>
-                            <#elseif !org_has_next>
+                            <#elseif !role_has_next>
                                 <#list 1..((3-odd)-1) as bq>
                                 <td style="width: 123px;">&nbsp;</td>
                                 </#list>
@@ -52,7 +62,7 @@
                 </table>
             </div>
         </#if>
-        <input type="hidden" name="userId" id="userId" value="${hrUser.id?c}">
+        <input type="hidden" name="id" id="id" value="${sysAuthorized.id?c}">
         <@c.token/>
     </form>
 </@common.html>

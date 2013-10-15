@@ -30,6 +30,8 @@ public class SysAuthorized extends IdEntity implements Tracker {
 
     private HrUser userId;
 
+    private String roleId;
+
     private Date created;
 
     private String createdBy;
@@ -39,6 +41,8 @@ public class SysAuthorized extends IdEntity implements Tracker {
     private String updatedBy;
 
     private String useYn;
+
+    private String roleName;
 
     @Id
     @GeneratedValue(generator="SYS_AUTHORIZED")
@@ -125,5 +129,23 @@ public class SysAuthorized extends IdEntity implements Tracker {
 
     public void setGroupId(SysOrgGroup groupId) {
         this.groupId = groupId;
+    }
+
+    @Column(name = "ROLE_ID")
+    public String getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(String roleId) {
+        this.roleId = roleId;
+    }
+
+    @Transient
+    public String getRoleName() {
+        return roleName;
+    }
+
+    public void setRoleName(String roleName) {
+        this.roleName = roleName;
     }
 }

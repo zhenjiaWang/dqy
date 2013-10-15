@@ -37,41 +37,56 @@
         <div class="side-left floatleft marl15">
             <div class="side-left-in font14">
                 <!--一组begin-->
-                <ul class="item-nav"><!--ul上的current是为了控制当前这一组的背景色，li上的current是为了控制二级菜单-->
-                    <li class="orgGroup">
-                        <a class="cur" href="/sys/orgGroup.dhtml">集团管理</a>
-                    </li>
-                    <li class="org">
-                        <a class="cur" href="/sys/org.dhtml">机构管理</a>
-                    </li>
-                </ul>
-                <ul class="item-nav"><!--ul上的current是为了控制当前这一组的背景色，li上的current是为了控制二级菜单-->
-                    <li class="department">
-                        <a class="cur" href="/hr/department.dhtml">组织机构</a>
-                    </li>
-                    <li class="user">
-                        <a class="cur" href="/hr/user.dhtml">员工信息</a>
-                    </li>
-                </ul>
-                <ul class="item-nav"><!--ul上的current是为了控制当前这一组的背景色，li上的current是为了控制二级菜单-->
-                    <li class="financialTitle">
-                        <a class="cur" href="/sys/financialTitle.dhtml">财务科目</a>
-                    </li>
-                    <li class="budgetType">
-                        <a class="cur" href="/sys/budgetType.dhtml">预算类别</a>
-                    </li>
-                    <li class=budgetTitle>
-                        <a class="cur" href="/sys/budgetTitle.dhtml">预算科目</a>
-                    </li>
-                </ul>
-                <ul class="item-nav"><!--ul上的current是为了控制当前这一组的背景色，li上的current是为了控制二级菜单-->
-                    <li class="variableGlobal">
-                        <a class="cur" href="/wf/variableGlobal.dhtml">审批岗位</a>
-                    </li>
-                    <li class="reqNo">
-                        <a class="cur" href="/wf/reqNo.dhtml">申请编号</a>
-                    </li>
-                </ul>
+                <#assign roleId=userInfo["roleId"]?if_exists>
+                <#if roleId?exists>
+                    <#if roleId?contains("SYS_GROUP")>
+                        <ul class="item-nav"><!--ul上的current是为了控制当前这一组的背景色，li上的current是为了控制二级菜单-->
+                            <li class="orgGroup">
+                                <a class="cur" href="/sys/orgGroup.dhtml">集团管理</a>
+                            </li>
+                            <li class="org">
+                                <a class="cur" href="/sys/org.dhtml">机构管理</a>
+                            </li>
+                        </ul>
+                    </#if>
+                    <#if roleId?contains("SYS_USER")>
+                    <ul class="item-nav"><!--ul上的current是为了控制当前这一组的背景色，li上的current是为了控制二级菜单-->
+                        <li class="department">
+                            <a class="cur" href="/hr/department.dhtml">组织机构</a>
+                        </li>
+                        <li class="user">
+                            <a class="cur" href="/hr/user.dhtml">员工信息</a>
+                        </li>
+                    </ul>
+                    </#if>
+                    <#if roleId?contains("SYS_FINANCIAL")||roleId?contains("SYS_BUDGET")>
+                    <ul class="item-nav"><!--ul上的current是为了控制当前这一组的背景色，li上的current是为了控制二级菜单-->
+                        <#if roleId?contains("SYS_FINANCIAL")>
+                        <li class="financialTitle">
+                            <a class="cur" href="/sys/financialTitle.dhtml">财务科目</a>
+                        </li>
+                        </#if>
+                        <#if roleId?contains("SYS_BUDGET")>
+                        <li class="budgetType">
+                            <a class="cur" href="/sys/budgetType.dhtml">预算类别</a>
+                        </li>
+                        <li class=budgetTitle>
+                            <a class="cur" href="/sys/budgetTitle.dhtml">预算科目</a>
+                        </li>
+                        </#if>
+                    </ul>
+                    </#if>
+                    <#if roleId?contains("SYS_APPROVE")>
+                    <ul class="item-nav"><!--ul上的current是为了控制当前这一组的背景色，li上的current是为了控制二级菜单-->
+                        <li class="variableGlobal">
+                            <a class="cur" href="/wf/variableGlobal.dhtml">审批岗位</a>
+                        </li>
+                        <li class="reqNo">
+                            <a class="cur" href="/wf/reqNo.dhtml">申请编号</a>
+                        </li>
+                    </ul>
+                    </#if>
+                </#if>
                 <!--一组over-->
             </div>
         </div>
