@@ -70,6 +70,15 @@ public class WfReqAction extends ActionSupport<WfReq> {
     @Inject
     private WfReqMyFlowNodeApproveService wfReqMyFlowNodeApproveService;
 
+    @Inject
+    private WfReqAdvanceAccountService wfReqAdvanceAccountService;
+
+    @Inject
+    private WfReqRePaymentService wfReqRePaymentService;
+
+    @Inject
+    private WfReqRePaymentDetailService wfReqRePaymentDetailService;
+
     @ReqGet
     @ReqSet
     private Long id;
@@ -323,7 +332,7 @@ public class WfReqAction extends ActionSupport<WfReq> {
         return selectorList;
     }
 
-    @PageFlow(result = {@Result(name = "success", path = "/view/admin/req/list.ftl", type = Dispatcher.FreeMarker)})
+    @PageFlow(result = {@Result(name = "success", path = "/view/sys/req/list.ftl", type = Dispatcher.FreeMarker)})
     public String adminList() throws Exception {
         UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
         if (userInfo != null) {
@@ -345,15 +354,22 @@ public class WfReqAction extends ActionSupport<WfReq> {
                 List<WfReqNodeApprove> delReqNodeApproveList = this.wfReqNodeApproveService.getNodeListByReqId(userInfo.getOrgId(), wfReq.getId());
                 List<WfReqComments> delReqCommentsList = this.wfReqCommentsService.getCommentsListByReqId(wfReq.getId());
                 List<WfReqTask> delReqTaskList = this.wfReqTaskService.getTaskListByReqId(userInfo.getOrgId(), wfReq.getId());
-                this.wfReqService.delete(wfReq,  delReqCommentsList, delReqNodeApproveList, delReqTaskList);
+                WfReqAdvanceAccount advanceAccount=null;
+                WfReqRePayment reqRePayment=null;
+                List<WfReqRePaymentDetail> rePaymentDetailList=null;
+                if(wfReq.getApplyId().equals("ADVANCE_ACCOUNT")){
+                    advanceAccount=this.wfReqAdvanceAccountService.getByReqId(wfReq.getId());
+                }else  if(wfReq.getApplyId().equals("REPAYMENT")){
+                    reqRePayment=this.wfReqRePaymentService.getByReqId(wfReq.getId());
+                    if(reqRePayment!=null){
+                        rePaymentDetailList=this.wfReqRePaymentDetailService.getDetailListByRePaymentId(reqRePayment.getId());
+                    }
+                }
+                this.wfReqService.delete(wfReq,advanceAccount,reqRePayment, rePaymentDetailList, delReqCommentsList, delReqNodeApproveList, delReqTaskList);
             }
         }
         return "success";
     }
-
-
-
-
 
     public String getFlowNodeList() throws Exception {
         UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
@@ -434,13 +450,32 @@ public class WfReqAction extends ActionSupport<WfReq> {
         return null;
     }
 
-    @PageFlow(result = {@Result(name = "ADVANCE_ACCOUNT", path = "/wf/advanceAccount!view.dhtml?reqId=${wfReq.id}", type = Dispatcher.Redirect)})
+    @PageFlow(result = {@Result(name = "ADVANCE_ACCOUNT", path = "/wf/advanceAccount!view.dhtml?reqId=${wfReq.id}", type = Dispatcher.Redirect),
+            @Result(name = "REPAYMENT", path = "/wf/rePayment!view.dhtml?reqId=${wfReq.id}", type = Dispatcher.Redirect)})
     public String view() throws Exception {
         UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
         if (userInfo != null&&id!=null) {
             wfReq=this.wfReqService.getById(id);
             if(wfReq!=null){
                 applyId=wfReq.getApplyId();
+                if(wfReq.getUserId().getId().equals(userInfo.getUserId())){
+                    if(wfReq.getTip().intValue()==1){
+                        wfReq.setTip(0);
+                        bind(wfReq);
+                        wfReqService.save(wfReq);
+                        Integer reqPassed = wfReqService.getCountPassed(userInfo.getOrgId(), userInfo.getUserId());
+                        if (reqPassed == null) {
+                            reqPassed = 0;
+                        }
+                        userInfo.setReqPassed(reqPassed);
+
+                        Integer reqRejected = wfReqService.getCountRejected(userInfo.getOrgId(), userInfo.getUserId());
+                        if (reqRejected == null) {
+                            reqRejected = 0;
+                        }
+                        userInfo.setReqRejected(reqRejected);
+                    }
+                }
             }
         }
         return applyId;

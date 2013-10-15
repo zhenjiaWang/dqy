@@ -26,6 +26,26 @@
                         $('.topLocation','.location').text(topLocation);
                         $('.menuLocation','.location').text(leftLocation);
                     }
+
+                    <#if userInfo.reqPassed gt 0 ||userInfo.reqRejected gt 0>
+                        $('.myReq','.side-left-in').find('a.cur').append('<span class="ts"></span>');
+                        <#if userInfo.reqPassed gt 0>
+                            $('.pass','.side-left-in').find('a').append('<span class="badge badge-important marl10">${userInfo.reqPassed?c}</span>');
+                        </#if>
+                        <#if userInfo.reqRejected gt 0>
+                            $('.overrule','.side-left-in').find('a').append('<span class="badge badge-important marl10">${userInfo.reqRejected?c}</span>');
+                        </#if>
+
+                    </#if>
+                    <#if userInfo.taskUnRead gt 0 ||userInfo.taskUnApprove gt 0>
+                        $('.myTask','.side-left-in').find('a.cur').append('<span class="ts"></span>');
+                        <#if userInfo.taskUnApprove gt 0>
+                            $('.approve','.side-left-in').find('a').append('<span class="badge badge-important marl10">${userInfo.taskUnApprove?c}</span>');
+                        </#if>
+                        <#if userInfo.taskUnRead gt 0>
+                            $('.approve','.side-left-in').find('a').append('<span class="badge badge-important marl10">${userInfo.taskUnRead?c}</span>');
+                        </#if>
+                    </#if>
                 </#if>
             </#if>
 
@@ -58,8 +78,8 @@
                     <li class="advanceAccount">
                         <a class="cur" href="/wf/advanceAccount.dhtml">预支申请</a>
                     </li>
-                    <li class="org">
-                        <a class="cur" href="#">还款申请</a>
+                    <li class="rePayment">
+                        <a class="cur" href="/wf/rePayment.dhtml">还款申请</a>
                     </li>
                 </ul>
                 <ul class="item-nav"><!--ul上的current是为了控制当前这一组的背景色，li上的current是为了控制二级菜单-->

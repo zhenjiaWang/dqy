@@ -32,7 +32,14 @@ public class WfReqService extends HQuery {
     @Inject
     private WfReqTaskService wfReqTaskService;
 
+    @Inject
+    private WfReqRePaymentService wfReqRePaymentService;
 
+    @Inject
+    private WfReqRePaymentDetailService wfReqRePaymentDetailService;
+
+    @Inject
+    private WfReqAdvanceAccountService wfReqAdvanceAccountService;
 
     @Inject
     private WfReqMyFlowLastService wfReqMyFlowLastService;
@@ -122,7 +129,9 @@ public class WfReqService extends HQuery {
 
 
     @Transactional(type = TransactionType.READ_WRITE)
-    public void delete(WfReq wfReq,  List<WfReqComments> delReqCommentsList,
+    public void delete(WfReq wfReq,  WfReqAdvanceAccount advanceAccount,
+            WfReqRePayment reqRePayment,
+            List<WfReqRePaymentDetail> rePaymentDetailList,  List<WfReqComments> delReqCommentsList,
                        List<WfReqNodeApprove> delReqNodeApproveList, List<WfReqTask> delReqTaskList) {
 
         if (delReqCommentsList != null && !delReqCommentsList.isEmpty()) {
@@ -133,6 +142,15 @@ public class WfReqService extends HQuery {
         }
         if (delReqTaskList != null && !delReqTaskList.isEmpty()) {
             this.wfReqTaskService.delete(delReqTaskList);
+        }
+        if(advanceAccount!=null){
+            this.wfReqAdvanceAccountService.delete(advanceAccount);
+        }
+        if(reqRePayment!=null){
+            this.wfReqRePaymentService.delete(reqRePayment);
+        }
+        if (rePaymentDetailList != null && !rePaymentDetailList.isEmpty()) {
+            this.wfReqRePaymentDetailService.delete(rePaymentDetailList);
         }
         $(wfReq).delete();
     }

@@ -1,6 +1,5 @@
 package com.dqy.wf.entity;
 
-import com.dqy.hr.entity.HrUser;
 import org.guiceside.persistence.entity.IdEntity;
 import org.guiceside.persistence.entity.Tracker;
 import org.hibernate.annotations.GenericGenerator;
@@ -17,8 +16,8 @@ import java.util.Date;
  * To change this template use File | Settings | File Templates.
  */
 @Entity
-@Table(name = "WF_REQ_ADVANCE_ACCOUNT")
-public class WfReqAdvanceAccount extends IdEntity implements Tracker {
+@Table(name = "WF_REQ_REPAYMENT")
+public class WfReqRePayment extends IdEntity implements Tracker {
 
     private static final long serialVersionUID = 1L;
 
@@ -26,15 +25,13 @@ public class WfReqAdvanceAccount extends IdEntity implements Tracker {
 
     private WfReq reqId;
 
+    private WfReqAdvanceAccount advanceId;
+
     private Double amount;
 
     private Integer payMethod;
 
-    private String purpose;
-
     private String remarks;
-
-    private String rePayYn;
 
     private Date created;
 
@@ -46,11 +43,9 @@ public class WfReqAdvanceAccount extends IdEntity implements Tracker {
 
     private String useYn;
 
-    private Double reAmount;
-
     @Id
-    @GeneratedValue(generator="WF_REQ_ADVANCE_ACCOUNT")
-    @GenericGenerator(name="WF_REQ_ADVANCE_ACCOUNT",strategy="seqhilo",parameters={@Parameter(name="sequence",value="SEQ_WF_REQ_ADVANCE_ACCOUNT")})
+    @GeneratedValue(generator="WF_REQ_REPAYMENT")
+    @GenericGenerator(name="WF_REQ_REPAYMENT",strategy="seqhilo",parameters={@Parameter(name="sequence",value="SEQ_WF_REQ_REPAYMENT")})
     public Long getId() {
         return id;
     }
@@ -135,15 +130,6 @@ public class WfReqAdvanceAccount extends IdEntity implements Tracker {
         this.payMethod = payMethod;
     }
 
-    @Column(name = "PURPOSE")
-    public String getPurpose() {
-        return purpose;
-    }
-
-    public void setPurpose(String purpose) {
-        this.purpose = purpose;
-    }
-
     @Column(name = "REMARKS")
     public String getRemarks() {
         return remarks;
@@ -153,21 +139,13 @@ public class WfReqAdvanceAccount extends IdEntity implements Tracker {
         this.remarks = remarks;
     }
 
-    @Column(name = "REPAY_YN")
-    public String getRePayYn() {
-        return rePayYn;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ADVANCE_ID")
+    public WfReqAdvanceAccount getAdvanceId() {
+        return advanceId;
     }
 
-    public void setRePayYn(String rePayYn) {
-        this.rePayYn = rePayYn;
-    }
-
-    @Transient
-    public Double getReAmount() {
-        return reAmount;
-    }
-
-    public void setReAmount(Double reAmount) {
-        this.reAmount = reAmount;
+    public void setAdvanceId(WfReqAdvanceAccount advanceId) {
+        this.advanceId = advanceId;
     }
 }

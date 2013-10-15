@@ -10,6 +10,7 @@ import com.dqy.sys.service.SysBudgetTypeService;
 import com.dqy.sys.service.SysOrgService;
 import com.dqy.web.support.ActionSupport;
 import com.google.inject.Inject;
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.guiceside.commons.lang.StringUtils;
 import org.guiceside.persistence.entity.search.SelectorUtils;
@@ -180,6 +181,32 @@ public class SysBudgetTitleAction extends ActionSupport<SysBudgetTitle> {
             }
         }
         writeJsonByAction(item.toString());
+        return null;
+    }
+
+    public String getTitleList() throws Exception {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("result", -1);
+        UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
+        if (typeId != null && userInfo != null) {
+            List<Selector> selectorList = new ArrayList<Selector>();
+            selectorList.add(SelectorUtils.$eq("typeId.id", typeId));
+            selectorList.add(SelectorUtils.$eq("useYn", "Y"));
+            selectorList.add(SelectorUtils.$order("titleName"));
+            budgetTitleList = this.sysBudgetTitleService.getAllList(selectorList);
+            if(budgetTitleList!=null&&!budgetTitleList.isEmpty()){
+                JSONArray jsonArray=new JSONArray();
+                for(SysBudgetTitle title:budgetTitleList){
+                    JSONObject item=new JSONObject();
+                    item.put("id",title.getId());
+                    item.put("name",title.getTitleName());
+                    jsonArray.add(item);
+                }
+                jsonObject.put("titleList", jsonArray);
+                jsonObject.put("result", 0);
+            }
+        }
+        writeJsonByAction(jsonObject.toString());
         return null;
     }
 }

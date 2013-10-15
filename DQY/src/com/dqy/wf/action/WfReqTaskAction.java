@@ -47,6 +47,15 @@ public class WfReqTaskAction extends ActionSupport<WfReqTask> {
     private WfVariableGlobalService wfVariableGlobalService;
 
     @Inject
+    private WfReqRePaymentService wfReqRePaymentService;
+
+    @Inject
+    private WfReqRePaymentDetailService wfReqRePaymentDetailService;
+
+    @Inject
+    private WfReqAdvanceAccountService wfReqAdvanceAccountService;
+
+    @Inject
     private HrUserService hrUserService;
 
     @Inject
@@ -290,6 +299,7 @@ public class WfReqTaskAction extends ActionSupport<WfReqTask> {
     }
 
     @PageFlow(result = {@Result(name = "ADVANCE_ACCOUNT", path = "/wf/advanceAccount!process.dhtml?taskId=${wfReqTask.id}", type = Dispatcher.Redirect),
+            @Result(name = "REPAYMENT", path = "/wf/rePayment!process.dhtml?taskId=${wfReqTask.id}", type = Dispatcher.Redirect),
             @Result(name = "view", path = "/wf/req!view.dhtml?id=${wfReqTask.reqId.id}", type = Dispatcher.Redirect)})
     public String process() throws Exception {
         UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
@@ -314,6 +324,11 @@ public class WfReqTaskAction extends ActionSupport<WfReqTask> {
                     comments.setUseYn("Y");
                     bind(comments);
                     wfReqTaskService.save(wfReqTask, comments);
+                    Integer unRead = wfReqTaskService.getCountUnRead(userInfo.getOrgId(), userInfo.getUserId());
+                    if (unRead == null) {
+                        unRead = 0;
+                    }
+                    userInfo.setTaskUnRead(unRead);
                 }
                 WfReq wfReq = wfReqTask.getReqId();
                 if (wfReq != null) {
@@ -328,9 +343,6 @@ public class WfReqTaskAction extends ActionSupport<WfReqTask> {
     public String approve() throws Exception {
         UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
         if (userInfo != null && wfReqTask != null) {
-            boolean applyState = true;
-            boolean taskNew = true;
-            boolean executeNew = true;
             approveIdea = wfReqTask.getApproveIdea();
             if (approveIdea != null && wfReqTask.getId() != null) {
                 wfReqTask = this.wfReqTaskService.getById(wfReqTask.getId());
@@ -461,7 +473,30 @@ public class WfReqTaskAction extends ActionSupport<WfReqTask> {
                                         doneComments.setUseYn("Y");
                                         bind(doneComments);
                                         reqCommentsList.add(doneComments);
-                                        this.wfReqTaskService.saveDone(wfReqTask, wfReq, reqCommentsList);
+                                        if(wfReq.getApplyId().equals("REPAYMENT")){
+                                            WfReqRePayment reqRePayment=this.wfReqRePaymentService.getByReqId(wfReq.getId());
+                                            if(reqRePayment!=null){
+                                                WfReqAdvanceAccount advanceAccount= reqRePayment.getAdvanceId();
+                                                if(advanceAccount!=null){
+                                                    Long orgId=reqRePayment.getReqId().getOrgId().getId();
+                                                    Long userId=reqRePayment.getReqId().getUserId().getId();
+                                                    Double reAmount= wfReqRePaymentService.getSumByReAmount(orgId,userId,advanceAccount.getId());
+                                                    if(reAmount==null){
+                                                        reAmount=0.0d;
+                                                    }
+                                                    reAmount+=reqRePayment.getAmount();
+                                                    Double diffAmount=advanceAccount.getAmount()-reAmount;
+                                                    if(diffAmount<=0){
+                                                        advanceAccount.setRePayYn("Y");
+                                                    }
+                                                    this.wfReqTaskService.saveDone(wfReqTask,advanceAccount, wfReq, reqCommentsList);
+                                                }else{
+                                                    this.wfReqTaskService.saveDone(wfReqTask, wfReq, reqCommentsList);
+                                                }
+                                            }
+                                        }else{
+                                            this.wfReqTaskService.saveDone(wfReqTask, wfReq, reqCommentsList);
+                                        }
                                     } else if (currentNodeTask.getNodeType().intValue() == 2) {
                                         Integer countUnApprove = this.wfReqTaskService.getCountUnApproveByNodeSeq(userInfo.getOrgId(), wfReq.getId(),
                                                 currentNodeTask.getNodeSeq());
@@ -483,7 +518,29 @@ public class WfReqTaskAction extends ActionSupport<WfReqTask> {
                                             doneComments.setUseYn("Y");
                                             bind(doneComments);
                                             reqCommentsList.add(doneComments);
-                                            this.wfReqTaskService.saveDone(wfReqTask, wfReq, reqCommentsList);
+                                            if(wfReq.getApplyId().equals("REPAYMENT")){
+                                                WfReqRePayment reqRePayment=this.wfReqRePaymentService.getByReqId(wfReq.getId());
+                                                if(reqRePayment!=null){
+                                                    WfReqAdvanceAccount advanceAccount= reqRePayment.getAdvanceId();
+                                                    if(advanceAccount!=null){
+                                                        Long orgId=reqRePayment.getReqId().getOrgId().getId();
+                                                        Long userId=reqRePayment.getReqId().getUserId().getId();
+                                                        Double reAmount= wfReqRePaymentService.getSumByReAmount(orgId,userId,advanceAccount.getId());
+                                                        if(reAmount==null){
+                                                            reAmount=0.0d;
+                                                        }
+                                                        Double diffAmount=advanceAccount.getAmount()-reAmount;
+                                                        if(diffAmount<=0){
+                                                            advanceAccount.setRePayYn("Y");
+                                                        }
+                                                        this.wfReqTaskService.saveDone(wfReqTask,advanceAccount, wfReq, reqCommentsList);
+                                                    }else{
+                                                        this.wfReqTaskService.saveDone(wfReqTask, wfReq, reqCommentsList);
+                                                    }
+                                                }
+                                            }else{
+                                                this.wfReqTaskService.saveDone(wfReqTask, wfReq, reqCommentsList);
+                                            }
                                         } else {
                                             this.wfReqTaskService.save(wfReqTask, comments);
                                         }
@@ -646,6 +703,11 @@ public class WfReqTaskAction extends ActionSupport<WfReqTask> {
                 }
             }
         }
+        Integer unApprove = wfReqTaskService.getCountUnApprove(userInfo.getOrgId(), userInfo.getUserId());
+        if (unApprove == null) {
+            unApprove = 0;
+        }
+        userInfo.setTaskUnApprove(unApprove);
         script = "parent.setURL('/wf/reqTask!approveList.dhtml');";
         return "saveSuccess";  //To change body of implemented methods use File | Settings | File Templates.
     }

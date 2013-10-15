@@ -10,6 +10,9 @@ import com.dqy.sys.entity.SysOrg;
 import com.dqy.sys.service.SysAuthorizedService;
 import com.dqy.sys.service.SysFinancialTitleService;
 import com.dqy.sys.service.SysOrgService;
+import com.dqy.wf.entity.WfReqTask;
+import com.dqy.wf.service.WfReqService;
+import com.dqy.wf.service.WfReqTaskService;
 import com.google.inject.Inject;
 import net.sf.json.JSONObject;
 import ognl.OgnlException;
@@ -42,6 +45,12 @@ public class LoginAction extends BaseAction {
 
     @Inject
     private SysAuthorizedService sysAuthorizedService;
+
+    @Inject
+    private WfReqTaskService wfReqTaskService;
+
+    @Inject
+    private WfReqService wfReqService;
 
     @ReqGet
     private String orgNo;
@@ -126,6 +135,30 @@ public class LoginAction extends BaseAction {
         UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
         if (userInfo != null) {
             userInfo.setTopMenu("index");
+
+            Integer unRead = wfReqTaskService.getCountUnRead(userInfo.getOrgId(), userInfo.getUserId());
+            if (unRead == null) {
+                unRead = 0;
+            }
+            userInfo.setTaskUnRead(unRead);
+
+            Integer unApprove = wfReqTaskService.getCountUnApprove(userInfo.getOrgId(), userInfo.getUserId());
+            if (unApprove == null) {
+                unApprove = 0;
+            }
+            userInfo.setTaskUnApprove(unApprove);
+
+            Integer reqPassed = wfReqService.getCountPassed(userInfo.getOrgId(), userInfo.getUserId());
+            if (reqPassed == null) {
+                reqPassed = 0;
+            }
+            userInfo.setReqPassed(reqPassed);
+
+            Integer reqRejected = wfReqService.getCountRejected(userInfo.getOrgId(), userInfo.getUserId());
+            if (reqRejected == null) {
+                reqRejected = 0;
+            }
+            userInfo.setReqRejected(reqRejected);
 
         }
         return "success";  //To change body of implemented methods use File | Settings | File Templates.

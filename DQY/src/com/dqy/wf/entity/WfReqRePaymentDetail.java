@@ -1,6 +1,7 @@
 package com.dqy.wf.entity;
 
-import com.dqy.hr.entity.HrUser;
+import com.dqy.sys.entity.SysBudgetTitle;
+import com.dqy.sys.entity.SysBudgetType;
 import org.guiceside.persistence.entity.IdEntity;
 import org.guiceside.persistence.entity.Tracker;
 import org.hibernate.annotations.GenericGenerator;
@@ -17,24 +18,22 @@ import java.util.Date;
  * To change this template use File | Settings | File Templates.
  */
 @Entity
-@Table(name = "WF_REQ_ADVANCE_ACCOUNT")
-public class WfReqAdvanceAccount extends IdEntity implements Tracker {
+@Table(name = "WF_REQ_REPAYMENT_DETAIL")
+public class WfReqRePaymentDetail extends IdEntity implements Tracker {
 
     private static final long serialVersionUID = 1L;
 
     private Long id;
 
-    private WfReq reqId;
+    private WfReqRePayment rePaymentId;
+
+    private SysBudgetType expenseType;
+
+    private SysBudgetTitle expenseTitle;
 
     private Double amount;
 
-    private Integer payMethod;
-
-    private String purpose;
-
     private String remarks;
-
-    private String rePayYn;
 
     private Date created;
 
@@ -46,11 +45,9 @@ public class WfReqAdvanceAccount extends IdEntity implements Tracker {
 
     private String useYn;
 
-    private Double reAmount;
-
     @Id
-    @GeneratedValue(generator="WF_REQ_ADVANCE_ACCOUNT")
-    @GenericGenerator(name="WF_REQ_ADVANCE_ACCOUNT",strategy="seqhilo",parameters={@Parameter(name="sequence",value="SEQ_WF_REQ_ADVANCE_ACCOUNT")})
+    @GeneratedValue(generator="WF_REQ_REPAYMENT_DETAIL")
+    @GenericGenerator(name="WF_REQ_REPAYMENT_DETAIL",strategy="seqhilo",parameters={@Parameter(name="sequence",value="SEQ_WF_REQ_REPAYMENT_DETAIL")})
     public Long getId() {
         return id;
     }
@@ -107,15 +104,6 @@ public class WfReqAdvanceAccount extends IdEntity implements Tracker {
 
 
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "REQ_ID")
-    public WfReq getReqId() {
-        return reqId;
-    }
-
-    public void setReqId(WfReq reqId) {
-        this.reqId = reqId;
-    }
 
     @Column(name = "AMOUNT")
     public Double getAmount() {
@@ -126,23 +114,6 @@ public class WfReqAdvanceAccount extends IdEntity implements Tracker {
         this.amount = amount;
     }
 
-    @Column(name = "PAY_METHOD")
-    public Integer getPayMethod() {
-        return payMethod;
-    }
-
-    public void setPayMethod(Integer payMethod) {
-        this.payMethod = payMethod;
-    }
-
-    @Column(name = "PURPOSE")
-    public String getPurpose() {
-        return purpose;
-    }
-
-    public void setPurpose(String purpose) {
-        this.purpose = purpose;
-    }
 
     @Column(name = "REMARKS")
     public String getRemarks() {
@@ -153,21 +124,33 @@ public class WfReqAdvanceAccount extends IdEntity implements Tracker {
         this.remarks = remarks;
     }
 
-    @Column(name = "REPAY_YN")
-    public String getRePayYn() {
-        return rePayYn;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "REPAYMENT_ID")
+    public WfReqRePayment getRePaymentId() {
+        return rePaymentId;
     }
 
-    public void setRePayYn(String rePayYn) {
-        this.rePayYn = rePayYn;
+    public void setRePaymentId(WfReqRePayment rePaymentId) {
+        this.rePaymentId = rePaymentId;
     }
 
-    @Transient
-    public Double getReAmount() {
-        return reAmount;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "EXPENSE_TYPE")
+    public SysBudgetType getExpenseType() {
+        return expenseType;
     }
 
-    public void setReAmount(Double reAmount) {
-        this.reAmount = reAmount;
+    public void setExpenseType(SysBudgetType expenseType) {
+        this.expenseType = expenseType;
+    }
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "EXPENSE_TITLE")
+    public SysBudgetTitle getExpenseTitle() {
+        return expenseTitle;
+    }
+
+    public void setExpenseTitle(SysBudgetTitle expenseTitle) {
+        this.expenseTitle = expenseTitle;
     }
 }

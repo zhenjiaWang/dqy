@@ -78,6 +78,13 @@ public class UserInfo implements Serializable {
 
     private String roleId;
 
+    private Integer taskUnRead;
+
+    private Integer taskUnApprove;
+
+    private Integer reqPassed;
+
+    private Integer reqRejected;
 
     public String getSessionId() {
         return sessionId;
@@ -285,5 +292,37 @@ public class UserInfo implements Serializable {
 
     public void setDepartmentId(Long departmentId) {
         this.departmentId = departmentId;
+    }
+
+    public Integer getTaskUnRead() {
+        return taskUnRead;
+    }
+
+    public void setTaskUnRead(Integer taskUnRead) {
+        this.taskUnRead = taskUnRead;
+    }
+
+    public Integer getTaskUnApprove() {
+        return taskUnApprove;
+    }
+
+    public void setTaskUnApprove(Integer taskUnApprove) {
+        this.taskUnApprove = taskUnApprove;
+    }
+
+    public Integer getReqPassed() {
+        return reqPassed;
+    }
+
+    public void setReqPassed(Integer reqPassed) {
+        this.reqPassed = reqPassed;
+    }
+
+    public Integer getReqRejected() {
+        return reqRejected;
+    }
+
+    public void setReqRejected(Integer reqRejected) {
+        this.reqRejected = reqRejected;
     }
 }

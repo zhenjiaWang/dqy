@@ -308,5 +308,14 @@ var flowApproveDQY=' <div class="control-group" nodeSeq="{nodeSeq}">' +
     '</div>' +
     '</div>';
 
+var rePaymentDetail='<tr seq="{seq}" class="detailTr">' +
+    '<td><select class="int2 width-100" id="typeId{seq}" name="typeId{seq}">' +
+    '</select></td>' +
+    '<td><select class="int2 width-100" id="titleId{seq}" name="titleId{seq}">' +
+    '</select></td>' +
+    '<td><input type="text" class="int1 width-70 amt" id="amount{seq}" name="amount{seq}" value="0.00"></td>' +
+    '<td><input type="text" class="int1 " style="width: 95%;" id="remarks{seq}" name="remarks{seq}"></td>' +
+    '</tr>';
+
 
 var flowApproveNodeShow='<li class="nodeLi" nodeSeq="{nodeSeq}" nodeType="{nodeType}" approveType="{approveType}" approveId="{approveId}"><a href="#"><span class="badge {className}">{nodeSeqText}</span>{text}</a></li><li><i class="dqy-ico dqy-r"></i></li>';

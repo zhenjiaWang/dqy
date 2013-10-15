@@ -23,6 +23,9 @@
                         $('.topLocation','.location').text(topLocation);
                         $('.menuLocation','.location').text(leftLocation);
                     }
+
+
+
                 </#if>
             </#if>
         });
@@ -78,6 +81,9 @@
                     </#if>
                     <#if roleId?contains("SYS_APPROVE")>
                     <ul class="item-nav"><!--ul上的current是为了控制当前这一组的背景色，li上的current是为了控制二级菜单-->
+                        <li class="req">
+                            <a class="cur" href="/wf/req!adminList.dhtml">申请管理</a>
+                        </li>
                         <li class="variableGlobal">
                             <a class="cur" href="/wf/variableGlobal.dhtml">审批岗位</a>
                         </li>

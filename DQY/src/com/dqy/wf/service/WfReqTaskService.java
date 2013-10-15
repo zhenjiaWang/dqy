@@ -1,9 +1,6 @@
 package com.dqy.wf.service;
 
-import com.dqy.wf.entity.WfReq;
-import com.dqy.wf.entity.WfReqComments;
-import com.dqy.wf.entity.WfReqNodeApprove;
-import com.dqy.wf.entity.WfReqTask;
+import com.dqy.wf.entity.*;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import org.guiceside.commons.Page;
@@ -24,6 +21,12 @@ public class WfReqTaskService extends HQuery {
 
     @Inject
     private WfReqCommentsService wfReqCommentsService;
+
+    @Inject
+    private WfReqRePaymentService wfReqRePaymentService;
+
+    @Inject
+    private WfReqAdvanceAccountService wfReqAdvanceAccountService;
 
     @Inject
     private WfReqNodeApproveService wfReqNodeApproveService;
@@ -142,8 +145,32 @@ public class WfReqTaskService extends HQuery {
     }
 
     @Transactional(type = TransactionType.READ_WRITE)
+    public void save(WfReqTask wfReqTask, WfReqAdvanceAccount reqAdvanceAccount,WfReq wfReq, List<WfReqComments> reqCommentsList, List<WfReqTask> reqTaskList) {
+        $(wfReqTask).save();
+        wfReqAdvanceAccountService.save(reqAdvanceAccount);
+        wfReqService.save(wfReq);
+        if (reqCommentsList != null && !reqCommentsList.isEmpty()) {
+            wfReqCommentsService.save(reqCommentsList);
+        }
+
+        if (reqTaskList != null && !reqTaskList.isEmpty()) {
+            this.save(reqTaskList);
+        }
+    }
+
+    @Transactional(type = TransactionType.READ_WRITE)
     public void saveDone(WfReqTask wfReqTask, WfReq wfReq, List<WfReqComments> reqCommentsList) {
         $(wfReqTask).save();
+        wfReqService.save(wfReq);
+        if (reqCommentsList != null && !reqCommentsList.isEmpty()) {
+            wfReqCommentsService.save(reqCommentsList);
+        }
+    }
+
+    @Transactional(type = TransactionType.READ_WRITE)
+    public void saveDone(WfReqTask wfReqTask,WfReqAdvanceAccount reqAdvanceAccount, WfReq wfReq, List<WfReqComments> reqCommentsList) {
+        $(wfReqTask).save();
+        wfReqAdvanceAccountService.save(reqAdvanceAccount);
         wfReqService.save(wfReq);
         if (reqCommentsList != null && !reqCommentsList.isEmpty()) {
             wfReqCommentsService.save(reqCommentsList);

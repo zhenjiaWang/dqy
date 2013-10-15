@@ -79,5 +79,9 @@ public class WfReqAdvanceAccountService extends HQuery {
     }
 
 
+    @Transactional(type = TransactionType.READ_ONLY)
+    public List<WfReqAdvanceAccount> getListByReUserId(Long orgId,Long userId) {
+        return $($alias("reqId","reqId"),$eq("reqId.orgId.id",orgId),$eq("reqId.userId.id",userId),$eq("rePayYn","N")).list(WfReqAdvanceAccount.class);
+    }
 
 }

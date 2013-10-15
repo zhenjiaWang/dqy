@@ -95,6 +95,7 @@ public class WfReqAdvanceAccountAction extends WfReqSupportAction<WfReqAdvanceAc
             initReq();
             wfReqAdvanceAccount.setReqId(wfReq);
             wfReqAdvanceAccount.setUseYn("Y");
+            wfReqAdvanceAccount.setRePayYn("N");
             bind(wfReqAdvanceAccount);
             this.wfReqAdvanceAccountService.save(wfReqAdvanceAccount,wfReq,  wfReqCommentsList, wfReqNoSeq, reqNodeApproveList, reqTaskList, wfReqMyFlowLast);
         }
