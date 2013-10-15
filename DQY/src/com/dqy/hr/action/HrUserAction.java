@@ -66,6 +66,10 @@ public class HrUserAction extends ActionSupport<HrUser> {
     @ReqSet
     private Long id;
 
+    @ReqGet
+    @ReqSet
+    private String keyword;
+
 
     @ReqSet
     private List<HrUser> userList;
@@ -102,6 +106,9 @@ public class HrUserAction extends ActionSupport<HrUser> {
         if (userInfo != null) {
             selectorList.add(SelectorUtils.$eq("groupId.id", userInfo.getGroupId()));
             selectorList.add(SelectorUtils.$eq("orgId.id", userInfo.getOrgId()));
+            if(StringUtils.isNotBlank(keyword)){
+                selectorList.add(SelectorUtils.$or(SelectorUtils.$like("userName",keyword),SelectorUtils.$like("userNo",keyword)));
+            }
             selectorList.add(SelectorUtils.$order("userNo"));
         }
         return selectorList;

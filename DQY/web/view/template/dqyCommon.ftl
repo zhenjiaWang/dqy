@@ -45,6 +45,12 @@
             <#if userInfo.taskUnRead gt 0 ||userInfo.taskUnApprove gt 0||userInfo.reqPassed gt 0 ||userInfo.reqRejected gt 0>
             $('.apply','#topMenu').find('a').append('<span class="ts"></span>');
             </#if>
+            <#assign roleId=userInfo["roleId"]?if_exists>
+            <#if roleId?exists>
+                <#if !roleId?contains("SYS_GROUP")&&!roleId?contains("SYS_USER")&&!roleId?contains("SYS_FINANCIAL")&&!roleId?contains("SYS_BUDGET")&&!roleId?contains("SYS_APPROVE")>
+                    $('.sys','#topMenu').addClass('no');
+                </#if>
+            </#if>
         });
     </script>
     <div class="container">
@@ -60,8 +66,9 @@
                 <ul class="nav font18 clearfix floatleft" id="topMenu">
                     <li class="index"><a href="/common/login!index.dhtml"><em></em>首 页</a></li>
                     <li class="apply"><a href="/wf/advanceAccount.dhtml"><em></em>申请平台</a></li>
-                    <li class="info"><a href="#"><em></em>信息平台</a></li>
+                    <li class="info no"><a href="#"><em></em>信息平台</a></li>
                     <li class="budget"><a href="/sys/budgetAmount.dhtml"><em></em>预算管理</a></li>
+
                     <li class="sys"><a href="/common/common!sysIndex.dhtml"><em></em>系统管理</a></li>
                 </ul>
             </div>
@@ -69,7 +76,7 @@
             <div class="top-bar">
                 <div class="search-box"><!--search-box上加减 current 控制三角的方向，和选项的折叠-->
                     <a class="triangle" href="#"></a>
-                    <span class="choosed" uid="${userInfo["orgId"]?c}">${userInfo["orgName"]?if_exists}</span>
+                    <span class="choosed" uid="${userInfo["orgId"]?c}">${userInfo["orgName"]?if_exists} &nbsp;&nbsp;${userInfo.userName?if_exists}</span>
                     <ul id="authOrgList">
                         <#if userInfo?exists>
                             <#assign authOrgList=userInfo["authOrgList"]?if_exists>

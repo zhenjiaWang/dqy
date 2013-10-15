@@ -42,26 +42,18 @@
                         <a class="cur" href="/sys/budgetAmount.dhtml">预算填写</a>
                     </li>
                     <li class="org">
-                        <a class="cur" href="/sys/org.dhtml">机构管理</a>
-                    </li>
-                </ul>
-                <ul class="item-nav"><!--ul上的current是为了控制当前这一组的背景色，li上的current是为了控制二级菜单-->
-                    <li class="department">
-                        <a class="cur" href="/hr/department.dhtml">组织机构</a>
-                    </li>
-                    <li class="user">
-                        <a class="cur" href="/hr/user.dhtml">员工信息</a>
+                        <a class="cur" href="#">预算审核</a>
                     </li>
                 </ul>
                 <ul class="item-nav"><!--ul上的current是为了控制当前这一组的背景色，li上的current是为了控制二级菜单-->
                     <li class="financialTitle">
-                        <a class="cur" href="/sys/financialTitle.dhtml">财务科目</a>
+                        <a class="cur" href="#">预算汇总</a>
                     </li>
                     <li class="budgetType">
-                        <a class="cur" href="/sys/budgetType.dhtml">预算类别</a>
+                        <a class="cur" href="#">预算监控</a>
                     </li>
                     <li class=budgetTitle>
-                        <a class="cur" href="/sys/budgetTitle.dhtml">预算科目</a>
+                        <a class="cur" href="#">预算对比</a>
                     </li>
                 </ul>
                 <!--一组over-->

@@ -69,7 +69,7 @@
     <#if Session["userSession"]?exists>
         <#assign userInfo=Session["userSession"]?if_exists>
     <div class="mart5">
-        <form class="form-horizontal" action="/wf/advanceAccount!save.dhtml" method="POST" name="editForm"
+        <form class="form-horizontal" action="" method="POST" name="editForm"
               id="editForm">
             <table class="table application nomar">
                 <tbody>

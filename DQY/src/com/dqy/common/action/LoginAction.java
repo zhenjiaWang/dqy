@@ -10,14 +10,18 @@ import com.dqy.sys.entity.SysOrg;
 import com.dqy.sys.service.SysAuthorizedService;
 import com.dqy.sys.service.SysFinancialTitleService;
 import com.dqy.sys.service.SysOrgService;
+import com.dqy.wf.entity.WfReq;
 import com.dqy.wf.entity.WfReqTask;
 import com.dqy.wf.service.WfReqService;
 import com.dqy.wf.service.WfReqTaskService;
 import com.google.inject.Inject;
 import net.sf.json.JSONObject;
 import ognl.OgnlException;
+import org.guiceside.commons.Page;
 import org.guiceside.commons.lang.BeanUtils;
 import org.guiceside.commons.lang.StringUtils;
+import org.guiceside.persistence.entity.search.SelectorUtils;
+import org.guiceside.persistence.hibernate.dao.hquery.Selector;
 import org.guiceside.web.action.BaseAction;
 import org.guiceside.web.annotation.*;
 
@@ -64,6 +68,12 @@ public class LoginAction extends BaseAction {
     @ReqGet
     private String userPwd;
 
+    @ReqSet
+    private List<WfReq> reqList;
+
+    @ReqSet
+    private List<WfReqTask> taskList;
+
     @Override
     public String execute() throws Exception {
         JSONObject jsonObject = new JSONObject();
@@ -90,11 +100,11 @@ public class LoginAction extends BaseAction {
                     userInfo.setAuthorize(true);
 
 
-                    List<SysAuthorized> authorizedList= sysAuthorizedService.getAuthorizedList(userInfo.getGroupId(), userInfo.getUserId());
-                    if(authorizedList!=null&&!authorizedList.isEmpty()){
-                        List<SysOrg> authOrgList=new ArrayList<SysOrg>();
-                        for(SysAuthorized authorized:authorizedList){
-                            SysOrg authOrg=new SysOrg();
+                    List<SysAuthorized> authorizedList = sysAuthorizedService.getAuthorizedList(userInfo.getGroupId(), userInfo.getUserId());
+                    if (authorizedList != null && !authorizedList.isEmpty()) {
+                        List<SysOrg> authOrgList = new ArrayList<SysOrg>();
+                        for (SysAuthorized authorized : authorizedList) {
+                            SysOrg authOrg = new SysOrg();
                             authOrg.setId(authorized.getOrgId().getId());
                             authOrg.setOrgName(authorized.getOrgId().getOrgName());
                             authOrg.setOrgNo(authorized.getOrgId().getOrgNo());
@@ -102,17 +112,17 @@ public class LoginAction extends BaseAction {
                         }
                         userInfo.setAuthOrgList(authOrgList);
                     }
-                    SysAuthorized authorized= this.sysAuthorizedService.getAuthOrg(userInfo.getGroupId(),userInfo.getOrgId(),userInfo.getUserId());
+                    SysAuthorized authorized = this.sysAuthorizedService.getAuthOrg(userInfo.getGroupId(), userInfo.getOrgId(), userInfo.getUserId());
                     userInfo.setRoleList(null);
                     userInfo.setRoleId(null);
-                    if(authorized!=null){
-                        String roleId=authorized.getRoleId();
-                        if(StringUtils.isNotBlank(roleId)){
+                    if (authorized != null) {
+                        String roleId = authorized.getRoleId();
+                        if (StringUtils.isNotBlank(roleId)) {
                             userInfo.setRoleId(roleId);
-                            String[] roleIds=roleId.split(",");
-                            if(roleIds!=null&&roleIds.length>0){
-                                List<String> roleList=new ArrayList<String>();
-                                for(String r:roleIds){
+                            String[] roleIds = roleId.split(",");
+                            if (roleIds != null && roleIds.length > 0) {
+                                List<String> roleList = new ArrayList<String>();
+                                for (String r : roleIds) {
                                     roleList.add(r);
                                 }
                                 userInfo.setRoleList(roleList);
@@ -160,6 +170,24 @@ public class LoginAction extends BaseAction {
             }
             userInfo.setReqRejected(reqRejected);
 
+            List<Selector> selectorList = new ArrayList<Selector>();
+            selectorList.add(SelectorUtils.$eq("orgId.id", userInfo.getOrgId()));
+            selectorList.add(SelectorUtils.$eq("userId.id", userInfo.getUserId()));
+            selectorList.add(SelectorUtils.$eq("taskState", 0));
+            selectorList.add(SelectorUtils.$order("receiveDate", false));
+            Page<WfReqTask> pageTaskObj = this.wfReqTaskService.getPageList(0, 5, selectorList);
+            if(pageTaskObj!=null){
+                taskList=pageTaskObj.getResultList();
+            }
+
+            selectorList.clear();
+            selectorList.add(SelectorUtils.$eq("orgId.id", userInfo.getOrgId()));
+            selectorList.add(SelectorUtils.$eq("userId.id", userInfo.getUserId()));
+            selectorList.add(SelectorUtils.$order("sendDate", false));
+            Page<WfReq> pageReqObj = this.wfReqService.getPageList(0, 5, selectorList);
+            if(pageReqObj!=null){
+                reqList=pageReqObj.getResultList();
+            }
         }
         return "success";  //To change body of implemented methods use File | Settings | File Templates.
     }
@@ -168,29 +196,29 @@ public class LoginAction extends BaseAction {
             @Result(name = "logout", path = "/common/login!logout.dhtml", type = Dispatcher.Redirect)})
     public String authOrg() throws Exception {
         UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
-        if (userInfo != null&&authOrgId!=null) {
-            Integer authOrgCount= this.sysAuthorizedService.validateAuthOrg(userInfo.getGroupId(),authOrgId,userInfo.getUserId());
-            if(authOrgCount==null){
-                authOrgCount=0;
+        if (userInfo != null && authOrgId != null) {
+            Integer authOrgCount = this.sysAuthorizedService.validateAuthOrg(userInfo.getGroupId(), authOrgId, userInfo.getUserId());
+            if (authOrgCount == null) {
+                authOrgCount = 0;
             }
-            if(authOrgCount.intValue()>0){
-                SysOrg authOrg=this.sysOrgService.getById(authOrgId);
-                if(authOrg!=null){
+            if (authOrgCount.intValue() > 0) {
+                SysOrg authOrg = this.sysOrgService.getById(authOrgId);
+                if (authOrg != null) {
                     userInfo.setOrgId(authOrgId);
                     userInfo.setOrgName(authOrg.getOrgName());
                     userInfo.setOrgNo(authOrg.getOrgNo());
 
-                    SysAuthorized authorized= this.sysAuthorizedService.getAuthOrg(userInfo.getGroupId(),authOrgId,userInfo.getUserId());
+                    SysAuthorized authorized = this.sysAuthorizedService.getAuthOrg(userInfo.getGroupId(), authOrgId, userInfo.getUserId());
                     userInfo.setRoleList(null);
                     userInfo.setRoleId(null);
-                    if(authorized!=null){
-                        String roleId=authorized.getRoleId();
-                        if(StringUtils.isNotBlank(roleId)){
+                    if (authorized != null) {
+                        String roleId = authorized.getRoleId();
+                        if (StringUtils.isNotBlank(roleId)) {
                             userInfo.setRoleId(roleId);
-                            String[] roleIds=roleId.split(",");
-                            if(roleIds!=null&&roleIds.length>0){
-                                List<String> roleList=new ArrayList<String>();
-                                for(String r:roleIds){
+                            String[] roleIds = roleId.split(",");
+                            if (roleIds != null && roleIds.length > 0) {
+                                List<String> roleList = new ArrayList<String>();
+                                for (String r : roleIds) {
                                     roleList.add(r);
                                 }
                                 userInfo.setRoleList(roleList);
@@ -198,7 +226,7 @@ public class LoginAction extends BaseAction {
                         }
                     }
                 }
-            }else{
+            } else {
                 return "logout";
             }
         }
@@ -216,7 +244,7 @@ public class LoginAction extends BaseAction {
     }
 
     public String validateUser() throws Exception {
-        Integer userCount=0;
+        Integer userCount = 0;
         JSONObject jsonObject = new JSONObject();
         if (StringUtils.isNotBlank(orgNo)
                 && StringUtils.isNotBlank(userNo)) {
@@ -229,7 +257,6 @@ public class LoginAction extends BaseAction {
         writeJsonByAction(jsonObject.toString());
         return null;
     }
-
 
 
     protected String get(Object entity, String property) {

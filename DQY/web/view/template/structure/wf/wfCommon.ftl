@@ -83,11 +83,11 @@
                     </li>
                 </ul>
                 <ul class="item-nav"><!--ul上的current是为了控制当前这一组的背景色，li上的current是为了控制二级菜单-->
-                    <li class="department">
-                        <a class="cur" href="#">费用报销</a>
+                    <li class="daily">
+                        <a class="cur" href="/wf/daily.dhtml">费用报销</a>
                     </li>
                     <li class="user">
-                        <a class="cur" href="#">事务申请</a>
+                        <a class="cur" href="/wf/business.dhtml">事务申请</a>
                     </li>
                 </ul>
                 <ul class="item-nav"><!--ul上的current是为了控制当前这一组的背景色，li上的current是为了控制二级菜单-->

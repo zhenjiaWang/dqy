@@ -71,8 +71,8 @@
         $.fn.zTree.init($("#treeDemo"), setting);
 
         $('#searchDept').off('click').on('click', function () {
-            var left = $(this).offset().left-$('#myModal').offset().left+232;
-            var top = $(this).offset().top-$('#myModal').offset().top-15;
+            var left = $(this).offset().left-225;
+            var top = $(this).offset().top+15;
             top += $(this).height();
             $('.treeDiv').css({
                         top: top,

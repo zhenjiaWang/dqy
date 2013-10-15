@@ -23,9 +23,6 @@
                         $('.topLocation','.location').text(topLocation);
                         $('.menuLocation','.location').text(leftLocation);
                     }
-
-
-
                 </#if>
             </#if>
         });

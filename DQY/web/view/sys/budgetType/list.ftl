@@ -15,12 +15,12 @@
     }
     $(document).ready(function () {
         $('#newBtn').off('click').on('click', function () {
-            WEBUTILS.popWindow.createPopWindow(550, null, '创建预算类别', '/sys/budgetType!input.dhtml');
+            WEBUTILS.popWindow.createPopWindow(650, 500, '创建预算类别', '/sys/budgetType!input.dhtml');
         });
         $('.editBT').off('click').on('click', function () {
             var uid = $(this).attr('uid');
             if (uid) {
-                WEBUTILS.popWindow.createPopWindow(550, null, '编辑预算类别', '/sys/budgetType!input.dhtml?id='+uid);
+                WEBUTILS.popWindow.createPopWindow(650, 500, '编辑预算类别', '/sys/budgetType!input.dhtml?id='+uid);
             }
         });
         $('.stopBT').off('click').on('click', function () {

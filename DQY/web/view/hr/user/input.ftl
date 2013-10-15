@@ -99,7 +99,7 @@
         initValidator();
         $.fn.zTree.init($("#treeDemo"), setting);
         $('#searchDept').off('click').on('click', function () {
-            var left = $(this).offset().left;
+            var left = $(this).offset().left-225;
             var top = $(this).offset().top+15;
             top += $(this).height();
             $('.treeDiv').css({

@@ -300,6 +300,8 @@ public class WfReqTaskAction extends ActionSupport<WfReqTask> {
 
     @PageFlow(result = {@Result(name = "ADVANCE_ACCOUNT", path = "/wf/advanceAccount!process.dhtml?taskId=${wfReqTask.id}", type = Dispatcher.Redirect),
             @Result(name = "REPAYMENT", path = "/wf/rePayment!process.dhtml?taskId=${wfReqTask.id}", type = Dispatcher.Redirect),
+            @Result(name = "DAILY", path = "/wf/daily!process.dhtml?taskId=${wfReqTask.id}", type = Dispatcher.Redirect),
+            @Result(name = "BUSINESS", path = "/wf/business!process.dhtml?taskId=${wfReqTask.id}", type = Dispatcher.Redirect),
             @Result(name = "view", path = "/wf/req!view.dhtml?id=${wfReqTask.reqId.id}", type = Dispatcher.Redirect)})
     public String process() throws Exception {
         UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
