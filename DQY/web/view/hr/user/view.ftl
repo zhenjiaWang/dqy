@@ -39,6 +39,18 @@
                 WEBUTILS.popWindow.createPopWindow(420, null, '增加角色', '/sys/authorized!role.dhtml?id='+uid);
             }
         });
+        $('.addDept').off('click').on('click', function () {
+            var uid = $(this).attr('uid');
+            if (uid) {
+                WEBUTILS.popWindow.createPopWindow(550, 600, '指派部门', '/sys/authorized!dept.dhtml?id='+uid);
+            }
+        });
+        $('.editDept').off('click').on('click', function () {
+            var uid = $(this).attr('uid');
+            if (uid) {
+                WEBUTILS.popWindow.createPopWindow(550, 600, '修改指派部门', '/sys/authorized!dept.dhtml?id='+uid);
+            }
+        });
 
         $('#editBtn').off('click').on('click', function () {
             WEBUTILS.popWindow.createPopWindow(800, 600, '编辑信息', '/hr/user!input.dhtml?id=${hrUser.id?c}');
@@ -182,7 +194,8 @@
         <thead>
         <tr >
             <th  style="width: 160px;text-align: center;">授权机构</th>
-            <th style="text-align: center;">授权时间</th>
+
+            <th style="text-align: center;">指派部门</th>
             <th  style="width: 330px; text-align: center;">权限</th>
             <th style="width: 120px;text-align: center;">操作</th>
         </tr>
@@ -192,7 +205,17 @@
                 <#list authorizedList as authorized>
                 <tr <#if (authorized_index+1)%2!=0>class="oddBgColor"</#if>>
                     <td class="txt_hidden" style="width: 160px; text-align: center;">${(authorized.orgId.orgName)?if_exists}</td>
-                    <td style="text-align: center;">${(authorized.created)?string("yyyy-MM-dd")}</td>
+                    <td style="text-align: center;">
+                    <#if (authorized.orgId.id)!=(hrUser.orgId.id)&&(authorized.groupId.id)==(hrUser.groupId.id)>
+                        <#if authorized.deptId?exists>
+                            <a href="###" orgId="${(authorized.orgId.id)?c}"  uid="${authorized.id?c}" class="editDept"> <i class="icon-edit"></i>${(authorized.deptId.deptName)?if_exists}</a>
+                        <#else >
+                            <a href="###" orgId="${(authorized.orgId.id)?c}"  uid="${authorized.id?c}" class="addDept"> <i class="icon-plus"></i>指派部门</a>
+                        </#if>
+                    <#else >
+                    ${(authorized.deptId.deptName)?if_exists}
+                    </#if>
+                    </td>
                     <td class="txt_hidden" style="width:330px;text-align: left;">
                     <span title="${(authorized.roleName)?if_exists}">${(authorized.roleName)?if_exists}</span>
                     </td>

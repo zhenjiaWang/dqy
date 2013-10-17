@@ -10,11 +10,13 @@ import com.dqy.sys.service.SysOrgService;
 import com.dqy.wf.entity.*;
 import com.dqy.wf.service.*;
 import com.google.inject.Inject;
+import org.guiceside.commons.lang.DateFormatUtil;
 import org.guiceside.persistence.entity.search.SelectorUtils;
 import org.guiceside.persistence.hibernate.dao.hquery.Selector;
 import org.guiceside.web.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -101,6 +103,9 @@ public class WfReqRePaymentAction extends WfReqSupportAction<WfReqRePayment> {
     @ReqSet
     private List<WfReqAdvanceAccount> reqAdvanceAccountList;
 
+    @ReqSet
+    private Date sendDate;
+
 
     @Override
     @PageFlow(result = {@Result(name = "success", path = "/view/wf/rePayment/input.ftl", type = Dispatcher.FreeMarker)})
@@ -110,6 +115,7 @@ public class WfReqRePaymentAction extends WfReqSupportAction<WfReqRePayment> {
             userInfo.setTopMenu("apply");
             userInfo.setLeftMenu("rePayment");
             userInfo.setChildMenu(null);
+            sendDate= DateFormatUtil.getCurrentDate(true);
 
             List<Selector> selectorList = new ArrayList<Selector>();
             selectorList.add(SelectorUtils.$eq("orgId.id", userInfo.getOrgId()));

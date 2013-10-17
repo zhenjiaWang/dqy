@@ -6,6 +6,8 @@ import com.dqy.hr.entity.HrDepartment;
 import com.dqy.hr.entity.HrUser;
 import com.dqy.hr.service.HrDepartmentService;
 import com.dqy.hr.service.HrUserService;
+import com.dqy.sys.entity.SysAuthorized;
+import com.dqy.sys.service.SysAuthorizedService;
 import com.dqy.wf.entity.WfVariableGlobal;
 import com.dqy.wf.service.WfVariableGlobalService;
 import com.google.inject.Inject;
@@ -39,6 +41,9 @@ public class CommonAction extends BaseAction {
     @Inject
     private WfVariableGlobalService wfVariableGlobalService;
 
+    @Inject
+    private SysAuthorizedService sysAuthorizedService;
+
     @ReqGet
     private Long parentId;
 
@@ -71,18 +76,21 @@ public class CommonAction extends BaseAction {
         JSONObject node = null;
         List<HrDepartment> deptList = null;
         if (userInfo != null) {
-            orgId = userInfo.getOrgId();
+            if(orgId==null){
+                orgId = userInfo.getOrgId();
+            }
+
             if (parentId == null) {
-                deptList = this.hrDepartmentService.getDeptListByLevel(userInfo.getOrgId(), 1, false);
+                deptList = this.hrDepartmentService.getDeptListByLevel(orgId, 1, false);
             } else {
-                deptList = this.hrDepartmentService.getDeptListByParentId(userInfo.getOrgId(), parentId, false);
+                deptList = this.hrDepartmentService.getDeptListByParentId(orgId, parentId, false);
             }
             if (deptList != null && !deptList.isEmpty()) {
                 for (HrDepartment hrDepartment : deptList) {
                     node = new JSONObject();
                     node.put("name", StringUtils.defaultIfEmpty(hrDepartment.getDeptName()));
                     node.put("id", StringUtils.defaultIfEmpty(hrDepartment.getId()));
-                    Integer count = this.hrDepartmentService.getCountByParentId(userInfo.getOrgId(), hrDepartment.getId(), false);
+                    Integer count = this.hrDepartmentService.getCountByParentId(orgId, hrDepartment.getId(), false);
                     if (count == null) {
                         count = 0;
                     }
@@ -157,6 +165,7 @@ public class CommonAction extends BaseAction {
         JSONObject node = null;
         List<HrDepartment> deptList = null;
         List<HrUser> userList=null;
+        List<SysAuthorized> authorizedList=null;
         if (userInfo != null) {
             orgId = userInfo.getOrgId();
             if(approveTypeId==null){
@@ -213,6 +222,7 @@ public class CommonAction extends BaseAction {
                         if(nodeType!=null){
                             deptList = this.hrDepartmentService.getDeptListByParentId(userInfo.getOrgId(), parentId, false);
                             userList=this.hrUserService.getUserListByDeptId(userInfo.getOrgId(),userInfo.getGroupId(),parentId);
+                            authorizedList=this.sysAuthorizedService.getAuthOrgDept(userInfo.getGroupId(),userInfo.getOrgId(),parentId);
                         }
                     }
                     if (deptList != null && !deptList.isEmpty()) {
@@ -224,13 +234,17 @@ public class CommonAction extends BaseAction {
                             node.put("nodeType", 0);
                             Integer count = this.hrDepartmentService.getCountByParentId(userInfo.getOrgId(), hrDepartment.getId(), false);
                             Integer userCount=this.hrUserService.getCountUserByDeptId(userInfo.getOrgId(),userInfo.getGroupId(),hrDepartment.getId());
+                            Integer authCount=this.sysAuthorizedService.getCounttAuthOrgDept(userInfo.getGroupId(),userInfo.getOrgId(),hrDepartment.getId());
                             if (count == null) {
                                 count = 0;
                             }
                             if (userCount == null) {
                                 userCount = 0;
                             }
-                            if (count.intValue() > 0||userCount.intValue()>0) {
+                            if (authCount == null) {
+                                authCount = 0;
+                            }
+                            if (count.intValue() > 0||userCount.intValue()>0||authCount.intValue()>0) {
                                 node.put("isParent", true);
                             } else {
                                 node.put("isParent", false);
@@ -243,6 +257,16 @@ public class CommonAction extends BaseAction {
                             node = new JSONObject();
                             node.put("name", StringUtils.defaultIfEmpty(hrUser.getUserName()));
                             node.put("id", StringUtils.defaultIfEmpty(hrUser.getId()));
+                            node.put("approveType", approveTypeId);
+                            node.put("nodeType", 1);
+                            jsonArray.add(node);
+                        }
+                    }
+                    if (authorizedList != null && !authorizedList.isEmpty()) {
+                        for (SysAuthorized authorized : authorizedList) {
+                            node = new JSONObject();
+                            node.put("name", StringUtils.defaultIfEmpty(authorized.getUserId().getUserName())+"[外派]");
+                            node.put("id", StringUtils.defaultIfEmpty(authorized.getUserId().getId()));
                             node.put("approveType", approveTypeId);
                             node.put("nodeType", 1);
                             jsonArray.add(node);

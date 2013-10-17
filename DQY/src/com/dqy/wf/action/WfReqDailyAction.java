@@ -10,11 +10,13 @@ import com.dqy.sys.service.SysOrgService;
 import com.dqy.wf.entity.*;
 import com.dqy.wf.service.*;
 import com.google.inject.Inject;
+import org.guiceside.commons.lang.DateFormatUtil;
 import org.guiceside.persistence.entity.search.SelectorUtils;
 import org.guiceside.persistence.hibernate.dao.hquery.Selector;
 import org.guiceside.web.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -94,6 +96,9 @@ public class WfReqDailyAction extends WfReqSupportAction<WfReqDaily> {
     @ReqSet
     private List<WfReqDailyDetail> detailList;
 
+    @ReqSet
+    private Date sendDate;
+
 
     @Override
     @PageFlow(result = {@Result(name = "success", path = "/view/wf/daily/input.ftl", type = Dispatcher.FreeMarker)})
@@ -110,6 +115,7 @@ public class WfReqDailyAction extends WfReqSupportAction<WfReqDaily> {
             selectorList.add(SelectorUtils.$eq("useYn", "Y"));
             selectorList.add(SelectorUtils.$order("expenseType"));
             typeList = sysBudgetTypeService.getAllList(selectorList);
+            sendDate= DateFormatUtil.getCurrentDate(true);
         }
         return "success";  //To change body of implemented methods use File | Settings | File Templates.
     }

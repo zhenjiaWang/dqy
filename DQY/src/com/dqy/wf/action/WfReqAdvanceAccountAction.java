@@ -9,12 +9,14 @@ import com.dqy.wf.entity.*;
 import com.dqy.wf.service.*;
 import com.google.inject.Inject;
 import net.sf.json.JSONObject;
+import org.guiceside.commons.lang.DateFormatUtil;
 import org.guiceside.commons.lang.StringUtils;
 import org.guiceside.persistence.entity.search.SelectorUtils;
 import org.guiceside.persistence.hibernate.dao.hquery.Selector;
 import org.guiceside.web.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -75,6 +77,8 @@ public class WfReqAdvanceAccountAction extends WfReqSupportAction<WfReqAdvanceAc
     private List<WfReqComments> reqCommentsList;
 
 
+    @ReqSet
+    private Date sendDate;
 
     @Override
     @PageFlow(result = {@Result(name = "success", path = "/view/wf/advanceAccount/input.ftl", type = Dispatcher.FreeMarker)})
@@ -84,6 +88,7 @@ public class WfReqAdvanceAccountAction extends WfReqSupportAction<WfReqAdvanceAc
             userInfo.setTopMenu("apply");
             userInfo.setLeftMenu("advanceAccount");
             userInfo.setChildMenu(null);
+            sendDate= DateFormatUtil.getCurrentDate(true);
         }
         return "success";  //To change body of implemented methods use File | Settings | File Templates.
     }

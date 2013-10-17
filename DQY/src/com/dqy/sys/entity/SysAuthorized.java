@@ -1,5 +1,6 @@
 package com.dqy.sys.entity;
 
+import com.dqy.hr.entity.HrDepartment;
 import com.dqy.hr.entity.HrUser;
 import org.guiceside.persistence.entity.IdEntity;
 import org.guiceside.persistence.entity.Tracker;
@@ -29,6 +30,10 @@ public class SysAuthorized extends IdEntity implements Tracker {
     private SysOrg orgId;
 
     private HrUser userId;
+
+    private HrDepartment deptId;
+
+    private SysOrg oldOrgId;
 
     private String roleId;
 
@@ -138,6 +143,26 @@ public class SysAuthorized extends IdEntity implements Tracker {
 
     public void setRoleId(String roleId) {
         this.roleId = roleId;
+    }
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "DEPT_ID")
+    public HrDepartment getDeptId() {
+        return deptId;
+    }
+
+    public void setDeptId(HrDepartment deptId) {
+        this.deptId = deptId;
+    }
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "OLD_ORG_ID")
+    public SysOrg getOldOrgId() {
+        return oldOrgId;
+    }
+
+    public void setOldOrgId(SysOrg oldOrgId) {
+        this.oldOrgId = oldOrgId;
     }
 
     @Transient

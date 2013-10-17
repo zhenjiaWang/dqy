@@ -63,7 +63,7 @@
                 window.setTimeout(function () {
                     var passed = WEBUTILS.validator.isPassed();
                     if (passed) {
-                        WEBUTILS.popWindow.createPopWindow(700, 535, '选择流程', '/wf/reqMyFlow!myFlowList.dhtml?applyId=${applyId?if_exists}');
+                        WEBUTILS.popWindow.createPopWindow(750, 535, '选择流程', '/wf/reqMyFlow!myFlowList.dhtml?applyId=${applyId?if_exists}');
                     } else {
                         WEBUTILS.validator.showErrors();
                     }
@@ -119,8 +119,7 @@
                                    style="width: 60px;color: #898989;font-weight: bold;">申请时间</label>
 
                             <div class="controls" style="margin-left: 70px;">
-                                <label style="margin-top: 5px;padding-left:5px;font-size: 14px;">2009-12-12
-                                    12:12:00</label>
+                                <label style="margin-top: 5px;padding-left:5px;font-size: 14px;">${sendDate?string("yyyy-MM-dd HH:mm:ss")}</label>
                             </div>
                         </div>
                     </td>

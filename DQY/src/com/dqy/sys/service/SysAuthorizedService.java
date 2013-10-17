@@ -80,4 +80,14 @@ public class SysAuthorizedService extends HQuery {
     public SysAuthorized getAuthOrg(Long groupId,Long orgId,Long userId) {
         return $($eq("groupId.id",groupId),$eq("orgId.id",orgId),$eq("userId.id",userId),$eq("useYn","Y")).get(SysAuthorized.class);
     }
+
+    @Transactional(type = TransactionType.READ_WRITE)
+    public List<SysAuthorized> getAuthOrgDept(Long groupId,Long orgId,Long deptId) {
+        return $($eq("groupId.id",groupId),$eq("orgId.id",orgId),$eq("deptId.id",deptId),$not($eq("oldOrgId.id",orgId)),$eq("useYn","Y")).list(SysAuthorized.class);
+    }
+
+    @Transactional(type = TransactionType.READ_WRITE)
+    public Integer getCounttAuthOrgDept(Long groupId,Long orgId,Long deptId) {
+        return $($eq("groupId.id",groupId),$eq("orgId.id",orgId),$eq("deptId.id",deptId),$not($eq("oldOrgId.id",orgId)),$eq("useYn","Y"),$count("id")).value(SysAuthorized.class,Integer.class);
+    }
 }

@@ -54,6 +54,14 @@ public class WfReqAction extends ActionSupport<WfReq> {
     @Inject
     private WfReqNodeApproveService wfReqNodeApproveService;
 
+    @Inject
+    private WfReqDailyService wfReqDailyService;
+
+    @Inject
+    private WfReqDailyDetailService wfReqDailyDetailService;
+
+    @Inject
+    private WfReqBusinessService wfReqBusinessService;
 
 
     @Inject
@@ -356,6 +364,9 @@ public class WfReqAction extends ActionSupport<WfReq> {
                 List<WfReqTask> delReqTaskList = this.wfReqTaskService.getTaskListByReqId(userInfo.getOrgId(), wfReq.getId());
                 WfReqAdvanceAccount advanceAccount=null;
                 WfReqRePayment reqRePayment=null;
+                WfReqBusiness reqBusiness=null;
+                WfReqDaily reqDaily=null;
+                List<WfReqDailyDetail> reqDailyDetailList=null;
                 List<WfReqRePaymentDetail> rePaymentDetailList=null;
                 if(wfReq.getApplyId().equals("ADVANCE_ACCOUNT")){
                     advanceAccount=this.wfReqAdvanceAccountService.getByReqId(wfReq.getId());
@@ -364,8 +375,16 @@ public class WfReqAction extends ActionSupport<WfReq> {
                     if(reqRePayment!=null){
                         rePaymentDetailList=this.wfReqRePaymentDetailService.getDetailListByRePaymentId(reqRePayment.getId());
                     }
+                }else  if(wfReq.getApplyId().equals("DAILY")){
+                    reqDaily=this.wfReqDailyService.getByReqId(wfReq.getId());
+                    if(reqDaily!=null){
+                        reqDailyDetailList=this.wfReqDailyDetailService.getDetailListByDailyId(reqDaily.getId());
+                    }
+                }else  if(wfReq.getApplyId().equals("BUSINESS")){
+                    reqBusiness=this.wfReqBusinessService.getByReqId(wfReq.getId());
                 }
-                this.wfReqService.delete(wfReq,advanceAccount,reqRePayment, rePaymentDetailList, delReqCommentsList, delReqNodeApproveList, delReqTaskList);
+                this.wfReqService.delete(wfReq,advanceAccount,reqRePayment, rePaymentDetailList,reqDaily,reqDailyDetailList,reqBusiness,
+                        delReqCommentsList, delReqNodeApproveList, delReqTaskList);
             }
         }
         return "success";

@@ -82,7 +82,11 @@
                             <#assign authOrgList=userInfo["authOrgList"]?if_exists>
                             <#if authOrgList?exists&&authOrgList?size gt 0>
                                 <#list authOrgList as authOrg>
-                                    <li uid="${authOrg.id?c}"><a href="#">${authOrg.orgName?if_exists}</a></li>
+                                    <li uid="${authOrg.id?c}">
+                                        <a href="#">${authOrg.orgName?if_exists}
+                                        <#if authOrg.tip gt 0 ><em style="color: red;font-weight: bold;">&nbsp;&nbsp;[有信息]</em></#if>
+                                        </a>
+                                    </li>
                                 </#list>
                             </#if>
                         </#if>

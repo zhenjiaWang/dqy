@@ -253,10 +253,11 @@ public class HrUserAction extends ActionSupport<HrUser> {
                     }else if(entryCount.intValue()<1000){
                         userNo+="0"+entryCount;
                     }
+                    HrDepartment department=null;
                     hrUser.setUserNo(userNo);
                     if(hrUser.getDeptId()!=null){
                         if(hrUser.getDeptId().getId()!=null){
-                            HrDepartment department=hrDepartmentService.getById(hrUser.getDeptId().getId());
+                             department=hrDepartmentService.getById(hrUser.getDeptId().getId());
                             if(department!=null){
                                 hrUser.setDeptId(department);
                             }
@@ -283,6 +284,8 @@ public class HrUserAction extends ActionSupport<HrUser> {
                     SysAuthorized authorized = new SysAuthorized();
                     authorized.setGroupId(sysOrgGroup);
                     authorized.setUserId(hrUser);
+                    authorized.setDeptId(department);
+                    authorized.setOldOrgId(sysOrg);
                     authorized.setOrgId(sysOrg);
                     authorized.setUseYn("Y");
                     authorized.setRoleId("GENERAL");

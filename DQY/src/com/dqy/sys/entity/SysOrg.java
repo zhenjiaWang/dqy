@@ -39,6 +39,8 @@ public class SysOrg extends IdEntity implements Tracker {
 
     private String useYn;
 
+    private Integer tip;
+
     @Id
     @GeneratedValue(generator="SYS_ORG")
     @GenericGenerator(name="SYS_ORG",strategy="seqhilo",parameters={@Parameter(name="sequence",value="SEQ_SYS_ORG")})
@@ -122,5 +124,14 @@ public class SysOrg extends IdEntity implements Tracker {
 
     public void setOrgName(String orgName) {
         this.orgName = orgName;
+    }
+
+    @Transient
+    public Integer getTip() {
+        return tip;
+    }
+
+    public void setTip(Integer tip) {
+        this.tip = tip;
     }
 }

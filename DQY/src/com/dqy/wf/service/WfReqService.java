@@ -42,6 +42,15 @@ public class WfReqService extends HQuery {
     private WfReqAdvanceAccountService wfReqAdvanceAccountService;
 
     @Inject
+    private WfReqBusinessService wfReqBusinessService;
+
+    @Inject
+    private WfReqDailyService wfReqDailyService;
+
+    @Inject
+    private WfReqDailyDetailService wfReqDailyDetailService;
+
+    @Inject
     private WfReqMyFlowLastService wfReqMyFlowLastService;
 
     @Transactional(type = TransactionType.READ_ONLY)
@@ -131,7 +140,11 @@ public class WfReqService extends HQuery {
     @Transactional(type = TransactionType.READ_WRITE)
     public void delete(WfReq wfReq,  WfReqAdvanceAccount advanceAccount,
             WfReqRePayment reqRePayment,
-            List<WfReqRePaymentDetail> rePaymentDetailList,  List<WfReqComments> delReqCommentsList,
+            List<WfReqRePaymentDetail> rePaymentDetailList,
+            WfReqDaily reqDaily,
+            List<WfReqDailyDetail> reqDailyDetailList,
+            WfReqBusiness reqBusiness,
+            List<WfReqComments> delReqCommentsList,
                        List<WfReqNodeApprove> delReqNodeApproveList, List<WfReqTask> delReqTaskList) {
 
         if (delReqCommentsList != null && !delReqCommentsList.isEmpty()) {
@@ -151,6 +164,15 @@ public class WfReqService extends HQuery {
         }
         if (rePaymentDetailList != null && !rePaymentDetailList.isEmpty()) {
             this.wfReqRePaymentDetailService.delete(rePaymentDetailList);
+        }
+        if(reqDaily!=null){
+            this.wfReqDailyService.delete(reqDaily);
+        }
+        if (reqDailyDetailList != null && !reqDailyDetailList.isEmpty()) {
+            this.wfReqDailyDetailService.delete(reqDailyDetailList);
+        }
+        if(reqBusiness!=null){
+            this.wfReqBusinessService.delete(reqBusiness);
         }
         $(wfReq).delete();
     }

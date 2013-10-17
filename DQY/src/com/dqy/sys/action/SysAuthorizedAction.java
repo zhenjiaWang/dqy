@@ -2,7 +2,9 @@ package com.dqy.sys.action;
 
 import com.dqy.common.UserInfo;
 import com.dqy.common.UserSession;
+import com.dqy.hr.entity.HrDepartment;
 import com.dqy.hr.entity.HrUser;
+import com.dqy.hr.service.HrDepartmentService;
 import com.dqy.hr.service.HrUserService;
 import com.dqy.sys.entity.SysAuthorized;
 import com.dqy.sys.entity.SysOrg;
@@ -40,6 +42,9 @@ public class SysAuthorizedAction extends ActionSupport<SysAuthorized> {
     private SysOrgGroupService sysOrgGroupService;
 
     @Inject
+    private HrDepartmentService hrDepartmentService;
+
+    @Inject
     private HrUserService hrUserService;
 
     @Inject
@@ -59,6 +64,14 @@ public class SysAuthorizedAction extends ActionSupport<SysAuthorized> {
 
     @ReqGet
     @ReqSet
+    private Long orgId;
+
+    @ReqGet
+    @ReqSet
+    private Long deptId;
+
+    @ReqGet
+    @ReqSet
     private Long userId;
 
 
@@ -69,10 +82,11 @@ public class SysAuthorizedAction extends ActionSupport<SysAuthorized> {
     private List<String> roleList;
 
     @ReqSet
-    private Map<String,String> roleNameMap;
+    private Map<String, String> roleNameMap;
 
     @ReqSet
     private List<String> myRoleList;
+
     @Override
     public String execute() throws Exception {
         return "success";  //To change body of implemented methods use File | Settings | File Templates.
@@ -98,9 +112,24 @@ public class SysAuthorizedAction extends ActionSupport<SysAuthorized> {
                                 orgList.add(org);
                             }
                         }
-                    }else{
-                        orgList=orgAllList;
+                    } else {
+                        orgList = orgAllList;
                     }
+                }
+            }
+        }
+        return "success";  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @PageFlow(result = {@Result(name = "success", path = "/view/sys/authorized/dept.ftl", type = Dispatcher.FreeMarker)})
+    public String dept() throws Exception {
+        UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
+        if (id != null && userInfo != null) {
+            sysAuthorized = this.sysAuthorizedService.getById(id);
+            if (sysAuthorized != null) {
+                SysOrg sysOrg = sysAuthorized.getOrgId();
+                if (sysOrg != null) {
+                    orgId = sysOrg.getId();
                 }
             }
         }
@@ -111,9 +140,9 @@ public class SysAuthorizedAction extends ActionSupport<SysAuthorized> {
     public String role() throws Exception {
         UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
         if (id != null && userInfo != null) {
-            sysAuthorized=this.sysAuthorizedService.getById(id);
-            if (sysAuthorized!=null) {
-                roleList=new ArrayList<String>();
+            sysAuthorized = this.sysAuthorizedService.getById(id);
+            if (sysAuthorized != null) {
+                roleList = new ArrayList<String>();
                 roleList.add("SYS_GROUP");
                 roleList.add("SYS_USER");
                 roleList.add("SYS_APPROVE");
@@ -123,22 +152,22 @@ public class SysAuthorizedAction extends ActionSupport<SysAuthorized> {
                 roleList.add("SET_BUDGET");
                 roleList.add("GENERAL");
 
-                roleNameMap=new HashMap<String, String>();
-                roleNameMap.put("SYS_GROUP","集团机构管理");
-                roleNameMap.put("SYS_USER","部门用户管理");
-                roleNameMap.put("SYS_APPROVE","审批岗位设置");
-                roleNameMap.put("SYS_FINANCIAL","财务科目管理");
-                roleNameMap.put("SYS_BUDGET","预算科目管理");
-                roleNameMap.put("LOOK_BUDGET","预算查看");
-                roleNameMap.put("SET_BUDGET","预算设置");
-                roleNameMap.put("GENERAL","普通用户");
+                roleNameMap = new HashMap<String, String>();
+                roleNameMap.put("SYS_GROUP", "集团机构管理");
+                roleNameMap.put("SYS_USER", "部门用户管理");
+                roleNameMap.put("SYS_APPROVE", "审批岗位设置");
+                roleNameMap.put("SYS_FINANCIAL", "财务科目管理");
+                roleNameMap.put("SYS_BUDGET", "预算科目管理");
+                roleNameMap.put("LOOK_BUDGET", "预算查看");
+                roleNameMap.put("SET_BUDGET", "预算设置");
+                roleNameMap.put("GENERAL", "普通用户");
 
-                String roleId=sysAuthorized.getRoleId();
-                if(StringUtils.isNotBlank(roleId)){
-                    String roleIds[]=roleId.split(",");
-                    if(roleIds!=null&&roleIds.length>0){
-                        myRoleList=new ArrayList<String>();
-                        for(String r:roleIds){
+                String roleId = sysAuthorized.getRoleId();
+                if (StringUtils.isNotBlank(roleId)) {
+                    String roleIds[] = roleId.split(",");
+                    if (roleIds != null && roleIds.length > 0) {
+                        myRoleList = new ArrayList<String>();
+                        for (String r : roleIds) {
                             myRoleList.add(r);
                         }
                     }
@@ -151,33 +180,37 @@ public class SysAuthorizedAction extends ActionSupport<SysAuthorized> {
     @Token
     public String save() throws Exception {
         UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
-        List<SysAuthorized> authorizedList=null;
+        List<SysAuthorized> authorizedList = null;
         if (userInfo != null && userId != null) {
-            String[] orgIds = getHttpServletRequest().getParameterValues("orgId");
-            if (orgIds != null && orgIds.length > 0) {
-                SysOrgGroup orgGroup = this.sysOrgGroupService.getById(userInfo.getGroupId());
-                hrUser = this.hrUserService.getById(userId);
-                if (orgGroup != null && hrUser != null) {
-                    authorizedList=new ArrayList<SysAuthorized>();
-                    for (String oID : orgIds) {
-                        Long orgId = BeanUtils.convertValue(oID, Long.class);
-                        if (orgId != null) {
-                            SysOrg org = this.sysOrgService.getById(orgId);
-                            if (org != null) {
-                                SysAuthorized authorized = new SysAuthorized();
-                                authorized.setGroupId(orgGroup);
-                                authorized.setUserId(hrUser);
-                                authorized.setOrgId(org);
-                                authorized.setUseYn("Y");
-                                authorized.setRoleId("GENERAL");
-                                bind(authorized);
-                                authorizedList.add(authorized);
+            SysOrg oldOrg = this.sysOrgService.getById(userInfo.getOrgId());
+            if (oldOrg != null) {
+                String[] orgIds = getHttpServletRequest().getParameterValues("orgId");
+                if (orgIds != null && orgIds.length > 0) {
+                    SysOrgGroup orgGroup = this.sysOrgGroupService.getById(userInfo.getGroupId());
+                    hrUser = this.hrUserService.getById(userId);
+                    if (orgGroup != null && hrUser != null) {
+                        authorizedList = new ArrayList<SysAuthorized>();
+                        for (String oID : orgIds) {
+                            Long orgId = BeanUtils.convertValue(oID, Long.class);
+                            if (orgId != null) {
+                                SysOrg org = this.sysOrgService.getById(orgId);
+                                if (org != null) {
+                                    SysAuthorized authorized = new SysAuthorized();
+                                    authorized.setGroupId(orgGroup);
+                                    authorized.setUserId(hrUser);
+                                    authorized.setOrgId(org);
+                                    authorized.setOldOrgId(oldOrg);
+                                    authorized.setUseYn("Y");
+                                    authorized.setRoleId("GENERAL");
+                                    bind(authorized);
+                                    authorizedList.add(authorized);
+                                }
                             }
                         }
                     }
                 }
             }
-            if(authorizedList!=null&&!authorizedList.isEmpty()){
+            if (authorizedList != null && !authorizedList.isEmpty()) {
                 this.sysAuthorizedService.save(authorizedList);
             }
         }
@@ -187,20 +220,35 @@ public class SysAuthorizedAction extends ActionSupport<SysAuthorized> {
     @Token
     public String saveRole() throws Exception {
         UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
-        if (userInfo != null && id!=null) {
-            sysAuthorized=this.sysAuthorizedService.getById(id);
-            if(sysAuthorized!=null){
+        if (userInfo != null && id != null) {
+            sysAuthorized = this.sysAuthorizedService.getById(id);
+            if (sysAuthorized != null) {
                 String[] roleIds = getHttpServletRequest().getParameterValues("roleIds");
-                String role="";
-                if(roleIds!=null && roleIds.length > 0){
-                    for(String r:roleIds){
-                        role+=r+",";
+                String role = "";
+                if (roleIds != null && roleIds.length > 0) {
+                    for (String r : roleIds) {
+                        role += r + ",";
                     }
                 }
-                if(StringUtils.isBlank(role)){
-                    role="GENERAL";
+                if (StringUtils.isBlank(role)) {
+                    role = "GENERAL";
                 }
                 sysAuthorized.setRoleId(role);
+                bind(sysAuthorized);
+                this.sysAuthorizedService.save(sysAuthorized);
+            }
+        }
+        return "saveSuccess";
+    }
+
+    @Token
+    public String saveDept() throws Exception {
+        UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
+        if (userInfo != null && id != null && deptId != null) {
+            sysAuthorized = this.sysAuthorizedService.getById(id);
+            HrDepartment department = this.hrDepartmentService.getById(deptId);
+            if (sysAuthorized != null && department != null) {
+                sysAuthorized.setDeptId(department);
                 bind(sysAuthorized);
                 this.sysAuthorizedService.save(sysAuthorized);
             }
@@ -213,8 +261,8 @@ public class SysAuthorizedAction extends ActionSupport<SysAuthorized> {
     public String delete() throws Exception {
         if (id != null) {
             sysAuthorized = this.sysAuthorizedService.getById(id);
-            if(sysAuthorized!=null){
-                hrUser=sysAuthorized.getUserId();
+            if (sysAuthorized != null) {
+                hrUser = sysAuthorized.getUserId();
                 sysAuthorizedService.delete(sysAuthorized);
             }
         }

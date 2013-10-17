@@ -108,6 +108,7 @@ public class LoginAction extends BaseAction {
                             authOrg.setId(authorized.getOrgId().getId());
                             authOrg.setOrgName(authorized.getOrgId().getOrgName());
                             authOrg.setOrgNo(authorized.getOrgId().getOrgNo());
+                            authOrg.setTip(0);
                             authOrgList.add(authOrg);
                         }
                         userInfo.setAuthOrgList(authOrgList);
@@ -187,6 +188,50 @@ public class LoginAction extends BaseAction {
             Page<WfReq> pageReqObj = this.wfReqService.getPageList(0, 5, selectorList);
             if(pageReqObj!=null){
                 reqList=pageReqObj.getResultList();
+            }
+
+            List<SysOrg> sysOrgList=userInfo.getAuthOrgList();
+            if(sysOrgList!=null&&!sysOrgList.isEmpty()){
+                for(SysOrg sysOrg:sysOrgList){
+                    sysOrg.setTip(0);
+                    if(sysOrg.getId().equals(userInfo.getOrgId())){
+                        continue;
+                    }
+                    unRead = wfReqTaskService.getCountUnRead(sysOrg.getId(), userInfo.getUserId());
+                    if (unRead == null) {
+                        unRead = 0;
+                    }
+                    if(unRead.intValue()>0){
+                        sysOrg.setTip(1);
+                        continue;
+                    }
+                     unApprove = wfReqTaskService.getCountUnApprove(sysOrg.getId(), userInfo.getUserId());
+                    if (unApprove == null) {
+                        unApprove = 0;
+                    }
+                    if(unApprove.intValue()>0){
+                        sysOrg.setTip(1);
+                        continue;
+                    }
+
+                    reqPassed = wfReqService.getCountPassed(sysOrg.getId(), userInfo.getUserId());
+                    if (reqPassed == null) {
+                        reqPassed = 0;
+                    }
+                    if(reqPassed.intValue()>0){
+                        sysOrg.setTip(1);
+                        continue;
+                    }
+
+                     reqRejected = wfReqService.getCountRejected(sysOrg.getId(), userInfo.getUserId());
+                    if (reqRejected == null) {
+                        reqRejected = 0;
+                    }
+                    if(reqRejected.intValue()>0){
+                        sysOrg.setTip(1);
+                        continue;
+                    }
+                }
             }
         }
         return "success";  //To change body of implemented methods use File | Settings | File Templates.
