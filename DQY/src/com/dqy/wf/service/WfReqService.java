@@ -4,10 +4,12 @@ import com.dqy.wf.entity.*;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import org.guiceside.commons.Page;
+import org.guiceside.commons.lang.StringUtils;
 import org.guiceside.persistence.TransactionType;
 import org.guiceside.persistence.Transactional;
 import org.guiceside.persistence.hibernate.dao.hquery.HQuery;
 import org.guiceside.persistence.hibernate.dao.hquery.Selector;
+import org.guiceside.support.file.FileManager;
 
 import java.util.List;
 
@@ -52,6 +54,9 @@ public class WfReqService extends HQuery {
 
     @Inject
     private WfReqMyFlowLastService wfReqMyFlowLastService;
+
+    @Inject
+    private WfReqAttService reqAttService;
 
     @Transactional(type = TransactionType.READ_ONLY)
     public Page<WfReq> getPageList(int start,
@@ -117,7 +122,7 @@ public class WfReqService extends HQuery {
     @Transactional(type = TransactionType.READ_WRITE)
     public void save(WfReq wfReq, List<WfReqComments> reqCommentsList,
                      WfReqNoSeq wfReqNoSeq, List<WfReqNodeApprove> reqNodeApproveList, List<WfReqTask> reqTaskList,
-                     WfReqMyFlowLast wfReqMyFlowLast) {
+                     WfReqMyFlowLast wfReqMyFlowLast,List<WfReqAtt> reqAttList) {
         $(wfReq).save();
         if (reqCommentsList != null && !reqCommentsList.isEmpty()) {
             this.wfReqCommentsService.save(reqCommentsList);
@@ -134,6 +139,9 @@ public class WfReqService extends HQuery {
         if (wfReqMyFlowLast != null) {
             this.wfReqMyFlowLastService.save(wfReqMyFlowLast);
         }
+        if (reqAttList != null && !reqAttList.isEmpty()) {
+            this.reqAttService.save(reqAttList);
+        }
     }
 
 
@@ -145,7 +153,7 @@ public class WfReqService extends HQuery {
             List<WfReqDailyDetail> reqDailyDetailList,
             WfReqBusiness reqBusiness,
             List<WfReqComments> delReqCommentsList,
-                       List<WfReqNodeApprove> delReqNodeApproveList, List<WfReqTask> delReqTaskList) {
+                       List<WfReqNodeApprove> delReqNodeApproveList, List<WfReqTask> delReqTaskList,List<WfReqAtt> reqAttList) {
 
         if (delReqCommentsList != null && !delReqCommentsList.isEmpty()) {
             this.wfReqCommentsService.delete(delReqCommentsList);
@@ -173,6 +181,9 @@ public class WfReqService extends HQuery {
         }
         if(reqBusiness!=null){
             this.wfReqBusinessService.delete(reqBusiness);
+        }
+        if(reqAttList!=null&&!reqAttList.isEmpty()){
+            this.reqAttService.delete(reqAttList);
         }
         $(wfReq).delete();
     }

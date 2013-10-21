@@ -56,6 +56,9 @@ public class WfReqDailyAction extends WfReqSupportAction<WfReqDaily> {
     @Inject
     private WfReqTaskService wfReqTaskService;
 
+    @Inject
+    private WfReqAttService wfReqAttService;
+
     @ReqGet
     @ModelDriver
     @ReqSet
@@ -98,6 +101,9 @@ public class WfReqDailyAction extends WfReqSupportAction<WfReqDaily> {
 
     @ReqSet
     private Date sendDate;
+
+    @ReqSet
+    private List<WfReqAtt> reqAttList;
 
 
     @Override
@@ -159,7 +165,7 @@ public class WfReqDailyAction extends WfReqSupportAction<WfReqDaily> {
             wfReqDaily.setReqId(wfReq);
             wfReqDaily.setUseYn("Y");
             bind(wfReqDaily);
-            this.wfReqDailyService.save(wfReqDaily, detailList, wfReq, wfReqCommentsList, wfReqNoSeq, reqNodeApproveList, reqTaskList, wfReqMyFlowLast);
+            this.wfReqDailyService.save(wfReqDaily, detailList, wfReq, wfReqCommentsList, wfReqNoSeq, reqNodeApproveList, reqTaskList, wfReqMyFlowLast,reqAttList);
         }
         return "success";  //To change body of implemented methods use File | Settings | File Templates.
     }
@@ -174,6 +180,7 @@ public class WfReqDailyAction extends WfReqSupportAction<WfReqDaily> {
                 wfReq = wfReqDaily.getReqId();
                 if (wfReq != null) {
                     reqCommentsList = this.wfReqCommentsService.getCommentsListByReqId(wfReq.getId());
+                    reqAttList=wfReqAttService.getByReqId(wfReq.getId());
                 }
             }
         }
@@ -190,6 +197,7 @@ public class WfReqDailyAction extends WfReqSupportAction<WfReqDaily> {
                 wfReq = wfReqDaily.getReqId();
                 if (wfReq != null) {
                     reqCommentsList = this.wfReqCommentsService.getCommentsListByReqId(wfReq.getId());
+                    reqAttList=wfReqAttService.getByReqId(wfReq.getId());
                 }
             }
         }
@@ -210,6 +218,7 @@ public class WfReqDailyAction extends WfReqSupportAction<WfReqDaily> {
                         detailList = this.wfReqDailyDetailService.getDetailListByDailyId(wfReqDaily.getId());
                     }
                     reqCommentsList = this.wfReqCommentsService.getCommentsListByReqId(wfReq.getId());
+                    reqAttList=wfReqAttService.getByReqId(wfReq.getId());
                 }
             }
         }

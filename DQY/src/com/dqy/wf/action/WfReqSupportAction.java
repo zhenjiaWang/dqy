@@ -2,6 +2,8 @@ package com.dqy.wf.action;
 
 import com.dqy.common.UserInfo;
 import com.dqy.common.UserSession;
+import com.dqy.common.entity.TempAtt;
+import com.dqy.common.service.TempAttService;
 import com.dqy.hr.entity.HrUser;
 import com.dqy.hr.service.HrUserService;
 import com.dqy.sys.entity.SysOrg;
@@ -11,6 +13,8 @@ import com.dqy.wf.entity.*;
 import com.dqy.wf.service.*;
 import com.google.inject.Inject;
 import org.guiceside.commons.lang.DateFormatUtil;
+import org.guiceside.commons.lang.StringUtils;
+import org.guiceside.support.file.FileManager;
 import org.guiceside.web.annotation.ModelDriver;
 import org.guiceside.web.annotation.ReqGet;
 import org.guiceside.web.annotation.ReqSet;
@@ -50,6 +54,9 @@ public class WfReqSupportAction<T> extends ActionSupport<T> {
     @Inject
     private WfReqMyFlowNodeApproveService wfReqMyFlowNodeApproveService;
 
+    @Inject
+    private TempAttService tempAttService;
+
     @ReqGet
     @ModelDriver
     @ReqSet
@@ -68,11 +75,51 @@ public class WfReqSupportAction<T> extends ActionSupport<T> {
 
     protected WfReqMyFlowLast wfReqMyFlowLast;
 
+    protected List<WfReqAtt> reqAttList;
+
     @Override
     public String execute() throws Exception {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
+    private List<WfReqAtt> bindReqAtt(UserInfo userInfo,WfReq wfReq,String applyId) throws Exception{
+        List<WfReqAtt> attList=null;
+        if(wfReq!=null&&StringUtils.isNotBlank(applyId)&& StringUtils.isNotBlank(attToken)){
+            List<TempAtt> delTempAttList=tempAttService.getListByNotTokenId(applyId, attToken, userInfo.getOrgId(), userInfo.getUserId());
+            if(delTempAttList!=null&&!delTempAttList.isEmpty()){
+                for(TempAtt att:delTempAttList){
+                    if(StringUtils.isNotBlank(att.getSource())){
+                        if(FileManager.isExists(att.getSource())){
+                            FileManager.deleteFile(att.getSource());
+                        }
+                    }
+                }
+                this.tempAttService.delete(delTempAttList);
+            }
+
+            List<TempAtt> tempAttList=tempAttService.getListByTokenId(applyId, attToken, userInfo.getOrgId(), userInfo.getUserId());
+            if(tempAttList!=null&&!tempAttList.isEmpty()){
+                attList=new ArrayList<WfReqAtt>();
+                for(TempAtt att:tempAttList){
+                    WfReqAtt wfReqAtt=new WfReqAtt();
+                    wfReqAtt.setReqId(wfReq);
+                    wfReqAtt.setSource(att.getSource());
+                    wfReqAtt.setAttKey(att.getAttKey());
+                    wfReqAtt.setOldName(att.getOldName());
+                    wfReqAtt.setNewName(att.getNewName());
+                    wfReqAtt.setPostfix(att.getPostfix());
+                    wfReqAtt.setAttSize(att.getAttSize());
+                    wfReqAtt.setYear(att.getYear());
+                    wfReqAtt.setMonth(att.getMonth());
+                    wfReqAtt.setDay(att.getDay());
+                    wfReqAtt.setUseYn("Y");
+                    attList.add(wfReqAtt);
+                }
+                this.tempAttService.delete(tempAttList);
+            }
+        }
+        return attList;
+    }
     public void initReq() throws Exception {
         UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
         if (userInfo != null) {
@@ -105,6 +152,7 @@ public class WfReqSupportAction<T> extends ActionSupport<T> {
                     wfReqCommentsList.add(comments);
 
                     wfReqNoSeq = buildReqNo(userInfo.getOrgId(), wfReq.getApplyId());
+                    reqAttList=bindReqAtt(userInfo,wfReq, wfReq.getApplyId());
                     String reqNo = null;
                     if (wfReqNoSeq != null) {
                         int next = wfReqNoSeq.getNextSeq();

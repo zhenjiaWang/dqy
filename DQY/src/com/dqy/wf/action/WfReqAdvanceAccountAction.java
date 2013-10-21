@@ -52,6 +52,9 @@ public class WfReqAdvanceAccountAction extends WfReqSupportAction<WfReqAdvanceAc
     @ReqSet
     private WfReqAdvanceAccount wfReqAdvanceAccount;
 
+    @Inject
+    private WfReqAttService wfReqAttService;
+
     @ReqGet
     @ReqSet
     private Long id;
@@ -80,6 +83,10 @@ public class WfReqAdvanceAccountAction extends WfReqSupportAction<WfReqAdvanceAc
     @ReqSet
     private Date sendDate;
 
+    @ReqSet
+    private List<WfReqAtt> reqAttList;
+
+
     @Override
     @PageFlow(result = {@Result(name = "success", path = "/view/wf/advanceAccount/input.ftl", type = Dispatcher.FreeMarker)})
     public String execute() throws Exception {
@@ -102,7 +109,7 @@ public class WfReqAdvanceAccountAction extends WfReqSupportAction<WfReqAdvanceAc
             wfReqAdvanceAccount.setUseYn("Y");
             wfReqAdvanceAccount.setRePayYn("N");
             bind(wfReqAdvanceAccount);
-            this.wfReqAdvanceAccountService.save(wfReqAdvanceAccount,wfReq,  wfReqCommentsList, wfReqNoSeq, reqNodeApproveList, reqTaskList, wfReqMyFlowLast);
+            this.wfReqAdvanceAccountService.save(wfReqAdvanceAccount,wfReq,  wfReqCommentsList, wfReqNoSeq, reqNodeApproveList, reqTaskList, wfReqMyFlowLast,reqAttList);
         }
         return "success";  //To change body of implemented methods use File | Settings | File Templates.
     }
@@ -116,6 +123,7 @@ public class WfReqAdvanceAccountAction extends WfReqSupportAction<WfReqAdvanceAc
                 wfReq=wfReqAdvanceAccount.getReqId();
                 if(wfReq!=null){
                     reqCommentsList = this.wfReqCommentsService.getCommentsListByReqId(wfReq.getId());
+                    reqAttList=wfReqAttService.getByReqId(wfReq.getId());
                 }
             }
         }
@@ -130,6 +138,7 @@ public class WfReqAdvanceAccountAction extends WfReqSupportAction<WfReqAdvanceAc
                 wfReq=wfReqAdvanceAccount.getReqId();
                 if(wfReq!=null){
                     reqCommentsList = this.wfReqCommentsService.getCommentsListByReqId(wfReq.getId());
+                    reqAttList=wfReqAttService.getByReqId(wfReq.getId());
                 }
             }
         }
@@ -146,6 +155,7 @@ public class WfReqAdvanceAccountAction extends WfReqSupportAction<WfReqAdvanceAc
                 if(wfReq!=null){
                     wfReqAdvanceAccount=this.wfReqAdvanceAccountService.getByReqId(wfReq.getId());
                     reqCommentsList = this.wfReqCommentsService.getCommentsListByReqId(wfReq.getId());
+                    reqAttList=wfReqAttService.getByReqId(wfReq.getId());
                 }
             }
         }

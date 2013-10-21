@@ -75,8 +75,8 @@ public class WfReqBusinessService extends HQuery {
     @Transactional(type = TransactionType.READ_WRITE)
     public void save(WfReqBusiness wfReqBusiness,  WfReq wfReq, List<WfReqComments> reqCommentsList,
                      WfReqNoSeq wfReqNoSeq, List<WfReqNodeApprove> reqNodeApproveList, List<WfReqTask> reqTaskList,
-                     WfReqMyFlowLast wfReqMyFlowLast) {
-        this.wfReqService.save(wfReq, reqCommentsList, wfReqNoSeq, reqNodeApproveList, reqTaskList, wfReqMyFlowLast);
+                     WfReqMyFlowLast wfReqMyFlowLast,List<WfReqAtt> reqAttList) {
+        this.wfReqService.save(wfReq, reqCommentsList, wfReqNoSeq, reqNodeApproveList, reqTaskList, wfReqMyFlowLast,reqAttList);
         this.save(wfReqBusiness);
     }
 

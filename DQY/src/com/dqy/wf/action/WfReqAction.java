@@ -39,6 +39,9 @@ public class WfReqAction extends ActionSupport<WfReq> {
     private HrUserService hrUserService;
 
     @Inject
+    private WfReqAttService wfReqAttService;
+
+    @Inject
     private SysOrgService sysOrgService;
 
     @Inject
@@ -66,7 +69,6 @@ public class WfReqAction extends ActionSupport<WfReq> {
 
     @Inject
     private WfReqTaskService wfReqTaskService;
-
 
 
     @Inject
@@ -109,9 +111,6 @@ public class WfReqAction extends ActionSupport<WfReq> {
     private WfReq wfReq;
 
 
-
-
-
     @ReqSet
     private List<WfReq> reqList;
 
@@ -148,7 +147,6 @@ public class WfReqAction extends ActionSupport<WfReq> {
     private List<WfReqComments> reqCommentsList;
 
 
-
     @ReqSet
     private String defaultSubject;
 
@@ -183,14 +181,14 @@ public class WfReqAction extends ActionSupport<WfReq> {
             userInfo.setChildMenu("overrule");
             Long orgId = userInfo.getOrgId();
             Long userId = userInfo.getUserId();
-            if (orgId!=null&&userId!=null) {
+            if (orgId != null && userId != null) {
                 selectorList.add(SelectorUtils.$eq("orgId.id", orgId));
                 selectorList.add(SelectorUtils.$eq("userId.id", userId));
                 selectorList.add(SelectorUtils.$eq("applyState", 2));
                 selectorList.add(SelectorUtils.$eq("applyResult", 2));
                 selectorList.add(SelectorUtils.$eq("complete", 1));
-                if(StringUtils.isNotBlank(keyword)){
-                    selectorList.add(SelectorUtils.$or(SelectorUtils.$like("reqNo",keyword),SelectorUtils.$like("subject",keyword)));
+                if (StringUtils.isNotBlank(keyword)) {
+                    selectorList.add(SelectorUtils.$or(SelectorUtils.$like("reqNo", keyword), SelectorUtils.$like("subject", keyword)));
                 }
                 if (StringUtils.isNotBlank(searchType) && StringUtils.isNotBlank(searchKey)) {
                     if (searchType.equals("reqNo")) {
@@ -239,14 +237,14 @@ public class WfReqAction extends ActionSupport<WfReq> {
             userInfo.setChildMenu("pass");
             Long orgId = userInfo.getOrgId();
             Long userId = userInfo.getUserId();
-            if (orgId!=null&&userId!=null) {
+            if (orgId != null && userId != null) {
                 selectorList.add(SelectorUtils.$eq("orgId.id", orgId));
                 selectorList.add(SelectorUtils.$eq("userId.id", userId));
                 selectorList.add(SelectorUtils.$eq("applyState", 2));
                 selectorList.add(SelectorUtils.$eq("applyResult", 1));
                 selectorList.add(SelectorUtils.$eq("complete", 1));
-                if(StringUtils.isNotBlank(keyword)){
-                    selectorList.add(SelectorUtils.$or(SelectorUtils.$like("reqNo",keyword),SelectorUtils.$like("subject",keyword)));
+                if (StringUtils.isNotBlank(keyword)) {
+                    selectorList.add(SelectorUtils.$or(SelectorUtils.$like("reqNo", keyword), SelectorUtils.$like("subject", keyword)));
                 }
                 if (StringUtils.isNotBlank(searchType) && StringUtils.isNotBlank(searchKey)) {
                     if (searchType.equals("reqNo")) {
@@ -295,14 +293,14 @@ public class WfReqAction extends ActionSupport<WfReq> {
             userInfo.setChildMenu("ing");
             Long orgId = userInfo.getOrgId();
             Long userId = userInfo.getUserId();
-            if (orgId!=null&&userId!=null) {
+            if (orgId != null && userId != null) {
                 selectorList.add(SelectorUtils.$eq("orgId.id", orgId));
                 selectorList.add(SelectorUtils.$eq("userId.id", userId));
                 selectorList.add(SelectorUtils.$eq("applyState", 1));
                 selectorList.add(SelectorUtils.$eq("applyResult", 0));
                 selectorList.add(SelectorUtils.$eq("complete", 0));
-                if(StringUtils.isNotBlank(keyword)){
-                    selectorList.add(SelectorUtils.$or(SelectorUtils.$like("reqNo",keyword),SelectorUtils.$like("subject",keyword)));
+                if (StringUtils.isNotBlank(keyword)) {
+                    selectorList.add(SelectorUtils.$or(SelectorUtils.$like("reqNo", keyword), SelectorUtils.$like("subject", keyword)));
                 }
                 if (StringUtils.isNotBlank(searchType) && StringUtils.isNotBlank(searchKey)) {
                     if (searchType.equals("reqNo")) {
@@ -348,7 +346,7 @@ public class WfReqAction extends ActionSupport<WfReq> {
             userInfo.setTopMenu("sys");
             userInfo.setLeftMenu("req");
             Long orgId = userInfo.getOrgId();
-            if (orgId!=null) {
+            if (orgId != null) {
                 selectorList.add(SelectorUtils.$eq("orgId.id", orgId));
             }
             selectorList.add(SelectorUtils.$order("id", false));
@@ -377,14 +375,14 @@ public class WfReqAction extends ActionSupport<WfReq> {
             userInfo.setLeftMenu("myFinancial");
             userInfo.setChildMenu("financial");
             Long orgId = userInfo.getOrgId();
-            if (orgId!=null) {
+            if (orgId != null) {
                 selectorList.add(SelectorUtils.$eq("orgId.id", orgId));
                 selectorList.add(SelectorUtils.$eq("applyState", 2));
                 selectorList.add(SelectorUtils.$eq("applyResult", 1));
                 selectorList.add(SelectorUtils.$eq("complete", 1));
                 selectorList.add(SelectorUtils.$eq("financialYn", "N"));
-                if(StringUtils.isNotBlank(keyword)){
-                    selectorList.add(SelectorUtils.$or(SelectorUtils.$like("reqNo",keyword),SelectorUtils.$like("subject",keyword)));
+                if (StringUtils.isNotBlank(keyword)) {
+                    selectorList.add(SelectorUtils.$or(SelectorUtils.$like("reqNo", keyword), SelectorUtils.$like("subject", keyword)));
                 }
             }
             selectorList.add(SelectorUtils.$order("id", false));
@@ -413,14 +411,14 @@ public class WfReqAction extends ActionSupport<WfReq> {
             userInfo.setLeftMenu("myFinancial");
             userInfo.setChildMenu("over");
             Long orgId = userInfo.getOrgId();
-            if (orgId!=null) {
+            if (orgId != null) {
                 selectorList.add(SelectorUtils.$eq("orgId.id", orgId));
                 selectorList.add(SelectorUtils.$eq("applyState", 2));
                 selectorList.add(SelectorUtils.$eq("applyResult", 1));
                 selectorList.add(SelectorUtils.$eq("complete", 1));
                 selectorList.add(SelectorUtils.$eq("financialYn", "Y"));
-                if(StringUtils.isNotBlank(keyword)){
-                    selectorList.add(SelectorUtils.$or(SelectorUtils.$like("reqNo",keyword),SelectorUtils.$like("subject",keyword)));
+                if (StringUtils.isNotBlank(keyword)) {
+                    selectorList.add(SelectorUtils.$or(SelectorUtils.$like("reqNo", keyword), SelectorUtils.$like("subject", keyword)));
                 }
             }
             selectorList.add(SelectorUtils.$order("id", false));
@@ -450,29 +448,47 @@ public class WfReqAction extends ActionSupport<WfReq> {
                 List<WfReqNodeApprove> delReqNodeApproveList = this.wfReqNodeApproveService.getNodeListByReqId(userInfo.getOrgId(), wfReq.getId());
                 List<WfReqComments> delReqCommentsList = this.wfReqCommentsService.getCommentsListByReqId(wfReq.getId());
                 List<WfReqTask> delReqTaskList = this.wfReqTaskService.getTaskListByReqId(userInfo.getOrgId(), wfReq.getId());
-                WfReqAdvanceAccount advanceAccount=null;
-                WfReqRePayment reqRePayment=null;
-                WfReqBusiness reqBusiness=null;
-                WfReqDaily reqDaily=null;
-                List<WfReqDailyDetail> reqDailyDetailList=null;
-                List<WfReqRePaymentDetail> rePaymentDetailList=null;
-                if(wfReq.getApplyId().equals("ADVANCE_ACCOUNT")){
-                    advanceAccount=this.wfReqAdvanceAccountService.getByReqId(wfReq.getId());
-                }else  if(wfReq.getApplyId().equals("REPAYMENT")){
-                    reqRePayment=this.wfReqRePaymentService.getByReqId(wfReq.getId());
-                    if(reqRePayment!=null){
-                        rePaymentDetailList=this.wfReqRePaymentDetailService.getDetailListByRePaymentId(reqRePayment.getId());
+                WfReqAdvanceAccount advanceAccount = null;
+                WfReqRePayment reqRePayment = null;
+                WfReqBusiness reqBusiness = null;
+                WfReqDaily reqDaily = null;
+                List<WfReqDailyDetail> reqDailyDetailList = null;
+                List<WfReqRePaymentDetail> rePaymentDetailList = null;
+                List<WfReqAtt> reqAttList = null;
+                if (wfReq.getApplyId().equals("ADVANCE_ACCOUNT")) {
+                    advanceAccount = this.wfReqAdvanceAccountService.getByReqId(wfReq.getId());
+                } else if (wfReq.getApplyId().equals("REPAYMENT")) {
+                    reqRePayment = this.wfReqRePaymentService.getByReqId(wfReq.getId());
+                    if (reqRePayment != null) {
+                        rePaymentDetailList = this.wfReqRePaymentDetailService.getDetailListByRePaymentId(reqRePayment.getId());
                     }
-                }else  if(wfReq.getApplyId().equals("DAILY")){
-                    reqDaily=this.wfReqDailyService.getByReqId(wfReq.getId());
-                    if(reqDaily!=null){
-                        reqDailyDetailList=this.wfReqDailyDetailService.getDetailListByDailyId(reqDaily.getId());
+                } else if (wfReq.getApplyId().equals("DAILY")) {
+                    reqDaily = this.wfReqDailyService.getByReqId(wfReq.getId());
+                    if (reqDaily != null) {
+                        reqDailyDetailList = this.wfReqDailyDetailService.getDetailListByDailyId(reqDaily.getId());
                     }
-                }else  if(wfReq.getApplyId().equals("BUSINESS")){
-                    reqBusiness=this.wfReqBusinessService.getByReqId(wfReq.getId());
+                } else if (wfReq.getApplyId().equals("BUSINESS")) {
+                    reqBusiness = this.wfReqBusinessService.getByReqId(wfReq.getId());
                 }
-                this.wfReqService.delete(wfReq,advanceAccount,reqRePayment, rePaymentDetailList,reqDaily,reqDailyDetailList,reqBusiness,
-                        delReqCommentsList, delReqNodeApproveList, delReqTaskList);
+                reqAttList = wfReqAttService.getByReqId(wfReq.getId());
+                List<String> attSourceList = null;
+                if (reqAttList != null && !reqAttList.isEmpty()) {
+                    attSourceList = new ArrayList<String>();
+                    for (WfReqAtt wfReqAtt : reqAttList) {
+                        if (StringUtils.isNotBlank(wfReqAtt.getSource())) {
+                            if (FileManager.isExists(wfReqAtt.getSource())) {
+                                attSourceList.add(wfReqAtt.getSource());
+                            }
+                        }
+                    }
+                }
+                this.wfReqService.delete(wfReq, advanceAccount, reqRePayment, rePaymentDetailList, reqDaily, reqDailyDetailList, reqBusiness,
+                        delReqCommentsList, delReqNodeApproveList, delReqTaskList, reqAttList);
+                if (attSourceList != null && !attSourceList.isEmpty()) {
+                    for (String source : attSourceList) {
+                        FileManager.deleteFile(source);
+                    }
+                }
             }
         }
         return "success";
@@ -485,7 +501,7 @@ public class WfReqAction extends ActionSupport<WfReq> {
         if (id != null && userInfo != null) {
             wfReq = this.wfReqService.getById(id);
             if (wfReq != null) {
-                List<WfReqNodeApprove> reqNodeApproveList = wfReqNodeApproveService.getNodeListByReqId(userInfo.getOrgId(),wfReq.getId());
+                List<WfReqNodeApprove> reqNodeApproveList = wfReqNodeApproveService.getNodeListByReqId(userInfo.getOrgId(), wfReq.getId());
                 Integer nodeCount = wfReq.getNodeCount();
                 if (nodeCount != null) {
                     Integer count = wfReqNodeApproveService.getCountExecutorByReqId(userInfo.getOrgId(), wfReq.getId());
@@ -504,13 +520,13 @@ public class WfReqAction extends ActionSupport<WfReq> {
                     WfReqNodeApprove currentNode = wfReq.getCurrentNode();
                     if (currentNode != null) {
                         for (int i = 1; i <= nodeCount; i++) {
-                            List<WfReqNodeApprove> approveList = this.wfReqNodeApproveService.getNodeListByReqIdNodeSeq(userInfo.getOrgId(),wfReq.getId(), i);
+                            List<WfReqNodeApprove> approveList = this.wfReqNodeApproveService.getNodeListByReqIdNodeSeq(userInfo.getOrgId(), wfReq.getId(), i);
                             approve = new JSONObject();
                             approve.put("nodeSeq", i);
                             String className = "";
                             if (i < currentNode.getNodeSeq().intValue()) {
                                 className = "badge-success";
-                            }else if (i == currentNode.getNodeSeq().intValue()) {
+                            } else if (i == currentNode.getNodeSeq().intValue()) {
                                 className = "badge-important";
                             } else if (i > currentNode.getNodeSeq().intValue()) {
                                 className = "";
@@ -523,7 +539,7 @@ public class WfReqAction extends ActionSupport<WfReq> {
                                     if (StringUtils.isNotBlank(nodeText)) {
                                         nodeText += "&" + get(nodeApprove, "userId.userName");
                                     } else {
-                                        nodeText = get(nodeApprove,"userId.userName");
+                                        nodeText = get(nodeApprove, "userId.userName");
                                     }
                                 }
                             }
@@ -532,7 +548,7 @@ public class WfReqAction extends ActionSupport<WfReq> {
                         }
                     }
                     if (count.intValue() > 0) {
-                        WfReqNodeApprove nodeApprove = wfReqNodeApproveService.getExecutorByReqId(userInfo.getOrgId(),wfReq.getId());
+                        WfReqNodeApprove nodeApprove = wfReqNodeApproveService.getExecutorByReqId(userInfo.getOrgId(), wfReq.getId());
                         if (nodeApprove != null) {
                             approve = new JSONObject();
                             approve.put("nodeSeq", 9999);
@@ -563,12 +579,12 @@ public class WfReqAction extends ActionSupport<WfReq> {
             @Result(name = "BUSINESS", path = "/wf/business!view.dhtml?reqId=${wfReq.id}", type = Dispatcher.Redirect)})
     public String view() throws Exception {
         UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
-        if (userInfo != null&&id!=null) {
-            wfReq=this.wfReqService.getById(id);
-            if(wfReq!=null){
-                applyId=wfReq.getApplyId();
-                if(wfReq.getUserId().getId().equals(userInfo.getUserId())){
-                    if(wfReq.getTip().intValue()==1){
+        if (userInfo != null && id != null) {
+            wfReq = this.wfReqService.getById(id);
+            if (wfReq != null) {
+                applyId = wfReq.getApplyId();
+                if (wfReq.getUserId().getId().equals(userInfo.getUserId())) {
+                    if (wfReq.getTip().intValue() == 1) {
                         wfReq.setTip(0);
                         bind(wfReq);
                         wfReqService.save(wfReq);
@@ -596,12 +612,12 @@ public class WfReqAction extends ActionSupport<WfReq> {
             @Result(name = "BUSINESS", path = "/wf/business!financial.dhtml?reqId=${wfReq.id}", type = Dispatcher.Redirect)})
     public String financial() throws Exception {
         UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
-        if (userInfo != null&&id!=null) {
-            wfReq=this.wfReqService.getById(id);
-            if(wfReq!=null){
-                applyId=wfReq.getApplyId();
-                if(wfReq.getUserId().getId().equals(userInfo.getUserId())){
-                    if(wfReq.getTip().intValue()==1){
+        if (userInfo != null && id != null) {
+            wfReq = this.wfReqService.getById(id);
+            if (wfReq != null) {
+                applyId = wfReq.getApplyId();
+                if (wfReq.getUserId().getId().equals(userInfo.getUserId())) {
+                    if (wfReq.getTip().intValue() == 1) {
                         wfReq.setTip(0);
                         bind(wfReq);
                         wfReqService.save(wfReq);
@@ -630,12 +646,13 @@ public class WfReqAction extends ActionSupport<WfReq> {
         }
         return "success";  //To change body of implemented methods use File | Settings | File Templates.
     }
+
     public String financialSave() throws Exception {
         UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
-        if (userInfo != null&&id!=null) {
+        if (userInfo != null && id != null) {
             wfReq = this.wfReqService.getById(id);
             wfReq.setFinancialYn("Y");
-            if(StringUtils.isNotBlank(reason)){
+            if (StringUtils.isNotBlank(reason)) {
                 wfReq.setFinancialDesc(reason);
             }
             bind(wfReq);

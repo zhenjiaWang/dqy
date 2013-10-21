@@ -77,8 +77,8 @@ public class WfReqRePaymentService extends HQuery {
     @Transactional(type = TransactionType.READ_WRITE)
     public void save(WfReqRePayment wfReqRePayment, List<WfReqRePaymentDetail> detailList,WfReq wfReq, List<WfReqComments> reqCommentsList,
                      WfReqNoSeq wfReqNoSeq, List<WfReqNodeApprove> reqNodeApproveList, List<WfReqTask> reqTaskList,
-                     WfReqMyFlowLast wfReqMyFlowLast) {
-        this.wfReqService.save(wfReq, reqCommentsList, wfReqNoSeq, reqNodeApproveList, reqTaskList, wfReqMyFlowLast);
+                     WfReqMyFlowLast wfReqMyFlowLast,List<WfReqAtt> reqAttList) {
+        this.wfReqService.save(wfReq, reqCommentsList, wfReqNoSeq, reqNodeApproveList, reqTaskList, wfReqMyFlowLast,reqAttList);
         this.save(wfReqRePayment);
         if(detailList!=null&&!detailList.isEmpty()){
             wfReqRePaymentDetailService.save(detailList);

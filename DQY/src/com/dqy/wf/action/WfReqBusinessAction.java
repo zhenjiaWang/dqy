@@ -47,6 +47,9 @@ public class WfReqBusinessAction extends WfReqSupportAction<WfReqBusiness> {
     @Inject
     private WfReqTaskService wfReqTaskService;
 
+    @Inject
+    private WfReqAttService wfReqAttService;
+
     @ReqGet
     @ModelDriver
     @ReqSet
@@ -81,6 +84,10 @@ public class WfReqBusinessAction extends WfReqSupportAction<WfReqBusiness> {
     @ReqSet
     private Date sendDate;
 
+    @ReqSet
+    private List<WfReqAtt> reqAttList;
+
+
 
     @Override
     @PageFlow(result = {@Result(name = "success", path = "/view/wf/business/input.ftl", type = Dispatcher.FreeMarker)})
@@ -103,7 +110,7 @@ public class WfReqBusinessAction extends WfReqSupportAction<WfReqBusiness> {
             wfReqBusiness.setReqId(wfReq);
             wfReqBusiness.setUseYn("Y");
             bind(wfReqBusiness);
-            this.wfReqBusinessService.save(wfReqBusiness, wfReq, wfReqCommentsList, wfReqNoSeq, reqNodeApproveList, reqTaskList, wfReqMyFlowLast);
+            this.wfReqBusinessService.save(wfReqBusiness, wfReq, wfReqCommentsList, wfReqNoSeq, reqNodeApproveList, reqTaskList, wfReqMyFlowLast,reqAttList);
         }
         return "success";  //To change body of implemented methods use File | Settings | File Templates.
     }
@@ -117,6 +124,7 @@ public class WfReqBusinessAction extends WfReqSupportAction<WfReqBusiness> {
                 wfReq = wfReqBusiness.getReqId();
                 if (wfReq != null) {
                     reqCommentsList = this.wfReqCommentsService.getCommentsListByReqId(wfReq.getId());
+                    reqAttList=wfReqAttService.getByReqId(wfReq.getId());
                 }
             }
         }
@@ -132,6 +140,7 @@ public class WfReqBusinessAction extends WfReqSupportAction<WfReqBusiness> {
                 wfReq = wfReqBusiness.getReqId();
                 if (wfReq != null) {
                     reqCommentsList = this.wfReqCommentsService.getCommentsListByReqId(wfReq.getId());
+                    reqAttList=wfReqAttService.getByReqId(wfReq.getId());
                 }
             }
         }
@@ -148,6 +157,7 @@ public class WfReqBusinessAction extends WfReqSupportAction<WfReqBusiness> {
                 if (wfReq != null) {
                     wfReqBusiness = this.wfReqBusinessService.getByReqId(wfReq.getId());
                     reqCommentsList = this.wfReqCommentsService.getCommentsListByReqId(wfReq.getId());
+                    reqAttList=wfReqAttService.getByReqId(wfReq.getId());
                 }
             }
         }

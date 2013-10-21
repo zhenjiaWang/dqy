@@ -59,6 +59,10 @@ public class WfReqRePaymentAction extends WfReqSupportAction<WfReqRePayment> {
     @Inject
     private WfReqTaskService wfReqTaskService;
 
+    @Inject
+    private WfReqAttService wfReqAttService;
+
+
     @ReqGet
     @ModelDriver
     @ReqSet
@@ -105,6 +109,9 @@ public class WfReqRePaymentAction extends WfReqSupportAction<WfReqRePayment> {
 
     @ReqSet
     private Date sendDate;
+
+    @ReqSet
+    private List<WfReqAtt> reqAttList;
 
 
     @Override
@@ -177,7 +184,7 @@ public class WfReqRePaymentAction extends WfReqSupportAction<WfReqRePayment> {
             wfReqRePayment.setReqId(wfReq);
             wfReqRePayment.setUseYn("Y");
             bind(wfReqRePayment);
-            this.wfReqRePaymentService.save(wfReqRePayment,detailList,wfReq,  wfReqCommentsList, wfReqNoSeq, reqNodeApproveList, reqTaskList, wfReqMyFlowLast);
+            this.wfReqRePaymentService.save(wfReqRePayment,detailList,wfReq,  wfReqCommentsList, wfReqNoSeq, reqNodeApproveList, reqTaskList, wfReqMyFlowLast,reqAttList);
         }
         return "success";  //To change body of implemented methods use File | Settings | File Templates.
     }
@@ -192,6 +199,7 @@ public class WfReqRePaymentAction extends WfReqSupportAction<WfReqRePayment> {
                 wfReq=wfReqRePayment.getReqId();
                 if(wfReq!=null){
                     reqCommentsList = this.wfReqCommentsService.getCommentsListByReqId(wfReq.getId());
+                    reqAttList=wfReqAttService.getByReqId(wfReq.getId());
                 }
             }
         }
@@ -208,6 +216,7 @@ public class WfReqRePaymentAction extends WfReqSupportAction<WfReqRePayment> {
                 wfReq=wfReqRePayment.getReqId();
                 if(wfReq!=null){
                     reqCommentsList = this.wfReqCommentsService.getCommentsListByReqId(wfReq.getId());
+                    reqAttList=wfReqAttService.getByReqId(wfReq.getId());
                 }
             }
         }
@@ -227,6 +236,7 @@ public class WfReqRePaymentAction extends WfReqSupportAction<WfReqRePayment> {
                         detailList=this.wfReqRePaymentDetailService.getDetailListByRePaymentId(wfReqRePayment.getId());
                     }
                     reqCommentsList = this.wfReqCommentsService.getCommentsListByReqId(wfReq.getId());
+                    reqAttList=wfReqAttService.getByReqId(wfReq.getId());
                 }
             }
         }
