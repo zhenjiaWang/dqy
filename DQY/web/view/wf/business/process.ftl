@@ -115,6 +115,26 @@
                         </div>
                     </td>
                 </tr>
+                    <#if reqAttList?exists&&reqAttList?size gt 0>
+                    <tr>
+                        <td colspan="2">
+                            <div class="control-group" style="margin-bottom: 5px;">
+                                <div class="md-attachment floatleft">
+                                    <a><em class="md-mi-attachment"></em>下载附件</a>
+                                    <ul class="all-att">
+                                        <#list reqAttList as att>
+                                            <li class="clearfix">
+                                                <span class="docimg"><img width="32" height="32" src="/images/file/${att.postfix?if_exists}.png"></span>
+                                                <span class="txt_hidden">${att.oldName?if_exists}</span>
+                                                <a href="/wf/req!download.dhtml?id=${att.id?c}" target="_blank">下载</a>
+                                            </li>
+                                        </#list>
+                                    </ul>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    </#if>
                 <tr>
                     <td colspan="2">
                     ${wfReqBusiness.content?if_exists}

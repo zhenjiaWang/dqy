@@ -20,6 +20,7 @@ import org.guiceside.persistence.hibernate.dao.hquery.Selector;
 import org.guiceside.support.file.FileManager;
 import org.guiceside.web.annotation.*;
 
+import java.io.File;
 import java.util.*;
 
 /**
@@ -660,5 +661,17 @@ public class WfReqAction extends ActionSupport<WfReq> {
         }
         script = "parent.setURL('/wf/req!financialList.dhtml');";
         return "saveSuccess";  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    public String download() throws Exception {
+        if (id != null) {
+            WfReqAtt tempAtt = this.wfReqAttService.getById(id);
+            if (tempAtt != null) {
+                String attchName = StringUtils.toUtf8String(tempAtt.getOldName() + "." + tempAtt.getPostfix());
+                File file = FileManager.getFile(tempAtt.getSource(), false);
+                download(file, attchName);
+            }
+        }
+        return null;
     }
 }
