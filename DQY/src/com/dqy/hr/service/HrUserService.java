@@ -138,4 +138,10 @@ public class HrUserService extends HQuery {
             sysAuthorizedService.save(sysAuthorized);
         }
     }
+
+
+    @Transactional(type = TransactionType.READ_ONLY)
+    public Integer validateNo(Long orgId,String userNo) {
+        return $($count("id"),$eq("orgId.id", orgId), $eq("userNo", userNo)).value(HrUser.class, Integer.class);
+    }
 }

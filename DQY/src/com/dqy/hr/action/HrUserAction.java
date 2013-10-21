@@ -16,6 +16,7 @@ import com.dqy.sys.service.SysOrgGroupService;
 import com.dqy.sys.service.SysOrgService;
 import com.dqy.web.support.ActionSupport;
 import com.google.inject.Inject;
+import net.sf.json.JSONObject;
 import org.guiceside.commons.lang.DateFormatUtil;
 import org.guiceside.commons.lang.StringUtils;
 import org.guiceside.persistence.entity.search.SelectorUtils;
@@ -234,28 +235,34 @@ public class HrUserAction extends ActionSupport<HrUser> {
             }else{
                 Date entryDate=hrUser.getEntryDate();
                 if(entryDate!=null){
-                    Integer entryCount=this.hrUserService.getCountUserByEntryDate(userInfo.getOrgId(),userInfo.getGroupId(),entryDate);
-                    if(entryCount==null){
-                        entryCount=0;
-                    }
-                    entryCount+=1;
-                    Integer year=DateFormatUtil.getDayInYear(entryDate);
-                    Integer month=DateFormatUtil.getDayInMonth(entryDate)+1;
-                    String userNo;
-                    if(month.intValue()<10){
-                        userNo=year+"0"+month;
-                    }else{
-                        userNo=year+""+month;
-                    }
-                    if(entryCount.intValue()<10){
-                        userNo+="000"+entryCount;
-                    }else if(entryCount.intValue()<100){
-                        userNo+="00"+entryCount;
-                    }else if(entryCount.intValue()<1000){
-                        userNo+="0"+entryCount;
+                    if(StringUtils.isBlank(hrUser.getUserNo())){
+                        Integer entryCount=this.hrUserService.getCountUserByEntryDate(userInfo.getOrgId(),userInfo.getGroupId(),entryDate);
+                        if(entryCount==null){
+                            entryCount=0;
+                        }
+                        entryCount+=1;
+                        Integer year=DateFormatUtil.getDayInYear(entryDate);
+                        Integer month=DateFormatUtil.getDayInMonth(entryDate)+1;
+                        String yearStr=year.toString();
+                        if(StringUtils.isNotBlank(yearStr)){
+                            yearStr=yearStr.substring(2);
+                        }
+                        String userNo;
+                        if(month.intValue()<10){
+                            userNo=yearStr+"0"+month;
+                        }else{
+                            userNo=yearStr+""+month;
+                        }
+                        if(entryCount.intValue()<10){
+                            userNo+="000"+entryCount;
+                        }else if(entryCount.intValue()<100){
+                            userNo+="00"+entryCount;
+                        }else if(entryCount.intValue()<1000){
+                            userNo+="0"+entryCount;
+                        }
+                        hrUser.setUserNo(userNo);
                     }
                     HrDepartment department=null;
-                    hrUser.setUserNo(userNo);
                     if(hrUser.getDeptId()!=null){
                         if(hrUser.getDeptId().getId()!=null){
                              department=hrDepartmentService.getById(hrUser.getDeptId().getId());
@@ -297,5 +304,36 @@ public class HrUserAction extends ActionSupport<HrUser> {
             }
         }
         return "saveSuccess";
+    }
+
+    public String validateNo() throws Exception {
+        JSONObject item = new JSONObject();
+        item.put("result", false);
+        UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
+        if (userInfo != null) {
+            if (hrUser != null) {
+                if (StringUtils.isNotBlank(hrUser.getUserNo())) {
+                    String ignore = getParameter("ignore");
+                    if (StringUtils.isNotBlank(ignore)) {
+                        if (ignore.equals(hrUser.getUserNo())) {
+                            item.put("result", true);
+                            writeJsonByAction(item.toString());
+                        } else {
+                            Integer row = this.hrUserService.validateNo(userInfo.getOrgId(), hrUser.getUserNo());
+                            if (row.intValue() == 0) {
+                                item.put("result", true);
+                            }
+                        }
+                    } else {
+                        Integer row = this.hrUserService.validateNo(userInfo.getOrgId(), hrUser.getUserNo());
+                        if (row.intValue() == 0) {
+                            item.put("result", true);
+                        }
+                    }
+                }
+            }
+        }
+        writeJsonByAction(item.toString());
+        return null;
     }
 }

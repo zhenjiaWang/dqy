@@ -10,6 +10,8 @@ WEBUTILS.popWindow = (function () {
             if(height){
                 $('#myModalFrame','#myModal').attr('height',(height-120));
                 $('#myModal').height(height);
+            }else{
+                height=437;
             }
             if(title){
                 $('.pop-title','#myModal').text(title);
@@ -17,7 +19,14 @@ WEBUTILS.popWindow = (function () {
             if(url){
                 $('#myModalFrame','#myModal').attr('src',url);
             }
+            var mt,mr,mb,ml,margin,
+            mt=0;
+            mr=0;
+            mb=0;
+            ml=parseInt(width/2);
+            margin='-'+mt+'px '+mr+' '+mb+' -'+ml+'px';
             $('#myModal').modal('show');
+            $('#myModal').css({'margin':margin});
             $('#myModal').on('hidden', function () {
                 $('.treeDiv').fadeOut();
                 $('#treeDemo','.treeDiv').empty();

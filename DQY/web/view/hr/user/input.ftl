@@ -33,9 +33,25 @@
             $('.treeDiv').fadeOut();
         }
     }
+    function validatorNo() {
+        var url = '';
+        <#if !hrUser?exists>
+            url = '/hr/user!validateNo.dhtml';
+        <#elseif hrUser?exists>
+            url = '/hr/user!validateNo.dhtml?ignore=${hrUser.userNo?if_exists}';
+        </#if>
+        return url;
+    }
     function initValidator() {
         WEBUTILS.validator.init({
             modes: [
+                {
+                    id: 'hrUser\\.userNo',
+                    required: true,
+                    pattern: [
+                        {type: 'ajax', exp: validatorNo(), msg: '不能重复'}
+                    ]
+                },
                 {
                     id: 'hrUser\\.userName',
                     required: true,
@@ -68,14 +84,14 @@
                     id: 'hrUser\\.entryDate',
                     required: true,
                     pattern: [
-                        {type: 'blank', exp: '!=', msg: '不能为空'}
+                        {type: 'reg', exp: '_date', msg: '日期格式错误'}
                     ]
                 },
                 {
                     id: 'hrUser\\.birthday',
                     required: true,
                     pattern: [
-                        {type: 'blank', exp: '!=', msg: '不能为空'}
+                        {type: 'reg', exp: '_date', msg: '日期格式错误'}
                     ]
                 }
             ]
@@ -145,7 +161,7 @@
                         <label class="control-label" for="hrUser.userNo" style="width: 60px;">员工编号</label>
 
                         <div class="controls" style="margin-left: 80px;">
-                            <input type="text" id="hrUser.userNo" name="hrUser.userNo" placeholder="自动生成" disabled>
+                            <input type="text" id="hrUser.userNo" name="hrUser.userNo" placeholder="不填自动生成" >
                             <span class="help-inline"></span>
                         </div>
                     </div>
@@ -206,7 +222,7 @@
                     <div class="control-group">
                         <label class="control-label" for="hrUser.entryDate" style="width: 60px;">入职日期</label>
                         <div class="controls date" style="margin-left: 80px;" id="entryDateBtn" data-date-format="yyyy-mm-dd" data-date="<#if hrUser?exists>${hrUser.entryDate?string("yyyy-MM-dd")}</#if>">
-                            <input type="text" id="hrUser.entryDate" name="hrUser.entryDate" placeholder="入职日期" readonly="readonly">
+                            <input type="text" id="hrUser.entryDate" name="hrUser.entryDate" placeholder="入职日期" >
                             <span class="add-on"  style="cursor: pointer;" ><i class="icon-calendar"></i></span>
                             <span class="help-inline"></span>
                         </div>
@@ -236,7 +252,7 @@
                         <label class="control-label" for="hrUser.birthday" style="width: 60px;">出生日期</label>
 
                         <div class="controls date" style="margin-left: 80px;" id="birthdayBtn" data-date-format="yyyy-mm-dd" data-date="<#if hrUser?exists>${hrUser.birthday?string("yyyy-MM-dd")}</#if>">
-                            <input type="text" id="hrUser.birthday" name="hrUser.birthday" placeholder="出生日期" readonly="readonly">
+                            <input type="text" id="hrUser.birthday" name="hrUser.birthday" placeholder="出生日期" >
                             <span class="add-on" style="cursor: pointer;" ><i class="icon-calendar"></i></span>
                             <span class="help-inline"></span>
                         </div>
