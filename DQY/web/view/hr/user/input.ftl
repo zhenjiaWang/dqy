@@ -188,18 +188,6 @@
                 </td>
                 <td>
                     <div class="control-group">
-                        <label class="control-label" for="hrUser.entryDate" style="width: 60px;">入职日期</label>
-                        <div class="controls date" style="margin-left: 80px;" id="entryDateBtn" data-date-format="yyyy-mm-dd" data-date="<#if hrUser?exists>${hrUser.entryDate?string("yyyy-MM-dd")}</#if>">
-                            <input type="text" id="hrUser.entryDate" name="hrUser.entryDate" placeholder="入职日期" readonly="readonly">
-                            <span class="add-on"  style="cursor: pointer;" ><i class="icon-calendar"></i></span>
-                            <span class="help-inline"></span>
-                        </div>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <div class="control-group">
                         <label class="control-label" for="hrUser.userSex" style="width: 60px;">员工性别</label>
 
                         <div class="controls" style="margin-left: 80px;">
@@ -210,20 +198,20 @@
                             <span class="help-inline"></span>
                         </div>
                     </div>
+
                 </td>
+            </tr>
+            <tr>
                 <td>
                     <div class="control-group">
-                        <label class="control-label" for="hrUser.birthday" style="width: 60px;">出生日期</label>
-
-                        <div class="controls date" style="margin-left: 80px;" id="birthdayBtn" data-date-format="yyyy-mm-dd" data-date="<#if hrUser?exists>${hrUser.birthday?string("yyyy-MM-dd")}</#if>">
-                            <input type="text" id="hrUser.birthday" name="hrUser.birthday" placeholder="出生日期" readonly="readonly">
-                            <span class="add-on" style="cursor: pointer;" ><i class="icon-calendar"></i></span>
+                        <label class="control-label" for="hrUser.entryDate" style="width: 60px;">入职日期</label>
+                        <div class="controls date" style="margin-left: 80px;" id="entryDateBtn" data-date-format="yyyy-mm-dd" data-date="<#if hrUser?exists>${hrUser.entryDate?string("yyyy-MM-dd")}</#if>">
+                            <input type="text" id="hrUser.entryDate" name="hrUser.entryDate" placeholder="入职日期" readonly="readonly">
+                            <span class="add-on"  style="cursor: pointer;" ><i class="icon-calendar"></i></span>
                             <span class="help-inline"></span>
                         </div>
                     </div>
                 </td>
-            </tr>
-            <tr>
                 <td>
                     <div class="control-group">
                         <label class="control-label" for="hrUser.eduLevel" style="width: 60px;">教育程度</label>
@@ -236,6 +224,20 @@
                                 <option value="3">硕士</option>
                                 <option value="4">博士</option>
                             </select>
+                            <span class="help-inline"></span>
+                        </div>
+                    </div>
+
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="control-group">
+                        <label class="control-label" for="hrUser.birthday" style="width: 60px;">出生日期</label>
+
+                        <div class="controls date" style="margin-left: 80px;" id="birthdayBtn" data-date-format="yyyy-mm-dd" data-date="<#if hrUser?exists>${hrUser.birthday?string("yyyy-MM-dd")}</#if>">
+                            <input type="text" id="hrUser.birthday" name="hrUser.birthday" placeholder="出生日期" readonly="readonly">
+                            <span class="add-on" style="cursor: pointer;" ><i class="icon-calendar"></i></span>
                             <span class="help-inline"></span>
                         </div>
                     </div>

@@ -8,7 +8,7 @@
         document.location.reload();
     }
     function pagerAction(start, rows) {
-        var searchUrl = '/wf/req!overruleList.dhtml';
+        var searchUrl = '/wf/req!financialList.dhtml';
         searchUrl += '?start=' + start + '&rows=' + rows;
         var keyword=$('#keyword').val();
         if(keyword){
@@ -18,10 +18,10 @@
         document.location.href = searchUrl
     }
     $(document).ready(function () {
-        $('.viewReq').off('click').on('click', function () {
+        $('.financialReq').off('click').on('click', function () {
             var uid = $(this).attr('uid');
             if (uid) {
-                document.location.href='/wf/req!view.dhtml?id='+uid;
+                document.location.href='/wf/req!financial.dhtml?id='+uid;
             }
         });
         $('#searchBtn').off('click').on('click', function () {
@@ -60,12 +60,12 @@
             <#if reqList?exists&&reqList?size gt 0>
                 <#list reqList as req>
                 <tr <#if (req_index+1)%2!=0>class="oddBgColor"</#if>>
-                    <td style="text-align: center;">${req.reqNo?if_exists}</td>
-                    <td>${req.subject?if_exists}</td>
+                    <td style="text-align: center;">${(req.reqNo)?if_exists}</td>
+                    <td>${(req.subject)?if_exists}</td>
                     <td style="text-align: center;">${(req.userId.userName)?if_exists}</td>
                     <td style="text-align: center;">${(req.sendDate)?string("yyyy-MM-dd HH:mm")}</td>
                     <td style="text-align: center;">
-                        <span style="cursor: pointer;" class="viewReq"  uid="${req.id?c}"><i class="icon-file"></i>查看</span>
+                        <span style="cursor: pointer;" class="financialReq"  uid="${req.id?c}"><i class="icon-hand-down"></i>办理</span>
                     </td>
                 </tr>
                 </#list>

@@ -160,6 +160,13 @@ public class WfReqAction extends ActionSupport<WfReq> {
     @ReqSet
     private String attToken;
 
+    @ReqGet
+    @ReqSet
+    private String keyword;
+
+    @ReqGet
+    private String reason;
+
     @Override
     @PageFlow(result = {@Result(name = "success", path = "/view/apply/my/index.ftl", type = Dispatcher.FreeMarker)})
     public String execute() throws Exception {
@@ -182,6 +189,9 @@ public class WfReqAction extends ActionSupport<WfReq> {
                 selectorList.add(SelectorUtils.$eq("applyState", 2));
                 selectorList.add(SelectorUtils.$eq("applyResult", 2));
                 selectorList.add(SelectorUtils.$eq("complete", 1));
+                if(StringUtils.isNotBlank(keyword)){
+                    selectorList.add(SelectorUtils.$or(SelectorUtils.$like("reqNo",keyword),SelectorUtils.$like("subject",keyword)));
+                }
                 if (StringUtils.isNotBlank(searchType) && StringUtils.isNotBlank(searchKey)) {
                     if (searchType.equals("reqNo")) {
                         selectorList.add(SelectorUtils.$like("reqNo", searchKey));
@@ -235,6 +245,9 @@ public class WfReqAction extends ActionSupport<WfReq> {
                 selectorList.add(SelectorUtils.$eq("applyState", 2));
                 selectorList.add(SelectorUtils.$eq("applyResult", 1));
                 selectorList.add(SelectorUtils.$eq("complete", 1));
+                if(StringUtils.isNotBlank(keyword)){
+                    selectorList.add(SelectorUtils.$or(SelectorUtils.$like("reqNo",keyword),SelectorUtils.$like("subject",keyword)));
+                }
                 if (StringUtils.isNotBlank(searchType) && StringUtils.isNotBlank(searchKey)) {
                     if (searchType.equals("reqNo")) {
                         selectorList.add(SelectorUtils.$like("reqNo", searchKey));
@@ -288,6 +301,9 @@ public class WfReqAction extends ActionSupport<WfReq> {
                 selectorList.add(SelectorUtils.$eq("applyState", 1));
                 selectorList.add(SelectorUtils.$eq("applyResult", 0));
                 selectorList.add(SelectorUtils.$eq("complete", 0));
+                if(StringUtils.isNotBlank(keyword)){
+                    selectorList.add(SelectorUtils.$or(SelectorUtils.$like("reqNo",keyword),SelectorUtils.$like("subject",keyword)));
+                }
                 if (StringUtils.isNotBlank(searchType) && StringUtils.isNotBlank(searchKey)) {
                     if (searchType.equals("reqNo")) {
                         selectorList.add(SelectorUtils.$like("reqNo", searchKey));
@@ -345,6 +361,78 @@ public class WfReqAction extends ActionSupport<WfReq> {
         UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
         if (userInfo != null) {
             pageObj = this.wfReqService.getPageList(getStart(), 10, searchModeCallbackAdminList());
+            if (pageObj != null) {
+                reqList = pageObj.getResultList();
+            }
+        }
+
+        return "success";
+    }
+
+    private List<Selector> searchModeCallbackFinancialList() throws Exception {
+        List<Selector> selectorList = new ArrayList<Selector>();
+        UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
+        if (userInfo != null) {
+            userInfo.setTopMenu("apply");
+            userInfo.setLeftMenu("myFinancial");
+            userInfo.setChildMenu("financial");
+            Long orgId = userInfo.getOrgId();
+            if (orgId!=null) {
+                selectorList.add(SelectorUtils.$eq("orgId.id", orgId));
+                selectorList.add(SelectorUtils.$eq("applyState", 2));
+                selectorList.add(SelectorUtils.$eq("applyResult", 1));
+                selectorList.add(SelectorUtils.$eq("complete", 1));
+                selectorList.add(SelectorUtils.$eq("financialYn", "N"));
+                if(StringUtils.isNotBlank(keyword)){
+                    selectorList.add(SelectorUtils.$or(SelectorUtils.$like("reqNo",keyword),SelectorUtils.$like("subject",keyword)));
+                }
+            }
+            selectorList.add(SelectorUtils.$order("id", false));
+        }
+        return selectorList;
+    }
+
+    @PageFlow(result = {@Result(name = "success", path = "/view/wf/financial/financialList.ftl", type = Dispatcher.FreeMarker)})
+    public String financialList() throws Exception {
+        UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
+        if (userInfo != null) {
+            pageObj = this.wfReqService.getPageList(getStart(), 10, searchModeCallbackFinancialList());
+            if (pageObj != null) {
+                reqList = pageObj.getResultList();
+            }
+        }
+
+        return "success";
+    }
+
+    private List<Selector> searchModeCallbackOverList() throws Exception {
+        List<Selector> selectorList = new ArrayList<Selector>();
+        UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
+        if (userInfo != null) {
+            userInfo.setTopMenu("apply");
+            userInfo.setLeftMenu("myFinancial");
+            userInfo.setChildMenu("over");
+            Long orgId = userInfo.getOrgId();
+            if (orgId!=null) {
+                selectorList.add(SelectorUtils.$eq("orgId.id", orgId));
+                selectorList.add(SelectorUtils.$eq("applyState", 2));
+                selectorList.add(SelectorUtils.$eq("applyResult", 1));
+                selectorList.add(SelectorUtils.$eq("complete", 1));
+                selectorList.add(SelectorUtils.$eq("financialYn", "Y"));
+                if(StringUtils.isNotBlank(keyword)){
+                    selectorList.add(SelectorUtils.$or(SelectorUtils.$like("reqNo",keyword),SelectorUtils.$like("subject",keyword)));
+                }
+            }
+            selectorList.add(SelectorUtils.$order("id", false));
+        }
+        return selectorList;
+    }
+
+    @PageFlow(result = {@Result(name = "success", path = "/view/wf/financial/overList.ftl", type = Dispatcher.FreeMarker)})
+    public String overList() throws Exception {
+        UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
+        if (userInfo != null) {
+            pageObj = this.wfReqService.getPageList(getStart(), 10, searchModeCallbackOverList());
             if (pageObj != null) {
                 reqList = pageObj.getResultList();
             }
@@ -500,5 +588,60 @@ public class WfReqAction extends ActionSupport<WfReq> {
             }
         }
         return applyId;
+    }
+
+    @PageFlow(result = {@Result(name = "ADVANCE_ACCOUNT", path = "/wf/advanceAccount!financial.dhtml?reqId=${wfReq.id}", type = Dispatcher.Redirect),
+            @Result(name = "REPAYMENT", path = "/wf/rePayment!financial.dhtml?reqId=${wfReq.id}", type = Dispatcher.Redirect),
+            @Result(name = "DAILY", path = "/wf/daily!financial.dhtml?reqId=${wfReq.id}", type = Dispatcher.Redirect),
+            @Result(name = "BUSINESS", path = "/wf/business!financial.dhtml?reqId=${wfReq.id}", type = Dispatcher.Redirect)})
+    public String financial() throws Exception {
+        UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
+        if (userInfo != null&&id!=null) {
+            wfReq=this.wfReqService.getById(id);
+            if(wfReq!=null){
+                applyId=wfReq.getApplyId();
+                if(wfReq.getUserId().getId().equals(userInfo.getUserId())){
+                    if(wfReq.getTip().intValue()==1){
+                        wfReq.setTip(0);
+                        bind(wfReq);
+                        wfReqService.save(wfReq);
+                        Integer reqPassed = wfReqService.getCountPassed(userInfo.getOrgId(), userInfo.getUserId());
+                        if (reqPassed == null) {
+                            reqPassed = 0;
+                        }
+                        userInfo.setReqPassed(reqPassed);
+
+                        Integer reqRejected = wfReqService.getCountRejected(userInfo.getOrgId(), userInfo.getUserId());
+                        if (reqRejected == null) {
+                            reqRejected = 0;
+                        }
+                        userInfo.setReqRejected(reqRejected);
+                    }
+                }
+            }
+        }
+        return applyId;
+    }
+
+    @PageFlow(result = {@Result(name = "success", path = "/view/wf/financial/desc.ftl", type = Dispatcher.FreeMarker)})
+    public String desc() throws Exception {
+        if (id != null) {
+            wfReq = this.wfReqService.getById(id);
+        }
+        return "success";  //To change body of implemented methods use File | Settings | File Templates.
+    }
+    public String financialSave() throws Exception {
+        UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
+        if (userInfo != null&&id!=null) {
+            wfReq = this.wfReqService.getById(id);
+            wfReq.setFinancialYn("Y");
+            if(StringUtils.isNotBlank(reason)){
+                wfReq.setFinancialDesc(reason);
+            }
+            bind(wfReq);
+            this.wfReqService.save(wfReq);
+        }
+        script = "parent.setURL('/wf/req!financialList.dhtml');";
+        return "saveSuccess";  //To change body of implemented methods use File | Settings | File Templates.
     }
 }

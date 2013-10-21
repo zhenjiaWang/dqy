@@ -150,6 +150,7 @@ public class SysAuthorizedAction extends ActionSupport<SysAuthorized> {
                 roleList.add("SYS_BUDGET");
                 roleList.add("LOOK_BUDGET");
                 roleList.add("SET_BUDGET");
+                roleList.add("TASK_FINANCIAL");
                 roleList.add("GENERAL");
 
                 roleNameMap = new HashMap<String, String>();
@@ -160,6 +161,7 @@ public class SysAuthorizedAction extends ActionSupport<SysAuthorized> {
                 roleNameMap.put("SYS_BUDGET", "预算科目管理");
                 roleNameMap.put("LOOK_BUDGET", "预算查看");
                 roleNameMap.put("SET_BUDGET", "预算设置");
+                roleNameMap.put("TASK_FINANCIAL", "财务审批");
                 roleNameMap.put("GENERAL", "普通用户");
 
                 String roleId = sysAuthorized.getRoleId();

@@ -123,6 +123,21 @@ public class WfReqBusinessAction extends WfReqSupportAction<WfReqBusiness> {
         return "success";
     }
 
+    @PageFlow(result = {@Result(name = "success", path = "/view/wf/business/financial.ftl", type = Dispatcher.FreeMarker)})
+    public String financial() throws Exception {
+        UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
+        if (userInfo != null && reqId != null) {
+            wfReqBusiness = this.wfReqBusinessService.getByReqId(reqId);
+            if (wfReqBusiness != null) {
+                wfReq = wfReqBusiness.getReqId();
+                if (wfReq != null) {
+                    reqCommentsList = this.wfReqCommentsService.getCommentsListByReqId(wfReq.getId());
+                }
+            }
+        }
+        return "success";
+    }
+
     @PageFlow(result = {@Result(name = "success", path = "/view/wf/business/process.ftl", type = Dispatcher.FreeMarker)})
     public String process() throws Exception {
         UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());

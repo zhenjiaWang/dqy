@@ -86,7 +86,7 @@
                     <td colspan="2">
                         <div class="control-group" style="margin-bottom: 5px;">
                             <label class="control-label" for="wfReq.subject"
-                                   style="width: 60px;color: #898989;font-weight: bold;">申请标题</label>
+                                   style="width: 60px;color: #898989;font-weight: bold;">标题</label>
                             <div class="controls" style="margin-left: 70px;">
                                 <label style="margin-top: 5px;padding-left:5px;font-size: 14px;">${wfReq.subject?if_exists}</label>
                             </div>

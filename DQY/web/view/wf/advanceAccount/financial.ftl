@@ -2,35 +2,38 @@
 <#import "/view/common/core.ftl" as c>
 <@wfCommon.wf_common>
 <script type="text/javascript">
+    function setURL(url) {
+        document.location.href=url;
+    }
     function loadFlowNode() {
         $.ajax({
-            type: 'GET',
-            url: '/wf/req!getFlowNodeList.dhtml?id=${(wfReq.id)?c}',
-            dataType: 'json',
-            success: function (jsonData) {
+            type:'GET',
+            url:'/wf/req!getFlowNodeList.dhtml?id=${(wfReq.id)?c}',
+            dataType:'json',
+            success:function (jsonData) {
                 if (jsonData) {
                     if (jsonData['result'] == '0') {
                         var nodeApproveList = jsonData['nodeApproveList'];
                         if (nodeApproveList) {
                             $('#nodeUL').empty();
                             $(nodeApproveList).each(function (i, o) {
-                                var nodeSeqText = '';
-                                if (o['nodeSeq'] == '0000') {
-                                    nodeSeqText = '';
-                                } else {
-                                    nodeSeqText = o['nodeSeq'];
+                                var nodeSeqText='';
+                                if(o['nodeSeq']=='0000'){
+                                    nodeSeqText='';
+                                }else{
+                                    nodeSeqText=o['nodeSeq'];
                                 }
-                                $('#nodeUL').append(String.formatmodel(flowApproveNodeShow, {nodeSeq: o['nodeSeq'],
-                                    text: o['nodeText'],
-                                    className: o['className'],
-                                    nodeSeqText: nodeSeqText}));
+                                $('#nodeUL').append(String.formatmodel(flowApproveNodeShow,{nodeSeq:o['nodeSeq'],
+                                    text:o['nodeText'],
+                                    className:o['className'],
+                                    nodeSeqText:nodeSeqText}));
                             });
                             deleteLastArrow();
                         }
                     }
                 }
             },
-            error: function (jsonData) {
+            error:function (jsonData) {
 
             }
         });
@@ -43,11 +46,13 @@
         $('#backBtn').off('click').on('click', function () {
             history.back();
         });
+        $('#okBtn').off('click').on('click', function () {
+            WEBUTILS.popWindow.createPopWindow(500, 300, '财务处理', '/wf/req!desc.dhtml?id=${wfReq.id?c}');
+        });
     });
 </script>
 <div class="r-top clearfix">
-    <p class="text-info text-center lead"><strong>费用报销申请</strong><em
-            style="font-size: 14px;color: #B94A48;">(No:${wfReq.reqNo?if_exists})</em></p>
+    <p class="text-info text-center lead"><strong>预支申请单</strong><em style="font-size: 14px;color: #B94A48;">(No:${wfReq.reqNo?if_exists})</em></p>
 </div>
 <!--搜索over-->
     <#if Session["userSession"]?exists>
@@ -71,7 +76,6 @@
                         <div class="control-group" style="margin-bottom: 5px;">
                             <label class="control-label" for="wfReq.subject"
                                    style="width: 60px;color: #898989;font-weight: bold;">标题</label>
-
                             <div class="controls" style="margin-left: 70px;">
                                 <label style="margin-top: 5px;padding-left:5px;font-size: 14px;word-wrap: break-word;word-break: break-all;">${wfReq.subject?if_exists}</label>
                             </div>
@@ -101,71 +105,61 @@
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="2">
+                    <td>
                         <div class="control-group" style="margin-bottom: 5px;">
-                            <label class="control-label" for="wfReqDaily.amount"
-                                   style="width: 60px;color: #898989;font-weight: bold;">报销金额</label>
+                            <label class="control-label" for="wfReqAdvanceAccount.amount"
+                                   style="width: 60px;color: #898989;font-weight: bold;">预支金额</label>
 
                             <div class="controls" style="margin-left: 70px;">
-                                <label style="margin-top: 5px;padding-left:5px;font-size: 14px;">${(wfReqDaily.amount)?double}</label>
+                                <label style="margin-top: 5px;padding-left:5px;font-size: 14px;">${(wfReqAdvanceAccount.amount)?double}</label>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="control-group" style="margin-bottom: 5px;">
+                            <label class="control-label" for="wfReqAdvanceAccount.payMethod"
+                                   style="width: 60px;color: #898989;font-weight: bold;">支付方式</label>
+
+                            <div class="controls" style="margin-left: 70px;" >
+                                <label style="margin-top: 5px;padding-left:5px;font-size: 14px;">
+                                    <#if wfReqAdvanceAccount.payMethod?exists>
+                                        <#if wfReqAdvanceAccount.payMethod==1>
+                                            现金
+                                        <#elseif wfReqAdvanceAccount.payMethod==2>
+                                            银行转账
+                                        <#elseif wfReqAdvanceAccount.payMethod==3>
+                                            支票
+                                        </#if>
+                                    </#if>
+                                </label>
                             </div>
                         </div>
                     </td>
                 </tr>
-                    <#if detailList?exists&&detailList?size gt 0>
-                    <tr>
-                        <td colspan="2">
-                            <table style="width: 100%;"
-                                   class="layout table table-bordered table-hover tableBgColor nomar nopadding">
-                                <thead>
-                                <tr>
-                                    <td width="100"><strong>费用类别</strong></td>
-                                    <td width="100"><strong>费用名称</strong></td>
-                                    <td width="100"><strong>金额</strong></td>
-                                    <td><strong>备注</strong>
-                                    </td>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                    <#list detailList as detail>
-                                    <tr >
-                                        <td>${(detail.expenseType.expenseType)?if_exists}</td>
-                                        <td>${(detail.expenseTitle.titleName)?if_exists}</td>
-                                        <td>${detail.amount?double}</td>
-                                        <td>${detail.remarks?if_exists}</td>
-                                    </tr>
-                                    </#list>
-                                </tbody>
-                            </table>
-                        </td>
-                    </tr>
-                    </#if>
                 <tr>
                     <td colspan="2">
                         <div class="control-group" style="margin-bottom: 5px;">
-                            <label class="control-label" for="wfReqDaily.remarks"
-                                   style="width: 60px;color: #898989;font-weight: bold;">备注</label>
+                            <label class="control-label" for="wfReqAdvanceAccount.purpose"
+                                   style="width: 60px;color: #898989;font-weight: bold;">用途</label>
 
                             <div class="controls" style="margin-left: 70px;">
-                                <label style="margin-top: 5px;padding-left:5px;font-size: 14px;word-wrap: break-word;word-break: break-all;">${(wfReqDaily.remarks)?if_exists}</label>
+                                <label style="margin-top: 5px;padding-left:5px;font-size: 14px;word-wrap: break-word;word-break: break-all;">${(wfReqAdvanceAccount.purpose)?if_exists}</label>
                             </div>
                         </div>
                     </td>
                 </tr>
-                    <#if wfReq.financialYn=="Y">
-                    <tr>
-                        <td colspan="2">
-                            <div class="control-group" style="margin-bottom: 5px;">
-                                <label class="control-label" for="wfReqAdvanceAccount.remarks"
-                                       style="width: 60px;color: #898989;font-weight: bold;">财务</label>
+                <tr>
+                    <td colspan="2">
+                        <div class="control-group" style="margin-bottom: 5px;">
+                            <label class="control-label" for="wfReqAdvanceAccount.remarks"
+                                   style="width: 60px;color: #898989;font-weight: bold;">备注</label>
 
-                                <div class="controls" style="margin-left: 70px;">
-                                    <label style="margin-top: 5px;padding-left:5px;font-size: 14px;word-wrap: break-word;word-break: break-all;">[已办理] ${wfReq.financialDesc?if_exists}</label>
-                                </div>
+                            <div class="controls" style="margin-left: 70px;">
+                                <label style="margin-top: 5px;padding-left:5px;font-size: 14px;word-wrap: break-word;word-break: break-all;">${(wfReqAdvanceAccount.remarks)?if_exists}</label>
                             </div>
-                        </td>
-                    </tr>
-                    </#if>
+                        </div>
+                    </td>
+                </tr>
                 </tbody>
             </table>
         </form>
@@ -195,6 +189,8 @@
     </div>
     <p class="mart10  clearfix">
         <button class="btn btn-inverse floatright " type="button" id="backBtn">返回</button>
+        <button class="btn btn-success floatright " type="button" id="okBtn">处理</button>
+
     </p>
     </#if>
 </@wfCommon.wf_common>

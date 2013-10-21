@@ -121,6 +121,20 @@ public class WfReqAdvanceAccountAction extends WfReqSupportAction<WfReqAdvanceAc
         }
         return "success";
     }
+    @PageFlow(result = {@Result(name = "success", path = "/view/wf/advanceAccount/financial.ftl", type = Dispatcher.FreeMarker)})
+    public String financial() throws Exception {
+        UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
+        if (userInfo != null&&reqId!=null) {
+            wfReqAdvanceAccount=this.wfReqAdvanceAccountService.getByReqId(reqId);
+            if(wfReqAdvanceAccount!=null){
+                wfReq=wfReqAdvanceAccount.getReqId();
+                if(wfReq!=null){
+                    reqCommentsList = this.wfReqCommentsService.getCommentsListByReqId(wfReq.getId());
+                }
+            }
+        }
+        return "success";
+    }
 
     @PageFlow(result = {@Result(name = "success", path = "/view/wf/advanceAccount/process.ftl", type = Dispatcher.FreeMarker)})
     public String process() throws Exception {

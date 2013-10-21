@@ -12,7 +12,7 @@
             modes: [
                 {
                     id: 'reason',
-                    required: false,
+                    required: true,
                     pattern: [
                         {type: 'blank', exp: '!=', msg: '不能为空'}
                     ]
@@ -38,18 +38,17 @@
         initValidator();
     });
 </script>
-    <@c.joddForm bean="wfReqTask" scope="request">
-    <form class="form-horizontal" action="/wf/reqTask!approve.dhtml" method="POST" name="editForm"
+    <@c.joddForm bean="wfReq" scope="request">
+    <form class="form-horizontal" action="/wf/req!financialSave.dhtml" method="POST" name="editForm"
           id="editForm">
         <div class="control-group">
-            <label class="control-label" for="reason">请填写您的审批意见</label>
+            <label class="control-label" for="reason">请填写您的处理事项</label>
             <div class="controls">
                 <textarea name="reason" id="reason" rows="4" style="width: 90%;"  ></textarea>
                 <span class="help-inline"></span>
             </div>
         </div>
-        <input type="hidden" name="wfReqTask.id" id="wfReqTask.id">
-        <input type="hidden" name="wfReqTask.approveIdea" id="wfReqTask.approveIdea">
+        <input type="hidden" name="id" id="id" value="${wfReq.id?c}">
         <@c.token/>
     </form>
     </@c.joddForm>

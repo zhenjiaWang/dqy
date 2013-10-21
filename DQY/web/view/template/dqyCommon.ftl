@@ -1,6 +1,6 @@
 <#import "/view/template/common.ftl" as common>
 <#macro dqyCommon>
-    <@common.html title="德清源办公">
+    <@common.html title="德青源办公">
     <style>
         .tableBgColor {
             background-color: #FAFAFA;

@@ -152,20 +152,6 @@
                         </div>
                     </td>
                 </tr>
-                    <#if wfReq.financialYn=="Y">
-                    <tr>
-                        <td colspan="2">
-                            <div class="control-group" style="margin-bottom: 5px;">
-                                <label class="control-label" for="wfReqAdvanceAccount.remarks"
-                                       style="width: 60px;color: #898989;font-weight: bold;">财务</label>
-
-                                <div class="controls" style="margin-left: 70px;">
-                                    <label style="margin-top: 5px;padding-left:5px;font-size: 14px;word-wrap: break-word;word-break: break-all;">[已办理] ${wfReq.financialDesc?if_exists}</label>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                    </#if>
                 </tbody>
             </table>
         </form>

@@ -8,7 +8,7 @@
         document.location.reload();
     }
     function pagerAction(start, rows) {
-        var searchUrl = '/wf/req!overruleList.dhtml';
+        var searchUrl = '/wf/req!overList.dhtml';
         searchUrl += '?start=' + start + '&rows=' + rows;
         var keyword=$('#keyword').val();
         if(keyword){
@@ -60,10 +60,10 @@
             <#if reqList?exists&&reqList?size gt 0>
                 <#list reqList as req>
                 <tr <#if (req_index+1)%2!=0>class="oddBgColor"</#if>>
-                    <td style="text-align: center;">${req.reqNo?if_exists}</td>
-                    <td>${req.subject?if_exists}</td>
+                    <td style="text-align: center;">${(req.reqNo)?if_exists}</td>
+                    <td>${(req.subject)?if_exists}</td>
                     <td style="text-align: center;">${(req.userId.userName)?if_exists}</td>
-                    <td style="text-align: center;">${(req.sendDate)?string("yyyy-MM-dd HH:mm")}</td>
+                    <td style="text-align: center;">${(req.created)?string("yyyy-MM-dd HH:mm")}</td>
                     <td style="text-align: center;">
                         <span style="cursor: pointer;" class="viewReq"  uid="${req.id?c}"><i class="icon-file"></i>查看</span>
                     </td>

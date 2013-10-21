@@ -46,7 +46,7 @@
     });
 </script>
 <div class="r-top clearfix">
-    <p class="text-info text-center lead"><strong>费用报销申请</strong><em
+    <p class="text-info text-center lead"><strong>事务申请</strong><em
             style="font-size: 14px;color: #B94A48;">(No:${wfReq.reqNo?if_exists})</em></p>
 </div>
 <!--搜索over-->
@@ -102,72 +102,12 @@
                 </tr>
                 <tr>
                     <td colspan="2">
-                        <div class="control-group" style="margin-bottom: 5px;">
-                            <label class="control-label" for="wfReqDaily.amount"
-                                   style="width: 60px;color: #898989;font-weight: bold;">报销金额</label>
-
-                            <div class="controls" style="margin-left: 70px;">
-                                <label style="margin-top: 5px;padding-left:5px;font-size: 14px;">${(wfReqDaily.amount)?double}</label>
-                            </div>
-                        </div>
+                    ${wfReqBusiness.content?if_exists}
                     </td>
                 </tr>
-                    <#if detailList?exists&&detailList?size gt 0>
-                    <tr>
-                        <td colspan="2">
-                            <table style="width: 100%;"
-                                   class="layout table table-bordered table-hover tableBgColor nomar nopadding">
-                                <thead>
-                                <tr>
-                                    <td width="100"><strong>费用类别</strong></td>
-                                    <td width="100"><strong>费用名称</strong></td>
-                                    <td width="100"><strong>金额</strong></td>
-                                    <td><strong>备注</strong>
-                                    </td>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                    <#list detailList as detail>
-                                    <tr >
-                                        <td>${(detail.expenseType.expenseType)?if_exists}</td>
-                                        <td>${(detail.expenseTitle.titleName)?if_exists}</td>
-                                        <td>${detail.amount?double}</td>
-                                        <td>${detail.remarks?if_exists}</td>
-                                    </tr>
-                                    </#list>
-                                </tbody>
-                            </table>
-                        </td>
-                    </tr>
-                    </#if>
-                <tr>
-                    <td colspan="2">
-                        <div class="control-group" style="margin-bottom: 5px;">
-                            <label class="control-label" for="wfReqDaily.remarks"
-                                   style="width: 60px;color: #898989;font-weight: bold;">备注</label>
-
-                            <div class="controls" style="margin-left: 70px;">
-                                <label style="margin-top: 5px;padding-left:5px;font-size: 14px;word-wrap: break-word;word-break: break-all;">${(wfReqDaily.remarks)?if_exists}</label>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-                    <#if wfReq.financialYn=="Y">
-                    <tr>
-                        <td colspan="2">
-                            <div class="control-group" style="margin-bottom: 5px;">
-                                <label class="control-label" for="wfReqAdvanceAccount.remarks"
-                                       style="width: 60px;color: #898989;font-weight: bold;">财务</label>
-
-                                <div class="controls" style="margin-left: 70px;">
-                                    <label style="margin-top: 5px;padding-left:5px;font-size: 14px;word-wrap: break-word;word-break: break-all;">[已办理] ${wfReq.financialDesc?if_exists}</label>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                    </#if>
                 </tbody>
             </table>
+
         </form>
         <div style="" class="mart10">
             <table class="table table-bordered table-hover tableBgColor">

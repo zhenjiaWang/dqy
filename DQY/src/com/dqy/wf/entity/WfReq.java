@@ -53,6 +53,10 @@ public class WfReq extends IdEntity implements Tracker {
     
     private Integer tip;
 
+    private String financialYn;
+
+    private String financialDesc;
+
     private Date created;
 
     private String createdBy;
@@ -258,5 +262,23 @@ public class WfReq extends IdEntity implements Tracker {
 
     public void setSubject(String subject) {
         this.subject = subject;
+    }
+
+    @Column(name = "FINANCIAL_YN")
+    public String getFinancialYn() {
+        return financialYn;
+    }
+
+    public void setFinancialYn(String financialYn) {
+        this.financialYn = financialYn;
+    }
+
+    @Column(name = "FINANCIAL_DESC")
+    public String getFinancialDesc() {
+        return financialDesc;
+    }
+
+    public void setFinancialDesc(String financialDesc) {
+        this.financialDesc = financialDesc;
     }
 }

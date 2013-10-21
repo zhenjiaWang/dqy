@@ -10,6 +10,10 @@
     function pagerAction(start, rows) {
         var searchUrl = '/wf/reqTask!doneList.dhtml';
         searchUrl += '?start=' + start + '&rows=' + rows;
+        var keyword=$('#keyword').val();
+        if(keyword){
+            searchUrl+='&keyword='+keyword;
+        }
         searchUrl = encodeURI(searchUrl);
         document.location.href = searchUrl
     }
@@ -20,13 +24,23 @@
                 document.location.href='/wf/reqTask!view.dhtml?id='+uid;
             }
         });
+        $('#searchBtn').off('click').on('click', function () {
+            pagerAction(0,10);
+        });
+        $('#keyword').off('keyup').on('keyup', function (e) {
+            e = (e) ? e : ((window.event) ? window.event : "");
+            var keyCode = e.keyCode ? e.keyCode : (e.which ? e.which : e.charCode);
+            if (keyCode == 13) {
+                pagerAction(0,10);
+            }
+        });
     });
 </script>
 <!--搜索begin-->
 <div class="r-top clearfix">
     <div class="input-append">
-        <input type="text" id="appendedInputButton" class="span2">
-        <button type="button" class="btn"><i class="icon-search"></i> 搜索</button>
+        <input type="text"  class="span2" id="keyword" name="keyword" value="${keyword?if_exists}">
+        <button type="button" class="btn" id="searchBtn"><i class="icon-search"></i> 搜索</button>
     </div>
 </div>
 <!--搜索over-->

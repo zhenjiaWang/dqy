@@ -198,6 +198,22 @@ public class WfReqRePaymentAction extends WfReqSupportAction<WfReqRePayment> {
         return "success";
     }
 
+    @PageFlow(result = {@Result(name = "success", path = "/view/wf/rePayment/financial.ftl", type = Dispatcher.FreeMarker)})
+    public String financial() throws Exception {
+        UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
+        if (userInfo != null&&reqId!=null) {
+            wfReqRePayment=this.wfReqRePaymentService.getByReqId(reqId);
+            if(wfReqRePayment!=null){
+                detailList=this.wfReqRePaymentDetailService.getDetailListByRePaymentId(wfReqRePayment.getId());
+                wfReq=wfReqRePayment.getReqId();
+                if(wfReq!=null){
+                    reqCommentsList = this.wfReqCommentsService.getCommentsListByReqId(wfReq.getId());
+                }
+            }
+        }
+        return "success";
+    }
+
     @PageFlow(result = {@Result(name = "success", path = "/view/wf/rePayment/process.ftl", type = Dispatcher.FreeMarker)})
     public String process() throws Exception {
         UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());

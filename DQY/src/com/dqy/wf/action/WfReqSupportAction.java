@@ -86,6 +86,7 @@ public class WfReqSupportAction<T> extends ActionSupport<T> {
                     wfReq.setApplyState(0);
                     wfReq.setApplyResult(0);
                     wfReq.setComplete(0);
+                    wfReq.setFinancialYn("N");
                     wfReq.setUseYn("Y");
                     bind(wfReq);
 

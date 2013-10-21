@@ -111,6 +111,10 @@ public class WfReqTaskAction extends ActionSupport<WfReqTask> {
     @ReqGet
     private String forwardMe;
 
+    @ReqGet
+    @ReqSet
+    private String keyword;
+
     @ReqSet
     private List<WfReqComments> reqCommentsList;
 
@@ -164,6 +168,10 @@ public class WfReqTaskAction extends ActionSupport<WfReqTask> {
                 selectorList.add(SelectorUtils.$eq("taskState", 1));
                 selectorList.add(SelectorUtils.$eq("taskRead", 1));
                 boolean aliasReq = false;
+                if(StringUtils.isNotBlank(keyword)){
+                    selectorList.add(SelectorUtils.$alias("reqId", "reqId"));
+                    selectorList.add(SelectorUtils.$or(SelectorUtils.$like("reqId.reqNo",keyword),SelectorUtils.$like("reqId.subject",keyword)));
+                }
                 if (StringUtils.isNotBlank(searchType) && StringUtils.isNotBlank(searchKey)) {
                     if (searchType.equals("reqNo")) {
                         selectorList.add(SelectorUtils.$alias("reqId", "reqId"));
@@ -235,6 +243,10 @@ public class WfReqTaskAction extends ActionSupport<WfReqTask> {
                 selectorList.add(SelectorUtils.$eq("userId.id", userId));
                 selectorList.add(SelectorUtils.$eq("taskState", 0));
                 boolean aliasReq = false;
+                if(StringUtils.isNotBlank(keyword)){
+                    selectorList.add(SelectorUtils.$alias("reqId", "reqId"));
+                    selectorList.add(SelectorUtils.$or(SelectorUtils.$like("reqId.reqNo",keyword),SelectorUtils.$like("reqId.subject",keyword)));
+                }
                 if (StringUtils.isNotBlank(searchType) && StringUtils.isNotBlank(searchKey)) {
                     if (searchType.equals("reqNo")) {
                         selectorList.add(SelectorUtils.$alias("reqId", "reqId"));

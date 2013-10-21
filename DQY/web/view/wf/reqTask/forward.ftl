@@ -42,7 +42,7 @@
             modes: [
                 {
                     id: 'reason',
-                    required: true,
+                    required: false,
                     pattern: [
                         {type: 'blank', exp: '!=', msg: '不能为空'}
                     ]
@@ -81,6 +81,7 @@
             $('.treeDiv').fadeIn();
             $('.treeDiv').find('div').show();
         });
+
     });
 </script>
     <@c.joddForm bean="wfReqTask" scope="request">

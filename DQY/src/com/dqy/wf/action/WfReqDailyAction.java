@@ -180,6 +180,23 @@ public class WfReqDailyAction extends WfReqSupportAction<WfReqDaily> {
         return "success";
     }
 
+    @PageFlow(result = {@Result(name = "success", path = "/view/wf/daily/financial.ftl", type = Dispatcher.FreeMarker)})
+    public String financial() throws Exception {
+        UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
+        if (userInfo != null && reqId != null) {
+            wfReqDaily = this.wfReqDailyService.getByReqId(reqId);
+            if (wfReqDaily != null) {
+                detailList = this.wfReqDailyDetailService.getDetailListByDailyId(wfReqDaily.getId());
+                wfReq = wfReqDaily.getReqId();
+                if (wfReq != null) {
+                    reqCommentsList = this.wfReqCommentsService.getCommentsListByReqId(wfReq.getId());
+                }
+            }
+        }
+        return "success";
+    }
+
+
     @PageFlow(result = {@Result(name = "success", path = "/view/wf/daily/process.ftl", type = Dispatcher.FreeMarker)})
     public String process() throws Exception {
         UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());

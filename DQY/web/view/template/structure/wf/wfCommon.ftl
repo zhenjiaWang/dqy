@@ -113,6 +113,19 @@
                             <dd><a href="#"><i class="icon-hand-right"></i> 已处理</a></dd>
                         </dl>
                     </li>
+                    <#assign roleId=userInfo["roleId"]?if_exists>
+                    <#if roleId?exists>
+                        <#if roleId?contains("TASK_FINANCIAL")>
+                            <li class=myFinancial>
+                                <a class="cur" href="##">财务处理</a>
+                                <dl class="font12">
+                                    <dd class="financial"><a href="/wf/req!financialList.dhtml"><i class="icon-hand-right"></i> 未办理</a></dd>
+                                    <dd class="over"><a href="/wf/req!overList.dhtml"><i class="icon-hand-right"></i> 已办理</a></dd>
+                                </dl>
+                            </li>
+                        </#if>
+                    </#if>
+
                 </ul>
                 <!--一组over-->
             </div>
