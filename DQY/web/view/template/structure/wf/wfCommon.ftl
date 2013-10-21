@@ -19,8 +19,15 @@
                     <#if userInfo['childMenu']?exists>
                         $('.${userInfo['childMenu']?if_exists}', '.side-left-in').addClass('current');
                     </#if>
-                    var topLocation=$('.current', '#topMenu').text();
-                    var leftLocation=$('li.current', '.side-left-in').text();
+                    var leftLocation,topLocation=$('.current', '#topMenu').text();
+                    var leftHref=$('li.current', '.side-left-in').find('a').attr('href');
+                    if(leftHref=='##'){
+                        var obj=$('li.current', '.side-left-in');
+                        leftLocation=$(obj).find('a').html();
+                        leftLocation+=' > '+$('dd.current',obj).find('a').text();
+                    }else{
+                         leftLocation=$('li.current', '.side-left-in').find('a').text();
+                    }
                     if(topLocation&&leftLocation){
                         $('.currentLocation','.location').text(leftLocation);
                         $('.topLocation','.location').text(topLocation);
@@ -86,7 +93,7 @@
                     <li class="daily">
                         <a class="cur" href="/wf/daily.dhtml">费用报销</a>
                     </li>
-                    <li class="user">
+                    <li class="business">
                         <a class="cur" href="/wf/business.dhtml">事务申请</a>
                     </li>
                 </ul>

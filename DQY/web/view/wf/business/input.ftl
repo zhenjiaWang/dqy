@@ -262,24 +262,24 @@
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="2">
-                        <div class="control-group" style="margin-bottom: 5px;">
-                                <input type="file" name="files" id="upload" />
-                                <script id="fileTemplate" type="text/x-kendo-template">
-                                    <span class='k-progress'></span>
-                                    <div class='file-wrapper'>
-                                        <img src="/images/file/file.png" extension="#=files[0].extension#" width="25" height="25" style="float: left;margin-right: 10px;">
-                                        <h4 class='file-heading file-name-heading'> #=name# (#=size# bytes)</h4>
-                                        <button type='button' class='k-upload-action'></button>
-                                    </div>
-                                </script>
+                    <td colspan="2" style="border-top: 0px;">
+                        <div style="width:720px;">
+                            <script type="text/plain" id="editor" style="width:720px;height:500px;"></script>
                         </div>
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="2" style="border-top: 0px;">
-                        <div style="width:720px;">
-                            <script type="text/plain" id="editor" style="width:720px;height:500px;"></script>
+                    <td colspan="2">
+                        <div class="control-group" style="margin-bottom: 5px;">
+                            <input type="file" name="files" id="upload" />
+                            <script id="fileTemplate" type="text/x-kendo-template">
+                                <span class='k-progress'></span>
+                                <div class='file-wrapper'>
+                                    <img src="/images/file/file.png" extension="#=files[0].extension#" width="25" height="25" style="float: left;margin-right: 10px;">
+                                    <h4 class='file-heading file-name-heading'> #=name# (#=size# bytes)</h4>
+                                    <button type='button' class='k-upload-action'></button>
+                                </div>
+                            </script>
                         </div>
                     </td>
                 </tr>

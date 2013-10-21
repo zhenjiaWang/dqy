@@ -95,7 +95,7 @@ public class WfReqBusinessAction extends WfReqSupportAction<WfReqBusiness> {
         UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
         if (userInfo != null) {
             userInfo.setTopMenu("apply");
-            userInfo.setLeftMenu("daily");
+            userInfo.setLeftMenu("business");
             userInfo.setChildMenu(null);
             sendDate= DateFormatUtil.getCurrentDate(true);
         }

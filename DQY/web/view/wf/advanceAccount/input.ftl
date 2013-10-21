@@ -4,7 +4,74 @@
 <link href="/css/validator/validator.css" rel="stylesheet"/>
 <script type="text/javascript" src="/js/webutils/webutils.validator.js"></script>
 <script type="text/javascript" src="/js/webutils/reg.js"></script>
+
+<link href="/css/kendo.common.css" rel="stylesheet"/>
+<link href="/css/kendo.metro.min.css" rel="stylesheet"/>
+<link href="/css/kendo.dataviz.min.css" rel="stylesheet"/>
+<link href="/css/kendo.dataviz.metro.min.css" rel="stylesheet"/>
+<script type="text/javascript" src="/js/kendo.web.min.js"></script>
+<style scoped>
+    .file-icon
+    {
+        display: inline-block;
+        float: left;
+        width: 25px;
+        height: 25px;
+        margin-left: 10px;
+        margin-top: 13.5px;
+    }
+
+
+    .img-file { background-image: url(/images/jpg.png) }
+    .doc-file { background-image: url(/images/doc.png) }
+    .pdf-file { background-image: url(/images/pdf.png) }
+    .xls-file { background-image: url(/images/xls.png) }
+    .zip-file { background-image: url(/images/zip.png) }
+    .default-file { background-image: url(/images/default.png) }
+
+    #example .file-heading
+    {
+        font-family: Arial;
+        font-size: 1.1em;
+        display: inline-block;
+        float: left;
+        width: 450px;
+        margin: 0 0 0 20px;
+        height: 25px;
+        -ms-text-overflow: ellipsis;
+        -o-text-overflow: ellipsis;
+        text-overflow: ellipsis;
+        overflow:hidden;
+        white-space:nowrap;
+    }
+
+    #example .file-name-heading
+    {
+        font-weight: bold;
+    }
+
+    #example .file-size-heading
+    {
+        font-weight: normal;
+        font-style: italic;
+    }
+
+    li.k-file .file-wrapper .k-upload-action
+    {
+        position: absolute;
+        top: 0;
+        right: 0;
+    }
+
+    li.k-file div.file-wrapper
+    {
+        position: relative;
+        height: 40px;
+    }
+</style>
 <script type="text/javascript">
+    var submited = false;
+    var uploadRemove=false;
     function initValidator() {
         WEBUTILS.validator.init({
             modes: [
@@ -50,6 +117,52 @@
     function addFlow(){
         $('.modal-header','#myModal').find('.close').trigger('click');
     }
+
+    function addExtensionClass(extension) {
+        switch (extension) {
+            case '.jpg':
+            case '.img':
+            case '.png':
+            case '.gif':
+                return "img-file";
+            case '.doc':
+            case '.docx':
+                return "doc-file";
+            case '.xls':
+            case '.xlsx':
+                return "xls-file";
+            case '.pdf':
+                return "pdf-file";
+            case '.zip':
+            case '.rar':
+                return "zip-file";
+            default:
+                return "default-file";
+        }
+    }
+
+    function onSuccess(e) {
+        if (!uploadRemove) {
+            var lastLi = $('li', '.k-upload-files').last();
+            if (lastLi) {
+                var img=$('img',lastLi);
+                if(img){
+                    var extension=$(img).attr('extension');
+                    if(extension){
+                        extension=extension.substring(1,extension.length);
+                        $(img).attr('src','/images/file/'+extension+'.png');
+                    }
+                }
+            }
+        }
+    }
+    function onRemove(e){
+        uploadRemove=true;
+    }
+    function onUpload(e){
+        uploadRemove=false;
+    }
+
     $(document).ready(function () {
         initValidator();
         $('#nextBtn').off('click').on('click', function () {
@@ -62,6 +175,31 @@
                     WEBUTILS.validator.showErrors();
                 }
             }, 500);
+        });
+
+        $("#upload").kendoUpload({
+            multiple: true,
+            async: {
+                saveUrl:"/common/common!upload.dhtml?attKey=${applyId?if_exists}&attToken=" + $("#attToken").val(),
+                removeUrl: "/common/common!remove.dhtml?attKey=${applyId?if_exists}&attToken=" + $("#attToken").val(),
+                autoUpload: true
+            },
+            success: onSuccess,
+            remove: onRemove,
+            upload: onUpload,
+            localization:{
+                "select":"上传文件",
+                "cancel":"取消",
+                "retry":"重试",
+                "remove":"删除",
+                "done":"完成",
+                "uploadSelectedFiles":"Upload files",
+                "dropFilesHere":"drop files here to upload",
+                "statusUploading":"uploading",
+                "statusUploaded":"uploaded",
+                "statusFailed":"failed"
+            },
+            template: kendo.template($('#fileTemplate').html())
         });
     });
 </script>
@@ -163,6 +301,21 @@
                                 <textarea rows="4" style="width: 95%;" class="font12" id="wfReqAdvanceAccount.remarks" name="wfReqAdvanceAccount.remarks" maxlength="400"></textarea>
                                 <span class="help-inline"></span>
                             </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <div class="control-group" style="margin-bottom: 5px;">
+                            <input type="file" name="files" id="upload" />
+                            <script id="fileTemplate" type="text/x-kendo-template">
+                                <span class='k-progress'></span>
+                                <div class='file-wrapper'>
+                                    <img src="/images/file/file.png" extension="#=files[0].extension#" width="25" height="25" style="float: left;margin-right: 10px;">
+                                    <h4 class='file-heading file-name-heading'> #=name# (#=size# bytes)</h4>
+                                    <button type='button' class='k-upload-action'></button>
+                                </div>
+                            </script>
                         </div>
                     </td>
                 </tr>

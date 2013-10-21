@@ -16,8 +16,16 @@
                     $('.${userInfo['leftMenu']?if_exists}', '.side-left-in').addClass('current');
                     $('.${userInfo['leftMenu']?if_exists}', '.side-left-in').parent().addClass('current');
 
-                    var topLocation=$('.current', '#topMenu').text();
-                    var leftLocation=$('li.current', '.side-left-in').text();
+
+                    var leftLocation,topLocation=$('.current', '#topMenu').text();
+                    var leftHref=$('li.current', '.side-left-in').find('a').attr('href');
+                    if(leftHref=='##'){
+                        var obj=$('li.current', '.side-left-in');
+                        leftLocation=$(obj).find('a').html();
+                        leftLocation+=' > '+$('dd.current',obj).find('a').text();
+                    }else{
+                        leftLocation=$('li.current', '.side-left-in').find('a').text();
+                    }
                     if(topLocation&&leftLocation){
                         $('.currentLocation','.location').text(leftLocation);
                         $('.topLocation','.location').text(topLocation);

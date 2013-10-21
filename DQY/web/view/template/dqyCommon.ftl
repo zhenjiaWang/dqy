@@ -1,6 +1,6 @@
 <#import "/view/template/common.ftl" as common>
 <#macro dqyCommon>
-    <@common.html title="德青源办公">
+    <@common.html title="">
     <style>
         .tableBgColor {
             background-color: #FAFAFA;
@@ -21,10 +21,12 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $('body').off('.data-api');
+
             WEBUTILS.popMask.close();
             <#if Session["userSession"]?exists>
                 <#assign userInfo=Session["userSession"]?if_exists>
                 <#if userInfo?exists>
+                    $('title').text('${userInfo.orgName?if_exists}');
                     $('li', '#topMenu').removeClass('current');
                     $('.${userInfo['topMenu']?if_exists}', '#topMenu').addClass('current');
                 </#if>
