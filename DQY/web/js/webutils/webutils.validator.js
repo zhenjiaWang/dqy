@@ -268,21 +268,22 @@ WEBUTILS.validator = (function () {
         if (!result) {
             var controlGroup=$(elem).parents('.control-group');
             if(controlGroup){
-                controlGroup.remove('warning');
-                controlGroup.remove('error');
-                controlGroup.remove('info');
-                controlGroup.remove('success');
+                controlGroup.removeClass('warning');
+                controlGroup.removeClass('error');
+                controlGroup.removeClass('info');
+                controlGroup.removeClass('success');
                 controlGroup.addClass('error');
                 $('.help-inline',controlGroup).text(msg).fadeIn();
             }
         } else {
             var controlGroup=$(elem).parents('.control-group');
             if(controlGroup){
-                controlGroup.remove('warning');
-                controlGroup.remove('error');
-                controlGroup.remove('info');
-                controlGroup.remove('success');
+                controlGroup.removeClass('warning');
+                controlGroup.removeClass('error');
+                controlGroup.removeClass('info');
+                controlGroup.removeClass('success');
                 controlGroup.addClass('success');
+                $('.help-inline',controlGroup).text(msg).fadeOut();
             }
         }
     };

@@ -95,6 +95,15 @@
             }
         });
 
+        $('#sysFinancialTitle\\.titleNo').off('keyup').on('keyup',function(){
+            var value=$(this).val();
+            if(value&&value!=''){
+                if(value.indexOf('${autoTitleNo?if_exists}')==-1){
+                    $(this).val('${autoTitleNo?if_exists}'+value);
+                }
+            }
+        });
+
         <#if reloadTree?exists>
             <#if reloadTree==1>
                 parent.reloadTree(false);
@@ -130,8 +139,7 @@
                 <div class="control-group">
                     <label class="control-label" for="sysFinancialTitle.titleNo">科目编码</label>
                     <div class="controls">
-                        <input type="text" id="sysFinancialTitle.titleNo" name="sysFinancialTitle.titleNo" placeholder="科目编码" readonly="readonly"
-                            <#if !sysFinancialTitle?exists> value="${autoTitleNo?if_exists}" </#if>>
+                        <input type="text" id="sysFinancialTitle.titleNo" name="sysFinancialTitle.titleNo" placeholder="科目编码" >
                         <span class="help-inline"></span>
                     </div>
                 </div>

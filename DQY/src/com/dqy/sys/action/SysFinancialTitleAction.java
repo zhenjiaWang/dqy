@@ -173,7 +173,6 @@ public class SysFinancialTitleAction extends ActionSupport<SysFinancialTitle> {
                 if (parentId != null) {
                     parentTitle = this.sysFinancialTitleService.getById(parentId);
                     if(parentTitle!=null){
-                        autoTitleNo = parentTitle.getTitleNo() + "-";
                         maxDisplayOrder=this.sysFinancialTitleService.getMaxOrderByParentId(userInfo.getOrgId(),parentTitle.getId(),true);
                     }
                 }else{
@@ -184,12 +183,6 @@ public class SysFinancialTitleAction extends ActionSupport<SysFinancialTitle> {
                 }
                 maxDisplayOrder+=1;
             }
-            if (maxDisplayOrder.intValue() < 10) {
-                autoTitleNo += "0" + maxDisplayOrder;
-            } else {
-                autoTitleNo += +maxDisplayOrder;
-            }
-
         }
         return "success";  //To change body of implemented methods use File | Settings | File Templates.
     }

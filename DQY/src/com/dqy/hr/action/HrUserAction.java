@@ -223,6 +223,7 @@ public class HrUserAction extends ActionSupport<HrUser> {
                 old.setWorkArea(hrUser.getWorkArea());
                 old.setEntryDate(hrUser.getEntryDate());
                 old.setUserState(hrUser.getUserState());
+                old.setUserNo(hrUser.getUserNo());
                 hrUserDetail=this.hrUserDetailService.getByUserId(hrUser.getId());
                 if(hrUserDetail!=null){
                     hrUserDetail.setEduLevel(hrUser.getEduLevel());
