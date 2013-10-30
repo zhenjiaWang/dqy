@@ -133,16 +133,16 @@ public class SysFinancialTitleAction extends ActionSupport<SysFinancialTitle> {
         if (userInfo != null) {
             orgId = userInfo.getOrgId();
             if (parentId == null) {
-                titleList = this.sysFinancialTitleService.getTitleListByLevel(userInfo.getOrgId(), 1, true);
+                titleList = this.sysFinancialTitleService.getTitleListByLevel(orgId, 1, true);
             } else {
-                titleList = this.sysFinancialTitleService.getTitleListByParentId(userInfo.getOrgId(), parentId, true);
+                titleList = this.sysFinancialTitleService.getTitleListByParentId(orgId, parentId, true);
             }
             if (titleList != null && !titleList.isEmpty()) {
                 for (SysFinancialTitle financialTitle : titleList) {
                     node = new JSONObject();
                     node.put("name", StringUtils.defaultIfEmpty(financialTitle.getTitleName()));
                     node.put("id", StringUtils.defaultIfEmpty(financialTitle.getId()));
-                    Integer count = this.sysFinancialTitleService.getCountByParentId(userInfo.getOrgId(), financialTitle.getId(), true);
+                    Integer count = this.sysFinancialTitleService.getCountByParentId(orgId, financialTitle.getId(), true);
                     if (count == null) {
                         count = 0;
                     }

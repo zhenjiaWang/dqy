@@ -81,6 +81,9 @@
                         <li class=budgetTitle>
                             <a class="cur" href="/sys/budgetTitle.dhtml">预算科目</a>
                         </li>
+                            <li class=budgetOwen>
+                                <a class="cur" href="/sys/budgetOwen.dhtml">科目关系</a>
+                            </li>
                         </#if>
                     </ul>
                     </#if>

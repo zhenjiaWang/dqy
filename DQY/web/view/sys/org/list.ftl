@@ -17,10 +17,23 @@
         $('#newBtn').off('click').on('click', function () {
             WEBUTILS.popWindow.createPopWindow(550, null, '创建机构', '/sys/org!input.dhtml');
         });
-        $('.dqy-eidt').off('click').on('click', function () {
+        $('.editBT').off('click').on('click', function () {
             var uid = $(this).attr('uid');
             if (uid) {
                 WEBUTILS.popWindow.createPopWindow(550, null, '编辑机构', '/sys/org!input.dhtml?id='+uid);
+            }
+        });
+
+        $('.stopBT').off('click').on('click', function () {
+            var uid = $(this).attr('uid');
+            if (uid) {
+                document.location.href='/sys/org!stop.dhtml?id='+uid;
+            }
+        });
+        $('.playBT').off('click').on('click', function () {
+            var uid = $(this).attr('uid');
+            if (uid) {
+                document.location.href='/sys/org!play.dhtml?id='+uid;
             }
         });
         $('.dqy-del').off('click').on('click', function () {
@@ -49,8 +62,8 @@
         <thead>
         <tr class="thColor">
             <th width="100">机构编号</th>
-            <th width="120">机构名称</th>
-            <th>所属集团</th>
+            <th >机构名称</th>
+            <th width="120">所属集团</th>
             <th width="80">启用</th>
             <th width="100">操作</th>
         </tr>
@@ -64,8 +77,12 @@
                     <td>${(org.groupId.groupName)?if_exists}</td>
                     <td style="text-align: center;"><#if org.useYn=="Y">是<#else>否</#if></td>
                     <td style="text-align: center;">
-                        <a title="编辑" class="dqy-ico dqy-eidt" uid="${org.id?c}" href="#"></a>
-                        <a title="删除" class="dqy-ico dqy-del" uid="${org.id?c}" href="#"></a>
+                        <span style="cursor: pointer;" class="editBT"  uid="${org.id?c}"><i class="icon-edit"></i>编辑</span>
+                        <#if org.useYn=="Y">
+                            <span style="cursor: pointer;" class="stopBT"  uid="${org.id?c}"><i class="icon-pause"></i>停用</span>
+                        <#else>
+                            <span style="cursor: pointer;" class="playBT"  uid="${org.id?c}"><i class="icon-play"></i>启用</span>
+                        </#if>
                     </td>
                 </tr>
                 </#list>

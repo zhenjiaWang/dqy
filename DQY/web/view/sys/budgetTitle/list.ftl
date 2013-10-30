@@ -35,9 +35,6 @@
                 document.location.href='/sys/budgetTitle!play.dhtml?id='+uid;
             }
         });
-        $('#budgetOwenBtn').off('click').on('click', function () {
-            WEBUTILS.popWindow.createPopWindow(650, null, '编辑科目', '/sys/budgetOwen.dhtml');
-        });
     });
 </script>
 <!--搜索begin-->
@@ -46,7 +43,6 @@
         <input type="text" id="appendedInputButton" class="span2">
         <button type="button" class="btn"><i class="icon-search"></i> 搜索</button>
     </div>
-    <button class="btn btn-danger floatright" type="button" id="budgetOwenBtn">科目关系调整</button>
     <button class="btn btn-warning floatright marr10" type="button" id="newBtn">新增</button>
 </div>
 <!--搜索over-->

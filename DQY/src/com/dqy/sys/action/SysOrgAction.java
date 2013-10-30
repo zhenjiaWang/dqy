@@ -192,4 +192,28 @@ public class SysOrgAction extends ActionSupport<SysOrg> {
         return null;
     }
 
+
+    @PageFlow(result = {@Result(name = "success", path = "/sys/org.dhtml", type = Dispatcher.Redirect)})
+    public String stop() throws Exception {
+        if (id != null) {
+            sysOrg = this.sysOrgService.getById(id);
+            if (sysOrg != null) {
+                sysOrg.setUseYn("N");
+                sysOrgService.save(sysOrg);
+            }
+        }
+        return "success";
+    }
+    @PageFlow(result = {@Result(name = "success", path = "/sys/org.dhtml", type = Dispatcher.Redirect)})
+    public String play() throws Exception {
+        if (id != null) {
+            sysOrg = this.sysOrgService.getById(id);
+            if (sysOrg != null) {
+                sysOrg.setUseYn("Y");
+                sysOrgService.save(sysOrg);
+            }
+        }
+        return "success";
+    }
+
 }

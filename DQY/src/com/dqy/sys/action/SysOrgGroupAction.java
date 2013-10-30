@@ -133,4 +133,27 @@ public class SysOrgGroupAction extends ActionSupport<SysOrgGroup> {
         return null;
     }
 
+    @PageFlow(result = {@Result(name = "success", path = "/sys/orgGroup.dhtml", type = Dispatcher.Redirect)})
+    public String stop() throws Exception {
+        if (id != null) {
+            sysOrgGroup = this.sysOrgGroupService.getById(id);
+            if (sysOrgGroup != null) {
+                sysOrgGroup.setUseYn("N");
+                sysOrgGroupService.save(sysOrgGroup);
+            }
+        }
+        return "success";
+    }
+    @PageFlow(result = {@Result(name = "success", path = "/sys/orgGroup.dhtml", type = Dispatcher.Redirect)})
+    public String play() throws Exception {
+        if (id != null) {
+            sysOrgGroup = this.sysOrgGroupService.getById(id);
+            if (sysOrgGroup != null) {
+                sysOrgGroup.setUseYn("Y");
+                sysOrgGroupService.save(sysOrgGroup);
+            }
+        }
+        return "success";
+    }
+
 }

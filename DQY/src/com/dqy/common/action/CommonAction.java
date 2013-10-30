@@ -9,8 +9,10 @@ import com.dqy.hr.entity.HrUser;
 import com.dqy.hr.service.HrDepartmentService;
 import com.dqy.hr.service.HrUserService;
 import com.dqy.sys.entity.SysAuthorized;
+import com.dqy.sys.entity.SysFinancialTitle;
 import com.dqy.sys.entity.SysOrg;
 import com.dqy.sys.service.SysAuthorizedService;
+import com.dqy.sys.service.SysFinancialTitleService;
 import com.dqy.sys.service.SysOrgService;
 import com.dqy.wf.entity.WfVariableGlobal;
 import com.dqy.wf.service.WfVariableGlobalService;
@@ -61,6 +63,9 @@ public class CommonAction extends BaseAction {
     private SysAuthorizedService sysAuthorizedService;
 
     @Inject
+    private SysFinancialTitleService sysFinancialTitleService;
+
+    @Inject
     private SysOrgService sysOrgService;
 
     @Inject
@@ -98,6 +103,8 @@ public class CommonAction extends BaseAction {
     @ReqGet
     private String fileNames;
 
+    @ReqSet
+    private List<SysFinancialTitle> titleList;
 
     @Override
     public String execute() throws Exception {
@@ -107,6 +114,41 @@ public class CommonAction extends BaseAction {
     @PageFlow(result = {@Result(name = "success", path = "/view/common/orgTree.ftl", type = Dispatcher.FreeMarker)})
     public String orgTree() throws Exception {
         return "success";  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    public String titleTreeData() throws Exception {
+        UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
+        JSONArray jsonArray = new JSONArray();
+        JSONObject node = null;
+        if (userInfo != null) {
+            if (orgId == null) {
+                orgId = userInfo.getOrgId();
+            }
+            if (parentId == null) {
+                titleList = this.sysFinancialTitleService.getTitleListByLevel(orgId, 1, false);
+            } else {
+                titleList = this.sysFinancialTitleService.getTitleListByParentId(orgId, parentId, false);
+            }
+            if (titleList != null && !titleList.isEmpty()) {
+                for (SysFinancialTitle financialTitle : titleList) {
+                    node = new JSONObject();
+                    node.put("name", StringUtils.defaultIfEmpty(financialTitle.getTitleName()));
+                    node.put("id", StringUtils.defaultIfEmpty(financialTitle.getId()));
+                    Integer count = this.sysFinancialTitleService.getCountByParentId(orgId, financialTitle.getId(), false);
+                    if (count == null) {
+                        count = 0;
+                    }
+                    if (count.intValue() > 0) {
+                        node.put("isParent", true);
+                    } else {
+                        node.put("isParent", false);
+                    }
+                    jsonArray.add(node);
+                }
+            }
+        }
+        writeJsonByAction(jsonArray.toString());
+        return null; //To change body of implemented methods use File | Settings | File Templates.
     }
 
     public String orgTreeData() throws Exception {
