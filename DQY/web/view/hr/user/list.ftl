@@ -42,7 +42,7 @@
 <!--搜索begin-->
 <div class="r-top clearfix">
     <div class="input-append">
-        <input type="text"  class="span2" id="keyword" name="keyword" value="${keyword?if_exists}">
+        <input type="text"  class="span2" id="keyword" name="keyword" value="${keyword?if_exists}" placeholder="员工编号 姓名" >
         <button type="button" class="btn" id="searchBtn"><i class="icon-search"></i> 搜索</button>
     </div>
     <button class="btn btn-warning floatright marr10" type="button" id="newBtn">新增</button>

@@ -87,7 +87,7 @@
         $.fn.zTree.init($("#treeDemo"), setting);
 
         $('#searchUser').off('click').on('click', function () {
-            var left = $(this).offset().left;
+            var left = $('#wfVariableGlobal\\.userId\\.userName').offset().left;
             var top = $(this).offset().top+15;
             top += $(this).height();
             $('.treeDiv').css({

@@ -50,6 +50,10 @@ public class SysBudgetTitleAction extends ActionSupport<SysBudgetTitle> {
 
     @ReqGet
     @ReqSet
+    private String keyword;
+
+    @ReqGet
+    @ReqSet
     private Long typeId;
 
     @ReqSet
@@ -80,6 +84,9 @@ public class SysBudgetTitleAction extends ActionSupport<SysBudgetTitle> {
         if (userInfo != null) {
             selectorList.add(SelectorUtils.$alias("typeId", "typeId"));
             selectorList.add(SelectorUtils.$eq("typeId.orgId.id",userInfo.getOrgId()));
+            if(StringUtils.isNotBlank(keyword)){
+                selectorList.add(SelectorUtils.$like("titleName",keyword));
+            }
             selectorList.add(SelectorUtils.$order("typeId.id"));
             selectorList.add(SelectorUtils.$order("typeId.deptId.id"));
             selectorList.add(SelectorUtils.$order("titleName"));

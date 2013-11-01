@@ -52,6 +52,10 @@ public class SysOrgAction extends ActionSupport<SysOrg> {
     private List<SysOrg> orgList;
 
 
+    @ReqGet
+    @ReqSet
+    private String keyword;
+
     @ReqSet
     private List<SysOrgGroup> orgGroupList;
 
@@ -77,6 +81,9 @@ public class SysOrgAction extends ActionSupport<SysOrg> {
         UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
         if (userInfo != null) {
             selectorList.add(SelectorUtils.$order("groupId.id"));
+            if(StringUtils.isNotBlank(keyword)){
+                selectorList.add(SelectorUtils.$or(SelectorUtils.$like("orgNo",keyword),SelectorUtils.$like("orgName",keyword)));
+            }
         }
         return selectorList;
     }

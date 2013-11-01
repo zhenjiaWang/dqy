@@ -349,6 +349,9 @@ public class WfReqAction extends ActionSupport<WfReq> {
             Long orgId = userInfo.getOrgId();
             if (orgId != null) {
                 selectorList.add(SelectorUtils.$eq("orgId.id", orgId));
+                if (StringUtils.isNotBlank(keyword)) {
+                    selectorList.add(SelectorUtils.$or(SelectorUtils.$like("reqNo", keyword), SelectorUtils.$like("subject", keyword)));
+                }
             }
             selectorList.add(SelectorUtils.$order("id", false));
         }

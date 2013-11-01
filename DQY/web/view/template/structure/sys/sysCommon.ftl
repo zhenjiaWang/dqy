@@ -71,7 +71,7 @@
                     <ul class="item-nav"><!--ul上的current是为了控制当前这一组的背景色，li上的current是为了控制二级菜单-->
                         <#if roleId?contains("SYS_FINANCIAL")>
                         <li class="financialTitle">
-                            <a class="cur" href="/sys/financialTitle.dhtml">财务科目</a>
+                            <a class="cur" href="/sys/financialTitle.dhtml">会计科目</a>
                         </li>
                         </#if>
                         <#if roleId?contains("SYS_BUDGET")>
@@ -79,7 +79,7 @@
                             <a class="cur" href="/sys/budgetType.dhtml">预算类别</a>
                         </li>
                         <li class=budgetTitle>
-                            <a class="cur" href="/sys/budgetTitle.dhtml">预算科目</a>
+                            <a class="cur" href="/sys/budgetTitle.dhtml">预算项目</a>
                         </li>
                             <li class=budgetOwen>
                                 <a class="cur" href="/sys/budgetOwen.dhtml">科目关系</a>

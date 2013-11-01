@@ -37,6 +37,7 @@ public class SysBudgetTitle extends IdEntity implements Tracker {
 
     private String useYn;
 
+    private SysBudgetOwen sysBudgetOwen;
     @Id
     @GeneratedValue(generator="SYS_BUDGET_TITLE")
     @GenericGenerator(name="SYS_BUDGET_TITLE",strategy="seqhilo",parameters={@Parameter(name="sequence",value="SEQ_SYS_BUDGET_TITLE")})
@@ -111,5 +112,14 @@ public class SysBudgetTitle extends IdEntity implements Tracker {
 
     public void setTitleName(String titleName) {
         this.titleName = titleName;
+    }
+
+    @Transient
+    public SysBudgetOwen getSysBudgetOwen() {
+        return sysBudgetOwen;
+    }
+
+    public void setSysBudgetOwen(SysBudgetOwen sysBudgetOwen) {
+        this.sysBudgetOwen = sysBudgetOwen;
     }
 }

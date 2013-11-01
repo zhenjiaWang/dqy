@@ -42,6 +42,10 @@ public class SysBudgetTypeAction extends ActionSupport<SysBudgetType> {
 
     @ReqGet
     @ReqSet
+    private String keyword;
+
+    @ReqGet
+    @ReqSet
     private Long id;
 
 
@@ -69,6 +73,9 @@ public class SysBudgetTypeAction extends ActionSupport<SysBudgetType> {
         UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
         if (userInfo != null) {
             selectorList.add(SelectorUtils.$eq("orgId.id",userInfo.getOrgId()));
+            if(StringUtils.isNotBlank(keyword)){
+                selectorList.add(SelectorUtils.$like("expenseType",keyword));
+            }
             selectorList.add(SelectorUtils.$order("deptId.id"));
         }
         return selectorList;

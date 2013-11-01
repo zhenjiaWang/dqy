@@ -42,6 +42,11 @@ public class WfVariableGlobalAction extends ActionSupport<WfVariableGlobal> {
     @ReqSet
     private Long id;
 
+    @ReqGet
+    @ReqSet
+    private String keyword;
+
+
 
     @ReqSet
     private List<WfVariableGlobal> variableGlobalList;
@@ -51,6 +56,10 @@ public class WfVariableGlobalAction extends ActionSupport<WfVariableGlobal> {
         UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
         if (userInfo != null) {
             selectorList.add(SelectorUtils.$eq("orgId.id", userInfo.getOrgId()));
+            if(StringUtils.isNotBlank(keyword)){
+                selectorList.add(SelectorUtils.$alias("userId", "userId"));
+                selectorList.add(SelectorUtils.$or(SelectorUtils.$like("variableName",keyword),SelectorUtils.$like("userId.userName",keyword)));
+            }
         }
         return selectorList;
     }

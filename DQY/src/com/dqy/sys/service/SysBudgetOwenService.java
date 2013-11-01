@@ -83,4 +83,9 @@ public class SysBudgetOwenService extends HQuery {
         return $(selectorList).page(SysBudgetOwen.class, start, limit);
     }
 
+    @Transactional(type = TransactionType.READ_ONLY)
+    public SysBudgetOwen getByBudgetTitleId(Long budgetTitleId) {
+        return $($eq("budgetTitle.id",budgetTitleId)).get(SysBudgetOwen.class);
+    }
+
 }

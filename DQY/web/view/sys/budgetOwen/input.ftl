@@ -106,27 +106,11 @@
             $('.treeDiv').fadeIn();
             $('.treeDiv').find('div').show();
         });
-
-        <#if !sysBudgetOwen?exists>
-            $('#budgetTypeId').change(function(){
-                getBudgetTitleList();
-            });
-            getBudgetTitleList();
-        </#if>
     });
 </script>
     <@c.joddForm bean="sysBudgetOwen" scope="request">
     <form class="form-horizontal" action="/sys/budgetOwen!save.dhtml" method="POST" name="editForm"
           id="editForm">
-        <div class="control-group">
-            <label class="control-label" for="sysBudgetOwen.title">财务科目</label>
-            <div class="controls">
-                <input type="text" id="sysBudgetOwen.title" name="sysBudgetOwen.title" placeholder="财务科目"
-                    <#if sysBudgetOwen?exists> value="${(sysBudgetOwen.titleId.titleName)?if_exists}" </#if>  disabled>
-                <span class="add-on" style="cursor: pointer;" id="searchDept"><i class="icon-th"></i></span>
-                <span class="help-inline"></span>
-            </div>
-        </div>
         <div class="control-group">
             <label class="control-label" for="budgetTypeId">预算类别</label>
             <div class="controls">
@@ -147,8 +131,19 @@
                 <select id="sysBudgetOwen.budgetTitle.id" name="sysBudgetOwen.budgetTitle.id">
                 <#if sysBudgetOwen?exists>
                 <option value="${sysBudgetOwen.budgetTitle.id?c}">${sysBudgetOwen.budgetTitle.titleName?if_exists}</option>
+                <#elseif sysBudgetTitle?exists>
+                    <option value="${sysBudgetTitle.id?c}">${sysBudgetTitle.titleName?if_exists}</option>
                 </#if>
                 </select>
+                <span class="help-inline"></span>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="sysBudgetOwen.title">财务科目</label>
+            <div class="controls">
+                <input type="text" id="sysBudgetOwen.title" name="sysBudgetOwen.title" placeholder="财务科目"
+                    <#if sysBudgetOwen?exists> value="${(sysBudgetOwen.titleId.titleName)?if_exists}" </#if>  disabled>
+                <span class="add-on" style="cursor: pointer;" id="searchDept"><i class="icon-th"></i></span>
                 <span class="help-inline"></span>
             </div>
         </div>

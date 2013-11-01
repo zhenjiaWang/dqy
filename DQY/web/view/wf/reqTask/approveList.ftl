@@ -39,7 +39,7 @@
 <!--搜索begin-->
 <div class="r-top clearfix">
     <div class="input-append">
-        <input type="text"  class="span2" id="keyword" name="keyword" value="${keyword?if_exists}">
+        <input type="text"  class="span2" id="keyword" name="keyword" value="${keyword?if_exists}" placeholder="申请编号 标题">
         <button type="button" class="btn" id="searchBtn"><i class="icon-search"></i> 搜索</button>
     </div>
 </div>
@@ -49,7 +49,7 @@
     <table class="table table-bordered table-hover tableBgColor">
         <thead>
         <tr class="thColor">
-            <th width="80">申请编号</th>
+            <th width="90">申请编号</th>
             <th>标题</th>
             <th width="60">申请人</th>
             <th width="60">查看</th>

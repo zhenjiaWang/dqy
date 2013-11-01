@@ -8,6 +8,7 @@ import com.dqy.web.support.ActionSupport;
 import com.google.inject.Inject;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import org.guiceside.commons.Page;
 import org.guiceside.commons.lang.StringUtils;
 import org.guiceside.persistence.entity.search.SelectorUtils;
 import org.guiceside.persistence.hibernate.dao.hquery.Selector;
@@ -53,6 +54,10 @@ public class SysBudgetOwenAction extends ActionSupport<SysBudgetOwen> {
 
     @ReqGet
     @ReqSet
+    private Long budgetTitleId;
+
+    @ReqGet
+    @ReqSet
     private Long titleId;
 
     @ReqGet
@@ -68,6 +73,12 @@ public class SysBudgetOwenAction extends ActionSupport<SysBudgetOwen> {
     private Long titleId3;
 
     @ReqSet
+    private SysBudgetTitle sysBudgetTitle;
+    @ReqGet
+    @ReqSet
+    private Page<SysBudgetTitle> pageBudgetTitle;
+
+    @ReqSet
     private List<SysBudgetType> budgetTypeList;
 
     @ReqSet
@@ -79,6 +90,10 @@ public class SysBudgetOwenAction extends ActionSupport<SysBudgetOwen> {
     @ReqSet
     private List<SysFinancialTitle> titleList;
 
+    @ReqGet
+    @ReqSet
+    private String keyword;
+
     @Inject
     private SysFinancialTitleService sysFinancialTitleService;
 
@@ -86,16 +101,18 @@ public class SysBudgetOwenAction extends ActionSupport<SysBudgetOwen> {
         List<Selector> selectorList = new ArrayList<Selector>();
         UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
         if (userInfo != null) {
-            selectorList.add(SelectorUtils.$eq("orgId.id",userInfo.getOrgId()));
-            selectorList.add(SelectorUtils.$alias("titleId", "titleId"));
-            if(titleId!=null){
-                selectorList.add(SelectorUtils.$or(SelectorUtils.$eq("titleId.parentId.id",titleId),SelectorUtils.$eq("titleId.id",titleId)));
+            selectorList.add(SelectorUtils.$alias("typeId", "typeId"));
+            selectorList.add(SelectorUtils.$eq("typeId.orgId.id",userInfo.getOrgId()));
+            if(StringUtils.isNotBlank(keyword)){
+                selectorList.add(SelectorUtils.$like("titleName",keyword));
             }
-            selectorList.add(SelectorUtils.$order("titleId.titleNo"));
-            selectorList.add(SelectorUtils.$order("titleId.displayOrder"));
+            selectorList.add(SelectorUtils.$order("typeId.id"));
+            selectorList.add(SelectorUtils.$order("typeId.deptId.id"));
+            selectorList.add(SelectorUtils.$order("titleName"));
         }
         return selectorList;
     }
+
     @Override
     @PageFlow(result = {@Result(name = "success", path = "/view/sys/budgetOwen/list.ftl", type = Dispatcher.FreeMarker)})
     public String execute() throws Exception {
@@ -103,9 +120,17 @@ public class SysBudgetOwenAction extends ActionSupport<SysBudgetOwen> {
         if (userInfo != null) {
             userInfo.setTopMenu("sys");
             userInfo.setLeftMenu("budgetOwen");
-            pageObj = this.sysBudgetOwenService.getPageList(getStart(), rows, searchModeCallback());
-            if(pageObj!=null){
-                budgetOwenList=pageObj.getResultList();
+            pageBudgetTitle = this.sysBudgetTitleService.getPageList(getStart(), rows, searchModeCallback());
+            if(pageBudgetTitle!=null){
+                budgetTitleList=pageBudgetTitle.getResultList();
+                if(budgetTitleList!=null&&!budgetTitleList.isEmpty()){
+                    for(SysBudgetTitle budgetTitle:budgetTitleList){
+                         sysBudgetOwen= this.sysBudgetOwenService.getByBudgetTitleId(budgetTitle.getId());
+                        if(sysBudgetOwen!=null){
+                            budgetTitle.setSysBudgetOwen(sysBudgetOwen);
+                        }
+                    }
+                }
             }
             List<Selector> selectorList = new ArrayList<Selector>();
             selectorList.add(SelectorUtils.$eq("orgId.id", userInfo.getOrgId()));
@@ -123,22 +148,24 @@ public class SysBudgetOwenAction extends ActionSupport<SysBudgetOwen> {
         if (id != null && userInfo != null) {
             sysBudgetOwen = this.sysBudgetOwenService.getById(id);
             if(sysBudgetOwen!=null){
-                SysBudgetTitle budgetTitle= sysBudgetOwen.getBudgetTitle();
-                if(budgetTitle!=null){
-                    SysBudgetType budgetType=budgetTitle.getTypeId();
+                sysBudgetTitle= sysBudgetOwen.getBudgetTitle();
+                if(sysBudgetTitle!=null){
+                    SysBudgetType budgetType=sysBudgetTitle.getTypeId();
                     if(budgetType!=null){
                         budgetTypeList=new ArrayList<SysBudgetType>();
                         budgetTypeList.add(budgetType);
                     }
                 }
             }
-        }else{
-            List<Selector> selectorList = new ArrayList<Selector>();
-            selectorList.add(SelectorUtils.$eq("orgId.id", userInfo.getOrgId()));
-            selectorList.add(SelectorUtils.$eq("useYn", "Y"));
-            selectorList.add(SelectorUtils.$order("deptId.id"));
-            selectorList.add(SelectorUtils.$order("expenseType"));
-            budgetTypeList=this.sysBudgetTypeService.getAllList(selectorList);
+        }else if(budgetTitleId!=null){
+            sysBudgetTitle= sysBudgetTitleService.getById(budgetTitleId);
+            if(sysBudgetTitle!=null){
+                SysBudgetType budgetType=sysBudgetTitle.getTypeId();
+                if(budgetType!=null){
+                    budgetTypeList=new ArrayList<SysBudgetType>();
+                    budgetTypeList.add(budgetType);
+                }
+            }
         }
         return "success";  //To change body of implemented methods use File | Settings | File Templates.
     }
