@@ -165,6 +165,25 @@
 
     $(document).ready(function () {
         initValidator();
+
+        $('#wfReqAdvanceAccount\\.payMethod').change(function(){
+            var payMethod=$('#wfReqAdvanceAccount\\.payMethod').val();
+            if(payMethod=="2"){
+                $('.bank').show();
+                WEBUTILS.validator.addMode({
+                    id: 'wfReqAdvanceAccount\\.payee',
+                    required: true,
+                    pattern: [
+                        {type: 'blank', exp: '!=', msg: ''}
+                    ]
+                });
+            }else{
+                $('.bank').hide();
+                WEBUTILS.validator.removeMode({
+                    id: 'wfReqAdvanceAccount\\.payee'
+                });
+            }
+        });
         $('#nextBtn').off('click').on('click', function () {
             WEBUTILS.validator.checkAll();
             window.setTimeout(function () {
@@ -278,6 +297,43 @@
                         </div>
                     </td>
                 </tr>
+                <tr class="bank" style="display: none;">
+                    <td colspan="2">
+                        <div class="control-group" style="margin-bottom: 5px;">
+                            <label class="control-label" for="wfReqAdvanceAccount.payee"
+                                   style="width: 60px;color: #898989;font-weight: bold;">收款单位</label>
+
+                            <div class="controls" style="margin-left: 70px;">
+                                <input style="width: 95%;" type="text" id="wfReqAdvanceAccount.payee" name="wfReqAdvanceAccount.payee"
+                                       placeholder="收款单位/人" maxlength="20">
+                                <span class="help-inline"></span>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr class="bank" style="display: none;">
+                    <td>
+                        <div class="control-group" style="margin-bottom: 5px;">
+                            <label class="control-label" for="wfReqAdvanceAccount.bank"
+                                   style="width: 60px;color: #898989;font-weight: bold;">开户行</label>
+
+                            <div class="controls" style="margin-left: 70px;">
+                                <input type="text" id="wfReqAdvanceAccount.bank" name="wfReqAdvanceAccount.bank" placeholder="开户行" maxlength="20">
+                                <span class="help-inline"></span>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="control-group" style="margin-bottom: 5px;">
+                            <label class="control-label" for="wfReqAdvanceAccount.bankAccount"
+                                   style="width: 60px;color: #898989;font-weight: bold;">帐号</label>
+                            <div class="controls" style="margin-left: 70px;">
+                                <input type="text" id="wfReqAdvanceAccount.bankAccount" name="wfReqAdvanceAccount.bankAccount" placeholder="银行帐号" maxlength="20">
+                                <span class="help-inline"></span>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
                 <tr>
                     <td colspan="2">
                         <div class="control-group" style="margin-bottom: 5px;">
@@ -322,7 +378,7 @@
                 </tbody>
             </table>
             <p class="mart10  clearfix" style="width: 725px;">
-                <button class="btn btn-success floatright " type="button" id="nextBtn">继续</button>
+                <button class="btn btn-success floatright " type="button" id="nextBtn">审批人</button>
             </p>
             <input type="hidden" name="wfReq.applyId" id="wfReq.applyId" value="${applyId?if_exists}">
             <input type="hidden" name="wfReq.id" id="wfReq.id">

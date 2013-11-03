@@ -130,6 +130,44 @@
                         </div>
                     </td>
                 </tr>
+                    <#if wfReqAdvanceAccount.payMethod?exists>
+                        <#if wfReqAdvanceAccount.payMethod==2>
+                        <tr>
+                            <td colspan="2">
+                                <div class="control-group" style="margin-bottom: 5px;">
+                                    <label class="control-label" for="wfReq.subject"
+                                           style="width: 60px;color: #898989;font-weight: bold;">收款单位</label>
+
+                                    <div class="controls" style="margin-left: 70px;">
+                                        <label style="margin-top: 5px;padding-left:5px;font-size: 14px;word-wrap: break-word;word-break: break-all;">${wfReqAdvanceAccount.payee?if_exists}</label>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="control-group" style="margin-bottom: 5px;">
+                                    <label class="control-label"
+                                           style="width: 60px;color: #898989;font-weight: bold;">开户行</label>
+
+                                    <div class="controls" style="margin-left: 70px;">
+                                        <label style="margin-top: 5px;padding-left:5px;font-size: 14px;">${(wfReqAdvanceAccount.bank)?if_exists}</label>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="control-group" style="margin-bottom: 5px;">
+                                    <label class="control-label"
+                                           style="width: 60px;color: #898989;font-weight: bold;">帐号</label>
+
+                                    <div class="controls" style="margin-left: 70px;">
+                                        <label style="margin-top: 5px;padding-left:5px;font-size: 14px;">${(wfReqAdvanceAccount.bankAccount)?if_exists}</label>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        </#if>
+                    </#if>
                 <tr>
                     <td colspan="2">
                         <div class="control-group" style="margin-bottom: 5px;">

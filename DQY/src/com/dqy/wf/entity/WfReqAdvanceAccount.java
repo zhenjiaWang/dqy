@@ -36,6 +36,12 @@ public class WfReqAdvanceAccount extends IdEntity implements Tracker {
 
     private String rePayYn;
 
+    private String payee;
+
+    private String bank;
+
+    private String bankAccount;
+
     private Date created;
 
     private String createdBy;
@@ -160,6 +166,33 @@ public class WfReqAdvanceAccount extends IdEntity implements Tracker {
 
     public void setRePayYn(String rePayYn) {
         this.rePayYn = rePayYn;
+    }
+
+    @Column(name = "PAYEE")
+    public String getPayee() {
+        return payee;
+    }
+
+    public void setPayee(String payee) {
+        this.payee = payee;
+    }
+
+    @Column(name = "BANK")
+    public String getBank() {
+        return bank;
+    }
+
+    public void setBank(String bank) {
+        this.bank = bank;
+    }
+
+    @Column(name = "BANK_ACCOUNT")
+    public String getBankAccount() {
+        return bankAccount;
+    }
+
+    public void setBankAccount(String bankAccount) {
+        this.bankAccount = bankAccount;
     }
 
     @Transient

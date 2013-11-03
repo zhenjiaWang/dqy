@@ -313,6 +313,11 @@ var rePaymentDetail='<tr seq="{seq}" class="detailTr">' +
     '</select></td>' +
     '<td><select class="int2 width-100" id="titleId{seq}" name="titleId{seq}">' +
     '</select></td>' +
+    '<td data-date-format="yyyy-mm-dd" data-date="" class="date dateTd">' +
+    '<div class="control-group" style="margin-bottom: 0px;">' +
+    '<input type="text" class="int1 width-100" id="date{seq}" name="date{seq}" >' +
+    '</div>' +
+    '</td>' +
     '<td><input type="text" class="int1 width-70 amt" id="amount{seq}" name="amount{seq}" value="0.00"></td>' +
     '<td><input type="text" class="int1 " style="width: 95%;" id="remarks{seq}" name="remarks{seq}"></td>' +
     '</tr>';

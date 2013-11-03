@@ -11,6 +11,7 @@ import com.dqy.wf.entity.*;
 import com.dqy.wf.service.*;
 import com.google.inject.Inject;
 import org.guiceside.commons.lang.DateFormatUtil;
+import org.guiceside.commons.lang.StringUtils;
 import org.guiceside.persistence.entity.search.SelectorUtils;
 import org.guiceside.persistence.hibernate.dao.hquery.Selector;
 import org.guiceside.web.annotation.*;
@@ -158,19 +159,22 @@ public class WfReqRePaymentAction extends WfReqSupportAction<WfReqRePayment> {
                     Long typeId=getParameter("typeId"+i,Long.class);
                     Long titleId=getParameter("titleId"+i,Long.class);
                     Double amount=getParameter("amount"+i,Double.class);
+                    String dateStr=getParameter("date"+i);
                     String remarks=getParameter("remarks"+i);
-                    if(typeId!=null&&titleId!=null&&amount!=null){
+                    if(typeId!=null&&titleId!=null&&amount!=null&& StringUtils.isNotBlank(dateStr)){
                         if(amount==null){
                             amount=0.00d;
                         }
+                        Date date=DateFormatUtil.parse(dateStr,DateFormatUtil.YEAR_MONTH_DAY_PATTERN);
                         SysBudgetType budgetType=this.sysBudgetTypeService.getById(typeId);
                         SysBudgetTitle budgetTitle=this.sysBudgetTitleService.getById(titleId);
-                        if(budgetTitle!=null&&budgetType!=null){
+                        if(budgetTitle!=null&&budgetType!=null&&date!=null){
                             WfReqRePaymentDetail paymentDetail=new WfReqRePaymentDetail();
                             paymentDetail.setRePaymentId(wfReqRePayment);
                             paymentDetail.setExpenseType(budgetType);
                             paymentDetail.setExpenseTitle(budgetTitle);
                             paymentDetail.setAmount(amount);
+                            paymentDetail.setAmountDate(date);
                             paymentDetail.setRemarks(remarks);
                             bind(paymentDetail);
                             paymentDetail.setUseYn("Y");

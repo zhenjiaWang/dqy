@@ -1,10 +1,11 @@
 <#import "/view/template/structure/wf/wfCommon.ftl" as wfCommon>
 <#import "/view/common/core.ftl" as c>
 <@wfCommon.wf_common>
+<link href="/css/datepicker.css" rel="stylesheet"/>
 <link href="/css/validator/validator.css" rel="stylesheet"/>
 <script type="text/javascript" src="/js/webutils/webutils.validator.js"></script>
 <script type="text/javascript" src="/js/webutils/reg.js"></script>
-
+<script type="text/javascript" src="/js/bootstrap-datepicker.js"></script>
 
 <link href="/css/kendo.common.css" rel="stylesheet"/>
 <link href="/css/kendo.metro.min.css" rel="stylesheet"/>
@@ -95,6 +96,12 @@
                     required: true,
                     pattern: [
                         {type: 'number', exp: '==', msg: '`'}
+                    ]
+                },{
+                    id: 'date1',
+                    required: true,
+                    pattern: [
+                        {type: 'reg', exp: '_date', msg: '`'}
                     ]
                 }
             ]
@@ -216,6 +223,18 @@
     function onUpload(e){
         uploadRemove=false;
     }
+    function dateEvent(){
+        $('.dateTd').each(function(i,o){
+            var dateObj=$('input[type="text"]',o);
+            if(dateObj){
+                $(dateObj).datepicker({
+                    format: 'yyyy-mm-dd'
+                }).on('changeDate', function (ev) {
+                            $(dateObj).datepicker('hide')
+                        });
+            }
+        });
+    }
     $(document).ready(function () {
         initValidator();
         $('#nextBtn').off('click').on('click', function () {
@@ -249,6 +268,13 @@
                         {type: 'number', exp: '==', msg: ''}
                     ]
                 });
+                WEBUTILS.validator.addMode({
+                    id: 'date' + nextNodeSeq,
+                    required: true,
+                    pattern: [
+                        {type: 'reg', exp: '_date', msg: ''}
+                    ]
+                });
                 bindSelect(nextNodeSeq);
                 submited = false;
             }
@@ -261,6 +287,9 @@
                     $('.detailTr').last().remove();
                     WEBUTILS.validator.removeMode({
                         id: 'amount' + currentNodeSeq
+                    });
+                    WEBUTILS.validator.removeMode({
+                        id: 'date' + currentNodeSeq
                     });
                 }
             }
@@ -306,6 +335,25 @@
                 "statusFailed":"failed"
             },
             template: kendo.template($('#fileTemplate').html())
+        });
+        dateEvent();
+        $('#wfReqRePayment\\.payMethod').change(function(){
+            var payMethod=$('#wfReqRePayment\\.payMethod').val();
+            if(payMethod=="2"){
+                $('.bank').show();
+                WEBUTILS.validator.addMode({
+                    id: 'wfReqRePayment\\.payee',
+                    required: true,
+                    pattern: [
+                        {type: 'blank', exp: '!=', msg: ''}
+                    ]
+                });
+            }else{
+                $('.bank').hide();
+                WEBUTILS.validator.removeMode({
+                    id: 'wfReqRePayment\\.payee'
+                });
+            }
         });
     });
 </script>
@@ -408,6 +456,43 @@
                         </div>
                     </td>
                 </tr>
+                <tr class="bank" style="display: none;">
+                    <td colspan="2">
+                        <div class="control-group" style="margin-bottom: 5px;">
+                            <label class="control-label" for="wfReqRePayment.payee"
+                                   style="width: 60px;color: #898989;font-weight: bold;">收款单位</label>
+
+                            <div class="controls" style="margin-left: 70px;">
+                                <input style="width: 95%;" type="text" id="wfReqRePayment.payee" name="wfReqRePayment.payee"
+                                       placeholder="收款单位/人" maxlength="20">
+                                <span class="help-inline"></span>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr class="bank" style="display: none;">
+                    <td>
+                        <div class="control-group" style="margin-bottom: 5px;">
+                            <label class="control-label" for="wfReqRePayment.bank"
+                                   style="width: 60px;color: #898989;font-weight: bold;">开户行</label>
+
+                            <div class="controls" style="margin-left: 70px;">
+                                <input type="text" id="wfReqRePayment.bank" name="wfReqRePayment.bank" placeholder="开户行" maxlength="20">
+                                <span class="help-inline"></span>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="control-group" style="margin-bottom: 5px;">
+                            <label class="control-label" for="wfReqRePayment.bankAccount"
+                                   style="width: 60px;color: #898989;font-weight: bold;">帐号</label>
+                            <div class="controls" style="margin-left: 70px;">
+                                <input type="text" id="wfReqRePayment.bankAccount" name="wfReqRePayment.bankAccount" placeholder="银行帐号" maxlength="20">
+                                <span class="help-inline"></span>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
                 <tr>
                     <td colspan="2">
                         <div class="control-group" style="margin-bottom: 5px;">
@@ -428,8 +513,9 @@
                                class="layout table table-bordered table-hover tableBgColor nomar nopadding">
                             <thead>
                             <tr>
-                                <td width="100"><strong>费用类别</strong></td>
-                                <td width="100"><strong>费用名称</strong></td>
+                                <td width="100"><strong>费用类型</strong></td>
+                                <td width="100"><strong>费用项目</strong></td>
+                                <td width="120"><strong>费用日期</strong></td>
                                 <td width="100"><strong>金额</strong></td>
                                 <td><strong>备注</strong>
                                     <a href="#" id="deleteDetail" style="float: right;"><i class="icon-minus"></i>
@@ -449,6 +535,11 @@
                                 </select></td>
                                 <td><select class="int2 width-100" id="titleId1" name="titleId1">
                                 </select></td>
+                                <td data-date-format="yyyy-mm-dd" data-date="" class="date dateTd">
+                                    <div class="control-group" style="margin-bottom: 0px;">
+                                        <input type="text" class="int1 width-100" id="date1" name="date1" >
+                                    </div>
+                                </td>
                                 <td><input type="text" class="int1 width-70 amt" id="amount1" name="amount1" value="0.00"></td>
                                 <td><input type="text" class="int1 " style="width: 95%;" id="remarks1" name="remarks1"></td>
                             </tr>
@@ -474,7 +565,7 @@
                 </tbody>
             </table>
             <p class="mart10  clearfix" style="width: 725px;">
-                <button class="btn btn-success floatright " type="button" id="nextBtn">继续</button>
+                <button class="btn btn-success floatright " type="button" id="nextBtn">审批人</button>
             </p>
             <input type="hidden" name="wfReq.applyId" id="wfReq.applyId" value="${applyId?if_exists}">
             <input type="hidden" name="wfReq.id" id="wfReq.id">

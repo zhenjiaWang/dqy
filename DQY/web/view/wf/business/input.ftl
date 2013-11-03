@@ -286,7 +286,7 @@
                 </tbody>
             </table>
             <p class="mart10  clearfix" style="width: 725px;">
-                <button class="btn btn-success floatright " type="button" id="nextBtn">继续</button>
+                <button class="btn btn-success floatright " type="button" id="nextBtn">审批人</button>
             </p>
             <input type="hidden" name="wfReq.applyId" id="wfReq.applyId" value="${applyId?if_exists}">
             <input type="hidden" name="wfReq.id" id="wfReq.id">

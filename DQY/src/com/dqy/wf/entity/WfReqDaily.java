@@ -29,6 +29,12 @@ public class WfReqDaily extends IdEntity implements Tracker {
 
     private String remarks;
 
+    private String payee;
+
+    private String bank;
+
+    private String bankAccount;
+
     private Date created;
 
     private String createdBy;
@@ -125,5 +131,32 @@ public class WfReqDaily extends IdEntity implements Tracker {
 
     public void setRemarks(String remarks) {
         this.remarks = remarks;
+    }
+
+    @Column(name = "PAYEE")
+    public String getPayee() {
+        return payee;
+    }
+
+    public void setPayee(String payee) {
+        this.payee = payee;
+    }
+
+    @Column(name = "BANK")
+    public String getBank() {
+        return bank;
+    }
+
+    public void setBank(String bank) {
+        this.bank = bank;
+    }
+
+    @Column(name = "BANK_ACCOUNT")
+    public String getBankAccount() {
+        return bankAccount;
+    }
+
+    public void setBankAccount(String bankAccount) {
+        this.bankAccount = bankAccount;
     }
 }

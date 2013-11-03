@@ -11,6 +11,7 @@ import com.dqy.wf.entity.*;
 import com.dqy.wf.service.*;
 import com.google.inject.Inject;
 import org.guiceside.commons.lang.DateFormatUtil;
+import org.guiceside.commons.lang.StringUtils;
 import org.guiceside.persistence.entity.search.SelectorUtils;
 import org.guiceside.persistence.hibernate.dao.hquery.Selector;
 import org.guiceside.web.annotation.*;
@@ -140,18 +141,21 @@ public class WfReqDailyAction extends WfReqSupportAction<WfReqDaily> {
                     Long titleId = getParameter("titleId" + i, Long.class);
                     Double amount = getParameter("amount" + i, Double.class);
                     String remarks = getParameter("remarks" + i);
-                    if (typeId != null && titleId != null && amount != null) {
+                    String dateStr=getParameter("date"+i);
+                    if (typeId != null && titleId != null && amount != null&& StringUtils.isNotBlank(dateStr)) {
                         if (amount == null) {
                             amount = 0.00d;
                         }
+                        Date date=DateFormatUtil.parse(dateStr,DateFormatUtil.YEAR_MONTH_DAY_PATTERN);
                         SysBudgetType budgetType = this.sysBudgetTypeService.getById(typeId);
                         SysBudgetTitle budgetTitle = this.sysBudgetTitleService.getById(titleId);
-                        if (budgetTitle != null && budgetType != null) {
+                        if (budgetTitle != null && budgetType != null&&date!=null) {
                             WfReqDailyDetail dailyDetail = new WfReqDailyDetail();
                             dailyDetail.setDailyId(wfReqDaily);
                             dailyDetail.setExpenseType(budgetType);
                             dailyDetail.setExpenseTitle(budgetTitle);
                             dailyDetail.setAmount(amount);
+                            dailyDetail.setAmountDate(date);
                             dailyDetail.setRemarks(remarks);
                             bind(dailyDetail);
                             dailyDetail.setUseYn("Y");

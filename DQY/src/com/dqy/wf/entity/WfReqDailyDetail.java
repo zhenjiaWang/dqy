@@ -31,6 +31,9 @@ public class WfReqDailyDetail extends IdEntity implements Tracker {
 
     private SysBudgetTitle expenseTitle;
 
+
+    private Date amountDate;
+
     private Double amount;
 
     private String remarks;
@@ -152,5 +155,14 @@ public class WfReqDailyDetail extends IdEntity implements Tracker {
 
     public void setExpenseTitle(SysBudgetTitle expenseTitle) {
         this.expenseTitle = expenseTitle;
+    }
+
+    @Column(name = "AMOUNT_DATE")
+    public Date getAmountDate() {
+        return amountDate;
+    }
+
+    public void setAmountDate(Date amountDate) {
+        this.amountDate = amountDate;
     }
 }

@@ -144,6 +144,44 @@
                         </div>
                     </td>
                 </tr>
+                    <#if wfReqRePayment.payMethod?exists>
+                        <#if wfReqRePayment.payMethod==2>
+                        <tr>
+                            <td colspan="2">
+                                <div class="control-group" style="margin-bottom: 5px;">
+                                    <label class="control-label" for="wfReq.subject"
+                                           style="width: 60px;color: #898989;font-weight: bold;">收款单位</label>
+
+                                    <div class="controls" style="margin-left: 70px;">
+                                        <label style="margin-top: 5px;padding-left:5px;font-size: 14px;word-wrap: break-word;word-break: break-all;">${wfReqRePayment.payee?if_exists}</label>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="control-group" style="margin-bottom: 5px;">
+                                    <label class="control-label"
+                                           style="width: 60px;color: #898989;font-weight: bold;">开户行</label>
+
+                                    <div class="controls" style="margin-left: 70px;">
+                                        <label style="margin-top: 5px;padding-left:5px;font-size: 14px;">${(wfReqRePayment.bank)?if_exists}</label>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="control-group" style="margin-bottom: 5px;">
+                                    <label class="control-label"
+                                           style="width: 60px;color: #898989;font-weight: bold;">帐号</label>
+
+                                    <div class="controls" style="margin-left: 70px;">
+                                        <label style="margin-top: 5px;padding-left:5px;font-size: 14px;">${(wfReqRePayment.bankAccount)?if_exists}</label>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        </#if>
+                    </#if>
                     <#if detailList?exists&&detailList?size gt 0>
                     <tr>
                         <td colspan="2">
@@ -153,6 +191,7 @@
                                 <tr>
                                     <td width="100"><strong>费用类别</strong></td>
                                     <td width="100"><strong>费用名称</strong></td>
+                                    <td width="120"><strong>费用日期</strong></td>
                                     <td width="100"><strong>金额</strong></td>
                                     <td><strong>备注</strong>
                                     </td>
@@ -163,6 +202,7 @@
                                     <tr >
                                         <td>${(detail.expenseType.expenseType)?if_exists}</td>
                                         <td>${(detail.expenseTitle.titleName)?if_exists}</td>
+                                        <td>${detail.amountDate?string("yyyy-MM-dd")}</td>
                                         <td>${detail.amount?double}</td>
                                         <td>${detail.remarks?if_exists}</td>
                                     </tr>
