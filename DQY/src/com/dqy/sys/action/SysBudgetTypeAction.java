@@ -10,6 +10,7 @@ import com.dqy.sys.service.SysOrgGroupService;
 import com.dqy.sys.service.SysOrgService;
 import com.dqy.web.support.ActionSupport;
 import com.google.inject.Inject;
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.guiceside.commons.lang.StringUtils;
 import org.guiceside.persistence.entity.search.SelectorUtils;
@@ -48,7 +49,9 @@ public class SysBudgetTypeAction extends ActionSupport<SysBudgetType> {
     @ReqSet
     private Long id;
 
-
+    @ReqGet
+    @ReqSet
+    private Long deptId;
     @ReqSet
     private List<SysBudgetType> budgetTypeList;
 
@@ -129,5 +132,32 @@ public class SysBudgetTypeAction extends ActionSupport<SysBudgetType> {
             }
         }
         return "success";
+    }
+
+    public String getTypeList() throws Exception {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("result", -1);
+        UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
+        if (deptId != null && userInfo != null) {
+            List<Selector> selectorList = new ArrayList<Selector>();
+            selectorList.add(SelectorUtils.$eq("orgId.id", userInfo.getOrgId()));
+            selectorList.add(SelectorUtils.$eq("deptId.id", deptId));
+            selectorList.add(SelectorUtils.$eq("useYn", "Y"));
+            selectorList.add(SelectorUtils.$order("expenseType"));
+            budgetTypeList = this.sysBudgetTypeService.getAllList(selectorList);
+            if(budgetTypeList!=null&&!budgetTypeList.isEmpty()){
+                JSONArray jsonArray=new JSONArray();
+                for(SysBudgetType type:budgetTypeList){
+                    JSONObject item=new JSONObject();
+                    item.put("id",type.getId());
+                    item.put("name",type.getExpenseType());
+                    jsonArray.add(item);
+                }
+                jsonObject.put("typeList", jsonArray);
+                jsonObject.put("result", 0);
+            }
+        }
+        writeJsonByAction(jsonObject.toString());
+        return null;
     }
 }

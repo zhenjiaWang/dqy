@@ -1,5 +1,6 @@
 package com.dqy.wf.entity;
 
+import com.dqy.hr.entity.HrDepartment;
 import com.dqy.sys.entity.SysBudgetTitle;
 import com.dqy.sys.entity.SysBudgetType;
 import org.guiceside.persistence.entity.IdEntity;
@@ -31,6 +32,7 @@ public class WfReqDailyDetail extends IdEntity implements Tracker {
 
     private SysBudgetTitle expenseTitle;
 
+    private HrDepartment expenseDept;
 
     private Date amountDate;
 
@@ -164,5 +166,15 @@ public class WfReqDailyDetail extends IdEntity implements Tracker {
 
     public void setAmountDate(Date amountDate) {
         this.amountDate = amountDate;
+    }
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "EXPENSE_DEPT")
+    public HrDepartment getExpenseDept() {
+        return expenseDept;
+    }
+
+    public void setExpenseDept(HrDepartment expenseDept) {
+        this.expenseDept = expenseDept;
     }
 }

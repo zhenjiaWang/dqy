@@ -192,10 +192,11 @@
                                    class="layout table table-bordered table-hover tableBgColor nomar nopadding">
                                 <thead>
                                 <tr>
-                                    <td width="100"><strong>费用类别</strong></td>
-                                    <td width="100"><strong>费用名称</strong></td>
-                                    <td width="120"><strong>费用日期</strong></td>
-                                    <td width="100"><strong>金额</strong></td>
+                                    <td width="100"><strong>费用部门</strong></td>
+                                    <td width="100"><strong>费用类型</strong></td>
+                                    <td width="100"><strong>费用项目</strong></td>
+                                    <td width="110"><strong>费用日期</strong></td>
+                                    <td width="90"><strong>金额</strong></td>
                                     <td><strong>备注</strong>
                                     </td>
                                 </tr>
@@ -203,6 +204,7 @@
                                 <tbody>
                                     <#list detailList as detail>
                                     <tr >
+                                        <td>${(detail.expenseDept.deptName)?if_exists}</td>
                                         <td>${(detail.expenseType.expenseType)?if_exists}</td>
                                         <td>${(detail.expenseTitle.titleName)?if_exists}</td>
                                         <td>${detail.amountDate?string("yyyy-MM-dd")}</td>

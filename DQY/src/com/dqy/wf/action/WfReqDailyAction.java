@@ -2,6 +2,8 @@ package com.dqy.wf.action;
 
 import com.dqy.common.UserInfo;
 import com.dqy.common.UserSession;
+import com.dqy.hr.entity.HrDepartment;
+import com.dqy.hr.service.HrDepartmentService;
 import com.dqy.sys.entity.SysBudgetTitle;
 import com.dqy.sys.entity.SysBudgetType;
 import com.dqy.sys.service.SysBudgetTitleService;
@@ -60,6 +62,9 @@ public class WfReqDailyAction extends WfReqSupportAction<WfReqDaily> {
     @Inject
     private WfReqAttService wfReqAttService;
 
+    @Inject
+    private HrDepartmentService hrDepartmentService;
+
     @ReqGet
     @ModelDriver
     @ReqSet
@@ -72,6 +77,11 @@ public class WfReqDailyAction extends WfReqSupportAction<WfReqDaily> {
     @ReqGet
     @ReqSet
     private Long reqId;
+
+
+    @ReqGet
+    @ReqSet
+    private Long deptId;
 
     @ReqGet
     @ReqSet
@@ -101,6 +111,9 @@ public class WfReqDailyAction extends WfReqSupportAction<WfReqDaily> {
     private List<WfReqDailyDetail> detailList;
 
     @ReqSet
+    private List<HrDepartment> departmentList;
+
+    @ReqSet
     private Date sendDate;
 
     @ReqSet
@@ -115,16 +128,33 @@ public class WfReqDailyAction extends WfReqSupportAction<WfReqDaily> {
             userInfo.setTopMenu("apply");
             userInfo.setLeftMenu("daily");
             userInfo.setChildMenu(null);
-
-            List<Selector> selectorList = new ArrayList<Selector>();
-            selectorList.add(SelectorUtils.$eq("orgId.id", userInfo.getOrgId()));
-            selectorList.add(SelectorUtils.$eq("deptId.id", userInfo.getDepartmentId()));
-            selectorList.add(SelectorUtils.$eq("useYn", "Y"));
-            selectorList.add(SelectorUtils.$order("expenseType"));
-            typeList = sysBudgetTypeService.getAllList(selectorList);
             sendDate= DateFormatUtil.getCurrentDate(true);
+            deptId=userInfo.getDepartmentId();
+           List<HrDepartment> deptList = this.hrDepartmentService.getDeptListByLevel(userInfo.getOrgId(), 1, false);
+            if(deptList!=null&&!deptList.isEmpty()){
+                departmentList=new ArrayList<HrDepartment>();
+               for(HrDepartment hrDepartment:deptList){
+                   buildDeptList(departmentList,hrDepartment,userInfo.getOrgId());
+               }
+            }
         }
         return "success";  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    private void buildDeptList(List<HrDepartment> departmentList,HrDepartment currentDept,Long orgId){
+        departmentList.add(currentDept);
+        Integer count = this.hrDepartmentService.getCountByParentId(orgId, currentDept.getId(), false);
+        if (count == null) {
+            count = 0;
+        }
+        if(count.intValue()>0){
+            List<HrDepartment> deptList = this.hrDepartmentService.getDeptListByParentId(orgId, currentDept.getId(), false);
+            if(deptList!=null&&!deptList.isEmpty()){
+                for(HrDepartment hrDepartment:deptList){
+                    buildDeptList(departmentList,hrDepartment,orgId);
+                }
+            }
+        }
     }
 
     @PageFlow(result = {@Result(name = "success", path = "/wf/req!ingList.dhtml", type = Dispatcher.Redirect)})
@@ -137,21 +167,24 @@ public class WfReqDailyAction extends WfReqSupportAction<WfReqDaily> {
             if (detailCount != null) {
                 detailList = new ArrayList<WfReqDailyDetail>();
                 for (int i = 1; i <= detailCount; i++) {
+                    Long deptId = getParameter("deptId" + i, Long.class);
                     Long typeId = getParameter("typeId" + i, Long.class);
                     Long titleId = getParameter("titleId" + i, Long.class);
                     Double amount = getParameter("amount" + i, Double.class);
                     String remarks = getParameter("remarks" + i);
                     String dateStr=getParameter("date"+i);
-                    if (typeId != null && titleId != null && amount != null&& StringUtils.isNotBlank(dateStr)) {
+                    if (deptId!=null&&typeId != null && titleId != null && amount != null&& StringUtils.isNotBlank(dateStr)) {
                         if (amount == null) {
                             amount = 0.00d;
                         }
                         Date date=DateFormatUtil.parse(dateStr,DateFormatUtil.YEAR_MONTH_DAY_PATTERN);
+                        HrDepartment hrDepartment = this.hrDepartmentService.getById(deptId);
                         SysBudgetType budgetType = this.sysBudgetTypeService.getById(typeId);
                         SysBudgetTitle budgetTitle = this.sysBudgetTitleService.getById(titleId);
-                        if (budgetTitle != null && budgetType != null&&date!=null) {
+                        if (hrDepartment!=null&&budgetTitle != null && budgetType != null&&date!=null) {
                             WfReqDailyDetail dailyDetail = new WfReqDailyDetail();
                             dailyDetail.setDailyId(wfReqDaily);
+                            dailyDetail.setExpenseDept(hrDepartment);
                             dailyDetail.setExpenseType(budgetType);
                             dailyDetail.setExpenseTitle(budgetTitle);
                             dailyDetail.setAmount(amount);

@@ -107,8 +107,8 @@ a.triangle{display:inline-block;border-width:6px;border-color:#95c42d #f9f9f9  #
 .item-nav li a.cur{color:#333333;}
 .item-nav li.current a.cur{width:121px;background:url("../images/cssimg/cur-li-bg.png");color:#fff;line-height:31px;height:31px;position:relative;left:-4px;text-shadow:-1px -1px 0px #536e1a;margin:0;}
 .item-nav li.current dl{display:block;}
-.right-main{width:768px;}
-.location{width:768px;height:35px;background: url("../images/cssimg/location-bg.png");line-height: 33px;}
+.right-main{width:825px;}
+.location{height:35px;background: url("../images/cssimg/location-bg.png");line-height: 33px;}
 .location span{color: #fff;height:35px;line-height: 35px;float:left;padding:0 20px 0 15px;text-shadow: -1px -1px 1px #8c070e;}
 .location .floatright,.location .floatright a{color:#FFFFFF;line-height: 35px;}
 .location .floatright a:hover{color:#fff;}
@@ -166,7 +166,7 @@ textarea{height:auto; vertical-align: text-top;}
 .layout strong{padding:0 6px;}
 .table-scroll{width:745px;height:320px;overflow-y:scroll;border:1px solid #ccc;border-width:0 1px 1px 1px;}
 .table-scroll table.layout{border-width:0;}
-.application{width:725px;}
+.application{width:800px;}
 .application th{color:#898989;font-weight:bold;font-size:13px;}
 /*.application td{padding:6px 0;}*/
 .application a{margin-right:5px;}
@@ -239,10 +239,10 @@ position: relative;
 position: absolute;
 padding: 5px;
 background: #fff;
-width: 300px;
-z-index: 99999;
-top: -6px;
-left: 70px;
+width: 225px;
+z-index: 10;
+top: -10px;
+left: -30px;
 border: 1px solid #ccc;
 box-shadow: 0 0 8px #ccc;
 display:none;
@@ -257,9 +257,15 @@ float: left;margin-right: 3px;}
 .all-att li *{float:left;}
 .all-att li a{margin-left: 10px;}
 .md-attachment:hover .all-att{display: block;}
-
-
-
+.add-on{width:14px;height:14px;}
+/*打印的样式*/
+.print{width:700px;margin:40px auto;}
+table.print-table{border-collapse: collapse;border-spacing: 0;margin:0 auto 20px auto;}
+table.print-table td,table.print-table th{border:1px solid #b5b5b5;line-height: 30px;padding:0 10px;color:#333;}
+.print-bt{position:relative;}
+.print-bt .floatleft{position: absolute;bottom:0;left:0;}
+.print-bt table{margin-bottom:0;}
+.print-title{width:600px;}
 
 
 

@@ -309,6 +309,8 @@ var flowApproveDQY=' <div class="control-group" nodeSeq="{nodeSeq}">' +
     '</div>';
 
 var rePaymentDetail='<tr seq="{seq}" class="detailTr">' +
+    '<td><select class="int2 width-100" id="deptId{seq}" name="deptId{seq}">' +
+    '</select></td>' +
     '<td><select class="int2 width-100" id="typeId{seq}" name="typeId{seq}">' +
     '</select></td>' +
     '<td><select class="int2 width-100" id="titleId{seq}" name="titleId{seq}">' +
