@@ -1,6 +1,6 @@
 <#import "/view/template/common.ftl" as common>
 <#macro dqyCommon>
-    <@common.html title="">
+    <@common.html title="DQY Intranet OA 办公自动化系统">
     <style>
         .tableBgColor {
             background-color: #FAFAFA;
@@ -26,7 +26,6 @@
             <#if Session["userSession"]?exists>
                 <#assign userInfo=Session["userSession"]?if_exists>
                 <#if userInfo?exists>
-                    $('title').text('${userInfo.orgName?if_exists}');
                     $('li', '#topMenu').removeClass('current');
                     $('.${userInfo['topMenu']?if_exists}', '#topMenu').addClass('current');
                 </#if>
