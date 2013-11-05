@@ -23,6 +23,11 @@ public class WfReqDailyService extends HQuery {
     @Inject
     private WfReqDailyDetailService wfReqDailyDetailService;
 
+
+    @Inject
+    private WfReqDailyTrueService wfReqDailyTrueService;
+
+
     /**
      * @param id
      * @return 根据Id获取代码
@@ -82,6 +87,20 @@ public class WfReqDailyService extends HQuery {
         this.save(wfReqDaily);
         if (detailList != null && !detailList.isEmpty()) {
             wfReqDailyDetailService.save(detailList);
+        }
+    }
+
+    @Transactional(type = TransactionType.READ_WRITE)
+    public void save(WfReqDaily wfReqDaily, List<WfReqDailyDetail> detailList,List<WfReqDailyTrue> trueList, WfReq wfReq, List<WfReqComments> reqCommentsList,
+                     WfReqNoSeq wfReqNoSeq, List<WfReqNodeApprove> reqNodeApproveList, List<WfReqTask> reqTaskList,
+                     WfReqMyFlowLast wfReqMyFlowLast,List<WfReqAtt> reqAttList) {
+        this.wfReqService.save(wfReq, reqCommentsList, wfReqNoSeq, reqNodeApproveList, reqTaskList, wfReqMyFlowLast,reqAttList);
+        this.save(wfReqDaily);
+        if (detailList != null && !detailList.isEmpty()) {
+            wfReqDailyDetailService.save(detailList);
+        }
+        if (trueList != null && !trueList.isEmpty()) {
+            wfReqDailyTrueService.save(trueList);
         }
     }
 

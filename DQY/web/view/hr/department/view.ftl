@@ -49,6 +49,12 @@
                     </div>
                 </#if>
                 <div class="control-group">
+                    <label class="control-label" for="hrDepartment.deptName">部门编号</label>
+                    <div class="controls">
+                        <p class="muted" style="font-size: 14px;line-height: 20px;margin-top: 4px;">${hrDepartment.deptNo?if_exists}</p>
+                    </div>
+                </div>
+                <div class="control-group">
                     <label class="control-label" for="hrDepartment.deptName">部门名称</label>
                     <div class="controls">
                         <p class="muted" style="font-size: 14px;line-height: 20px;margin-top: 4px;">${hrDepartment.deptName?if_exists}</p>

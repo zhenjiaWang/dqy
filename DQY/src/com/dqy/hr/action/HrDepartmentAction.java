@@ -63,6 +63,9 @@ public class HrDepartmentAction extends ActionSupport<HrDepartment> {
     @ReqSet
     private Integer childCount = 0;
 
+    @ReqSet
+    private String deptNo;
+
     @ReqGet
     @ReqSet
     private Long reloadTree;
@@ -134,6 +137,19 @@ public class HrDepartmentAction extends ActionSupport<HrDepartment> {
                     maxDisplayOrder=0;
                 }
                 maxDisplayOrder+=1;
+                String no="";
+                if(maxDisplayOrder<10){
+                    no="00"+maxDisplayOrder;
+                }else if(maxDisplayOrder<100){
+                    no="0"+maxDisplayOrder;
+                }else if(maxDisplayOrder<1000){
+                    no=""+maxDisplayOrder;
+                }
+                if(parentDepartment==null){
+                    deptNo=userInfo.getOrgNo()+"-"+no;
+                }else{
+                    deptNo=parentDepartment.getDeptNo()+"-"+no;
+                }
             }
 
         }

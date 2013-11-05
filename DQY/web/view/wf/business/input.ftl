@@ -263,8 +263,8 @@
                 </tr>
                 <tr>
                     <td colspan="2" style="border-top: 0px;">
-                        <div style="width:720px;">
-                            <script type="text/plain" id="editor" style="width:720px;height:500px;"></script>
+                        <div style="width:790px;">
+                            <script type="text/plain" id="editor" style="width:790px;height:500px;"></script>
                         </div>
                     </td>
                 </tr>
@@ -285,7 +285,7 @@
                 </tr>
                 </tbody>
             </table>
-            <p class="mart10  clearfix" style="width: 725px;">
+            <p class="mart10  clearfix" style="width: 800px;">
                 <button class="btn btn-success floatright " type="button" id="nextBtn">审批人</button>
             </p>
             <input type="hidden" name="wfReq.applyId" id="wfReq.applyId" value="${applyId?if_exists}">

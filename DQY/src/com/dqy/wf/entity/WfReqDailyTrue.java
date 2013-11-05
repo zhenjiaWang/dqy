@@ -1,5 +1,8 @@
 package com.dqy.wf.entity;
 
+import com.dqy.hr.entity.HrDepartment;
+import com.dqy.sys.entity.SysBudgetTitle;
+import com.dqy.sys.entity.SysBudgetType;
 import org.guiceside.persistence.entity.IdEntity;
 import org.guiceside.persistence.entity.Tracker;
 import org.hibernate.annotations.GenericGenerator;
@@ -16,26 +19,26 @@ import java.util.Date;
  * To change this template use File | Settings | File Templates.
  */
 @Entity
-@Table(name = "WF_REQ_DAILY")
-public class WfReqDaily extends IdEntity implements Tracker {
+@Table(name = "WF_REQ_DAILY_TRUE")
+public class WfReqDailyTrue extends IdEntity implements Tracker {
 
     private static final long serialVersionUID = 1L;
 
     private Long id;
 
-    private WfReq reqId;
+    private WfReqDaily dailyId;
+
+    private SysBudgetType expenseType;
+
+    private SysBudgetTitle expenseTitle;
+
+    private HrDepartment expenseDept;
+
+    private Date amountDate;
 
     private Double amount;
 
-    private Double trueAmount;
-
     private String remarks;
-
-    private String payee;
-
-    private String bank;
-
-    private String bankAccount;
 
     private Date created;
 
@@ -48,8 +51,8 @@ public class WfReqDaily extends IdEntity implements Tracker {
     private String useYn;
 
     @Id
-    @GeneratedValue(generator="WF_REQ_DAILY")
-    @GenericGenerator(name="WF_REQ_DAILY",strategy="seqhilo",parameters={@Parameter(name="sequence",value="SEQ_WF_REQ_DAILY")})
+    @GeneratedValue(generator="WF_REQ_DAILY_TRUE")
+    @GenericGenerator(name="WF_REQ_DAILY_TRUE",strategy="seqhilo",parameters={@Parameter(name="sequence",value="SEQ_WF_REQ_DAILY_TRUE")})
     public Long getId() {
         return id;
     }
@@ -106,15 +109,6 @@ public class WfReqDaily extends IdEntity implements Tracker {
 
 
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "REQ_ID")
-    public WfReq getReqId() {
-        return reqId;
-    }
-
-    public void setReqId(WfReq reqId) {
-        this.reqId = reqId;
-    }
 
     @Column(name = "AMOUNT")
     public Double getAmount() {
@@ -125,14 +119,6 @@ public class WfReqDaily extends IdEntity implements Tracker {
         this.amount = amount;
     }
 
-    @Column(name = "TRUE_AMOUNT")
-    public Double getTrueAmount() {
-        return trueAmount;
-    }
-
-    public void setTrueAmount(Double trueAmount) {
-        this.trueAmount = trueAmount;
-    }
 
     @Column(name = "REMARKS")
     public String getRemarks() {
@@ -143,30 +129,52 @@ public class WfReqDaily extends IdEntity implements Tracker {
         this.remarks = remarks;
     }
 
-    @Column(name = "PAYEE")
-    public String getPayee() {
-        return payee;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "DAILY_ID")
+    public WfReqDaily getDailyId() {
+        return dailyId;
     }
 
-    public void setPayee(String payee) {
-        this.payee = payee;
+    public void setDailyId(WfReqDaily dailyId) {
+        this.dailyId = dailyId;
     }
 
-    @Column(name = "BANK")
-    public String getBank() {
-        return bank;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "EXPENSE_TYPE")
+    public SysBudgetType getExpenseType() {
+        return expenseType;
     }
 
-    public void setBank(String bank) {
-        this.bank = bank;
+    public void setExpenseType(SysBudgetType expenseType) {
+        this.expenseType = expenseType;
     }
 
-    @Column(name = "BANK_ACCOUNT")
-    public String getBankAccount() {
-        return bankAccount;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "EXPENSE_TITLE")
+    public SysBudgetTitle getExpenseTitle() {
+        return expenseTitle;
     }
 
-    public void setBankAccount(String bankAccount) {
-        this.bankAccount = bankAccount;
+    public void setExpenseTitle(SysBudgetTitle expenseTitle) {
+        this.expenseTitle = expenseTitle;
+    }
+
+    @Column(name = "AMOUNT_DATE")
+    public Date getAmountDate() {
+        return amountDate;
+    }
+
+    public void setAmountDate(Date amountDate) {
+        this.amountDate = amountDate;
+    }
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "EXPENSE_DEPT")
+    public HrDepartment getExpenseDept() {
+        return expenseDept;
+    }
+
+    public void setExpenseDept(HrDepartment expenseDept) {
+        this.expenseDept = expenseDept;
     }
 }

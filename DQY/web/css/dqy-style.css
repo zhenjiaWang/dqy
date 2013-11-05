@@ -78,6 +78,7 @@ a.triangle{display:inline-block;border-width:6px;border-color:#95c42d #f9f9f9  #
 .search-box.current ul{display: block;}
 .top-bar p.font14 a{color:#666666;line-height: 20px;}
 .top-bar p.font14 a:hover{text-decoration: underline;}
+.choosed{display:block;width:160px;height:20px;overflow: hidden;}
 .left-count{width:546px;}
 .right-count{width:184px;}
 .item{width:263px;height:165px;background: url(../images/cssimg/item.gif);float:left;margin:5px;}
@@ -261,7 +262,7 @@ float: left;margin-right: 3px;}
 /*打印的样式*/
 .print{width:700px;margin:40px auto;}
 table.print-table{border-collapse: collapse;border-spacing: 0;margin:0 auto 20px auto;}
-table.print-table td,table.print-table th{border:1px solid #b5b5b5;line-height: 30px;padding:0 10px;color:#333;}
+table.print-table td,table.print-table th{border:1px solid #000;line-height: 30px;padding:0 10px;color:#333;}
 .print-bt{position:relative;}
 .print-bt .floatleft{position: absolute;bottom:0;left:0;}
 .print-bt table{margin-bottom:0;}

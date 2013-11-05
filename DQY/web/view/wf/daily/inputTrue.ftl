@@ -92,13 +92,33 @@
                     ]
                 },
                 {
-                    id: 'amount1',
+                    id: 'wfReqDaily\\.trueAmount',
+                    required: true,
+                    pattern: [
+                        {type: 'number', exp: '==', msg: '不能为空'}
+                    ]
+                },
+                {
+                    id: 'amount1_1',
                     required: true,
                     pattern: [
                         {type: 'number', exp: '==', msg: '`'}
                     ]
                 },{
-                    id: 'date1',
+                    id: 'date1_1',
+                    required: true,
+                    pattern: [
+                        {type: 'reg', exp: '_date', msg: '`'}
+                    ]
+                },
+                {
+                    id: 'amount1_2',
+                    required: true,
+                    pattern: [
+                        {type: 'number', exp: '==', msg: '`'}
+                    ]
+                },{
+                    id: 'date1_2',
                     required: true,
                     pattern: [
                         {type: 'reg', exp: '_date', msg: '`'}
@@ -131,9 +151,9 @@
     function addFlow() {
         $('.modal-header', '#myModal').find('.close').trigger('click');
     }
-    function getBudgetTypeList(seq){
-        var deptObj=$('#deptId'+seq);
-        var typeObj=$('#typeId'+seq);
+    function getBudgetTypeList(type,seq){
+        var deptObj=$('#deptId'+seq+'_'+type);
+        var typeObj=$('#typeId'+seq+'_'+type);
         var deptId=$(deptObj).val();
         $.ajax({
             type:'GET',
@@ -155,9 +175,9 @@
                         $(typeObj).empty();
                         $(typeObj).append('<option value="">暂无数据</option>');
                     }
-                    getBudgetTitleList(seq);
-                    $('#typeId'+seq).off('change').on('change',function () {
-                        getBudgetTitleList(seq);
+                    getBudgetTitleList(type,seq);
+                    $('#typeId'+seq+'_'+type).off('change').on('change',function () {
+                        getBudgetTitleList(type,seq);
                     });
                 }
             },
@@ -166,9 +186,9 @@
             }
         });
     }
-    function getBudgetTitleList(seq){
-        var typeObj=$('#typeId'+seq);
-        var titleObj=$('#titleId'+seq);
+    function getBudgetTitleList(type,seq){
+        var typeObj=$('#typeId'+seq+'_'+type);
+        var titleObj=$('#titleId'+seq+'_'+type);
         var typeId=$(typeObj).val();
         $.ajax({
             type:'GET',
@@ -197,9 +217,9 @@
             }
         });
     }
-    function bindSelect(seq){
+    function bindSelect(type,seq){
         <#if departmentList?exists&&departmentList?size gt 0>
-            $('#deptId'+seq).empty();
+            $('#deptId'+seq+'_'+type).empty();
             <#list departmentList as dept>
                 var levelStr='';
                 <#if dept.deptLevel gt 1>
@@ -207,27 +227,43 @@
                         levelStr+='&nbsp;&nbsp;';
                     </#list>
                 </#if>
-                $('#deptId'+seq).append('<option value="${dept.id?c}">'+levelStr+'${dept.deptName?if_exists}</option>');
+                $('#deptId'+seq+'_'+type).append('<option value="${dept.id?c}">'+levelStr+'${dept.deptName?if_exists}</option>');
             </#list>
-            $('#deptId'+seq).val('${deptId?c}');
-            getBudgetTypeList(seq);
-            $('#deptId'+seq).off('change').on('change',function () {
-                getBudgetTypeList(seq);
+            $('#deptId'+seq+'_'+type).val('${deptId?c}');
+            getBudgetTypeList(type,seq);
+            $('#deptId'+seq+'_'+type).off('change').on('change',function () {
+                getBudgetTypeList(type,seq);
             });
         </#if>
-        $('#amount'+seq).off('blur').on('blur',function(){
-            var totalAm=0.00;
-            $('.amt').each(function(i,o){
-                var am=$(o).val();
-                if(am){
-                    am=parseFloat(am);
+        if(type==1){
+            $('#amount'+seq+'_'+type).off('blur').on('blur',function(){
+                var totalAm=0.00;
+                $('.amt1').each(function(i,o){
+                    var am=$(o).val();
                     if(am){
-                        totalAm+=am;
+                        am=parseFloat(am);
+                        if(am){
+                            totalAm+=am;
+                        }
                     }
-                }
+                });
+                $('#wfReqDaily\\.amount').val(totalAm);
             });
-            $('#wfReqDaily\\.amount').val(totalAm);
-        });
+        }else if(type==2){
+            $('#amount'+seq+'_'+type).off('blur').on('blur',function(){
+                var totalAm=0.00;
+                $('.amt2').each(function(i,o){
+                    var am=$(o).val();
+                    if(am){
+                        am=parseFloat(am);
+                        if(am){
+                            totalAm+=am;
+                        }
+                    }
+                });
+                $('#wfReqDaily\\.trueAmount').val(totalAm);
+            });
+        }
     }
 
     function addExtensionClass(extension) {
@@ -290,9 +326,11 @@
     $(document).ready(function () {
         initValidator();
         $('#nextBtn').off('click').on('click', function () {
-            var detailCount = $('.detailTr').last().attr('seq');
-            if(detailCount){
-                $('#detailCount').val(detailCount);
+            var detailCount1 = $('.detailTr1').last().attr('seq');
+            var detailCount2 = $('.detailTr2').last().attr('seq');
+            if(detailCount1&&detailCount2){
+                $('#detailCount1').val(detailCount1);
+                $('#detailCount2').val(detailCount2);
                 WEBUTILS.validator.checkAll();
                 window.setTimeout(function () {
                     var passed = WEBUTILS.validator.isPassed();
@@ -304,54 +342,63 @@
                 }, 500);
             }
         });
-        $('#addDetail').off('click').on('click', function () {
-            var currentNodeSeq = $('.detailTr').last().attr('seq');
-            if (currentNodeSeq) {
-                currentNodeSeq = parseInt(currentNodeSeq);
-                var nextNodeSeq = currentNodeSeq + 1;
-                $('.detailTr').last().after(String.formatmodel(rePaymentDetail, {seq: nextNodeSeq}));
-                WEBUTILS.validator.addMode({
-                    id: 'amount' + nextNodeSeq,
-                    required: true,
-                    pattern: [
-                        {type: 'number', exp: '==', msg: ''}
-                    ]
-                });
-                WEBUTILS.validator.addMode({
-                    id: 'date' + nextNodeSeq,
-                    required: true,
-                    pattern: [
-                        {type: 'reg', exp: '_date', msg: ''}
-                    ]
-                });
-                bindSelect(nextNodeSeq);
-                dateEvent();
-                submited = false;
-            }
-        });
-        $('#deleteDetail').off('click').on('click', function () {
-            var currentNodeSeq = $('.detailTr').last().attr('seq');
-            if (currentNodeSeq) {
-                currentNodeSeq = parseInt(currentNodeSeq);
-                if (currentNodeSeq > 1) {
-                    $('.detailTr').last().remove();
-                    WEBUTILS.validator.removeMode({
-                        id: 'amount' + currentNodeSeq
+        $('.addDetail').off('click').on('click', function () {
+            var type=$(this).attr('type');
+            if(type){
+                var currentNodeSeq = $('.detailTr'+type).last().attr('seq');
+                if (currentNodeSeq) {
+                    currentNodeSeq = parseInt(currentNodeSeq);
+                    var nextNodeSeq = currentNodeSeq + 1;
+                    $('.detailTr'+type).last().after(String.formatmodel(rePaymentDetailTrue, {seq: nextNodeSeq,type:type}));
+                    WEBUTILS.validator.addMode({
+                        id: 'amount' + nextNodeSeq+'_'+type,
+                        required: true,
+                        pattern: [
+                            {type: 'number', exp: '==', msg: ''}
+                        ]
                     });
-                    WEBUTILS.validator.removeMode({
-                        id: 'date' + currentNodeSeq
+                    WEBUTILS.validator.addMode({
+                        id: 'date' + nextNodeSeq+'_'+type,
+                        required: true,
+                        pattern: [
+                            {type: 'reg', exp: '_date', msg: ''}
+                        ]
                     });
+                    bindSelect(type,nextNodeSeq);
+                    dateEvent();
+                    submited = false;
                 }
             }
         });
-        getBudgetTypeList(1);
-
-        $('#deptId1').off('change').on('change',function () {
-            getBudgetTypeList(1);
+        $('.deleteDetail').off('click').on('click', function () {
+            var type=$(this).attr('type');
+            if(type){
+                var currentNodeSeq = $('.detailTr'+type).last().attr('seq');
+                if (currentNodeSeq) {
+                    currentNodeSeq = parseInt(currentNodeSeq);
+                    if (currentNodeSeq > 1) {
+                        $('.detailTr'+type).last().remove();
+                        WEBUTILS.validator.removeMode({
+                            id: 'amount' + currentNodeSeq+'_'+type
+                        });
+                        WEBUTILS.validator.removeMode({
+                            id: 'date' + currentNodeSeq+'_'+type
+                        });
+                    }
+                }
+            }
         });
-        $('#amount1').off('blur').on('blur',function(){
+        getBudgetTypeList(1,1);
+        getBudgetTypeList(2,1);
+        $('#deptId1_1').off('change').on('change',function () {
+            getBudgetTypeList(1,1);
+        });
+        $('#deptId1_2').off('change').on('change',function () {
+            getBudgetTypeList(2,1);
+        });
+        $('#amount1_1').off('blur').on('blur',function(){
             var totalAm=0.00;
-            $('.amt').each(function(i,o){
+            $('.amt1').each(function(i,o){
                 var am=$(o).val();
                 if(am){
                     am=parseFloat(am);
@@ -361,6 +408,19 @@
                 }
             });
             $('#wfReqDaily\\.amount').val(totalAm);
+        });
+        $('#amount1_2').off('blur').on('blur',function(){
+            var totalAm=0.00;
+            $('.amt2').each(function(i,o){
+                var am=$(o).val();
+                if(am){
+                    am=parseFloat(am);
+                    if(am){
+                        totalAm+=am;
+                    }
+                }
+            });
+            $('#wfReqDaily\\.trueAmount').val(totalAm);
         });
 
         $("#upload").kendoUpload({
@@ -398,7 +458,7 @@
     <#if Session["userSession"]?exists>
         <#assign userInfo=Session["userSession"]?if_exists>
     <div class="mart5">
-        <form class="form-horizontal" action="/wf/daily!save.dhtml" method="POST" name="editForm"
+        <form class="form-horizontal" action="/wf/daily!saveTrue.dhtml" method="POST" name="editForm"
               id="editForm">
             <table class="table application nomar">
                 <tbody>
@@ -476,7 +536,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="2">
+                    <td >
                         <div class="control-group" style="margin-bottom: 5px;">
                             <label class="control-label" for="wfReqDaily.amount"
                                    style="width: 60px;color: #898989;font-weight: bold;">报销金额</label>
@@ -484,6 +544,16 @@
                             <div class="controls" style="margin-left: 70px;">
                                 <input type="text" id="wfReqDaily.amount" name="wfReqDaily.amount"
                                        placeholder="报销金额" maxlength="10" readonly="readonly">
+                                <span class="help-inline"></span>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="control-group" style="margin-bottom: 5px;">
+                            <label class="control-label" for="wfReqDaily.trueAmount"
+                                   style="width: 60px;color: #898989;font-weight: bold;">实际金额</label>
+                            <div class="controls" style="margin-left: 70px;">
+                                <input type="text" id="wfReqDaily.trueAmount" name="wfReqDaily.trueAmount" placeholder="花费金额" maxlength="20" readonly="readonly">
                                 <span class="help-inline"></span>
                             </div>
                         </div>
@@ -505,7 +575,7 @@
                 </tr>
                 <tr>
                     <td colspan="2">
-                        <table style="width: 100%;"
+                        <table style="width: 100%;" id="type1"
                                class="layout table table-bordered table-hover tableBgColor nomar nopadding">
                             <thead>
                             <tr>
@@ -515,16 +585,16 @@
                                 <td width="110"><strong>费用日期</strong></td>
                                 <td width="80"><strong>金额</strong></td>
                                 <td><strong>注</strong>
-                                    <a href="/wf/daily.dhtml?trueAmount=1" id="trueDetail" style="float: right;"><i class="icon-eye-open"></i>&nbsp;</a>
-                                    <a href="#" id="deleteDetail" style="float: right;"><i class="icon-minus"></i>
+                                    <a href="/wf/daily.dhtml" id="trueDetail" style="float: right;"><i class="icon-eye-close"></i>&nbsp;</a>
+                                    <a href="#" type="1" class="deleteDetail" style="float: right;"><i class="icon-minus"></i>
                                         删除</a>
-                                    <a href="#" id="addDetail" style="float: right;"><i class="icon-plus"></i> 增加</a>
+                                    <a href="#" type="1" class="addDetail" style="float: right;"><i class="icon-plus"></i> 增加</a>
                                 </td>
                             </tr>
                             </thead>
                             <tbody>
-                            <tr seq="1" class="detailTr">
-                                <td><select class="int2 width-100" id="deptId1" name="deptId1">
+                            <tr seq="1" class="detailTr1">
+                                <td><select class="int2 width-100" id="deptId1_1" name="deptId1_1">
                                     <#if departmentList?exists&&departmentList?size gt 0>
                                         <#list departmentList as dept>
                                             <option value="${dept.id?c}" <#if deptId==dept.id>selected="selected" </#if>>
@@ -538,17 +608,68 @@
                                         </#list>
                                     </#if>
                                 </select></td>
-                                <td><select class="int2 width-100" id="typeId1" name="typeId1">
+                                <td><select class="int2 width-100" id="typeId1_1" name="typeId1_1">
                                 </select></td>
-                                <td><select class="int2 width-100" id="titleId1" name="titleId1">
+                                <td><select class="int2 width-100" id="titleId1_1" name="titleId1_1">
                                 </select></td>
                                 <td data-date-format="yyyy-mm-dd" data-date="" class="date dateTd">
                                     <div class="control-group" style="margin-bottom: 0px;">
-                                        <input type="text" class="int1 width-100" id="date1" name="date1" >
+                                        <input type="text" class="int1 width-100" id="date1_1" name="date1_1" >
                                     </div>
                                 </td>
-                                <td><input type="text" class="int1 width-70 amt" id="amount1" name="amount1" value="0.00"></td>
-                                <td><input type="text" class="int1 " style="width: 95%;" id="remarks1" name="remarks1"></td>
+                                <td><input type="text" class="int1 width-70 amt1" id="amount1_1" name="amount1_1" value="0.00"></td>
+                                <td><input type="text" class="int1 " style="width: 95%;" id="remarks1_1" name="remarks1_1"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <table style="width: 100%;" id="type2"
+                               class="layout table table-bordered table-hover tableBgColor nomar nopadding">
+                            <thead>
+                            <tr>
+                                <td width="100"><strong>费用部门</strong></td>
+                                <td width="100"><strong>费用类型</strong></td>
+                                <td width="100"><strong>费用项目</strong></td>
+                                <td width="110"><strong>费用日期</strong></td>
+                                <td width="80"><strong>金额</strong></td>
+                                <td><strong>注</strong>
+                                    <a href="/wf/daily.dhtml" id="trueDetail" style="float: right;"><i class="icon-eye-close"></i>&nbsp;</a>
+                                    <a href="#" type="2" class="deleteDetail" style="float: right;"><i class="icon-minus"></i>
+                                        删除</a>
+                                    <a href="#" type="2" class="addDetail" style="float: right;"><i class="icon-plus"></i> 增加</a>
+                                </td>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr seq="1" class="detailTr2">
+                                <td><select class="int2 width-100" id="deptId1_2" name="deptId1_2">
+                                    <#if departmentList?exists&&departmentList?size gt 0>
+                                        <#list departmentList as dept>
+                                            <option value="${dept.id?c}" <#if deptId==dept.id>selected="selected" </#if>>
+                                                <#if dept.deptLevel gt 1>
+                                                    <#list 1..dept.deptLevel as i>
+                                                        &nbsp;&nbsp;
+                                                    </#list>
+                                                </#if>
+                                            ${dept.deptName?if_exists}
+                                            </option>
+                                        </#list>
+                                    </#if>
+                                </select></td>
+                                <td><select class="int2 width-100" id="typeId1_2" name="typeId1_2">
+                                </select></td>
+                                <td><select class="int2 width-100" id="titleId1_2" name="titleId1_2">
+                                </select></td>
+                                <td data-date-format="yyyy-mm-dd" data-date="" class="date dateTd">
+                                    <div class="control-group" style="margin-bottom: 0px;">
+                                        <input type="text" class="int1 width-100" id="date1_2" name="date1_2" >
+                                    </div>
+                                </td>
+                                <td><input type="text" class="int1 width-70 amt2" id="amount1_2" name="amount1_2" value="0.00"></td>
+                                <td><input type="text" class="int1 " style="width: 95%;" id="remarks1_2" name="remarks1_2"></td>
                             </tr>
                             </tbody>
                         </table>
@@ -577,7 +698,8 @@
             <input type="hidden" name="wfReq.applyId" id="wfReq.applyId" value="${applyId?if_exists}">
             <input type="hidden" name="wfReq.id" id="wfReq.id">
             <input type="hidden" name="flowId" id="flowId">
-            <input type="hidden" name="detailCount" id="detailCount">
+            <input type="hidden" name="detailCount1" id="detailCount1">
+            <input type="hidden" name="detailCount2" id="detailCount2">
             <input type="hidden" name="wfReq.nodeCount" id="wfReq.nodeCount" value="0">
 
             <div id="nodeFlowHidden"></div>

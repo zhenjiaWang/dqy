@@ -28,6 +28,8 @@ public class HrDepartment extends IdEntity implements Tracker {
 
     private String deptName;
 
+    private String deptNo;
+
     private HrDepartment parentId;
 
     private Integer deptLevel;
@@ -146,5 +148,14 @@ public class HrDepartment extends IdEntity implements Tracker {
 
     public void setDisplayOrder(Integer displayOrder) {
         this.displayOrder = displayOrder;
+    }
+
+    @Column(name = "DEPT_NO")
+    public String getDeptNo() {
+        return deptNo;
+    }
+
+    public void setDeptNo(String deptNo) {
+        this.deptNo = deptNo;
     }
 }

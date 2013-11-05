@@ -5,6 +5,7 @@ import com.google.inject.Singleton;
 import org.guiceside.persistence.TransactionType;
 import org.guiceside.persistence.Transactional;
 import org.guiceside.persistence.hibernate.dao.hquery.HQuery;
+import org.guiceside.persistence.hibernate.dao.hquery.Selector;
 
 import java.util.List;
 
@@ -26,6 +27,10 @@ public class HrDepartmentService extends HQuery {
     }
 
 
+    @Transactional(type = TransactionType.READ_ONLY)
+    public List<HrDepartment> getByList(List<Selector> selectorList) {
+        return $(selectorList).list(HrDepartment.class);
+    }
     /**
      * 保存对象
      */

@@ -324,5 +324,21 @@ var rePaymentDetail='<tr seq="{seq}" class="detailTr">' +
     '<td><input type="text" class="int1 " style="width: 95%;" id="remarks{seq}" name="remarks{seq}"></td>' +
     '</tr>';
 
+var rePaymentDetailTrue='<tr seq="{seq}" class="detailTr{type}">' +
+    '<td><select class="int2 width-100" id="deptId{seq}_{type}" name="deptId{seq}_{type}">' +
+    '</select></td>' +
+    '<td><select class="int2 width-100" id="typeId{seq}_{type}" name="typeId{seq}_{type}">' +
+    '</select></td>' +
+    '<td><select class="int2 width-100" id="titleId{seq}_{type}" name="titleId{seq}_{type}">' +
+    '</select></td>' +
+    '<td data-date-format="yyyy-mm-dd" data-date="" class="date dateTd">' +
+    '<div class="control-group" style="margin-bottom: 0px;">' +
+    '<input type="text" class="int1 width-100" id="date{seq}_{type}" name="date{seq}_{type}" >' +
+    '</div>' +
+    '</td>' +
+    '<td><input type="text" class="int1 width-70 amt{type}" id="amount{seq}_{type}" name="amount{seq}_{type}" value="0.00"></td>' +
+    '<td><input type="text" class="int1 " style="width: 95%;" id="remarks{seq}_{type}" name="remarks{seq}_{type}"></td>' +
+    '</tr>';
+
 
 var flowApproveNodeShow='<li class="nodeLi" nodeSeq="{nodeSeq}" nodeType="{nodeType}" approveType="{approveType}" approveId="{approveId}"><a href="#"><span class="badge {className}">{nodeSeqText}</span>{text}</a></li><li><i class="dqy-ico dqy-r"></i></li>';

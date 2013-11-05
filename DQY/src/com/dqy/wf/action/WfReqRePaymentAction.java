@@ -140,13 +140,11 @@ public class WfReqRePaymentAction extends WfReqSupportAction<WfReqRePayment> {
             sendDate= DateFormatUtil.getCurrentDate(true);
 
             deptId=userInfo.getDepartmentId();
-            List<HrDepartment> deptList = this.hrDepartmentService.getDeptListByLevel(userInfo.getOrgId(), 1, false);
-            if(deptList!=null&&!deptList.isEmpty()){
-                departmentList=new ArrayList<HrDepartment>();
-                for(HrDepartment hrDepartment:deptList){
-                    buildDeptList(departmentList,hrDepartment,userInfo.getOrgId());
-                }
-            }
+            List<Selector> selectorList=new ArrayList<Selector>();
+            selectorList.add(SelectorUtils.$eq("orgId.id",userInfo.getOrgId()));
+            selectorList.add(SelectorUtils.$order("deptNo"));
+            selectorList.add(SelectorUtils.$eq("useYn","Y"));
+            departmentList = this.hrDepartmentService.getByList(selectorList);
 
             reqAdvanceAccountList=this.wfReqAdvanceAccountService.getListByReUserId(userInfo.getOrgId(),userInfo.getUserId());
             if(reqAdvanceAccountList!=null&&!reqAdvanceAccountList.isEmpty()){
@@ -160,22 +158,6 @@ public class WfReqRePaymentAction extends WfReqSupportAction<WfReqRePayment> {
             }
         }
         return "success";  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    private void buildDeptList(List<HrDepartment> departmentList,HrDepartment currentDept,Long orgId){
-        departmentList.add(currentDept);
-        Integer count = this.hrDepartmentService.getCountByParentId(orgId, currentDept.getId(), false);
-        if (count == null) {
-            count = 0;
-        }
-        if(count.intValue()>0){
-            List<HrDepartment> deptList = this.hrDepartmentService.getDeptListByParentId(orgId, currentDept.getId(), false);
-            if(deptList!=null&&!deptList.isEmpty()){
-                for(HrDepartment hrDepartment:deptList){
-                    buildDeptList(departmentList,hrDepartment,orgId);
-                }
-            }
-        }
     }
 
     @PageFlow(result = {@Result(name = "success", path = "/wf/req!ingList.dhtml", type = Dispatcher.Redirect)})

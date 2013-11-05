@@ -65,6 +65,9 @@ public class WfReqAction extends ActionSupport<WfReq> {
     private WfReqDailyDetailService wfReqDailyDetailService;
 
     @Inject
+    private WfReqDailyTrueService wfReqDailyTrueService;
+
+    @Inject
     private WfReqBusinessService wfReqBusinessService;
 
 
@@ -457,6 +460,7 @@ public class WfReqAction extends ActionSupport<WfReq> {
                 WfReqBusiness reqBusiness = null;
                 WfReqDaily reqDaily = null;
                 List<WfReqDailyDetail> reqDailyDetailList = null;
+                List<WfReqDailyTrue> reqDailyTrueList = null;
                 List<WfReqRePaymentDetail> rePaymentDetailList = null;
                 List<WfReqAtt> reqAttList = null;
                 if (wfReq.getApplyId().equals("ADVANCE_ACCOUNT")) {
@@ -470,6 +474,7 @@ public class WfReqAction extends ActionSupport<WfReq> {
                     reqDaily = this.wfReqDailyService.getByReqId(wfReq.getId());
                     if (reqDaily != null) {
                         reqDailyDetailList = this.wfReqDailyDetailService.getDetailListByDailyId(reqDaily.getId());
+                        reqDailyTrueList=this.wfReqDailyTrueService.getDetailListByDailyId(wfReq.getId());
                     }
                 } else if (wfReq.getApplyId().equals("BUSINESS")) {
                     reqBusiness = this.wfReqBusinessService.getByReqId(wfReq.getId());
@@ -486,7 +491,7 @@ public class WfReqAction extends ActionSupport<WfReq> {
                         }
                     }
                 }
-                this.wfReqService.delete(wfReq, advanceAccount, reqRePayment, rePaymentDetailList, reqDaily, reqDailyDetailList, reqBusiness,
+                this.wfReqService.delete(wfReq, advanceAccount, reqRePayment, rePaymentDetailList, reqDaily, reqDailyDetailList,reqDailyTrueList, reqBusiness,
                         delReqCommentsList, delReqNodeApproveList, delReqTaskList, reqAttList);
                 if (attSourceList != null && !attSourceList.isEmpty()) {
                     for (String source : attSourceList) {

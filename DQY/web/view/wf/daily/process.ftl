@@ -60,6 +60,15 @@
                 WEBUTILS.popWindow.createPopWindow(500, 300, '审批回退', '/wf/reqTask!reason.dhtml?id=${wfReqTask.id?c}&approveIdea=4');
             });
         </#if>
+        $('#trueDetail').off('click').on('click', function () {
+            if ( $('#trueList').is(':visible')) {
+                $('i',this).removeClass().addClass('icon-eye-open');
+                $('#trueList').hide();
+            }else{
+                $('i',this).removeClass().addClass('icon-eye-close');
+                $('#trueList').show();
+            }
+        });
     });
 </script>
 <div class="r-top clearfix">
@@ -149,18 +158,43 @@
                         </div>
                     </td>
                 </tr>
-                <tr>
-                    <td colspan="2">
-                        <div class="control-group" style="margin-bottom: 5px;">
-                            <label class="control-label" for="wfReqDaily.amount"
-                                   style="width: 60px;color: #898989;font-weight: bold;">报销金额</label>
+                    <#if trueList?exists&&trueList?size gt 0>
+                    <tr>
+                        <td >
+                            <div class="control-group" style="margin-bottom: 5px;">
+                                <label class="control-label" for="wfReqDaily.amount"
+                                       style="width: 60px;color: #898989;font-weight: bold;">报销金额</label>
 
-                            <div class="controls" style="margin-left: 70px;">
-                                <label style="margin-top: 5px;padding-left:5px;font-size: 14px;">${(wfReqDaily.amount)?double}</label>
+                                <div class="controls" style="margin-left: 70px;">
+                                    <label style="margin-top: 5px;padding-left:5px;font-size: 14px;">${(wfReqDaily.amount)?double}</label>
+                                </div>
                             </div>
-                        </div>
-                    </td>
-                </tr>
+                        </td>
+                        <td >
+                            <div class="control-group" style="margin-bottom: 5px;">
+                                <label class="control-label" for="wfReqDaily.trueAmount"
+                                       style="width: 60px;color: #898989;font-weight: bold;">实际花费</label>
+
+                                <div class="controls" style="margin-left: 70px;">
+                                    <label style="margin-top: 5px;padding-left:5px;font-size: 14px;">${(wfReqDaily.trueAmount)?double}</label>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <#else >
+                    <tr>
+                        <td colspan="2">
+                            <div class="control-group" style="margin-bottom: 5px;">
+                                <label class="control-label" for="wfReqDaily.amount"
+                                       style="width: 60px;color: #898989;font-weight: bold;">报销金额</label>
+
+                                <div class="controls" style="margin-left: 70px;">
+                                    <label style="margin-top: 5px;padding-left:5px;font-size: 14px;">${(wfReqDaily.amount)?double}</label>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    </#if>
                     <#if detailList?exists&&detailList?size gt 0>
                     <tr>
                         <td colspan="2">
@@ -172,13 +206,48 @@
                                     <td width="100"><strong>费用类型</strong></td>
                                     <td width="100"><strong>费用项目</strong></td>
                                     <td width="110"><strong>费用日期</strong></td>
-                                    <td width="90"><strong>金额</strong></td>
+                                    <td width="80"><strong>金额</strong></td>
                                     <td><strong>备注</strong>
+                                        <#if trueList?exists&&trueList?size gt 0>
+                                            <a href="##" id="trueDetail" style="float: right;"><i class="icon-eye-open"></i></a>
+                                        </#if>
                                     </td>
                                 </tr>
                                 </thead>
                                 <tbody>
                                     <#list detailList as detail>
+                                    <tr >
+                                        <td>${(detail.expenseDept.deptName)?if_exists}</td>
+                                        <td>${(detail.expenseType.expenseType)?if_exists}</td>
+                                        <td>${(detail.expenseTitle.titleName)?if_exists}</td>
+                                        <td>${detail.amountDate?string("yyyy-MM-dd")}</td>
+                                        <td>${detail.amount?double}</td>
+                                        <td>${detail.remarks?if_exists}</td>
+                                    </tr>
+                                    </#list>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                    </#if>
+                    <#if trueList?exists&&trueList?size gt 0>
+                    <tr style="display: none;" id="trueList">
+                        <td colspan="2">
+                            <table style="width: 100%;"
+                                   class="layout table table-bordered table-hover tableBgColor nomar nopadding">
+                                <thead>
+                                <tr>
+                                    <td width="100"><strong>费用部门</strong></td>
+                                    <td width="100"><strong>费用类型</strong></td>
+                                    <td width="100"><strong>费用项目</strong></td>
+                                    <td width="110"><strong>费用日期</strong></td>
+                                    <td width="80"><strong>金额</strong></td>
+                                    <td><strong>备注</strong>
+                                    </td>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                    <#list trueList as detail>
                                     <tr >
                                         <td>${(detail.expenseDept.deptName)?if_exists}</td>
                                         <td>${(detail.expenseType.expenseType)?if_exists}</td>

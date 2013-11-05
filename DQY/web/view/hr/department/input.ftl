@@ -106,6 +106,13 @@
                     </div>
                 </#if>
                 <div class="control-group">
+                    <label class="control-label" for="hrDepartment.deptName">部门编号</label>
+                    <div class="controls">
+                        <input type="text" id="hrDepartment.deptNo" name="hrDepartment.deptNo" readonly="readonly" <#if !hrDepartment?exists>value="${deptNo?if_exists}"</#if>>
+                        <span class="help-inline"></span>
+                    </div>
+                </div>
+                <div class="control-group">
                     <label class="control-label" for="hrDepartment.deptName">部门名称</label>
                     <div class="controls">
                         <input type="text" id="hrDepartment.deptName" name="hrDepartment.deptName" placeholder="部门名称">
@@ -134,7 +141,6 @@
                 <@c.token/>
             </form>
             </@c.joddForm>
-        <button class="btn btn-danger floatright" type="button">删除</button>
         <button class="btn btn-success floatright marr10" type="button" id="newBtn">保存</button>
 
         </#if>
