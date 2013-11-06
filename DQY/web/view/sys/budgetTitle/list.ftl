@@ -14,6 +14,10 @@
         if(keyword){
             searchUrl+='&keyword='+keyword;
         }
+        var deptId=$('#deptId').val();
+        if(deptId){
+            searchUrl+='&deptId='+deptId;
+        }
         searchUrl = encodeURI(searchUrl);
         document.location.href = searchUrl
     }
@@ -53,6 +57,20 @@
 </script>
 <!--搜索begin-->
 <div class="r-top clearfix">
+    <select class="int1 width-160" id="deptId" name="deptId">
+        <#if departmentList?exists&&departmentList?size gt 0>
+            <option value="">请选择搜索部门</option>
+            <#list departmentList as dept>
+                <option value="${dept.id?c}" <#if deptId?exists&&deptId==dept.id> selected="selected" </#if>>
+                    <#if dept.deptLevel gt 1>
+                        <#list 1..dept.deptLevel as i>
+                            &nbsp;&nbsp;
+                        </#list>
+                    </#if>
+                ${dept.deptName?if_exists}</option>
+            </#list>
+        </#if>
+    </select>
     <div class="input-append">
         <input type="text"  class="span2" id="keyword" name="keyword" value="${keyword?if_exists}" placeholder="预算项目" >
         <button type="button" class="btn"  id="searchBtn"><i class="icon-search"></i> 搜索</button>
@@ -65,9 +83,9 @@
     <table class="table table-bordered table-hover tableBgColor">
         <thead>
         <tr class="thColor">
-            <th>预算科目</th>
-            <th>预算类别</th>
             <th width="120">预算部门</th>
+            <th>预算类型</th>
+            <th>预算项目</th>
             <th width="80">启用</th>
             <th width="100">操作</th>
         </tr>
@@ -76,9 +94,9 @@
             <#if budgetTitleList?exists&&budgetTitleList?size gt 0>
                 <#list budgetTitleList as budgetTitle>
                 <tr <#if (budgetTitle_index+1)%2!=0>class="oddBgColor"</#if>>
-                    <td>${budgetTitle.titleName?if_exists}</td>
-                    <td>${(budgetTitle.typeId.expenseType)?if_exists}</td>
                     <td>${(budgetTitle.typeId.deptId.deptName)?if_exists}</td>
+                    <td>${(budgetTitle.typeId.expenseType)?if_exists}</td>
+                    <td>${budgetTitle.titleName?if_exists}</td>
                     <td style="text-align: center;"><#if budgetTitle.useYn=="Y">是<#else>否</#if></td>
                     <td style="text-align: center;">
                         <span style="cursor: pointer;" class="editBT"  uid="${budgetTitle.id?c}"><i class="icon-edit"></i>编辑</span>

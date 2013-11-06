@@ -54,10 +54,27 @@
     $(document).ready(function () {
         initValidator();
         $('#sysBudgetTitle\\.typeId\\.id').change(function(){
+            WEBUTILS.validator.removeMode({
+                id: 'sysBudgetTitle\\.titleName'
+            });
             <#if sysBudgetTitle?exists>
-                WEBUTILS.popWindow.createPopWindow(550, null, '编辑预算科目', '/sys/budgetTitle!input.dhtml?id=${sysBudgetTitle.id?c}&typeId='+$(this).val());
+                var _url = '/sys/budgetTitle!validateName.dhtml?ignore=${sysBudgetTitle.titleName?if_exists}&typeId='+$(this).val();
+                WEBUTILS.validator.addMode({
+                    id: 'sysBudgetTitle\\.titleName',
+                    required: true,
+                    pattern: [
+                        {type: 'ajax', exp: _url, msg: ''}
+                    ]
+                });
             <#else >
-                WEBUTILS.popWindow.createPopWindow(550, null, '创建预算科目', '/sys/budgetTitle!input.dhtml?typeId='+$(this).val());
+                var _url = '/sys/budgetTitle!validateName.dhtml?typeId='+$(this).val();
+                WEBUTILS.validator.addMode({
+                    id: 'sysBudgetTitle\\.titleName',
+                    required: true,
+                    pattern: [
+                        {type: 'ajax', exp: _url, msg: ''}
+                    ]
+                });
             </#if>
         });
     });

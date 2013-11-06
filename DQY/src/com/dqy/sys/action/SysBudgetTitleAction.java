@@ -2,6 +2,8 @@ package com.dqy.sys.action;
 
 import com.dqy.common.UserInfo;
 import com.dqy.common.UserSession;
+import com.dqy.hr.entity.HrDepartment;
+import com.dqy.hr.service.HrDepartmentService;
 import com.dqy.sys.entity.SysBudgetTitle;
 import com.dqy.sys.entity.SysBudgetType;
 import com.dqy.sys.entity.SysOrg;
@@ -37,6 +39,9 @@ public class SysBudgetTitleAction extends ActionSupport<SysBudgetTitle> {
     private SysBudgetTitleService sysBudgetTitleService;
 
     @Inject
+    private HrDepartmentService hrDepartmentService;
+
+    @Inject
     private SysOrgService sysOrgService;
 
     @ReqGet
@@ -47,6 +52,10 @@ public class SysBudgetTitleAction extends ActionSupport<SysBudgetTitle> {
     @ReqGet
     @ReqSet
     private Long id;
+
+    @ReqGet
+    @ReqSet
+    private Long deptId;
 
     @ReqGet
     @ReqSet
@@ -62,6 +71,9 @@ public class SysBudgetTitleAction extends ActionSupport<SysBudgetTitle> {
     @ReqSet
     private List<SysBudgetTitle> budgetTitleList;
 
+    @ReqSet
+    private List<HrDepartment> departmentList;
+
     @Override
     @PageFlow(result = {@Result(name = "success", path = "/view/sys/budgetTitle/list.ftl", type = Dispatcher.FreeMarker)})
     public String execute() throws Exception {
@@ -73,6 +85,11 @@ public class SysBudgetTitleAction extends ActionSupport<SysBudgetTitle> {
             if(pageObj!=null){
                 budgetTitleList=pageObj.getResultList();
             }
+            List<Selector> selectorList=new ArrayList<Selector>();
+            selectorList.add(SelectorUtils.$eq("orgId.id",userInfo.getOrgId()));
+            selectorList.add(SelectorUtils.$order("deptNo"));
+            selectorList.add(SelectorUtils.$eq("useYn","Y"));
+            departmentList = this.hrDepartmentService.getByList(selectorList);
         }
         return "success";  //To change body of implemented methods use File | Settings | File Templates.
     }
@@ -84,6 +101,9 @@ public class SysBudgetTitleAction extends ActionSupport<SysBudgetTitle> {
         if (userInfo != null) {
             selectorList.add(SelectorUtils.$alias("typeId", "typeId"));
             selectorList.add(SelectorUtils.$eq("typeId.orgId.id",userInfo.getOrgId()));
+            if(deptId!=null){
+                selectorList.add(SelectorUtils.$eq("typeId.deptId.id",deptId));
+            }
             if(StringUtils.isNotBlank(keyword)){
                 selectorList.add(SelectorUtils.$like("titleName",keyword));
             }
