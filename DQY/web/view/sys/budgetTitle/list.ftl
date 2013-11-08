@@ -23,7 +23,7 @@
     }
     $(document).ready(function () {
         $('#newBtn').off('click').on('click', function () {
-            WEBUTILS.popWindow.createPopWindow(550, null, '创建预算科目', '/sys/budgetTitle!input.dhtml');
+            WEBUTILS.popWindow.createPopWindow(550, null, '创建预算科目', '/sys/budgetTitle!input.dhtml?deptId='+$('#deptId').val());
         });
         $('.editBT').off('click').on('click', function () {
             var uid = $(this).attr('uid');

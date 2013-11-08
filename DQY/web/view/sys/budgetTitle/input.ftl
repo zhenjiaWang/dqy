@@ -9,9 +9,9 @@
     function validatorName() {
         var url = '';
         <#if !sysBudgetTitle?exists>
-            url = '/sys/budgetTitle!validateName.dhtml?typeId=${typeId?c}';
+            url = '/sys/budgetTitle!validateName.dhtml?typeId='+$('#sysBudgetTitle\\.typeId\\.id').val();
         <#elseif sysBudgetTitle?exists>
-            url = '/sys/budgetTitle!validateName.dhtml?ignore=${sysBudgetTitle.titleName?if_exists}&typeId=${typeId?c}';
+            url = '/sys/budgetTitle!validateName.dhtml?ignore=${sysBudgetTitle.titleName?if_exists}&typeId='+$('#sysBudgetTitle\\.typeId\\.id').val();
         </#if>
         return url;
     }
@@ -83,12 +83,12 @@
     <form class="form-horizontal" action="/sys/budgetTitle!save.dhtml" method="POST" name="editForm"
           id="editForm">
         <div class="control-group">
-            <label class="control-label" for="sysBudgetTitle.typeId.id">预算类别</label>
+            <label class="control-label" for="sysBudgetTitle.typeId.id">预算类型</label>
             <div class="controls">
                 <select  id="sysBudgetTitle.typeId.id" name="sysBudgetTitle.typeId.id">
                     <#if budgetTypeList?exists&&budgetTypeList?size gt 0>
                     <#list budgetTypeList as type>
-                        <option value="${type.id?c}" <#if typeId?exists&&type.id==typeId> selected="selected" </#if> >[ ${(type.deptId.deptName)?if_exists} ]--${type.expenseType?if_exists}</option>
+                        <option value="${type.id?c}" >[ ${(type.deptId.deptName)?if_exists} ]--${type.expenseType?if_exists}</option>
                     </#list>
                     </#if>
                 </select>
@@ -96,9 +96,9 @@
             </div>
         </div>
         <div class="control-group">
-            <label class="control-label" for="sysBudgetTitle.titleName">预算科目</label>
+            <label class="control-label" for="sysBudgetTitle.titleName">预算项目</label>
             <div class="controls">
-                <input type="text" id="sysBudgetTitle.titleName" name="sysBudgetTitle.titleName" placeholder="预算科目">
+                <input type="text" id="sysBudgetTitle.titleName" name="sysBudgetTitle.titleName" placeholder="预算项目">
                 <span class="help-inline"></span>
             </div>
         </div>

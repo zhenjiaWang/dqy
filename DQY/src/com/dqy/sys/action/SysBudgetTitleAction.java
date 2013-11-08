@@ -122,6 +122,9 @@ public class SysBudgetTitleAction extends ActionSupport<SysBudgetTitle> {
         }
         List<Selector> selectorList = new ArrayList<Selector>();
         selectorList.add(SelectorUtils.$eq("orgId.id", userInfo.getOrgId()));
+        if(deptId!=null){
+            selectorList.add(SelectorUtils.$eq("deptId.id", deptId));
+        }
         selectorList.add(SelectorUtils.$eq("useYn", "Y"));
         selectorList.add(SelectorUtils.$order("deptId.id"));
         selectorList.add(SelectorUtils.$order("expenseType"));
