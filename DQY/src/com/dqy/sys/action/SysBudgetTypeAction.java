@@ -79,7 +79,6 @@ public class SysBudgetTypeAction extends ActionSupport<SysBudgetType> {
             if(StringUtils.isNotBlank(keyword)){
                 selectorList.add(SelectorUtils.$like("expenseType",keyword));
             }
-            selectorList.add(SelectorUtils.$order("deptId.id"));
         }
         return selectorList;
     }
@@ -138,10 +137,9 @@ public class SysBudgetTypeAction extends ActionSupport<SysBudgetType> {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("result", -1);
         UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
-        if (deptId != null && userInfo != null) {
+        if (userInfo != null) {
             List<Selector> selectorList = new ArrayList<Selector>();
             selectorList.add(SelectorUtils.$eq("orgId.id", userInfo.getOrgId()));
-            selectorList.add(SelectorUtils.$eq("deptId.id", deptId));
             selectorList.add(SelectorUtils.$eq("useYn", "Y"));
             selectorList.add(SelectorUtils.$order("expenseType"));
             budgetTypeList = this.sysBudgetTypeService.getAllList(selectorList);
@@ -158,6 +156,37 @@ public class SysBudgetTypeAction extends ActionSupport<SysBudgetType> {
             }
         }
         writeJsonByAction(jsonObject.toString());
+        return null;
+    }
+
+    public String validateName() throws Exception {
+        JSONObject item = new JSONObject();
+        item.put("result", false);
+        UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
+        if (userInfo != null) {
+            if (sysBudgetType != null) {
+                if (StringUtils.isNotBlank(sysBudgetType.getExpenseType())) {
+                    String ignore = getParameter("ignore");
+                    if (StringUtils.isNotBlank(ignore)) {
+                        if (ignore.equals(sysBudgetType.getExpenseType())) {
+                            item.put("result", true);
+                            writeJsonByAction(item.toString());
+                        } else {
+                            Integer row = this.sysBudgetTypeService.validateName( userInfo.getOrgId(),sysBudgetType.getExpenseType());
+                            if (row.intValue() == 0) {
+                                item.put("result", true);
+                            }
+                        }
+                    } else {
+                        Integer row = this.sysBudgetTypeService.validateName( userInfo.getOrgId(),sysBudgetType.getExpenseType());
+                        if (row.intValue() == 0) {
+                            item.put("result", true);
+                        }
+                    }
+                }
+            }
+        }
+        writeJsonByAction(item.toString());
         return null;
     }
 }

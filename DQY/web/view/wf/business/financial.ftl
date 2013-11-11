@@ -43,6 +43,9 @@
         $('#backBtn').off('click').on('click', function () {
             history.back();
         });
+        $('#okBtn').off('click').on('click', function () {
+            WEBUTILS.popWindow.createPopWindow(500, 300, '财务处理', '/wf/req!desc.dhtml?id=${wfReq.id?c}');
+        });
     });
 </script>
 <div class="r-top clearfix">
@@ -155,6 +158,7 @@
     </div>
     <p class="mart10  clearfix">
         <button class="btn btn-inverse floatright " type="button" id="backBtn">返回</button>
+        <button class="btn btn-success floatright " type="button" id="okBtn">处理</button>
     </p>
     </#if>
 </@wfCommon.wf_common>

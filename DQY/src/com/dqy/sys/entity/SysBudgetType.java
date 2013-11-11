@@ -26,8 +26,6 @@ public class SysBudgetType extends IdEntity implements Tracker {
 
     private SysOrg orgId;
 
-    private HrDepartment deptId;
-
     private String expenseType;
 
     private Date created;
@@ -105,16 +103,6 @@ public class SysBudgetType extends IdEntity implements Tracker {
 
     public void setOrgId(SysOrg orgId) {
         this.orgId = orgId;
-    }
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "DEPT_ID")
-    public HrDepartment getDeptId() {
-        return deptId;
-    }
-
-    public void setDeptId(HrDepartment deptId) {
-        this.deptId = deptId;
     }
 
     @Column(name = "EXPENSE_TYPE")

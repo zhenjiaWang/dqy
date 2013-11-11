@@ -16,6 +16,15 @@
         return url;
     }
 
+    function validatorNo() {
+        var url = '';
+        <#if !sysBudgetTitle?exists>
+            url = '/sys/budgetTitle!validateNo.dhtml';
+        <#elseif sysBudgetTitle?exists>
+            url = '/sys/budgetTitle!validateNo.dhtml?ignore=${sysBudgetTitle.titleNo?if_exists}';
+        </#if>
+        return url;
+    }
 
 
     function initValidator() {
@@ -29,6 +38,18 @@
                         {
                             type:'ajax',
                             exp:validatorName(),
+                            msg:'不能重复'
+                        }
+                    ]
+                },
+                {
+                    id: 'sysBudgetTitle\\.titleNo',
+                    required: true,
+                    pattern: [
+                        {type: 'blank', exp: '!=', msg: '不能为空'},
+                        {
+                            type:'ajax',
+                            exp:validatorNo(),
                             msg:'不能重复'
                         }
                     ]
@@ -63,7 +84,7 @@
                     id: 'sysBudgetTitle\\.titleName',
                     required: true,
                     pattern: [
-                        {type: 'ajax', exp: _url, msg: ''}
+                        {type: 'ajax', exp: _url, msg: '不能重复'}
                     ]
                 });
             <#else >
@@ -72,7 +93,7 @@
                     id: 'sysBudgetTitle\\.titleName',
                     required: true,
                     pattern: [
-                        {type: 'ajax', exp: _url, msg: ''}
+                        {type: 'ajax', exp: _url, msg: '不能重复'}
                     ]
                 });
             </#if>
@@ -88,10 +109,17 @@
                 <select  id="sysBudgetTitle.typeId.id" name="sysBudgetTitle.typeId.id">
                     <#if budgetTypeList?exists&&budgetTypeList?size gt 0>
                     <#list budgetTypeList as type>
-                        <option value="${type.id?c}" >[ ${(type.deptId.deptName)?if_exists} ]--${type.expenseType?if_exists}</option>
+                        <option value="${type.id?c}" >${type.expenseType?if_exists}</option>
                     </#list>
                     </#if>
                 </select>
+                <span class="help-inline"></span>
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="sysBudgetTitle.titleName">项目代码</label>
+            <div class="controls">
+                <input type="text" id="sysBudgetTitle.titleNo" name="sysBudgetTitle.titleNo" placeholder="项目代码">
                 <span class="help-inline"></span>
             </div>
         </div>

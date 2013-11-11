@@ -14,16 +14,16 @@
         if(keyword){
             searchUrl+='&keyword='+keyword;
         }
-        var deptId=$('#deptId').val();
-        if(deptId){
-            searchUrl+='&deptId='+deptId;
+        var typeId=$('#typeId').val();
+        if(typeId){
+            searchUrl+='&typeId='+typeId;
         }
         searchUrl = encodeURI(searchUrl);
         document.location.href = searchUrl
     }
     $(document).ready(function () {
         $('#newBtn').off('click').on('click', function () {
-            WEBUTILS.popWindow.createPopWindow(550, null, '创建预算科目', '/sys/budgetTitle!input.dhtml?deptId='+$('#deptId').val());
+            WEBUTILS.popWindow.createPopWindow(550, null, '创建预算科目', '/sys/budgetTitle!input.dhtml');
         });
         $('.editBT').off('click').on('click', function () {
             var uid = $(this).attr('uid');
@@ -57,17 +57,12 @@
 </script>
 <!--搜索begin-->
 <div class="r-top clearfix">
-    <select class="int1 width-160" id="deptId" name="deptId">
-        <#if departmentList?exists&&departmentList?size gt 0>
-            <option value="">请选择搜索部门</option>
-            <#list departmentList as dept>
-                <option value="${dept.id?c}" <#if deptId?exists&&deptId==dept.id> selected="selected" </#if>>
-                    <#if dept.deptLevel gt 1>
-                        <#list 1..dept.deptLevel as i>
-                            &nbsp;&nbsp;
-                        </#list>
-                    </#if>
-                ${dept.deptName?if_exists}</option>
+    <select class="int1 width-160" id="typeId" name="typeId">
+        <#if budgetTypeList?exists&&budgetTypeList?size gt 0>
+            <option value="">请选择预算类型</option>
+            <#list budgetTypeList as budgetType>
+                <option value="${budgetType.id?c}" <#if typeId?exists&&typeId==budgetType.id> selected="selected" </#if>>
+                ${budgetType.expenseType?if_exists}</option>
             </#list>
         </#if>
     </select>
@@ -83,8 +78,8 @@
     <table class="table table-bordered table-hover tableBgColor">
         <thead>
         <tr class="thColor">
-            <th width="120">预算部门</th>
             <th>预算类型</th>
+            <th>项目代码</th>
             <th>预算项目</th>
             <th width="80">启用</th>
             <th width="100">操作</th>
@@ -94,8 +89,8 @@
             <#if budgetTitleList?exists&&budgetTitleList?size gt 0>
                 <#list budgetTitleList as budgetTitle>
                 <tr <#if (budgetTitle_index+1)%2!=0>class="oddBgColor"</#if>>
-                    <td>${(budgetTitle.typeId.deptId.deptName)?if_exists}</td>
                     <td>${(budgetTitle.typeId.expenseType)?if_exists}</td>
+                    <td>${budgetTitle.titleNo?if_exists}</td>
                     <td>${budgetTitle.titleName?if_exists}</td>
                     <td style="text-align: center;"><#if budgetTitle.useYn=="Y">是<#else>否</#if></td>
                     <td style="text-align: center;">

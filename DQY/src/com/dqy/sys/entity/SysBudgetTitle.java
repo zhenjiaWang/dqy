@@ -25,6 +25,8 @@ public class SysBudgetTitle extends IdEntity implements Tracker {
 
     private SysBudgetType typeId;
 
+    private String titleNo;
+
     private String titleName;
 
     private Date created;
@@ -112,6 +114,15 @@ public class SysBudgetTitle extends IdEntity implements Tracker {
 
     public void setTitleName(String titleName) {
         this.titleName = titleName;
+    }
+
+    @Column(name = "TITLE_NO")
+    public String getTitleNo() {
+        return titleNo;
+    }
+
+    public void setTitleNo(String titleNo) {
+        this.titleNo = titleNo;
     }
 
     @Transient

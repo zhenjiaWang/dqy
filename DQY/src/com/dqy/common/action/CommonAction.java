@@ -20,6 +20,7 @@ import com.google.inject.Inject;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import ognl.NoSuchPropertyException;
+import org.apache.http.HttpRequest;
 import org.guiceside.commons.FileIdUtils;
 import org.guiceside.commons.FileObject;
 import org.guiceside.commons.lang.BeanUtils;

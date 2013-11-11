@@ -85,11 +85,11 @@ public class SysBudgetTitleAction extends ActionSupport<SysBudgetTitle> {
             if(pageObj!=null){
                 budgetTitleList=pageObj.getResultList();
             }
-            List<Selector> selectorList=new ArrayList<Selector>();
-            selectorList.add(SelectorUtils.$eq("orgId.id",userInfo.getOrgId()));
-            selectorList.add(SelectorUtils.$order("deptNo"));
-            selectorList.add(SelectorUtils.$eq("useYn","Y"));
-            departmentList = this.hrDepartmentService.getByList(selectorList);
+            List<Selector> selectorList = new ArrayList<Selector>();
+            selectorList.add(SelectorUtils.$eq("orgId.id", userInfo.getOrgId()));
+            selectorList.add(SelectorUtils.$eq("useYn", "Y"));
+            selectorList.add(SelectorUtils.$order("expenseType"));
+            budgetTypeList=this.sysBudgetTypeService.getAllList(selectorList);
         }
         return "success";  //To change body of implemented methods use File | Settings | File Templates.
     }
@@ -101,14 +101,13 @@ public class SysBudgetTitleAction extends ActionSupport<SysBudgetTitle> {
         if (userInfo != null) {
             selectorList.add(SelectorUtils.$alias("typeId", "typeId"));
             selectorList.add(SelectorUtils.$eq("typeId.orgId.id",userInfo.getOrgId()));
-            if(deptId!=null){
-                selectorList.add(SelectorUtils.$eq("typeId.deptId.id",deptId));
+            if(typeId!=null){
+                selectorList.add(SelectorUtils.$eq("typeId.id",typeId));
             }
             if(StringUtils.isNotBlank(keyword)){
                 selectorList.add(SelectorUtils.$like("titleName",keyword));
             }
             selectorList.add(SelectorUtils.$order("typeId.id"));
-            selectorList.add(SelectorUtils.$order("typeId.deptId.id"));
             selectorList.add(SelectorUtils.$order("titleName"));
         }
         return selectorList;
@@ -122,21 +121,9 @@ public class SysBudgetTitleAction extends ActionSupport<SysBudgetTitle> {
         }
         List<Selector> selectorList = new ArrayList<Selector>();
         selectorList.add(SelectorUtils.$eq("orgId.id", userInfo.getOrgId()));
-        if(deptId!=null){
-            selectorList.add(SelectorUtils.$eq("deptId.id", deptId));
-        }
         selectorList.add(SelectorUtils.$eq("useYn", "Y"));
-        selectorList.add(SelectorUtils.$order("deptId.id"));
         selectorList.add(SelectorUtils.$order("expenseType"));
         budgetTypeList=this.sysBudgetTypeService.getAllList(selectorList);
-        if(typeId==null){
-            if(budgetTypeList!=null&&!budgetTypeList.isEmpty()){
-                SysBudgetType sysBudgetType=budgetTypeList.get(0);
-                if(sysBudgetType!=null){
-                    typeId=sysBudgetType.getId();
-                }
-            }
-        }
         return "success";  //To change body of implemented methods use File | Settings | File Templates.
     }
 
@@ -182,7 +169,36 @@ public class SysBudgetTitleAction extends ActionSupport<SysBudgetTitle> {
         return "success";
     }
 
-
+    public String validateNo() throws Exception {
+        JSONObject item = new JSONObject();
+        item.put("result", false);
+        UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
+        if (userInfo != null) {
+            if (sysBudgetTitle != null) {
+                if (StringUtils.isNotBlank(sysBudgetTitle.getTitleNo())) {
+                    String ignore = getParameter("ignore");
+                    if (StringUtils.isNotBlank(ignore)) {
+                        if (ignore.equals(sysBudgetTitle.getTitleNo())) {
+                            item.put("result", true);
+                            writeJsonByAction(item.toString());
+                        } else {
+                            Integer row = this.sysBudgetTitleService.validateNo( userInfo.getOrgId(),sysBudgetTitle.getTitleNo());
+                            if (row.intValue() == 0) {
+                                item.put("result", true);
+                            }
+                        }
+                    } else {
+                        Integer row = this.sysBudgetTitleService.validateNo( userInfo.getOrgId(),sysBudgetTitle.getTitleNo());
+                        if (row.intValue() == 0) {
+                            item.put("result", true);
+                        }
+                    }
+                }
+            }
+        }
+        writeJsonByAction(item.toString());
+        return null;
+    }
     public String validateName() throws Exception {
         JSONObject item = new JSONObject();
         item.put("result", false);

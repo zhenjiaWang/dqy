@@ -514,7 +514,7 @@
                                 <td width="100"><strong>费用项目</strong></td>
                                 <td width="110"><strong>费用日期</strong></td>
                                 <td width="80"><strong>金额</strong></td>
-                                <td><strong>注</strong>
+                                <td>
                                     <a href="/wf/daily.dhtml?trueAmount=1" id="trueDetail" style="float: right;"><i class="icon-eye-open"></i>&nbsp;</a>
                                     <a href="#" id="deleteDetail" style="float: right;"><i class="icon-minus"></i>
                                         删除</a>

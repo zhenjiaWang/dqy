@@ -19,12 +19,12 @@
     }
     $(document).ready(function () {
         $('#newBtn').off('click').on('click', function () {
-            WEBUTILS.popWindow.createPopWindow(650, 500, '创建预算类别', '/sys/budgetType!input.dhtml');
+            WEBUTILS.popWindow.createPopWindow(520, 300, '创建预算类别', '/sys/budgetType!input.dhtml');
         });
         $('.editBT').off('click').on('click', function () {
             var uid = $(this).attr('uid');
             if (uid) {
-                WEBUTILS.popWindow.createPopWindow(650, 500, '编辑预算类别', '/sys/budgetType!input.dhtml?id='+uid);
+                WEBUTILS.popWindow.createPopWindow(520, 300, '编辑预算类别', '/sys/budgetType!input.dhtml?id='+uid);
             }
         });
         $('.stopBT').off('click').on('click', function () {
@@ -66,7 +66,6 @@
         <thead>
         <tr class="thColor">
             <th>预算类别</th>
-            <th>预算部门</th>
             <th width="80">启用</th>
             <th width="100">操作</th>
         </tr>
@@ -76,7 +75,6 @@
                 <#list budgetTypeList as budgetType>
                 <tr <#if (budgetType_index+1)%2!=0>class="oddBgColor"</#if>>
                     <td>${budgetType.expenseType?if_exists}</td>
-                    <td>${(budgetType.deptId.deptName)?if_exists}</td>
                     <td style="text-align: center;"><#if budgetType.useYn=="Y">是<#else>否</#if></td>
                     <td style="text-align: center;">
                         <span style="cursor: pointer;" class="editBT"  uid="${budgetType.id?c}"><i class="icon-edit"></i>编辑</span>

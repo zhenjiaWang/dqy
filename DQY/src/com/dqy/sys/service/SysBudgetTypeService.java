@@ -56,6 +56,10 @@ public class SysBudgetTypeService extends HQuery {
         $(sysBudgetType).delete();
     }
 
+    @Transactional(type = TransactionType.READ_ONLY)
+    public Integer validateName(Long orgId,String expenseType) {
+        return $($count("id"),$eq("orgId.id",orgId), $eq("expenseType", expenseType)).value(SysBudgetType.class, Integer.class);
+    }
 
     /**
      * 根据id 删除对象
