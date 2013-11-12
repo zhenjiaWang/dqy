@@ -80,13 +80,13 @@ public class SysBudgetTitleService extends HQuery {
     }
 
     @Transactional(type = TransactionType.READ_ONLY)
-    public Integer validateName(Long typeId,String titleName) {
-        return $($count("id"),$eq("typeId.id",typeId), $eq("titleName", titleName)).value(SysBudgetTitle.class, Integer.class);
+    public Integer validateName(Long orgId,String titleName) {
+        return $($count("id"),$eq("orgId.id",orgId), $eq("titleName", titleName)).value(SysBudgetTitle.class, Integer.class);
     }
 
     @Transactional(type = TransactionType.READ_ONLY)
     public Integer validateNo(Long orgId,String titleNo) {
-        return $($count("id"),$alias("typeId","typeId"),$eq("typeId.orgId.id",orgId), $eq("titleNo", titleNo)).value(SysBudgetTitle.class, Integer.class);
+        return $($count("id"),$eq("orgId.id",orgId), $eq("titleNo", titleNo)).value(SysBudgetTitle.class, Integer.class);
     }
 
 }

@@ -152,6 +152,18 @@ public class WfReqDailyAction extends WfReqSupportAction<WfReqDaily> {
             selectorList.add(SelectorUtils.$order("deptNo"));
             selectorList.add(SelectorUtils.$eq("useYn","Y"));
             departmentList = this.hrDepartmentService.getByList(selectorList);
+
+            selectorList=new ArrayList<Selector>();
+            selectorList.add(SelectorUtils.$eq("orgId.id",userInfo.getOrgId()));
+            selectorList.add(SelectorUtils.$order("expenseType"));
+            selectorList.add(SelectorUtils.$eq("useYn","Y"));
+            typeList= this.sysBudgetTypeService.getAllList(selectorList);
+
+            selectorList=new ArrayList<Selector>();
+            selectorList.add(SelectorUtils.$eq("orgId.id",userInfo.getOrgId()));
+            selectorList.add(SelectorUtils.$order("titleName"));
+            selectorList.add(SelectorUtils.$eq("useYn","Y"));
+            titleList= this.sysBudgetTitleService.getAllList(selectorList);
         }
         if(StringUtils.isNotBlank(trueAmount)){
             return "true";

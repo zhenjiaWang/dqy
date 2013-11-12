@@ -14,10 +14,6 @@
         if(keyword){
             searchUrl+='&keyword='+keyword;
         }
-        var typeId=$('#typeId').val();
-        if(typeId){
-            searchUrl+='&typeId='+typeId;
-        }
         searchUrl = encodeURI(searchUrl);
         document.location.href = searchUrl
     }
@@ -57,15 +53,6 @@
 </script>
 <!--搜索begin-->
 <div class="r-top clearfix">
-    <select class="int1 width-160" id="typeId" name="typeId">
-        <#if budgetTypeList?exists&&budgetTypeList?size gt 0>
-            <option value="">请选择预算类型</option>
-            <#list budgetTypeList as budgetType>
-                <option value="${budgetType.id?c}" <#if typeId?exists&&typeId==budgetType.id> selected="selected" </#if>>
-                ${budgetType.expenseType?if_exists}</option>
-            </#list>
-        </#if>
-    </select>
     <div class="input-append">
         <input type="text"  class="span2" id="keyword" name="keyword" value="${keyword?if_exists}" placeholder="预算项目" >
         <button type="button" class="btn"  id="searchBtn"><i class="icon-search"></i> 搜索</button>
@@ -78,7 +65,6 @@
     <table class="table table-bordered table-hover tableBgColor">
         <thead>
         <tr class="thColor">
-            <th>预算类型</th>
             <th>项目代码</th>
             <th>预算项目</th>
             <th width="80">启用</th>
@@ -89,7 +75,6 @@
             <#if budgetTitleList?exists&&budgetTitleList?size gt 0>
                 <#list budgetTitleList as budgetTitle>
                 <tr <#if (budgetTitle_index+1)%2!=0>class="oddBgColor"</#if>>
-                    <td>${(budgetTitle.typeId.expenseType)?if_exists}</td>
                     <td>${budgetTitle.titleNo?if_exists}</td>
                     <td>${budgetTitle.titleName?if_exists}</td>
                     <td style="text-align: center;"><#if budgetTitle.useYn=="Y">是<#else>否</#if></td>

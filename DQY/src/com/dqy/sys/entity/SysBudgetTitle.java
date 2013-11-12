@@ -23,7 +23,7 @@ public class SysBudgetTitle extends IdEntity implements Tracker {
 
     private Long id;
 
-    private SysBudgetType typeId;
+    private SysOrg orgId;
 
     private String titleNo;
 
@@ -97,16 +97,6 @@ public class SysBudgetTitle extends IdEntity implements Tracker {
         this.useYn = useYn;
     }
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "TYPE_ID")
-    public SysBudgetType getTypeId() {
-        return typeId;
-    }
-
-    public void setTypeId(SysBudgetType typeId) {
-        this.typeId = typeId;
-    }
-
     @Column(name = "TITLE_NAME")
     public String getTitleName() {
         return titleName;
@@ -123,6 +113,16 @@ public class SysBudgetTitle extends IdEntity implements Tracker {
 
     public void setTitleNo(String titleNo) {
         this.titleNo = titleNo;
+    }
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ORG_ID")
+    public SysOrg getOrgId() {
+        return orgId;
+    }
+
+    public void setOrgId(SysOrg orgId) {
+        this.orgId = orgId;
     }
 
     @Transient

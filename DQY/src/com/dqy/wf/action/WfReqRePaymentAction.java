@@ -146,6 +146,18 @@ public class WfReqRePaymentAction extends WfReqSupportAction<WfReqRePayment> {
             selectorList.add(SelectorUtils.$eq("useYn","Y"));
             departmentList = this.hrDepartmentService.getByList(selectorList);
 
+            selectorList=new ArrayList<Selector>();
+            selectorList.add(SelectorUtils.$eq("orgId.id",userInfo.getOrgId()));
+            selectorList.add(SelectorUtils.$order("expenseType"));
+            selectorList.add(SelectorUtils.$eq("useYn","Y"));
+            typeList= this.sysBudgetTypeService.getAllList(selectorList);
+
+            selectorList=new ArrayList<Selector>();
+            selectorList.add(SelectorUtils.$eq("orgId.id",userInfo.getOrgId()));
+            selectorList.add(SelectorUtils.$order("titleName"));
+            selectorList.add(SelectorUtils.$eq("useYn","Y"));
+            titleList= this.sysBudgetTitleService.getAllList(selectorList);
+
             reqAdvanceAccountList=this.wfReqAdvanceAccountService.getListByReUserId(userInfo.getOrgId(),userInfo.getUserId());
             if(reqAdvanceAccountList!=null&&!reqAdvanceAccountList.isEmpty()){
                 for(WfReqAdvanceAccount advanceAccount:reqAdvanceAccountList){

@@ -101,13 +101,10 @@ public class SysBudgetOwenAction extends ActionSupport<SysBudgetOwen> {
         List<Selector> selectorList = new ArrayList<Selector>();
         UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
         if (userInfo != null) {
-            selectorList.add(SelectorUtils.$alias("typeId", "typeId"));
-            selectorList.add(SelectorUtils.$eq("typeId.orgId.id",userInfo.getOrgId()));
+            selectorList.add(SelectorUtils.$eq("orgId.id",userInfo.getOrgId()));
             if(StringUtils.isNotBlank(keyword)){
                 selectorList.add(SelectorUtils.$like("titleName",keyword));
             }
-            selectorList.add(SelectorUtils.$order("typeId.id"));
-            selectorList.add(SelectorUtils.$order("typeId.deptId.id"));
             selectorList.add(SelectorUtils.$order("titleName"));
         }
         return selectorList;
@@ -149,23 +146,9 @@ public class SysBudgetOwenAction extends ActionSupport<SysBudgetOwen> {
             sysBudgetOwen = this.sysBudgetOwenService.getById(id);
             if(sysBudgetOwen!=null){
                 sysBudgetTitle= sysBudgetOwen.getBudgetTitle();
-                if(sysBudgetTitle!=null){
-                    SysBudgetType budgetType=sysBudgetTitle.getTypeId();
-                    if(budgetType!=null){
-                        budgetTypeList=new ArrayList<SysBudgetType>();
-                        budgetTypeList.add(budgetType);
-                    }
-                }
             }
         }else if(budgetTitleId!=null){
             sysBudgetTitle= sysBudgetTitleService.getById(budgetTitleId);
-            if(sysBudgetTitle!=null){
-                SysBudgetType budgetType=sysBudgetTitle.getTypeId();
-                if(budgetType!=null){
-                    budgetTypeList=new ArrayList<SysBudgetType>();
-                    budgetTypeList.add(budgetType);
-                }
-            }
         }
         return "success";  //To change body of implemented methods use File | Settings | File Templates.
     }

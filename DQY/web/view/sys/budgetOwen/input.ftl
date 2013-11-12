@@ -63,32 +63,7 @@
             }
         }
     }
-    function getBudgetTitleList(){
-        var typeId=$('#budgetTypeId').val();
-        $.ajax({
-            type:'GET',
-            url:'/sys/budgetOwen!getTitleList.dhtml?typeId='+typeId,
-            dataType:'json',
-            success:function (jsonData) {
-                if (jsonData) {
-                    if (jsonData['result'] == '0') {
-                        var titleList=jsonData['titleList'];
-                        $('#sysBudgetOwen\\.budgetTitle\\.id').empty();
-                        if(titleList){
-                            $(titleList).each(function(i,o){
-                                $('#sysBudgetOwen\\.budgetTitle\\.id').append('<option value="'+o['id']+'">'+o['name']+'</option>');
-                            });
-                        }else{
-                            $('#sysBudgetOwen\\.budgetTitle\\.id').append('<option value="0000">该预算类别下没有数据,无法建立关系</option>');
-                        }
-                    }
-                }
-            },
-            error:function (jsonData) {
 
-            }
-        });
-    }
     $(document).ready(function () {
         initValidator();
         $.fn.zTree.init($("#treeDemo"), setting);
@@ -111,20 +86,6 @@
     <@c.joddForm bean="sysBudgetOwen" scope="request">
     <form class="form-horizontal" action="/sys/budgetOwen!save.dhtml" method="POST" name="editForm"
           id="editForm">
-        <div class="control-group">
-            <label class="control-label" for="budgetTypeId">预算类别</label>
-            <div class="controls">
-                <select id="budgetTypeId" name="budgetTypeId">
-                    <#if budgetTypeList?exists&&budgetTypeList?size gt 0>
-                        <#list budgetTypeList as type>
-                            <option value="${type.id?c}">[ ${(type.deptId.deptName)?if_exists}
-                                ]--${type.expenseType?if_exists}</option>
-                        </#list>
-                    </#if>
-                </select>
-                <span class="help-inline"></span>
-            </div>
-        </div>
         <div class="control-group">
             <label class="control-label" for="sysBudgetOwen.budgetTitle.id">预算科目</label>
             <div class="controls">

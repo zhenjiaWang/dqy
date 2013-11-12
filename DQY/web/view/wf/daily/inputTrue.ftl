@@ -151,72 +151,6 @@
     function addFlow() {
         $('.modal-header', '#myModal').find('.close').trigger('click');
     }
-    function getBudgetTypeList(type,seq){
-        var deptObj=$('#deptId'+seq+'_'+type);
-        var typeObj=$('#typeId'+seq+'_'+type);
-        var deptId=$(deptObj).val();
-        $.ajax({
-            type:'GET',
-            url:'/sys/budgetType!getTypeList.dhtml?deptId='+deptId,
-            dataType:'json',
-            success:function (jsonData) {
-                if (jsonData) {
-                    if (jsonData['result'] == '0') {
-                        var typeList=jsonData['typeList'];
-                        $(typeObj).empty();
-                        if(typeList){
-                            $(typeList).each(function(i,o){
-                                $(typeObj).append('<option value="'+o['id']+'">'+o['name']+'</option>');
-                            });
-                        }else{
-                            $(typeObj).append('<option value="">暂无数据</option>');
-                        }
-                    }else{
-                        $(typeObj).empty();
-                        $(typeObj).append('<option value="">暂无数据</option>');
-                    }
-                    getBudgetTitleList(type,seq);
-                    $('#typeId'+seq+'_'+type).off('change').on('change',function () {
-                        getBudgetTitleList(type,seq);
-                    });
-                }
-            },
-            error:function (jsonData) {
-
-            }
-        });
-    }
-    function getBudgetTitleList(type,seq){
-        var typeObj=$('#typeId'+seq+'_'+type);
-        var titleObj=$('#titleId'+seq+'_'+type);
-        var typeId=$(typeObj).val();
-        $.ajax({
-            type:'GET',
-            url:'/sys/budgetTitle!getTitleList.dhtml?typeId='+typeId,
-            dataType:'json',
-            success:function (jsonData) {
-                if (jsonData) {
-                    if (jsonData['result'] == '0') {
-                        var titleList=jsonData['titleList'];
-                        $(titleObj).empty();
-                        if(titleList){
-                            $(titleList).each(function(i,o){
-                                $(titleObj).append('<option value="'+o['id']+'">'+o['name']+'</option>');
-                            });
-                        }else{
-                            $(titleObj).append('<option value="">暂无数据</option>');
-                        }
-                    }else{
-                        $(titleObj).empty();
-                        $(titleObj).append('<option value="">暂无数据</option>');
-                    }
-                }
-            },
-            error:function (jsonData) {
-
-            }
-        });
-    }
     function bindSelect(type,seq){
         <#if departmentList?exists&&departmentList?size gt 0>
             $('#deptId'+seq+'_'+type).empty();
@@ -230,10 +164,18 @@
                 $('#deptId'+seq+'_'+type).append('<option value="${dept.id?c}">'+levelStr+'${dept.deptName?if_exists}</option>');
             </#list>
             $('#deptId'+seq+'_'+type).val('${deptId?c}');
-            getBudgetTypeList(type,seq);
-            $('#deptId'+seq+'_'+type).off('change').on('change',function () {
-                getBudgetTypeList(type,seq);
-            });
+        </#if>
+        <#if typeList?exists&&typeList?size gt 0>
+            $('#typeId'+seq+'_'+type).empty();
+            <#list typeList as type>
+                $('#typeId'+seq+'_'+type).append('<option value="${type.id?c}">${type.expenseType?if_exists}</option>');
+            </#list>
+        </#if>
+        <#if titleList?exists&&titleList?size gt 0>
+            $('#titleId'+seq+'_'+type).empty();
+            <#list titleList as title>
+                $('#titleId'+seq+'_'+type).append('<option value="${title.id?c}">${title.titleName?if_exists}</option>');
+            </#list>
         </#if>
         if(type==1){
             $('#amount'+seq+'_'+type).off('blur').on('blur',function(){
@@ -387,14 +329,6 @@
                     }
                 }
             }
-        });
-        getBudgetTypeList(1,1);
-        getBudgetTypeList(2,1);
-        $('#deptId1_1').off('change').on('change',function () {
-            getBudgetTypeList(1,1);
-        });
-        $('#deptId1_2').off('change').on('change',function () {
-            getBudgetTypeList(2,1);
         });
         $('#amount1_1').off('blur').on('blur',function(){
             var totalAm=0.00;
@@ -584,7 +518,7 @@
                                 <td width="100"><strong>费用项目</strong></td>
                                 <td width="110"><strong>费用日期</strong></td>
                                 <td width="80"><strong>金额</strong></td>
-                                <td><strong>注</strong>
+                                <td>
                                     <a href="/wf/daily.dhtml" id="trueDetail" style="float: right;"><i class="icon-eye-close"></i>&nbsp;</a>
                                     <a href="#" type="1" class="deleteDetail" style="float: right;"><i class="icon-minus"></i>
                                         删除</a>
@@ -609,8 +543,22 @@
                                     </#if>
                                 </select></td>
                                 <td><select class="int2 width-100" id="typeId1_1" name="typeId1_1">
+                                    <#if typeList?exists&&typeList?size gt 0>
+                                        <#list typeList as type>
+                                            <option value="${type.id?c}">
+                                            ${type.expenseType?if_exists}
+                                            </option>
+                                        </#list>
+                                    </#if>
                                 </select></td>
                                 <td><select class="int2 width-100" id="titleId1_1" name="titleId1_1">
+                                    <#if titleList?exists&&titleList?size gt 0>
+                                        <#list titleList as title>
+                                            <option value="${title.id?c}">
+                                            ${title.titleName?if_exists}
+                                            </option>
+                                        </#list>
+                                    </#if>
                                 </select></td>
                                 <td data-date-format="yyyy-mm-dd" data-date="" class="date dateTd">
                                     <div class="control-group" style="margin-bottom: 0px;">
@@ -635,7 +583,7 @@
                                 <td width="100"><strong>费用项目</strong></td>
                                 <td width="110"><strong>费用日期</strong></td>
                                 <td width="80"><strong>金额</strong></td>
-                                <td><strong>注</strong>
+                                <td>
                                     <a href="/wf/daily.dhtml" id="trueDetail" style="float: right;"><i class="icon-eye-close"></i>&nbsp;</a>
                                     <a href="#" type="2" class="deleteDetail" style="float: right;"><i class="icon-minus"></i>
                                         删除</a>
@@ -660,8 +608,22 @@
                                     </#if>
                                 </select></td>
                                 <td><select class="int2 width-100" id="typeId1_2" name="typeId1_2">
+                                    <#if typeList?exists&&typeList?size gt 0>
+                                        <#list typeList as type>
+                                            <option value="${type.id?c}">
+                                            ${type.expenseType?if_exists}
+                                            </option>
+                                        </#list>
+                                    </#if>
                                 </select></td>
                                 <td><select class="int2 width-100" id="titleId1_2" name="titleId1_2">
+                                    <#if titleList?exists&&titleList?size gt 0>
+                                        <#list titleList as title>
+                                            <option value="${title.id?c}">
+                                            ${title.titleName?if_exists}
+                                            </option>
+                                        </#list>
+                                    </#if>
                                 </select></td>
                                 <td data-date-format="yyyy-mm-dd" data-date="" class="date dateTd">
                                     <div class="control-group" style="margin-bottom: 0px;">

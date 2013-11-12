@@ -85,11 +85,6 @@ public class SysBudgetTitleAction extends ActionSupport<SysBudgetTitle> {
             if(pageObj!=null){
                 budgetTitleList=pageObj.getResultList();
             }
-            List<Selector> selectorList = new ArrayList<Selector>();
-            selectorList.add(SelectorUtils.$eq("orgId.id", userInfo.getOrgId()));
-            selectorList.add(SelectorUtils.$eq("useYn", "Y"));
-            selectorList.add(SelectorUtils.$order("expenseType"));
-            budgetTypeList=this.sysBudgetTypeService.getAllList(selectorList);
         }
         return "success";  //To change body of implemented methods use File | Settings | File Templates.
     }
@@ -99,15 +94,10 @@ public class SysBudgetTitleAction extends ActionSupport<SysBudgetTitle> {
         List<Selector> selectorList = new ArrayList<Selector>();
         UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
         if (userInfo != null) {
-            selectorList.add(SelectorUtils.$alias("typeId", "typeId"));
-            selectorList.add(SelectorUtils.$eq("typeId.orgId.id",userInfo.getOrgId()));
-            if(typeId!=null){
-                selectorList.add(SelectorUtils.$eq("typeId.id",typeId));
-            }
+            selectorList.add(SelectorUtils.$eq("orgId.id",userInfo.getOrgId()));
             if(StringUtils.isNotBlank(keyword)){
                 selectorList.add(SelectorUtils.$like("titleName",keyword));
             }
-            selectorList.add(SelectorUtils.$order("typeId.id"));
             selectorList.add(SelectorUtils.$order("titleName"));
         }
         return selectorList;
@@ -134,11 +124,6 @@ public class SysBudgetTitleAction extends ActionSupport<SysBudgetTitle> {
             if (sysBudgetTitle.getId() != null) {
                 SysBudgetTitle old = this.sysBudgetTitleService.getById(sysBudgetTitle.getId());
                 sysBudgetTitle = this.copy(sysBudgetTitle, old);
-            }
-            if(sysBudgetTitle.getTypeId()!=null){
-                if(sysBudgetTitle.getTypeId().getId()==null){
-                    sysBudgetTitle.setTypeId(null);
-                }
             }
             this.bind(sysBudgetTitle);
             this.sysBudgetTitleService.save(sysBudgetTitle);
@@ -204,7 +189,7 @@ public class SysBudgetTitleAction extends ActionSupport<SysBudgetTitle> {
         item.put("result", false);
         UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
         if (userInfo != null) {
-            if (sysBudgetTitle != null&&typeId!=null) {
+            if (sysBudgetTitle != null) {
                 if (StringUtils.isNotBlank(sysBudgetTitle.getTitleName())) {
                     String ignore = getParameter("ignore");
                     if (StringUtils.isNotBlank(ignore)) {
@@ -212,13 +197,13 @@ public class SysBudgetTitleAction extends ActionSupport<SysBudgetTitle> {
                             item.put("result", true);
                             writeJsonByAction(item.toString());
                         } else {
-                            Integer row = this.sysBudgetTitleService.validateName( typeId,sysBudgetTitle.getTitleName());
+                            Integer row = this.sysBudgetTitleService.validateName( userInfo.getOrgId(),sysBudgetTitle.getTitleName());
                             if (row.intValue() == 0) {
                                 item.put("result", true);
                             }
                         }
                     } else {
-                        Integer row = this.sysBudgetTitleService.validateName( typeId,sysBudgetTitle.getTitleName());
+                        Integer row = this.sysBudgetTitleService.validateName( userInfo.getOrgId(),sysBudgetTitle.getTitleName());
                         if (row.intValue() == 0) {
                             item.put("result", true);
                         }

@@ -68,8 +68,6 @@
     <table class="table table-bordered table-hover tableBgColor">
         <thead>
         <tr class="thColor">
-            <th >预算部门</th>
-            <th>预算类别</th>
             <th>预算项目</th>
             <th style="width: 180px;">会计科目</th>
             <th width="80">启用</th>
@@ -80,8 +78,6 @@
             <#if budgetTitleList?exists&&budgetTitleList?size gt 0>
                 <#list budgetTitleList as budgetTitle>
                 <tr <#if (budgetTitle_index+1)%2!=0>class="oddBgColor"</#if>>
-                    <td>${(budgetTitle.typeId.deptId.deptName)?if_exists}</td>
-                    <td>${(budgetTitle.typeId.expenseType)?if_exists}</td>
                     <td>${(budgetTitle.titleName)?if_exists}</td>
                     <td class="txt_hidden" style="width: 180px;">
                     <#if budgetTitle.sysBudgetOwen?exists>

@@ -9,9 +9,9 @@
     function validatorName() {
         var url = '';
         <#if !sysBudgetTitle?exists>
-            url = '/sys/budgetTitle!validateName.dhtml?typeId='+$('#sysBudgetTitle\\.typeId\\.id').val();
+            url = '/sys/budgetTitle!validateName.dhtml';
         <#elseif sysBudgetTitle?exists>
-            url = '/sys/budgetTitle!validateName.dhtml?ignore=${sysBudgetTitle.titleName?if_exists}&typeId='+$('#sysBudgetTitle\\.typeId\\.id').val();
+            url = '/sys/budgetTitle!validateName.dhtml?ignore=${sysBudgetTitle.titleName?if_exists}';
         </#if>
         return url;
     }
@@ -74,48 +74,11 @@
     }
     $(document).ready(function () {
         initValidator();
-        $('#sysBudgetTitle\\.typeId\\.id').change(function(){
-            WEBUTILS.validator.removeMode({
-                id: 'sysBudgetTitle\\.titleName'
-            });
-            <#if sysBudgetTitle?exists>
-                var _url = '/sys/budgetTitle!validateName.dhtml?ignore=${sysBudgetTitle.titleName?if_exists}&typeId='+$(this).val();
-                WEBUTILS.validator.addMode({
-                    id: 'sysBudgetTitle\\.titleName',
-                    required: true,
-                    pattern: [
-                        {type: 'ajax', exp: _url, msg: '不能重复'}
-                    ]
-                });
-            <#else >
-                var _url = '/sys/budgetTitle!validateName.dhtml?typeId='+$(this).val();
-                WEBUTILS.validator.addMode({
-                    id: 'sysBudgetTitle\\.titleName',
-                    required: true,
-                    pattern: [
-                        {type: 'ajax', exp: _url, msg: '不能重复'}
-                    ]
-                });
-            </#if>
-        });
     });
 </script>
     <@c.joddForm bean="sysBudgetTitle" scope="request">
     <form class="form-horizontal" action="/sys/budgetTitle!save.dhtml" method="POST" name="editForm"
           id="editForm">
-        <div class="control-group">
-            <label class="control-label" for="sysBudgetTitle.typeId.id">预算类型</label>
-            <div class="controls">
-                <select  id="sysBudgetTitle.typeId.id" name="sysBudgetTitle.typeId.id">
-                    <#if budgetTypeList?exists&&budgetTypeList?size gt 0>
-                    <#list budgetTypeList as type>
-                        <option value="${type.id?c}" >${type.expenseType?if_exists}</option>
-                    </#list>
-                    </#if>
-                </select>
-                <span class="help-inline"></span>
-            </div>
-        </div>
         <div class="control-group">
             <label class="control-label" for="sysBudgetTitle.titleName">项目代码</label>
             <div class="controls">
