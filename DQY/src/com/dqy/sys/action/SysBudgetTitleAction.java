@@ -125,6 +125,10 @@ public class SysBudgetTitleAction extends ActionSupport<SysBudgetTitle> {
                 SysBudgetTitle old = this.sysBudgetTitleService.getById(sysBudgetTitle.getId());
                 sysBudgetTitle = this.copy(sysBudgetTitle, old);
             }
+            SysOrg sysOrg=this.sysOrgService.getById(userInfo.getOrgId());
+            if(sysOrg!=null){
+                sysBudgetTitle.setOrgId(sysOrg);
+            }
             this.bind(sysBudgetTitle);
             this.sysBudgetTitleService.save(sysBudgetTitle);
         }

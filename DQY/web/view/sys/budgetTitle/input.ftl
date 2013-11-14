@@ -82,7 +82,7 @@
         <div class="control-group">
             <label class="control-label" for="sysBudgetTitle.titleName">项目代码</label>
             <div class="controls">
-                <input type="text" id="sysBudgetTitle.titleNo" name="sysBudgetTitle.titleNo" placeholder="项目代码">
+                <input type="text" id="sysBudgetTitle.titleNo" name="sysBudgetTitle.titleNo" placeholder="项目代码" maxlength="4">
                 <span class="help-inline"></span>
             </div>
         </div>
