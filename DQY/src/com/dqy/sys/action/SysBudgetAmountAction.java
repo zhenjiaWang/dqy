@@ -59,6 +59,9 @@ public class SysBudgetAmountAction extends ActionSupport<SysBudgetAmount> {
     @ReqSet
     private Long deptId;
 
+    @ReqGet
+    @ReqSet
+    private Integer rows;
 
     @ReqGet
     @ReqSet
@@ -75,6 +78,17 @@ public class SysBudgetAmountAction extends ActionSupport<SysBudgetAmount> {
 
     @ReqSet
     private List<SysBudgetAmount> sysBudgetAmountList;
+
+    @ReqSet
+    private List<SysBudgetTitle> titleList;
+
+    @ReqSet
+    private List<SysBudgetType> typeList;
+
+
+    @ReqSet
+    private Set<String> idSets;
+
 
     @ReqSet
     private Map<String, List<SysBudgetTitle>> budgetTitleMap;
@@ -100,45 +114,37 @@ public class SysBudgetAmountAction extends ActionSupport<SysBudgetAmount> {
             yearList.add(currentYear + 1);
             yearList.add(currentYear + 2);
 
+            List<Selector> selectorList=new ArrayList<Selector>();
+            selectorList.add(SelectorUtils.$eq("orgId.id",userInfo.getOrgId()));
+            selectorList.add(SelectorUtils.$order("expenseType"));
+            selectorList.add(SelectorUtils.$eq("useYn","Y"));
+            typeList= this.sysBudgetTypeService.getAllList(selectorList);
+
+            selectorList=new ArrayList<Selector>();
+            selectorList.add(SelectorUtils.$eq("orgId.id",userInfo.getOrgId()));
+            selectorList.add(SelectorUtils.$order("titleNo"));
+            selectorList.add(SelectorUtils.$eq("useYn","Y"));
+            titleList= this.sysBudgetTitleService.getAllList(selectorList);
+
             hrDepartment = this.hrDepartmentService.getById(userInfo.getDepartmentId());
-            if (hrDepartment != null) {
-                deptId = hrDepartment.getId();
-                List<Selector> selectorList = new ArrayList<Selector>();
-                selectorList.add(SelectorUtils.$eq("orgId.id", userInfo.getOrgId()));
-                selectorList.add(SelectorUtils.$eq("deptId.id", hrDepartment.getId()));
-                selectorList.add(SelectorUtils.$eq("useYn", "Y"));
-                selectorList.add(SelectorUtils.$order("expenseType"));
-                budgetTypeList = sysBudgetTypeService.getAllList(selectorList);
-                if (budgetTypeList != null && !budgetTypeList.isEmpty()) {
-                    budgetTitleMap = new HashMap<String, List<SysBudgetTitle>>();
-                    budgetAmountMap = new HashMap<String, Double>();
-                    List<SysBudgetTitle> budgetTitleList = null;
-                    for (SysBudgetType budgetType : budgetTypeList) {
-                        selectorList.clear();
-                        selectorList.add(SelectorUtils.$eq("typeId.id", budgetType.getId()));
-                        selectorList.add(SelectorUtils.$eq("useYn", "Y"));
-                        selectorList.add(SelectorUtils.$order("titleName"));
-                        budgetTitleList = this.sysBudgetTitleService.getAllList(selectorList);
-                        if (budgetTitleList != null && !budgetTitleList.isEmpty()) {
-                            budgetTitleMap.put(budgetType.getId() + "_", budgetTitleList);
-                            if (budgetTitleList != null && !budgetTitleList.isEmpty()) {
-                                for (SysBudgetTitle budgetTitle : budgetTitleList) {
-                                    for (int i = 1; i <= 12; i++) {
-                                        budgetAmountMap.put(hrDepartment.getId() + "_" + budgetTitle.getId() + "_" + budgetType.getId() + "_" + i, 0.00d);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    totalAmount = this.sysBudgetAmountService.geTotalAmount(userInfo.getOrgId(), currentYear, hrDepartment.getId());
-                    sysBudgetAmountList = this.sysBudgetAmountService.getAmountList(userInfo.getOrgId(), currentYear, hrDepartment.getId());
-                    if (sysBudgetAmountList != null && !sysBudgetAmountList.isEmpty()) {
-                        for (SysBudgetAmount budgetAmount : sysBudgetAmountList) {
-                            sysBudgetAmount = budgetAmount;
-                            budgetAmountMap.put(hrDepartment.getId() + "_" + get(budgetAmount, "titleId.id") + "_" + get(budgetAmount, "titleId.typeId.id") + "_" + budgetAmount.getMonth(), budgetAmount.getAmount());
-                        }
-                    }
+
+            rows=0;
+            sysBudgetAmountList=this.sysBudgetAmountService.getAmountList(userInfo.getOrgId(),currentYear,hrDepartment.getId());
+            if(sysBudgetAmountList!=null&&!sysBudgetAmountList.isEmpty()){
+                idSets=new HashSet<String>();
+                budgetAmountMap=new HashMap<String, Double>();
+                for(SysBudgetAmount budgetAmount:sysBudgetAmountList){
+                    idSets.add(get(budgetAmount,"typeId.id")+"_"+get(budgetAmount,"titleId.id"));
+                    budgetAmountMap.put(get(budgetAmount,"typeId.id")+"_"+get(budgetAmount,"titleId.id")+"_"+budgetAmount.getMonth(),
+                            budgetAmount.getAmount());
                 }
+                if(idSets!=null&&!idSets.isEmpty()){
+                    rows=idSets.size();
+                }
+            }
+            totalAmount=sysBudgetAmountService.geTotalAmount(userInfo.getOrgId(),currentYear,hrDepartment.getId());
+            if(totalAmount==null){
+                totalAmount=0.00d;
             }
         }
         return "success";  //To change body of implemented methods use File | Settings | File Templates.
@@ -148,52 +154,48 @@ public class SysBudgetAmountAction extends ActionSupport<SysBudgetAmount> {
     public String save() throws Exception {
         UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
         if (userInfo != null) {
-            if (currentYear != null && deptId != null) {
+            if (currentYear != null && deptId != null&&rows!=null&&rows.intValue()>0) {
                 hrDepartment = this.hrDepartmentService.getById(deptId);
                 SysOrg sysOrg = this.sysOrgService.getById(userInfo.getOrgId());
+                List<SysBudgetAmount> delBudgeAmountList=null;
                 if (hrDepartment != null) {
-                    List<Selector> selectorList = new ArrayList<Selector>();
-                    selectorList.add(SelectorUtils.$eq("orgId.id", userInfo.getOrgId()));
-                    selectorList.add(SelectorUtils.$eq("deptId.id", hrDepartment.getId()));
-                    selectorList.add(SelectorUtils.$eq("useYn", "Y"));
-                    selectorList.add(SelectorUtils.$order("expenseType"));
-                    budgetTypeList = sysBudgetTypeService.getAllList(selectorList);
-                    if (budgetTypeList != null && !budgetTypeList.isEmpty()) {
-                        sysBudgetAmountList = new ArrayList<SysBudgetAmount>();
-                        List<SysBudgetTitle> budgetTitleList = null;
-                        for (SysBudgetType budgetType : budgetTypeList) {
-                            selectorList.clear();
-                            selectorList.add(SelectorUtils.$eq("typeId.id", budgetType.getId()));
-                            selectorList.add(SelectorUtils.$eq("useYn", "Y"));
-                            selectorList.add(SelectorUtils.$order("titleName"));
-                            budgetTitleList = this.sysBudgetTitleService.getAllList(selectorList);
-                            if (budgetTitleList != null && !budgetTitleList.isEmpty()) {
-                                for (SysBudgetTitle budgetTitle : budgetTitleList) {
-                                    for (int i = 1; i <= 12; i++) {
-                                        Double amount = getParameter(hrDepartment.getId() + "_" + budgetTitle.getId() + "_" + budgetType.getId() + "_" + i, Double.class);
-                                        if (amount == null) {
-                                            amount = 0d;
-                                        }
-                                        sysBudgetAmount = this.sysBudgetAmountService.getAmount(userInfo.getOrgId(), hrDepartment.getId(), budgetTitle.getId(), currentYear, i);
-                                        if (sysBudgetAmount == null) {
-                                            sysBudgetAmount = new SysBudgetAmount();
-                                            sysBudgetAmount.setOrgId(sysOrg);
-                                            sysBudgetAmount.setTitleId(budgetTitle);
-                                            sysBudgetAmount.setYear(currentYear);
-                                            sysBudgetAmount.setDeptId(hrDepartment);
-                                            sysBudgetAmount.setMonth(i);
-                                        }
-                                        sysBudgetAmount.setAmount(amount);
-                                        sysBudgetAmount.setUseYn("Y");
-                                        bind(sysBudgetAmount);
-                                        sysBudgetAmountList.add(sysBudgetAmount);
-                                    }
-                                }
+                    delBudgeAmountList=this.sysBudgetAmountService.getAmountList(userInfo.getOrgId(),currentYear,hrDepartment.getId());
+                    sysBudgetAmountList=new ArrayList<SysBudgetAmount>();
+                    SysBudgetType budgetType=null;
+                    SysBudgetTitle budgetTitle=null;
+                    for(int index=1;index<=rows;index++){
+                        budgetType=null;
+                        budgetTitle=null;
+                        Long typeId=getParameter("typeId"+index,Long.class);
+                        if(typeId!=null){
+                             budgetType=this.sysBudgetTypeService.getById(typeId);
+                        }
+                        Long titleId=getParameter("titleId"+index,Long.class);
+                        if(titleId!=null){
+                            budgetTitle=this.sysBudgetTitleService.getById(titleId);
+                        }
+                        for(int month=1;month<=12;month++){
+                            Double amount=getParameter("amount"+index+"_"+month,Double.class);
+                            if(amount==null){
+                                amount=0.00d;
+                            }
+                            if(amount.doubleValue()>0){
+                                sysBudgetAmount = new SysBudgetAmount();
+                                sysBudgetAmount.setOrgId(sysOrg);
+                                sysBudgetAmount.setTypeId(budgetType);
+                                sysBudgetAmount.setTitleId(budgetTitle);
+                                sysBudgetAmount.setYear(currentYear);
+                                sysBudgetAmount.setDeptId(hrDepartment);
+                                sysBudgetAmount.setMonth(month);
+                                sysBudgetAmount.setAmount(amount);
+                                sysBudgetAmount.setUseYn("Y");
+                                bind(sysBudgetAmount);
+                                sysBudgetAmountList.add(sysBudgetAmount);
                             }
                         }
                     }
                     if (sysBudgetAmountList != null && !sysBudgetAmountList.isEmpty()) {
-                        this.sysBudgetAmountService.save(sysBudgetAmountList);
+                        this.sysBudgetAmountService.save(delBudgeAmountList,sysBudgetAmountList);
                     }
                 }
             }

@@ -66,6 +66,13 @@ public class SysBudgetAmountService extends HQuery {
         $(sysBudgetAmountList).save();
     }
 
+    @Transactional(type = TransactionType.READ_WRITE)
+    public void save(List<SysBudgetAmount> delBudgetAmountList,List<SysBudgetAmount> sysBudgetAmountList) {
+        if(delBudgetAmountList!=null&&!delBudgetAmountList.isEmpty()){
+            this.delete(delBudgetAmountList);
+        }
+        $(sysBudgetAmountList).save();
+    }
 
     @Transactional(type = TransactionType.READ_WRITE)
     public void delete(List<SysBudgetAmount> sysBudgetAmountList) {
@@ -73,13 +80,13 @@ public class SysBudgetAmountService extends HQuery {
     }
 
     @Transactional(type = TransactionType.READ_ONLY)
-    public SysBudgetAmount getAmount(Long orgId,Long deptId,Long titleId,Integer year,Integer month) {
-        return $($eq("orgId.id",orgId),$eq("deptId.id",deptId),$eq("titleId.id",titleId),$eq("year",year),$eq("month",month)).get(SysBudgetAmount.class);
+    public SysBudgetAmount getAmount(Long orgId,Long deptId,Long typeId,Long titleId,Integer year,Integer month) {
+        return $($eq("orgId.id",orgId),$eq("deptId.id",deptId),$eq("typeId.id",typeId),$eq("titleId.id",titleId),$eq("year",year),$eq("month",month)).get(SysBudgetAmount.class);
     }
 
     @Transactional(type = TransactionType.READ_ONLY)
     public List<SysBudgetAmount> getAmountList(Long orgId,Integer year,Long deptId) {
-        return $($eq("orgId.id",orgId),$eq("year",year),$eq("deptId.id",deptId)).list(SysBudgetAmount.class);
+        return $($eq("orgId.id",orgId),$eq("year",year),$eq("deptId.id",deptId),$order("typeId.id"),$order("titleId.id")).list(SysBudgetAmount.class);
     }
 
     @Transactional(type = TransactionType.READ_ONLY)

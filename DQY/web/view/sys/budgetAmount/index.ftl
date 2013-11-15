@@ -11,26 +11,31 @@
     function initValidator() {
         WEBUTILS.validator.init({
             modes: [
-                <#if budgetTypeList?exists&&budgetTypeList?size gt 0>
-                    <#if budgetTitleMap?exists&&budgetTitleMap?size gt 0>
-                        <#list budgetTypeList as type>
-                            <#assign titleList=budgetTitleMap[type.id+"_"]?if_exists>
-                            <#if titleList?exists&&titleList?size gt 0>
-                                <#list titleList as title>
-                                    <#list 1..12 as c>
-                                        {
-                                            id: '${hrDepartment.id?c}_${title.id?c}_${type.id?c}_${c?c}',
-                                            required: true,
-                                            pattern: [
-                                                {type: 'number', exp: '==', msg: '不能为空'}
-                                            ]
-                                        },
-                                    </#list>
-                                </#list>
-                            </#if>
+                    <#if sysBudgetAmountList?exists&&sysBudgetAmountList?size gt 0&&rows?exists>
+                        <#list 1..rows as int>
+                            <#list 1..12 as c>
+                                {
+                                    id: 'amount${int?c}_${c?c}',
+                                    required: true,
+                                    pattern: [
+                                        {type: 'number', exp: '==', msg: '不能为空'}
+                                    ]
+                                },
+                            </#list>
+                        </#list>
+                    <#else >
+                        <#list 1..10 as int>
+                            <#list 1..12 as c>
+                                {
+                                    id: 'amount${int?c}_${c?c}',
+                                    required: true,
+                                    pattern: [
+                                        {type: 'number', exp: '==', msg: '不能为空'}
+                                    ]
+                                },
+                            </#list>
                         </#list>
                     </#if>
-                </#if>
                 {
                     id: 'deptName',
                     required: true,
@@ -54,12 +59,81 @@
         });
 
         $('#saveBtn').off('click').on('click', function () {
-            WEBUTILS.alert.alertComfirm('更改预算', '您确认要更改当前预算?', function () {
-                WEBUTILS.alert.close();
-                WEBUTILS.alert.alertInfo('正在保存', '请耐心等待..', 100000);
-                document.editForm.submit();
-            });
+            window.setTimeout(function () {
+                var passed = WEBUTILS.validator.isPassed();
+                if (passed) {
+                    var lastTr=$('#addTr').prev();
+                    var index=$(lastTr).attr('index');
+                    $('#rows').val(index);
+                    WEBUTILS.alert.alertComfirm('更改预算', '您确认要更改当前预算?', function () {
+                        WEBUTILS.alert.close();
+                        WEBUTILS.alert.alertInfo('正在保存', '请耐心等待..', 100000);
+                        document.editForm.submit();
+                    });
+                } else {
+                    WEBUTILS.validator.showErrors();
+                }
+            }, 500);
         });
+
+        $('#addBudget').off('click').on('click', function () {
+            $('#addTr').before($('#addTr').prev().clone());
+            var lastTr=$('#addTr').prev();
+            var index=$(lastTr).attr('index');
+            if(index){
+                index=parseInt(index);
+                $('input',lastTr).val('0.00');
+                var typeObj=$('#typeId'+index,lastTr);
+                if(typeObj){
+                    $(typeObj).attr('id','typeId'+(index+1));
+                    $(typeObj).attr('name','typeId'+(index+1));
+                }
+
+                var titleObj=$('#titleId'+index,lastTr);
+                if(titleObj){
+                    $(titleObj).attr('id','titleId'+(index+1));
+                    $(titleObj).attr('name','titleId'+(index+1));
+                }
+                for(var i=1;i<=10;i++){
+                    var amountObj=$('#amount'+index+"_"+i,lastTr);
+                    if(amountObj){
+                        $(amountObj).attr('id','amount'+(index+1)+"_"+i);
+                        $(amountObj).attr('name','amount'+(index+1)+"_"+i);
+                        WEBUTILS.validator.addMode({
+                            id: 'amount'+(index+1)+"_"+i,
+                            required: true,
+                            pattern: [
+                                {type: 'blank', exp: '!=', msg: ''}
+                            ]
+                        });
+                    }
+                }
+                $(lastTr).attr('index',(index+1));
+            }
+        });
+        <#if idSets?exists&&idSets?size gt 0>
+        <#list idSets as tt>
+        <#assign ids=tt?split("_")>
+        <#if ids?exists>
+            $('#typeId${(tt_index+1)}','.table-bordered').val('${ids[0]?if_exists}');
+            $('#titleId${(tt_index+1)}','.table-bordered').val('${ids[1]?if_exists}');
+            <#list 1..12 as month>
+                <#if budgetAmountMap?exists&&budgetAmountMap?size gt 0>
+                    <#assign amount=budgetAmountMap[ids[0]?if_exists+"_"+ids[1]?if_exists+"_"+month]?if_exists/>
+                    <#if amount?exists>
+                        $('#amount${(tt_index+1)}_${month?c}','.table-bordered').val('${amount?if_exists}');
+                    </#if>
+                </#if>
+            </#list>
+        </#if>
+        </#list>
+            $('input[type="text"]','.table-bordered').each(function(){
+                if($(this).val()==''){
+                    $(this).val('0.00');
+                }
+            });
+        </#if>
+
     });
 </script>
 <!--搜索begin-->
@@ -120,8 +194,8 @@
             <tr>
                 <td colspan="2">
                     <div class="scroll-x mart10">
-                        <#if budgetTypeList?exists&&budgetTypeList?size gt 0>
-                            <#if budgetTitleMap?exists&&budgetTitleMap?size gt 0>
+                        <#if typeList?exists&&typeList?size gt 0>
+                            <#if titleList?exists&&titleList?size gt 0>
                                 <table class="layout table table-bordered table-hover tableBgColor nomar nopadding">
                                     <thead>
                                     <tr>
@@ -143,36 +217,72 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                        <#list budgetTypeList as type>
-                                            <#assign titleList=budgetTitleMap[type.id+"_"]?if_exists>
-                                            <#if titleList?exists&&titleList?size gt 0>
-                                                <#list titleList as title>
-                                                <tr>
-                                                    <td width="160">
-                                                        <select class="int2 width-100">
-                                                            <option>${hrDepartment.deptName?if_exists}</option>
-                                                        </select></td>
-                                                    <td width="160"><select class="int2 width-100">
-                                                        <option>${type.expenseType?if_exists}</option>
-                                                    </select></td>
-                                                    <td width="160"><select class="int2 width-100">
-                                                        <option>${title.titleName?if_exists}</option>
-                                                    </select></td>
-                                                    <#list 1..12 as c>
-                                                        <td width="100"><input type="text"
-                                                                               id="${hrDepartment.id?c}_${title.id?c}_${type.id?c}_${c?c}"
-                                                                               name="${hrDepartment.id?c}_${title.id?c}_${type.id?c}_${c?c}"
-                                                                               class="int1 width-70"
-                                                                               <#if budgetAmountMap?exists&&budgetAmountMap?size gt 0>value="${budgetAmountMap[hrDepartment.id+"_"+title.id+"_"+type.id+"_"+c]?if_exists}</#if>">
-                                                        </td>
-                                                    </#list>
-                                                </tr>
+                                <#if sysBudgetAmountList?exists&&sysBudgetAmountList?size gt 0&&rows?exists>
+                                    <#list 1..rows as int>
+                                    <tr index="${int?c}">
+                                        <td width="160">
+                                            <select class="int2 width-100">
+                                                <option>${hrDepartment.deptName?if_exists}</option>
+                                            </select>
+                                        </td>
+                                        <td width="160">
+                                            <select class="int2 width-100" id="typeId${int?c}" name="typeId${int?c}">
+                                                <#list typeList as type>
+                                                    <option value="${type.id?c}">${type.expenseType?if_exists}</option>
                                                 </#list>
-                                            </#if>
+                                            </select>
+                                        </td>
+                                        <td width="160">
+                                            <select class="int2 width-100" id="titleId${int?c}" name="titleId${int?c}">
+                                                <#list titleList as title>
+                                                    <option value="${title.id?c}">${title.titleName?if_exists}</option>
+                                                </#list>
+                                            </select>
+                                        </td>
+                                        <#list 1..12 as c>
+                                            <td width="100">
+                                                <input type="text" id="amount${int?c}_${c?c}" name="amount${int?c}_${c?c}" class="int1 width-70" value="0.00"/>
+                                            </td>
                                         </#list>
+                                    </tr>
+                                    </#list>
+                                <#else >
+                                    <#list 1..10 as int>
+                                    <tr index="${int?c}">
+                                        <td width="160">
+                                            <select class="int2 width-100">
+                                                <option>${hrDepartment.deptName?if_exists}</option>
+                                            </select>
+                                        </td>
+                                        <td width="160">
+                                            <select class="int2 width-100" id="typeId${int?c}" name="typeId${int?c}">
+                                                <#list typeList as type>
+                                                    <option value="${type.id?c}">${type.expenseType?if_exists}</option>
+                                                </#list>
+                                            </select>
+                                        </td>
+                                        <td width="160">
+                                            <select class="int2 width-100" id="titleId${int?c}" name="titleId${int?c}">
+                                                <#list titleList as title>
+                                                    <option value="${title.id?c}">${title.titleName?if_exists}</option>
+                                                </#list>
+                                            </select>
+                                        </td>
+                                        <#list 1..12 as c>
+                                            <td width="100">
+                                                <input type="text" id="amount${int?c}_${c?c}" name="amount${int?c}_${c?c}" class="int1 width-70" value="0.00"/>
+                                            </td>
+                                        </#list>
+                                    </tr>
+                                    </#list>
+                                </#if>
+                                    <tr id="addTr">
+                                        <td colspan="15" style="padding-left: 5px;">
+                                            <button class="btn" type="button" id="addBudget">增加预算项目</button>
+                                        </td>
+                                    </tr>
                                     </tbody>
                                 </table>
-
                             </#if>
                         </#if>
                     </div>
@@ -180,6 +290,7 @@
             </tr>
             </tbody>
         </table>
+        <input type="hidden" id="rows" name="rows"/>
     </div>
 </form>
 

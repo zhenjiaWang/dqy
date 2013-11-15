@@ -30,6 +30,8 @@ public class SysBudgetAmount extends IdEntity implements Tracker {
 
     private SysBudgetTitle titleId;
 
+    private SysBudgetType typeId;
+
     private Integer year;
 
     private Integer month;
@@ -159,5 +161,15 @@ public class SysBudgetAmount extends IdEntity implements Tracker {
 
     public void setDeptId(HrDepartment deptId) {
         this.deptId = deptId;
+    }
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "TYPE_ID")
+    public SysBudgetType getTypeId() {
+        return typeId;
+    }
+
+    public void setTypeId(SysBudgetType typeId) {
+        this.typeId = typeId;
     }
 }
