@@ -80,16 +80,16 @@
     <form class="form-horizontal" action="/sys/budgetTitle!save.dhtml" method="POST" name="editForm"
           id="editForm">
         <div class="control-group">
-            <label class="control-label" for="sysBudgetTitle.titleName">项目代码</label>
+            <label class="control-label" for="sysBudgetTitle.titleName">费用代码</label>
             <div class="controls">
-                <input type="text" id="sysBudgetTitle.titleNo" name="sysBudgetTitle.titleNo" placeholder="项目代码" maxlength="4">
+                <input type="text" id="sysBudgetTitle.titleNo" name="sysBudgetTitle.titleNo" placeholder="费用代码" maxlength="4">
                 <span class="help-inline"></span>
             </div>
         </div>
         <div class="control-group">
-            <label class="control-label" for="sysBudgetTitle.titleName">预算项目</label>
+            <label class="control-label" for="sysBudgetTitle.titleName">费用项目</label>
             <div class="controls">
-                <input type="text" id="sysBudgetTitle.titleName" name="sysBudgetTitle.titleName" placeholder="预算项目">
+                <input type="text" id="sysBudgetTitle.titleName" name="sysBudgetTitle.titleName" placeholder="费用项目">
                 <span class="help-inline"></span>
             </div>
         </div>

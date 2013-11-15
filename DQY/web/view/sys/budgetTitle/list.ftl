@@ -19,12 +19,12 @@
     }
     $(document).ready(function () {
         $('#newBtn').off('click').on('click', function () {
-            WEBUTILS.popWindow.createPopWindow(550, null, '创建预算科目', '/sys/budgetTitle!input.dhtml');
+            WEBUTILS.popWindow.createPopWindow(550, null, '创建费用科目', '/sys/budgetTitle!input.dhtml');
         });
         $('.editBT').off('click').on('click', function () {
             var uid = $(this).attr('uid');
             if (uid) {
-                WEBUTILS.popWindow.createPopWindow(550, null, '编辑预算科目', '/sys/budgetTitle!input.dhtml?id='+uid);
+                WEBUTILS.popWindow.createPopWindow(550, null, '编辑费用科目', '/sys/budgetTitle!input.dhtml?id='+uid);
             }
         });
         $('.stopBT').off('click').on('click', function () {
@@ -54,7 +54,7 @@
 <!--搜索begin-->
 <div class="r-top clearfix">
     <div class="input-append">
-        <input type="text"  class="span2" id="keyword" name="keyword" value="${keyword?if_exists}" placeholder="预算项目" >
+        <input type="text"  class="span2" id="keyword" name="keyword" value="${keyword?if_exists}" placeholder="费用项目" >
         <button type="button" class="btn"  id="searchBtn"><i class="icon-search"></i> 搜索</button>
     </div>
     <button class="btn btn-warning floatright marr10" type="button" id="newBtn">新增</button>
@@ -65,8 +65,8 @@
     <table class="table table-bordered table-hover tableBgColor">
         <thead>
         <tr class="thColor">
-            <th>项目代码</th>
-            <th>预算项目</th>
+            <th>费用代码</th>
+            <th>费用项目</th>
             <th width="80">启用</th>
             <th width="100">操作</th>
         </tr>

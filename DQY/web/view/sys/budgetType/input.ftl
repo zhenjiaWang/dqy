@@ -54,9 +54,9 @@
     <form class="form-horizontal" action="/sys/budgetType!save.dhtml" method="POST" name="editForm"
           id="editForm">
         <div class="control-group">
-            <label class="control-label" for="sysBudgetType.expenseType">预算类别</label>
+            <label class="control-label" for="sysBudgetType.expenseType">费用类别</label>
             <div class="controls">
-                <input type="text" id="sysBudgetType.expenseType" name="sysBudgetType.expenseType" placeholder="预算类别">
+                <input type="text" id="sysBudgetType.expenseType" name="sysBudgetType.expenseType" placeholder="费用类别">
                 <span class="help-inline"></span>
             </div>
         </div>

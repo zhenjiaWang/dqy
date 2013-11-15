@@ -98,7 +98,7 @@ public class SysBudgetTitleAction extends ActionSupport<SysBudgetTitle> {
             if(StringUtils.isNotBlank(keyword)){
                 selectorList.add(SelectorUtils.$like("titleName",keyword));
             }
-            selectorList.add(SelectorUtils.$order("titleName"));
+            selectorList.add(SelectorUtils.$order("titleNo"));
         }
         return selectorList;
     }

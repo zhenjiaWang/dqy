@@ -76,10 +76,10 @@
                         </#if>
                         <#if roleId?contains("SYS_BUDGET")>
                         <li class="budgetType">
-                            <a class="cur" href="/sys/budgetType.dhtml">预算类别</a>
+                            <a class="cur" href="/sys/budgetType.dhtml">费用类别</a>
                         </li>
                         <li class=budgetTitle>
-                            <a class="cur" href="/sys/budgetTitle.dhtml">预算项目</a>
+                            <a class="cur" href="/sys/budgetTitle.dhtml">费用项目</a>
                         </li>
                             <li class=budgetOwen>
                                 <a class="cur" href="/sys/budgetOwen.dhtml">科目关系</a>
