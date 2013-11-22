@@ -154,7 +154,7 @@ public class WfReqRePaymentAction extends WfReqSupportAction<WfReqRePayment> {
 
             selectorList=new ArrayList<Selector>();
             selectorList.add(SelectorUtils.$eq("orgId.id",userInfo.getOrgId()));
-            selectorList.add(SelectorUtils.$order("titleNo"));
+            selectorList.add(SelectorUtils.$order("titleName"));
             selectorList.add(SelectorUtils.$eq("useYn","Y"));
             titleList= this.sysBudgetTitleService.getAllList(selectorList);
 

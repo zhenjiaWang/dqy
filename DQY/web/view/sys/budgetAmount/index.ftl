@@ -52,12 +52,31 @@
         var currentYear = $('#currentYear').val();
         document.location.href = '/sys/budgetAmount.dhtml?currentYear=' + currentYear;
     }
+    function calSumAmount(index) {
+        var sum = 0;
+        var tr=$('tr[index="'+index+'"]', '.table-bordered ');
+        if(tr){
+            $('.amt',tr).each(function(i,o){
+                var v = $(o).val();
+                if (v == "") {
+                    v = 0;
+                }
+                sum += parseFloat(v);
+            });
+            $('#amountTotal'+index,tr).val(sum);
+        }
+    }
     $(document).ready(function () {
         initValidator();
         $('#currentYear').change(function () {
             search();
         });
 
+        $('#resetBtn').off('click').on('click', function () {
+            $('input[type="text"]','.table-bordered').each(function(){
+                $(this).val('0.00');
+            });
+        });
         $('#saveBtn').off('click').on('click', function () {
             window.setTimeout(function () {
                 var passed = WEBUTILS.validator.isPassed();
@@ -94,7 +113,13 @@
                     $(titleObj).attr('id','titleId'+(index+1));
                     $(titleObj).attr('name','titleId'+(index+1));
                 }
+                var amountTotalObj=$('#amountTotal'+index,lastTr);
+                if(amountTotalObj){
+                    $(amountTotalObj).attr('id','amountTotal'+(index+1));
+                    $(amountTotalObj).attr('name','amountTotal'+(index+1));
+                }
                 for(var i=1;i<=10;i++){
+
                     var amountObj=$('#amount'+index+"_"+i,lastTr);
                     if(amountObj){
                         $(amountObj).attr('id','amount'+(index+1)+"_"+i);
@@ -109,6 +134,24 @@
                     }
                 }
                 $(lastTr).attr('index',(index+1));
+            }
+        });
+        $('#deleteBudget').off('click').on('click', function () {
+            var deleteTr=$('#addTr').prev();
+            var index=$(deleteTr).attr('index');
+            if(index){
+                index=parseInt(index);
+                if(index>1){
+                    for(var i=1;i<=10;i++){
+                        var amountObj=$('#amount'+index+"_"+i,deleteTr);
+                        if(amountObj){
+                            WEBUTILS.validator.removeMode({
+                                id: 'amount'+index+"_"+i
+                            });
+                        }
+                    }
+                    $(deleteTr).remove();
+                }
             }
         });
         <#if idSets?exists&&idSets?size gt 0>
@@ -134,6 +177,12 @@
             });
         </#if>
 
+        $('tr','.table-bordered').each(function(i,o){
+            calSumAmount($(o).attr('index'));
+            $('.amt',o).off('blur').on('blur',function(){
+                calSumAmount($(o).attr('index'));
+            });
+        });
     });
 </script>
 <!--搜索begin-->
@@ -201,7 +250,8 @@
                                     <tr>
                                         <td style="width: 160px;"><strong>归属部门</strong></td>
                                         <td width="160"><strong>费用类别</strong></td>
-                                        <td width="160"><strong>费用名称</strong></td>
+                                        <td width="160"><strong>会计科目</strong></td>
+                                        <td width="120"><strong>年合计</strong></td>
                                         <td width="100"><strong>1月</strong></td>
                                         <td width="100"><strong>2月</strong></td>
                                         <td width="100"><strong>3月</strong></td>
@@ -235,13 +285,16 @@
                                         <td width="160">
                                             <select class="int2 width-100" id="titleId${int?c}" name="titleId${int?c}">
                                                 <#list titleList as title>
-                                                    <option value="${title.id?c}">${title.titleName?if_exists}</option>
+                                                    <option value="${title.id?c}">${title.titleName?if_exists}(${title.parentName?if_exists})</option>
                                                 </#list>
                                             </select>
                                         </td>
+                                        <td width="100">
+                                            <input type="text" id="amountTotal${int?c}" name="amountTotal${int?c}" class="int1 width-70" value="0.00" readonly="readonly"/>
+                                        </td>
                                         <#list 1..12 as c>
                                             <td width="100">
-                                                <input type="text" id="amount${int?c}_${c?c}" name="amount${int?c}_${c?c}" class="int1 width-70" value="0.00"/>
+                                                <input type="text" id="amount${int?c}_${c?c}" name="amount${int?c}_${c?c}" class="int1 width-70 amt" value="0.00"/>
                                             </td>
                                         </#list>
                                     </tr>
@@ -264,13 +317,16 @@
                                         <td width="160">
                                             <select class="int2 width-100" id="titleId${int?c}" name="titleId${int?c}">
                                                 <#list titleList as title>
-                                                    <option value="${title.id?c}">${title.titleName?if_exists}</option>
+                                                    <option value="${title.id?c}">${title.titleName?if_exists}(${title.parentName?if_exists})</option>
                                                 </#list>
                                             </select>
                                         </td>
+                                        <td width="100">
+                                            <input type="text" id="amountTotal${int?c}" name="amountTotal${int?c}" class="int1 width-70" value="0.00" readonly="readonly"/>
+                                        </td>
                                         <#list 1..12 as c>
                                             <td width="100">
-                                                <input type="text" id="amount${int?c}_${c?c}" name="amount${int?c}_${c?c}" class="int1 width-70" value="0.00"/>
+                                                <input type="text" id="amount${int?c}_${c?c}" name="amount${int?c}_${c?c}" class="int1 width-70 amt" value="0.00"/>
                                             </td>
                                         </#list>
                                     </tr>
@@ -278,7 +334,8 @@
                                 </#if>
                                     <tr id="addTr">
                                         <td colspan="15" style="padding-left: 5px;">
-                                            <button class="btn" type="button" id="addBudget">增加预算项目</button>
+                                            <button class="btn" type="button" id="addBudget">增加预算项目行</button>
+                                            <button class="btn" type="button" id="deleteBudget">删除预算项目行</button>
                                         </td>
                                     </tr>
                                     </tbody>

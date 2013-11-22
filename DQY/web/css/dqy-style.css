@@ -182,7 +182,7 @@ td .layout tr td{line-height:30px;padding:5px 0;padding-left:10px;}
 td .layout tr td .int1,td .layout tr td .int2{margin:0;}
 table.nopadding{border-left:0;}
 table.nopadding tr td{padding:0 10px;height: 35px;line-height: 35px;}
-.scroll-x{width:750px;overflow:scroll;height: 500px;border:1px solid #ccc;border-width:1px;}
+.scroll-x{width:800px;overflow:scroll;height: 500px;border:1px solid #ccc;border-width:1px;}
 .scroll-x table{position: relative;top:-1px;left:-1px;}
 .scroll-x table,.scroll-x .table-scroll{width:1400px;}
 td .dqy-eidt{position: relative;top:1px;*top:0;}

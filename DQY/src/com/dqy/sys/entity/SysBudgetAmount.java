@@ -28,7 +28,7 @@ public class SysBudgetAmount extends IdEntity implements Tracker {
 
     private HrDepartment deptId;
 
-    private SysBudgetTitle titleId;
+    private SysFinancialTitle titleId;
 
     private SysBudgetType typeId;
 
@@ -118,11 +118,11 @@ public class SysBudgetAmount extends IdEntity implements Tracker {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "TITLE_ID")
-    public SysBudgetTitle getTitleId() {
+    public SysFinancialTitle getTitleId() {
         return titleId;
     }
 
-    public void setTitleId(SysBudgetTitle titleId) {
+    public void setTitleId(SysFinancialTitle titleId) {
         this.titleId = titleId;
     }
 

@@ -10,6 +10,7 @@ import com.dqy.web.support.ActionSupport;
 import com.google.inject.Inject;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import org.apache.commons.lang.StringUtils;
 import org.guiceside.commons.lang.DateFormatUtil;
 import org.guiceside.persistence.entity.search.SelectorUtils;
 import org.guiceside.persistence.hibernate.dao.hquery.Selector;
@@ -33,8 +34,9 @@ public class SysBudgetAmountAction extends ActionSupport<SysBudgetAmount> {
     @Inject
     private SysBudgetTypeService sysBudgetTypeService;
 
+
     @Inject
-    private SysBudgetTitleService sysBudgetTitleService;
+    private SysFinancialTitleService sysFinancialTitleService;
 
     @Inject
     private SysOrgService sysOrgService;
@@ -80,7 +82,7 @@ public class SysBudgetAmountAction extends ActionSupport<SysBudgetAmount> {
     private List<SysBudgetAmount> sysBudgetAmountList;
 
     @ReqSet
-    private List<SysBudgetTitle> titleList;
+    private List<SysFinancialTitle> titleList;
 
     @ReqSet
     private List<SysBudgetType> typeList;
@@ -95,6 +97,15 @@ public class SysBudgetAmountAction extends ActionSupport<SysBudgetAmount> {
 
     @ReqSet
     private Map<String, Double> budgetAmountMap;
+
+    private String getParentName(SysFinancialTitle title){
+        SysFinancialTitle parentTitle=title.getParentId();
+        if(parentTitle!=null){
+            return getParentName(parentTitle);
+        }else{
+            return title.getTitleName();
+        }
+    }
 
     @Override
     @PageFlow(result = {@Result(name = "success", path = "/view/sys/budgetAmount/index.ftl", type = Dispatcher.FreeMarker)})
@@ -122,9 +133,19 @@ public class SysBudgetAmountAction extends ActionSupport<SysBudgetAmount> {
 
             selectorList=new ArrayList<Selector>();
             selectorList.add(SelectorUtils.$eq("orgId.id",userInfo.getOrgId()));
-            selectorList.add(SelectorUtils.$order("titleNo"));
+            selectorList.add(SelectorUtils.$notNull("parentId"));
+            selectorList.add(SelectorUtils.$order("titleName"));
             selectorList.add(SelectorUtils.$eq("useYn","Y"));
-            titleList= this.sysBudgetTitleService.getAllList(selectorList);
+            titleList= this.sysFinancialTitleService.getAllList(selectorList);
+            if(titleList!=null&&!titleList.isEmpty()){
+                for(SysFinancialTitle title:titleList){
+                    String parentName=getParentName(title);
+                    if(StringUtils.isNotBlank(parentName)){
+                        title.setParentName(parentName);
+                    }
+                }
+            }
+
 
             hrDepartment = this.hrDepartmentService.getById(userInfo.getDepartmentId());
 
@@ -158,39 +179,44 @@ public class SysBudgetAmountAction extends ActionSupport<SysBudgetAmount> {
                 hrDepartment = this.hrDepartmentService.getById(deptId);
                 SysOrg sysOrg = this.sysOrgService.getById(userInfo.getOrgId());
                 List<SysBudgetAmount> delBudgeAmountList=null;
+                Set<String> setStr=new HashSet<String>();
                 if (hrDepartment != null) {
                     delBudgeAmountList=this.sysBudgetAmountService.getAmountList(userInfo.getOrgId(),currentYear,hrDepartment.getId());
                     sysBudgetAmountList=new ArrayList<SysBudgetAmount>();
                     SysBudgetType budgetType=null;
-                    SysBudgetTitle budgetTitle=null;
+                    SysFinancialTitle sysFinancialTitle=null;
                     for(int index=1;index<=rows;index++){
                         budgetType=null;
-                        budgetTitle=null;
+                        sysFinancialTitle=null;
                         Long typeId=getParameter("typeId"+index,Long.class);
                         if(typeId!=null){
                              budgetType=this.sysBudgetTypeService.getById(typeId);
                         }
                         Long titleId=getParameter("titleId"+index,Long.class);
                         if(titleId!=null){
-                            budgetTitle=this.sysBudgetTitleService.getById(titleId);
+                            sysFinancialTitle=this.sysFinancialTitleService.getById(titleId);
                         }
-                        for(int month=1;month<=12;month++){
-                            Double amount=getParameter("amount"+index+"_"+month,Double.class);
-                            if(amount==null){
-                                amount=0.00d;
-                            }
-                            if(amount.doubleValue()>0){
-                                sysBudgetAmount = new SysBudgetAmount();
-                                sysBudgetAmount.setOrgId(sysOrg);
-                                sysBudgetAmount.setTypeId(budgetType);
-                                sysBudgetAmount.setTitleId(budgetTitle);
-                                sysBudgetAmount.setYear(currentYear);
-                                sysBudgetAmount.setDeptId(hrDepartment);
-                                sysBudgetAmount.setMonth(month);
-                                sysBudgetAmount.setAmount(amount);
-                                sysBudgetAmount.setUseYn("Y");
-                                bind(sysBudgetAmount);
-                                sysBudgetAmountList.add(sysBudgetAmount);
+                        String str=hrDepartment.getId()+"_"+typeId+"_"+titleId;
+                        if(!setStr.contains(str)){
+                            setStr.add(str);
+                            for(int month=1;month<=12;month++){
+                                Double amount=getParameter("amount"+index+"_"+month,Double.class);
+                                if(amount==null){
+                                    amount=0.00d;
+                                }
+                                if(amount.doubleValue()>0){
+                                    sysBudgetAmount = new SysBudgetAmount();
+                                    sysBudgetAmount.setOrgId(sysOrg);
+                                    sysBudgetAmount.setTypeId(budgetType);
+                                    sysBudgetAmount.setTitleId(sysFinancialTitle);
+                                    sysBudgetAmount.setYear(currentYear);
+                                    sysBudgetAmount.setDeptId(hrDepartment);
+                                    sysBudgetAmount.setMonth(month);
+                                    sysBudgetAmount.setAmount(amount);
+                                    sysBudgetAmount.setUseYn("Y");
+                                    bind(sysBudgetAmount);
+                                    sysBudgetAmountList.add(sysBudgetAmount);
+                                }
                             }
                         }
                     }

@@ -48,6 +48,8 @@ public class SysFinancialTitle extends IdEntity implements Tracker {
 
     private String useYn;
 
+    private String parentName;
+
     @Id
     @GeneratedValue(generator="SYS_FINANCIAL_TITLE")
     @GenericGenerator(name="SYS_FINANCIAL_TITLE",strategy="seqhilo",parameters={@Parameter(name="sequence",value="SEQ_SYS_FINANCIAL_TITLE")})
@@ -170,5 +172,14 @@ public class SysFinancialTitle extends IdEntity implements Tracker {
 
     public void setOnLoan(Integer onLoan) {
         this.onLoan = onLoan;
+    }
+
+    @Transient
+    public String getParentName() {
+        return parentName;
+    }
+
+    public void setParentName(String parentName) {
+        this.parentName = parentName;
     }
 }
