@@ -98,14 +98,7 @@ public class SysBudgetAmountAction extends ActionSupport<SysBudgetAmount> {
     @ReqSet
     private Map<String, Double> budgetAmountMap;
 
-    private String getParentName(SysFinancialTitle title){
-        SysFinancialTitle parentTitle=title.getParentId();
-        if(parentTitle!=null){
-            return getParentName(parentTitle);
-        }else{
-            return title.getTitleName();
-        }
-    }
+
 
     @Override
     @PageFlow(result = {@Result(name = "success", path = "/view/sys/budgetAmount/index.ftl", type = Dispatcher.FreeMarker)})
@@ -131,20 +124,7 @@ public class SysBudgetAmountAction extends ActionSupport<SysBudgetAmount> {
             selectorList.add(SelectorUtils.$eq("useYn","Y"));
             typeList= this.sysBudgetTypeService.getAllList(selectorList);
 
-            selectorList=new ArrayList<Selector>();
-            selectorList.add(SelectorUtils.$eq("orgId.id",userInfo.getOrgId()));
-            selectorList.add(SelectorUtils.$notNull("parentId"));
-            selectorList.add(SelectorUtils.$order("titleName"));
-            selectorList.add(SelectorUtils.$eq("useYn","Y"));
-            titleList= this.sysFinancialTitleService.getAllList(selectorList);
-            if(titleList!=null&&!titleList.isEmpty()){
-                for(SysFinancialTitle title:titleList){
-                    String parentName=getParentName(title);
-                    if(StringUtils.isNotBlank(parentName)){
-                        title.setParentName(parentName);
-                    }
-                }
-            }
+
 
 
             hrDepartment = this.hrDepartmentService.getById(userInfo.getDepartmentId());
@@ -155,7 +135,7 @@ public class SysBudgetAmountAction extends ActionSupport<SysBudgetAmount> {
                 idSets=new HashSet<String>();
                 budgetAmountMap=new HashMap<String, Double>();
                 for(SysBudgetAmount budgetAmount:sysBudgetAmountList){
-                    idSets.add(get(budgetAmount,"typeId.id")+"_"+get(budgetAmount,"titleId.id"));
+                    idSets.add(get(budgetAmount,"typeId.id")+"_"+get(budgetAmount,"titleId.id")+"_"+get(budgetAmount,"titleId.titleName"));
                     budgetAmountMap.put(get(budgetAmount,"typeId.id")+"_"+get(budgetAmount,"titleId.id")+"_"+budgetAmount.getMonth(),
                             budgetAmount.getAmount());
                 }
@@ -220,7 +200,8 @@ public class SysBudgetAmountAction extends ActionSupport<SysBudgetAmount> {
                             }
                         }
                     }
-                    if (sysBudgetAmountList != null && !sysBudgetAmountList.isEmpty()) {
+                    if ((sysBudgetAmountList != null && !sysBudgetAmountList.isEmpty())||
+                            (delBudgeAmountList != null && !delBudgeAmountList.isEmpty())) {
                         this.sysBudgetAmountService.save(delBudgeAmountList,sysBudgetAmountList);
                     }
                 }

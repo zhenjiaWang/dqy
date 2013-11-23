@@ -63,7 +63,7 @@
     });
 </script>
 <div class="r-top clearfix">
-    <p class="text-info text-center lead"><strong>事务申请</strong><em style="font-size: 14px;color: #B94A48;">(No:${wfReq.reqNo?if_exists})</em></p>
+    <p class="text-info text-center lead">事务申请<em style="font-size: 12px;color: #B94A48;">(No:${wfReq.reqNo?if_exists})</em></p>
 </div>
 <!--搜索over-->
     <#if Session["userSession"]?exists>
@@ -86,9 +86,9 @@
                     <td colspan="2">
                         <div class="control-group" style="margin-bottom: 5px;">
                             <label class="control-label" for="wfReq.subject"
-                                   style="width: 60px;color: #898989;font-weight: bold;">标题</label>
+                                   style="width: 60px;color: #898989;">标题</label>
                             <div class="controls" style="margin-left: 70px;">
-                                <label style="margin-top: 5px;padding-left:5px;font-size: 14px;">${wfReq.subject?if_exists}</label>
+                                <label style="margin-top: 5px;padding-left:5px;font-size: 12px;">${wfReq.subject?if_exists}</label>
                             </div>
                         </div>
                     </td>
@@ -97,20 +97,20 @@
                     <td>
                         <div class="control-group" style="margin-bottom: 5px;">
                             <label class="control-label"
-                                   style="width: 60px;color: #898989;font-weight: bold;">申请人</label>
+                                   style="width: 60px;color: #898989;">申请人</label>
 
                             <div class="controls" style="margin-left: 70px;">
-                                <label style="margin-top: 5px;padding-left:5px;font-size: 14px;">${(wfReq.userId.userName)?if_exists}</label>
+                                <label style="margin-top: 5px;padding-left:5px;font-size: 12px;">${(wfReq.userId.userName)?if_exists}</label>
                             </div>
                         </div>
                     </td>
                     <td>
                         <div class="control-group" style="margin-bottom: 5px;">
                             <label class="control-label"
-                                   style="width: 60px;color: #898989;font-weight: bold;">申请时间</label>
+                                   style="width: 60px;color: #898989;">申请时间</label>
 
                             <div class="controls" style="margin-left: 70px;">
-                                <label style="margin-top: 5px;padding-left:5px;font-size: 14px;">${(wfReq.sendDate)?string("yyyy-MM-dd HH:mm")}</label>
+                                <label style="margin-top: 5px;padding-left:5px;font-size: 12px;">${(wfReq.sendDate)?string("yyyy-MM-dd HH:mm")}</label>
                             </div>
                         </div>
                     </td>

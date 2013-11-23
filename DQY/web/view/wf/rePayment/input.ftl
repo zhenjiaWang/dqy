@@ -49,7 +49,7 @@
 
     #example .file-name-heading
     {
-        font-weight: bold;
+
     }
 
     #example .file-size-heading
@@ -346,7 +346,7 @@
 </script>
 <!--搜索begin-->
 <div class="r-top clearfix">
-    <p class="text-info text-center lead"><strong>预支还款申请单</strong></p>
+    <p class="text-info text-center lead">预支还款申请单</p>
 </div>
 <!--搜索over-->
     <#if Session["userSession"]?exists>
@@ -360,7 +360,7 @@
                     <td colspan="2">
                         <div class="control-group" style="margin-bottom: 5px;">
                             <label class="control-label" for="wfReq.subject"
-                                   style="width: 60px;color: #898989;font-weight: bold;">标题</label>
+                                   style="width: 60px;color: #898989;">标题</label>
 
                             <div class="controls" style="margin-left: 70px;">
                                 <input style="width: 95%;" type="text" id="wfReq.subject" name="wfReq.subject"
@@ -374,20 +374,20 @@
                     <td>
                         <div class="control-group" style="margin-bottom: 5px;">
                             <label class="control-label"
-                                   style="width: 60px;color: #898989;font-weight: bold;">申请人</label>
+                                   style="width: 60px;color: #898989;">申请人</label>
 
                             <div class="controls" style="margin-left: 70px;">
-                                <label style="margin-top: 5px;padding-left:5px;font-size: 14px;">${userInfo.userName?if_exists}</label>
+                                <label style="margin-top: 5px;padding-left:5px;font-size: 12px;">${userInfo.userName?if_exists}</label>
                             </div>
                         </div>
                     </td>
                     <td>
                         <div class="control-group" style="margin-bottom: 5px;">
                             <label class="control-label"
-                                   style="width: 60px;color: #898989;font-weight: bold;">申请时间</label>
+                                   style="width: 60px;color: #898989;">申请时间</label>
 
                             <div class="controls" style="margin-left: 70px;">
-                                <label style="margin-top: 5px;padding-left:5px;font-size: 14px;">${sendDate?string("yyyy-MM-dd HH:mm:ss")}</label>
+                                <label style="margin-top: 5px;padding-left:5px;font-size: 12px;">${sendDate?string("yyyy-MM-dd HH:mm:ss")}</label>
                             </div>
                         </div>
                     </td>
@@ -396,7 +396,7 @@
                     <td colspan="2">
                         <div class="control-group" style="margin-bottom: 5px;">
                             <label class="control-label" for="wfReqRePayment.advanceId.id"
-                                   style="width: 60px;color: #898989;font-weight: bold;">预支申请</label>
+                                   style="width: 60px;color: #898989;">预支申请</label>
 
                             <div class="controls" style="margin-left: 70px;">
                                 <select class="int2" style="width: 300px;" id="wfReqRePayment.advanceId.id"
@@ -418,7 +418,7 @@
                     <td>
                         <div class="control-group" style="margin-bottom: 5px;">
                             <label class="control-label" for="wfReqRePayment.amount"
-                                   style="width: 60px;color: #898989;font-weight: bold;">还款金额</label>
+                                   style="width: 60px;color: #898989;">还款金额</label>
 
                             <div class="controls" style="margin-left: 70px;">
                                 <input type="text" id="wfReqRePayment.amount" name="wfReqRePayment.amount"
@@ -430,7 +430,7 @@
                     <td>
                         <div class="control-group" style="margin-bottom: 5px;">
                             <label class="control-label" for="wfReqRePayment.payMethod"
-                                   style="width: 60px;color: #898989;font-weight: bold;">支付方式</label>
+                                   style="width: 60px;color: #898989;">支付方式</label>
 
                             <div class="controls" style="margin-left: 70px;">
                                 <select class="int2 width-160" id="wfReqRePayment.payMethod"
@@ -447,7 +447,7 @@
                     <td colspan="2">
                         <div class="control-group" style="margin-bottom: 5px;">
                             <label class="control-label" for="wfReqRePayment.payee"
-                                   style="width: 60px;color: #898989;font-weight: bold;">收款单位</label>
+                                   style="width: 60px;color: #898989;">收款单位</label>
 
                             <div class="controls" style="margin-left: 70px;">
                                 <input style="width: 95%;" type="text" id="wfReqRePayment.payee" name="wfReqRePayment.payee"
@@ -461,7 +461,7 @@
                     <td>
                         <div class="control-group" style="margin-bottom: 5px;">
                             <label class="control-label" for="wfReqRePayment.bank"
-                                   style="width: 60px;color: #898989;font-weight: bold;">开户行</label>
+                                   style="width: 60px;color: #898989;">开户行</label>
 
                             <div class="controls" style="margin-left: 70px;">
                                 <input type="text" id="wfReqRePayment.bank" name="wfReqRePayment.bank" placeholder="开户行" maxlength="20">
@@ -472,7 +472,7 @@
                     <td>
                         <div class="control-group" style="margin-bottom: 5px;">
                             <label class="control-label" for="wfReqRePayment.bankAccount"
-                                   style="width: 60px;color: #898989;font-weight: bold;">帐号</label>
+                                   style="width: 60px;color: #898989;">帐号</label>
                             <div class="controls" style="margin-left: 70px;">
                                 <input type="text" id="wfReqRePayment.bankAccount" name="wfReqRePayment.bankAccount" placeholder="银行帐号" maxlength="20">
                                 <span class="help-inline"></span>
@@ -484,7 +484,7 @@
                     <td colspan="2">
                         <div class="control-group" style="margin-bottom: 5px;">
                             <label class="control-label" for="wfReqRePayment.remarks"
-                                   style="width: 60px;color: #898989;font-weight: bold;">备注</label>
+                                   style="width: 60px;color: #898989;">备注</label>
 
                             <div class="controls" style="margin-left: 70px;">
                                 <textarea rows="4" style="width: 95%;" class="font12" id="wfReqRePayment.remarks"
@@ -500,12 +500,12 @@
                                class="layout table table-bordered table-hover tableBgColor nomar nopadding">
                             <thead>
                             <tr>
-                                <td width="100"><strong>费用部门</strong></td>
-                                <td width="100"><strong>费用类型</strong></td>
-                                <td width="100"><strong>费用项目</strong></td>
-                                <td width="110"><strong>费用日期</strong></td>
-                                <td width="90"><strong>金额</strong></td>
-                                <td><strong>备注</strong>
+                                <td width="100">费用部门</td>
+                                <td width="100">费用类型</td>
+                                <td width="100">费用项目</td>
+                                <td width="110">费用日期</td>
+                                <td width="90">金额</td>
+                                <td>备注
                                     <a href="#" id="deleteDetail" style="float: right;"><i class="icon-minus"></i>
                                         删除</a>
                                     <a href="#" id="addDetail" style="float: right;"><i class="icon-plus"></i> 增加</a>

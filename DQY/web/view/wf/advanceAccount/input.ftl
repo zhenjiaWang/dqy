@@ -47,7 +47,7 @@
 
     #example .file-name-heading
     {
-        font-weight: bold;
+        
     }
 
     #example .file-size-heading
@@ -224,7 +224,7 @@
 </script>
 <!--搜索begin-->
 <div class="r-top clearfix">
-    <p class="text-info text-center lead"><strong>预支申请单</strong></p>
+    <p class="text-info text-center lead">预支申请单</p>
 </div>
 <!--搜索over-->
     <#if Session["userSession"]?exists>
@@ -238,7 +238,7 @@
                     <td colspan="2">
                         <div class="control-group" style="margin-bottom: 5px;">
                             <label class="control-label" for="wfReq.subject"
-                                   style="width: 60px;color: #898989;font-weight: bold;">标题</label>
+                                   style="width: 60px;color: #898989;">标题</label>
 
                             <div class="controls" style="margin-left: 70px;">
                                 <input style="width: 95%;" type="text" id="wfReq.subject" name="wfReq.subject"
@@ -252,20 +252,20 @@
                     <td>
                         <div class="control-group" style="margin-bottom: 5px;">
                             <label class="control-label"
-                                   style="width: 60px;color: #898989;font-weight: bold;">申请人</label>
+                                   style="width: 60px;color: #898989;">申请人</label>
 
                             <div class="controls" style="margin-left: 70px;">
-                                <label style="margin-top: 5px;padding-left:5px;font-size: 14px;">${userInfo.userName?if_exists}</label>
+                                <label style="margin-top: 5px;padding-left:5px;font-size: 12px;">${userInfo.userName?if_exists}</label>
                             </div>
                         </div>
                     </td>
                     <td>
                         <div class="control-group" style="margin-bottom: 5px;">
                             <label class="control-label"
-                                   style="width: 60px;color: #898989;font-weight: bold;">申请时间</label>
+                                   style="width: 60px;color: #898989;">申请时间</label>
 
                             <div class="controls" style="margin-left: 70px;">
-                                <label style="margin-top: 5px;padding-left:5px;font-size: 14px;">${sendDate?string("yyyy-MM-dd HH:mm:ss")}</label>
+                                <label style="margin-top: 5px;padding-left:5px;font-size: 12px;">${sendDate?string("yyyy-MM-dd HH:mm:ss")}</label>
                             </div>
                         </div>
                     </td>
@@ -274,7 +274,7 @@
                     <td>
                         <div class="control-group" style="margin-bottom: 5px;">
                             <label class="control-label" for="wfReqAdvanceAccount.amount"
-                                   style="width: 60px;color: #898989;font-weight: bold;">预支金额</label>
+                                   style="width: 60px;color: #898989;">预支金额</label>
 
                             <div class="controls" style="margin-left: 70px;">
                                 <input type="text" id="wfReqAdvanceAccount.amount" name="wfReqAdvanceAccount.amount" placeholder="预支金额" maxlength="10">
@@ -285,7 +285,7 @@
                     <td>
                         <div class="control-group" style="margin-bottom: 5px;">
                             <label class="control-label" for="wfReqAdvanceAccount.payMethod"
-                                   style="width: 60px;color: #898989;font-weight: bold;">支付方式</label>
+                                   style="width: 60px;color: #898989;">支付方式</label>
 
                             <div class="controls" style="margin-left: 70px;" >
                                 <select class="int2 width-160" id="wfReqAdvanceAccount.payMethod" name="wfReqAdvanceAccount.payMethod">
@@ -301,7 +301,7 @@
                     <td colspan="2">
                         <div class="control-group" style="margin-bottom: 5px;">
                             <label class="control-label" for="wfReqAdvanceAccount.payee"
-                                   style="width: 60px;color: #898989;font-weight: bold;">收款单位</label>
+                                   style="width: 60px;color: #898989;">收款单位</label>
 
                             <div class="controls" style="margin-left: 70px;">
                                 <input style="width: 95%;" type="text" id="wfReqAdvanceAccount.payee" name="wfReqAdvanceAccount.payee"
@@ -315,7 +315,7 @@
                     <td>
                         <div class="control-group" style="margin-bottom: 5px;">
                             <label class="control-label" for="wfReqAdvanceAccount.bank"
-                                   style="width: 60px;color: #898989;font-weight: bold;">开户行</label>
+                                   style="width: 60px;color: #898989;">开户行</label>
 
                             <div class="controls" style="margin-left: 70px;">
                                 <input type="text" id="wfReqAdvanceAccount.bank" name="wfReqAdvanceAccount.bank" placeholder="开户行" maxlength="20">
@@ -326,7 +326,7 @@
                     <td>
                         <div class="control-group" style="margin-bottom: 5px;">
                             <label class="control-label" for="wfReqAdvanceAccount.bankAccount"
-                                   style="width: 60px;color: #898989;font-weight: bold;">帐号</label>
+                                   style="width: 60px;color: #898989;">帐号</label>
                             <div class="controls" style="margin-left: 70px;">
                                 <input type="text" id="wfReqAdvanceAccount.bankAccount" name="wfReqAdvanceAccount.bankAccount" placeholder="银行帐号" maxlength="20">
                                 <span class="help-inline"></span>
@@ -338,7 +338,7 @@
                     <td colspan="2">
                         <div class="control-group" style="margin-bottom: 5px;">
                             <label class="control-label" for="wfReqAdvanceAccount.purpose"
-                                   style="width: 60px;color: #898989;font-weight: bold;">用途</label>
+                                   style="width: 60px;color: #898989;">用途</label>
 
                             <div class="controls" style="margin-left: 70px;">
                                 <textarea rows="2" style="width: 95%;" class=" font12" id="wfReqAdvanceAccount.purpose" name="wfReqAdvanceAccount.purpose" maxlength="100"></textarea>
@@ -351,7 +351,7 @@
                     <td colspan="2">
                         <div class="control-group" style="margin-bottom: 5px;">
                             <label class="control-label" for="wfReqAdvanceAccount.remarks"
-                                   style="width: 60px;color: #898989;font-weight: bold;">备注</label>
+                                   style="width: 60px;color: #898989;">备注</label>
 
                             <div class="controls" style="margin-left: 70px;">
                                 <textarea rows="4" style="width: 95%;" class="font12" id="wfReqAdvanceAccount.remarks" name="wfReqAdvanceAccount.remarks" maxlength="400"></textarea>

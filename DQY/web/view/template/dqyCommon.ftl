@@ -64,7 +64,7 @@
                 <!--天气begin-->
                 <div class="weather"></div>
                 <!--天气over-->
-                <ul class="nav font18 clearfix floatleft" id="topMenu">
+                <ul class="nav font14 clearfix floatleft" id="topMenu">
                     <li class="index"><a href="/common/login!index.dhtml"><em></em>首 页</a></li>
                     <li class="apply"><a href="/wf/advanceAccount.dhtml"><em></em>申请平台</a></li>
                     <li class="info no"><a href="#"><em></em>信息平台</a></li>
@@ -93,7 +93,7 @@
                         </#if>
                     </ul>
                 </div>
-                <p class="clearfix mart20 p-top5 font14 aligncenter">
+                <p class="clearfix mart20 p-top5 font12 aligncenter">
                     <a href="#"><em class="dqy-ico dqy-ico-set"></em>帐户设置</a> |
                     <a href="/common/login!logout.dhtml"><em class="dqy-ico dqy-ico-out"></em>退出登录</a>
                 </p>

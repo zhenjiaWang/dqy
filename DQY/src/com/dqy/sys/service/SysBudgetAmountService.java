@@ -71,7 +71,10 @@ public class SysBudgetAmountService extends HQuery {
         if(delBudgetAmountList!=null&&!delBudgetAmountList.isEmpty()){
             this.delete(delBudgetAmountList);
         }
-        $(sysBudgetAmountList).save();
+        if(sysBudgetAmountList!=null&&!sysBudgetAmountList.isEmpty()){
+            $(sysBudgetAmountList).save();
+        }
+
     }
 
     @Transactional(type = TransactionType.READ_WRITE)

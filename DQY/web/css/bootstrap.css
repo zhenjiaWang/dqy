@@ -961,7 +961,7 @@ table {
   word-wrap: break-word;word-break: break-all;
 }
 .table th {
-  font-weight: bold;
+  font-weight: normal;
 }
 .table thead th {
   vertical-align: bottom;
@@ -1206,7 +1206,7 @@ input,
 button,
 select,
 textarea {
-  font-size: 14px;
+  font-size: 12px;
   font-weight: normal;
   line-height: 20px;
 }
@@ -1241,7 +1241,7 @@ input[type="color"],
   height: 20px;
   padding: 1.5px 6px;
   margin-bottom: 10px;
-  font-size: 14px;
+  font-size: 12px;
   line-height: 20px;
   color: #555555;
   -webkit-border-radius: 4px;
@@ -2036,7 +2036,7 @@ legend + .control-group {
   *zoom: 1;
   padding: 4px 12px;
   margin-bottom: 0;
-  font-size: 14px;
+  font-size: 12px;
   line-height: 20px;
   text-align: center;
   vertical-align: middle;

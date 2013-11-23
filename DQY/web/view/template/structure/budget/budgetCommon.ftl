@@ -43,7 +43,7 @@
         <#--</dl>-->
         <!--左侧目录树begin-->
         <div class="side-left floatleft marl15">
-            <div class="side-left-in font14">
+            <div class="side-left-in font12">
                 <!--一组begin-->
                 <ul class="item-nav"><!--ul上的current是为了控制当前这一组的背景色，li上的current是为了控制二级菜单-->
                     <li class="budgetAmount">
@@ -72,7 +72,7 @@
         <div class="right-main floatleft">
             <!--当前位置begin-->
             <div class="location clearfix">
-                <span class="font14 currentLocation" ></span>
+                <span class="font12 currentLocation" ></span>
                 <em><img src="../../images/cssimg/now-r.jpg"></em>
                 <div class="floatright marr15">
                     <em>当前位置：</em>
@@ -82,7 +82,7 @@
                 </div>
             </div>
             <!--当前位置over-->
-            <div class="right-inner mart5">
+            <div class="right-inner mart5 font12">
                 <#nested/>
             </div>
         </div>

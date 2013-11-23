@@ -10,7 +10,7 @@
     <div class="clearfix">
         <!--左侧四块begin-->
         <div class="left-count floatleft">
-            <div class="item font14">
+            <div class="item font12">
                 <h2 class="clearfix">
                     <strong class="floatleft  marl5"><em class="dqy-ico dqy-ico-board"></em>公告栏</strong>
                     <a title="查看更多" class="more floatright marr10" href="#"><img src="../images/cssimg/more.jpg"></a>
@@ -38,7 +38,7 @@
                     </li>
                 </ul>
             </div>
-            <div class="item font14">
+            <div class="item font12">
                 <h2 class="clearfix">
                     <strong class="floatleft  marl5"><em class="dqy-ico dqy-ico-post"></em>我的申请</strong>
                     <a title="查看更多" class="more floatright marr10" href="/wf/req!ingList.dhtml"><img src="../images/cssimg/more.jpg"></a>
@@ -62,7 +62,7 @@
                     </#if>
                 </ul>
             </div>
-            <div class="item font14">
+            <div class="item font12">
                 <h2 class="clearfix">
                     <strong class="floatleft  marl5"><em class="dqy-ico dqy-ico-task"></em>我的事务</strong>
                     <a title="查看更多" class="more floatright marr10" href="#"><img src="../images/cssimg/more.jpg"></a>
@@ -90,7 +90,7 @@
                     </li>
                 </ul>
             </div>
-            <div class="item font14">
+            <div class="item font12">
                 <h2 class="clearfix">
                     <strong class="floatleft  marl5"><em class="dqy-ico dqy-ico-re"></em>我的审批</strong>
                     <a title="查看更多" class="more floatright marr10" href="/wf/reqTask!approveList.dhtml"><img src="../images/cssimg/more.jpg"></a>

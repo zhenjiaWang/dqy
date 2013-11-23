@@ -49,7 +49,7 @@
 
     #example .file-name-heading
     {
-        font-weight: bold;
+
     }
 
     #example .file-size-heading
@@ -386,7 +386,7 @@
 </script>
 <!--搜索begin-->
 <div class="r-top clearfix">
-    <p class="text-info text-center lead"><strong>费用报销申请</strong></p>
+    <p class="text-info text-center lead">费用报销申请</p>
 </div>
 <!--搜索over-->
     <#if Session["userSession"]?exists>
@@ -400,7 +400,7 @@
                     <td colspan="2">
                         <div class="control-group" style="margin-bottom: 5px;">
                             <label class="control-label" for="wfReq.subject"
-                                   style="width: 60px;color: #898989;font-weight: bold;">标题</label>
+                                   style="width: 60px;color: #898989;">标题</label>
 
                             <div class="controls" style="margin-left: 70px;">
                                 <input style="width: 95%;" type="text" id="wfReq.subject" name="wfReq.subject"
@@ -414,20 +414,20 @@
                     <td>
                         <div class="control-group" style="margin-bottom: 5px;">
                             <label class="control-label"
-                                   style="width: 60px;color: #898989;font-weight: bold;">申请人</label>
+                                   style="width: 60px;color: #898989;">申请人</label>
 
                             <div class="controls" style="margin-left: 70px;">
-                                <label style="margin-top: 5px;padding-left:5px;font-size: 14px;">${userInfo.userName?if_exists}</label>
+                                <label style="margin-top: 5px;padding-left:5px;font-size: 12px;">${userInfo.userName?if_exists}</label>
                             </div>
                         </div>
                     </td>
                     <td>
                         <div class="control-group" style="margin-bottom: 5px;">
                             <label class="control-label"
-                                   style="width: 60px;color: #898989;font-weight: bold;">申请时间</label>
+                                   style="width: 60px;color: #898989;">申请时间</label>
 
                             <div class="controls" style="margin-left: 70px;">
-                                <label style="margin-top: 5px;padding-left:5px;font-size: 14px;">${sendDate?string("yyyy-MM-dd HH:mm:ss")}</label>
+                                <label style="margin-top: 5px;padding-left:5px;font-size: 12px;">${sendDate?string("yyyy-MM-dd HH:mm:ss")}</label>
                             </div>
                         </div>
                     </td>
@@ -436,7 +436,7 @@
                     <td colspan="2">
                         <div class="control-group" style="margin-bottom: 5px;">
                             <label class="control-label" for="wfReqDaily.payee"
-                                   style="width: 60px;color: #898989;font-weight: bold;">收款单位</label>
+                                   style="width: 60px;color: #898989;">收款单位</label>
 
                             <div class="controls" style="margin-left: 70px;">
                                 <input style="width: 95%;" type="text" id="wfReqDaily.payee" name="wfReqDaily.payee"
@@ -450,7 +450,7 @@
                     <td>
                         <div class="control-group" style="margin-bottom: 5px;">
                             <label class="control-label" for="wfReqDaily.bank"
-                                   style="width: 60px;color: #898989;font-weight: bold;">开户行</label>
+                                   style="width: 60px;color: #898989;">开户行</label>
 
                             <div class="controls" style="margin-left: 70px;">
                                 <input type="text" id="wfReqDaily.bank" name="wfReqDaily.bank" placeholder="开户行" maxlength="20">
@@ -461,7 +461,7 @@
                     <td>
                         <div class="control-group" style="margin-bottom: 5px;">
                             <label class="control-label" for="wfReqDaily.bankAccount"
-                                   style="width: 60px;color: #898989;font-weight: bold;">帐号</label>
+                                   style="width: 60px;color: #898989;">帐号</label>
                             <div class="controls" style="margin-left: 70px;">
                                 <input type="text" id="wfReqDaily.bankAccount" name="wfReqDaily.bankAccount" placeholder="银行帐号" maxlength="20">
                                 <span class="help-inline"></span>
@@ -473,7 +473,7 @@
                     <td >
                         <div class="control-group" style="margin-bottom: 5px;">
                             <label class="control-label" for="wfReqDaily.amount"
-                                   style="width: 60px;color: #898989;font-weight: bold;">报销金额</label>
+                                   style="width: 60px;color: #898989;">报销金额</label>
 
                             <div class="controls" style="margin-left: 70px;">
                                 <input type="text" id="wfReqDaily.amount" name="wfReqDaily.amount"
@@ -485,7 +485,7 @@
                     <td>
                         <div class="control-group" style="margin-bottom: 5px;">
                             <label class="control-label" for="wfReqDaily.trueAmount"
-                                   style="width: 60px;color: #898989;font-weight: bold;">实际金额</label>
+                                   style="width: 60px;color: #898989;">实际金额</label>
                             <div class="controls" style="margin-left: 70px;">
                                 <input type="text" id="wfReqDaily.trueAmount" name="wfReqDaily.trueAmount" placeholder="花费金额" maxlength="20" readonly="readonly">
                                 <span class="help-inline"></span>
@@ -497,7 +497,7 @@
                     <td colspan="2">
                         <div class="control-group" style="margin-bottom: 5px;">
                             <label class="control-label" for="wfReqDaily.remarks"
-                                   style="width: 60px;color: #898989;font-weight: bold;">备注</label>
+                                   style="width: 60px;color: #898989;">备注</label>
 
                             <div class="controls" style="margin-left: 70px;">
                                 <textarea rows="4" style="width: 95%;" class="font12" id="wfReqDaily.remarks"
@@ -513,11 +513,11 @@
                                class="layout table table-bordered table-hover tableBgColor nomar nopadding">
                             <thead>
                             <tr>
-                                <td width="100"><strong>费用部门</strong></td>
-                                <td width="100"><strong>费用类型</strong></td>
-                                <td width="100"><strong>费用项目</strong></td>
-                                <td width="110"><strong>费用日期</strong></td>
-                                <td width="80"><strong>金额</strong></td>
+                                <td width="100">费用部门</td>
+                                <td width="100">费用类型</td>
+                                <td width="100">费用项目</td>
+                                <td width="110">费用日期</td>
+                                <td width="80">金额</td>
                                 <td>
                                     <a href="/wf/daily.dhtml" id="trueDetail" style="float: right;"><i class="icon-eye-close"></i>&nbsp;</a>
                                     <a href="#" type="1" class="deleteDetail" style="float: right;"><i class="icon-minus"></i>
@@ -578,11 +578,11 @@
                                class="layout table table-bordered table-hover tableBgColor nomar nopadding">
                             <thead>
                             <tr>
-                                <td width="100"><strong>费用部门</strong></td>
-                                <td width="100"><strong>费用类型</strong></td>
-                                <td width="100"><strong>费用项目</strong></td>
-                                <td width="110"><strong>费用日期</strong></td>
-                                <td width="80"><strong>金额</strong></td>
+                                <td width="100">费用部门</td>
+                                <td width="100">费用类型</td>
+                                <td width="100">费用项目</td>
+                                <td width="110">费用日期</td>
+                                <td width="80">金额</td>
                                 <td>
                                     <a href="/wf/daily.dhtml" id="trueDetail" style="float: right;"><i class="icon-eye-close"></i>&nbsp;</a>
                                     <a href="#" type="2" class="deleteDetail" style="float: right;"><i class="icon-minus"></i>

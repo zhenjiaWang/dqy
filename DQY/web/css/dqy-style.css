@@ -54,7 +54,7 @@ div.width-120 .dqy-clander{position:absolute;right:0;top:4px;}
 .header{height:90px;background: url(../images/cssimg/header-bg.jpg) repeat-x;}
 .logo{margin:10px 0 0 50px;display:block;}
 .nav{margin:0;}
-.nav li{float:left;font-weight: bold;margin-left:25px;padding-top: 10px;}
+.nav li{float:left;margin-left:25px;padding-top: 10px;}
 .nav li a{color:#919191;display: inline-block;border-bottom: 3px solid transparent;*padding-bottom:1px;position: relative;}
 .nav li a em{display:inline-block;width:23px;height:23px;font-size: 0;line-height:0;margin-right:5px;}
 .nav li a:hover,.nav li.current a{border-bottom:3px solid #8fc120;}
@@ -69,7 +69,7 @@ span.ts{display: inline-block;width:8px;height:8px;font-size: 0;line-height:0;ba
 .banner{width:730px;height:130px;margin:0 auto;}
 .top-bar{width:236px;height:81px;background:url(../images/cssimg/top-bar.png);position:absolute;top:0;right:10px;z-index: 20;}
 .search-box{width:190px;height:24px;border:1px solid #d9d9d9;display:block;background:#f9f9f9;line-height:24px;color:#d9d9d9;position:relative;left:20px;top:15px;z-index: 20;}
-.search-box span{padding-left:5px;font-size: 14px;}
+.search-box span{padding-left:5px;font-size: 12px;}
 a.triangle{display:inline-block;border-width:6px;border-color:#95c42d #f9f9f9  #f9f9f9 #f9f9f9;border-style: solid;position: absolute;right:12px;top:8px;line-height:0;font-size:0;}
 .search-box ul{border:1px solid #d9d9d9;border-top:0;background:#f9f9f9;width:190px;position: absolute;left:-1px;z-index:20;top:24px;display:none;}
 .search-box ul li a{line-height: 20px;padding-left:5px;color:#666;}
@@ -162,7 +162,7 @@ textarea{height:auto; vertical-align: text-top;}
 .eidt:hover{color:#c93d45;}
 .layout{margin-bottom:10px;}
 .layout tr td{line-height:35px;vertical-align: middle;}
-.layout thead td{background: #f7f7f7;font-size: 14px;color:#898989;}
+.layout thead td{background: #f7f7f7;font-size: 12px;color:#898989;}
 .layout tr:even td,.layout tr.tr-bg td{background:#F7F7F7;}
 .layout strong{padding:0 6px;}
 .table-scroll{width:745px;height:320px;overflow-y:scroll;border:1px solid #ccc;border-width:0 1px 1px 1px;}

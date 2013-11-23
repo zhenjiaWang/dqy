@@ -63,7 +63,7 @@
     });
 </script>
 <div class="r-top clearfix">
-    <p class="text-info text-center lead"><strong>预支还款申请单</strong><em style="font-size: 14px;color: #B94A48;">(No:${wfReq.reqNo?if_exists})</em></p>
+    <p class="text-info text-center lead">预支还款申请单<em style="font-size: 12px;color: #B94A48;">(No:${wfReq.reqNo?if_exists})</em></p>
 </div>
 <!--搜索over-->
     <#if Session["userSession"]?exists>
@@ -86,9 +86,9 @@
                     <td colspan="2">
                         <div class="control-group" style="margin-bottom: 5px;">
                             <label class="control-label" for="wfReq.subject"
-                                   style="width: 60px;color: #898989;font-weight: bold;">标题</label>
+                                   style="width: 60px;color: #898989;">标题</label>
                             <div class="controls" style="margin-left: 70px;">
-                                <label style="margin-top: 5px;padding-left:5px;font-size: 14px;">${wfReq.subject?if_exists}</label>
+                                <label style="margin-top: 5px;padding-left:5px;font-size: 12px;">${wfReq.subject?if_exists}</label>
                             </div>
                         </div>
                     </td>
@@ -97,20 +97,20 @@
                     <td>
                         <div class="control-group" style="margin-bottom: 5px;">
                             <label class="control-label"
-                                   style="width: 60px;color: #898989;font-weight: bold;">申请人</label>
+                                   style="width: 60px;color: #898989;">申请人</label>
 
                             <div class="controls" style="margin-left: 70px;">
-                                <label style="margin-top: 5px;padding-left:5px;font-size: 14px;">${(wfReq.userId.userName)?if_exists}</label>
+                                <label style="margin-top: 5px;padding-left:5px;font-size: 12px;">${(wfReq.userId.userName)?if_exists}</label>
                             </div>
                         </div>
                     </td>
                     <td>
                         <div class="control-group" style="margin-bottom: 5px;">
                             <label class="control-label"
-                                   style="width: 60px;color: #898989;font-weight: bold;">申请时间</label>
+                                   style="width: 60px;color: #898989;">申请时间</label>
 
                             <div class="controls" style="margin-left: 70px;">
-                                <label style="margin-top: 5px;padding-left:5px;font-size: 14px;">${(wfReq.sendDate)?string("yyyy-MM-dd HH:mm")}</label>
+                                <label style="margin-top: 5px;padding-left:5px;font-size: 12px;">${(wfReq.sendDate)?string("yyyy-MM-dd HH:mm")}</label>
                             </div>
                         </div>
                     </td>
@@ -119,20 +119,20 @@
                     <td>
                         <div class="control-group" style="margin-bottom: 5px;">
                             <label class="control-label" for="wfReqRePayment.amount"
-                                   style="width: 60px;color: #898989;font-weight: bold;">还款金额</label>
+                                   style="width: 60px;color: #898989;">还款金额</label>
 
                             <div class="controls" style="margin-left: 70px;">
-                                <label style="margin-top: 5px;padding-left:5px;font-size: 14px;">${(wfReqRePayment.amount)?double}</label>
+                                <label style="margin-top: 5px;padding-left:5px;font-size: 12px;">${(wfReqRePayment.amount)?double}</label>
                             </div>
                         </div>
                     </td>
                     <td>
                         <div class="control-group" style="margin-bottom: 5px;">
                             <label class="control-label" for="wfReqRePayment.payMethod"
-                                   style="width: 60px;color: #898989;font-weight: bold;">支付方式</label>
+                                   style="width: 60px;color: #898989;">支付方式</label>
 
                             <div class="controls" style="margin-left: 70px;" >
-                                <label style="margin-top: 5px;padding-left:5px;font-size: 14px;">
+                                <label style="margin-top: 5px;padding-left:5px;font-size: 12px;">
                                     <#if wfReqRePayment.payMethod?exists>
                                         <#if wfReqRePayment.payMethod==1>
                                             现金
@@ -153,10 +153,10 @@
                             <td colspan="2">
                                 <div class="control-group" style="margin-bottom: 5px;">
                                     <label class="control-label" for="wfReq.subject"
-                                           style="width: 60px;color: #898989;font-weight: bold;">收款单位</label>
+                                           style="width: 60px;color: #898989;">收款单位</label>
 
                                     <div class="controls" style="margin-left: 70px;">
-                                        <label style="margin-top: 5px;padding-left:5px;font-size: 14px;word-wrap: break-word;word-break: break-all;">${wfReqRePayment.payee?if_exists}</label>
+                                        <label style="margin-top: 5px;padding-left:5px;font-size: 12px;word-wrap: break-word;word-break: break-all;">${wfReqRePayment.payee?if_exists}</label>
                                     </div>
                                 </div>
                             </td>
@@ -165,20 +165,20 @@
                             <td>
                                 <div class="control-group" style="margin-bottom: 5px;">
                                     <label class="control-label"
-                                           style="width: 60px;color: #898989;font-weight: bold;">开户行</label>
+                                           style="width: 60px;color: #898989;">开户行</label>
 
                                     <div class="controls" style="margin-left: 70px;">
-                                        <label style="margin-top: 5px;padding-left:5px;font-size: 14px;">${(wfReqRePayment.bank)?if_exists}</label>
+                                        <label style="margin-top: 5px;padding-left:5px;font-size: 12px;">${(wfReqRePayment.bank)?if_exists}</label>
                                     </div>
                                 </div>
                             </td>
                             <td>
                                 <div class="control-group" style="margin-bottom: 5px;">
                                     <label class="control-label"
-                                           style="width: 60px;color: #898989;font-weight: bold;">帐号</label>
+                                           style="width: 60px;color: #898989;">帐号</label>
 
                                     <div class="controls" style="margin-left: 70px;">
-                                        <label style="margin-top: 5px;padding-left:5px;font-size: 14px;">${(wfReqRePayment.bankAccount)?if_exists}</label>
+                                        <label style="margin-top: 5px;padding-left:5px;font-size: 12px;">${(wfReqRePayment.bankAccount)?if_exists}</label>
                                     </div>
                                 </div>
                             </td>
@@ -192,12 +192,12 @@
                                    class="layout table table-bordered table-hover tableBgColor nomar nopadding">
                                 <thead>
                                 <tr>
-                                    <td width="100"><strong>费用部门</strong></td>
-                                    <td width="100"><strong>费用类型</strong></td>
-                                    <td width="100"><strong>费用项目</strong></td>
-                                    <td width="110"><strong>费用日期</strong></td>
-                                    <td width="90"><strong>金额</strong></td>
-                                    <td><strong>备注</strong>
+                                    <td width="100">费用部门</td>
+                                    <td width="100">费用类型</td>
+                                    <td width="100">费用项目</td>
+                                    <td width="110">费用日期</td>
+                                    <td width="90">金额</td>
+                                    <td>备注
                                     </td>
                                 </tr>
                                 </thead>
@@ -221,10 +221,10 @@
                     <td colspan="2">
                         <div class="control-group" style="margin-bottom: 5px;">
                             <label class="control-label" for="wfReqRePayment.remarks"
-                                   style="width: 60px;color: #898989;font-weight: bold;">备注</label>
+                                   style="width: 60px;color: #898989;">备注</label>
 
                             <div class="controls" style="margin-left: 70px;">
-                                <label style="margin-top: 5px;padding-left:5px;font-size: 14px;">${(wfReqRePayment.remarks)?if_exists}</label>
+                                <label style="margin-top: 5px;padding-left:5px;font-size: 12px;">${(wfReqRePayment.remarks)?if_exists}</label>
                             </div>
                         </div>
                     </td>
