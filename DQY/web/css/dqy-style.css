@@ -269,9 +269,9 @@ table.print-table td,table.print-table th{border:1px solid #000;line-height: 30p
 .print-title{width:600px;}
 /*2013-11-23*/
 .scroll-x{padding-top:37px;position: relative;overflow-x:scroll;}
-.scroll-x-inner{width:1715px;height:480px;overflow:hidden;overflow-y:scroll;}
-.top-fied{width:1715px;position:absolute;left:0;top:0;padding-right:16px;}
-.top-fied table{width:1715px;}
+.scroll-x-inner{width:1631px;height:480px;overflow:hidden;overflow-y:scroll;}
+.top-fied{width:1631px;position:absolute;left:0;top:0;padding-right:16px;}
+.top-fied table{width:1631px;}
 .top-fied table td{padding:0 10px!important;}
 
 
