@@ -344,99 +344,200 @@
             <tr>
                 <td colspan="2">
                     <div class="scroll-x mart10">
+                    <div class="top-fied">
+                        <table class="layout table table-bordered table-hover tableBgColor nomar nopadding ">
+                            <thead>
+                            <tr>
+                                <td width="113"><strong>归属部门</strong></td>
+                                <td width="113"><strong>费用类别</strong></td>
+                                <td width="136"><strong>费用名称</strong></td>
+                                <td width="94"><strong>费用名称</strong></td>
+                                <td width="94"><strong>1月</strong></td>
+                                <td width="94"><strong>2月</strong></td>
+                                <td width="94"><strong>3月</strong></td>
+                                <td width="94"><strong>4月</strong></td>
+                                <td width="94"><strong>5月</strong></td>
+                                <td width="94"><strong>6月</strong></td>
+                                <td width="94"><strong>7月</strong></td>
+                                <td width="94"><strong>8月</strong></td>
+                                <td width="94"><strong>9月</strong></td>
+                                <td width="94"><strong>10月</strong></td>
+                                <td width="94"><strong>11月</strong></td>
+                                <td width="94"><strong>12月</strong></td>
+                            </tr>
+                            </thead>
+                        </table>
+                    </div>
+
+
+                        <div class="scroll-x-inner">
+                        <table class="layout table table-bordered table-hover tableBgColor nomar nopadding">
+                        <tbody>
                         <#if typeList?exists&&typeList?size gt 0>
-                                <table class="layout table table-bordered table-hover tableBgColor nomar nopadding">
-                                    <thead>
-                                    <tr>
-                                        <td style="width: 160px;">归属部门</td>
-                                        <td width="160">费用类别</td>
-                                        <td width="160">会计科目</td>
-                                        <td width="120">年合计</td>
-                                        <td width="100">1月</td>
-                                        <td width="100">2月</td>
-                                        <td width="100">3月</td>
-                                        <td width="100">4月</td>
-                                        <td width="100">5月</td>
-                                        <td width="100">6月</td>
-                                        <td width="100">7月</td>
-                                        <td width="100">8月</td>
-                                        <td width="100">9月</td>
-                                        <td width="100">10月</td>
-                                        <td width="100">11月</td>
-                                        <td width="100">12月</td>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                <#if sysBudgetAmountList?exists&&sysBudgetAmountList?size gt 0&&rows?exists>
-                                    <#list 1..rows as int>
-                                    <tr index="${int?c}">
-                                        <td width="160">
-                                            <select class="int2 width-100">
-                                                <option>${hrDepartment.deptName?if_exists}</option>
-                                            </select>
-                                        </td>
-                                        <td width="160">
-                                            <select class="int2 width-100" id="typeId${int?c}" name="typeId${int?c}">
-                                                <#list typeList as type>
-                                                    <option value="${type.id?c}">${type.expenseType?if_exists}</option>
-                                                </#list>
-                                            </select>
-                                        </td>
-                                        <td width="160">
-                                            <input  class="width-100 km" type="text" id="titleName${int?c}" name="titleName${int?c}" placeholder="财务科目"
-                                                    readonly="readonly">
-                                            <input name="titleId${int?c}" id="titleId${int?c}" type="hidden"/>
-                                        </td>
+                            <#if sysBudgetAmountList?exists&&sysBudgetAmountList?size gt 0&&rows?exists>
+                                <#list 1..rows as int>
+                                <tr index="${int?c}">
+                                    <td width="160">
+                                        <select class="int2 width-100">
+                                            <option>${hrDepartment.deptName?if_exists}</option>
+                                        </select>
+                                    </td>
+                                    <td width="160">
+                                        <select class="int2 width-100" id="typeId${int?c}" name="typeId${int?c}">
+                                            <#list typeList as type>
+                                                <option value="${type.id?c}">${type.expenseType?if_exists}</option>
+                                            </#list>
+                                        </select>
+                                    </td>
+                                    <td width="160">
+                                        <input  class="width-100 km" type="text" id="titleName${int?c}" name="titleName${int?c}" placeholder="财务科目"
+                                                readonly="readonly">
+                                        <input name="titleId${int?c}" id="titleId${int?c}" type="hidden"/>
+                                    </td>
+                                    <td width="100">
+                                        <input type="text" id="amountTotal${int?c}" name="amountTotal${int?c}" class="int1 width-70" value="0.00" readonly="readonly"/>
+                                    </td>
+                                    <#list 1..12 as c>
                                         <td width="100">
-                                            <input type="text" id="amountTotal${int?c}" name="amountTotal${int?c}" class="int1 width-70" value="0.00" readonly="readonly"/>
+                                            <input type="text" id="amount${int?c}_${c?c}" name="amount${int?c}_${c?c}" class="int1 width-70 amt" value="0.00"/>
                                         </td>
-                                        <#list 1..12 as c>
-                                            <td width="100">
-                                                <input type="text" id="amount${int?c}_${c?c}" name="amount${int?c}_${c?c}" class="int1 width-70 amt" value="0.00"/>
-                                            </td>
-                                        </#list>
-                                    </tr>
                                     </#list>
-                                <#else >
-                                    <#list 1..10 as int>
-                                    <tr index="${int?c}">
-                                        <td width="160">
-                                            <select class="int2 width-100">
-                                                <option>${hrDepartment.deptName?if_exists}</option>
-                                            </select>
-                                        </td>
-                                        <td width="160">
-                                            <select class="int2 width-100" id="typeId${int?c}" name="typeId${int?c}">
-                                                <#list typeList as type>
-                                                    <option value="${type.id?c}">${type.expenseType?if_exists}</option>
-                                                </#list>
-                                            </select>
-                                        </td>
-                                        <td width="160">
-                                            <input  class="width-100 km" type="text" id="titleName${int?c}" name="titleName${int?c}" placeholder="财务科目"
-                                                    readonly="readonly">
-                                            <input name="titleId${int?c}" id="titleId${int?c}" type="hidden"/>
-                                        </td>
+                                </tr>
+                                </#list>
+                            <#else >
+                                <#list 1..10 as int>
+                                <tr index="${int?c}">
+                                    <td width="160">
+                                        <select class="int2 width-100">
+                                            <option>${hrDepartment.deptName?if_exists}</option>
+                                        </select>
+                                    </td>
+                                    <td width="160">
+                                        <select class="int2 width-100" id="typeId${int?c}" name="typeId${int?c}">
+                                            <#list typeList as type>
+                                                <option value="${type.id?c}">${type.expenseType?if_exists}</option>
+                                            </#list>
+                                        </select>
+                                    </td>
+                                    <td width="160">
+                                        <input  class="width-100 km" type="text" id="titleName${int?c}" name="titleName${int?c}" placeholder="财务科目"
+                                                readonly="readonly">
+                                        <input name="titleId${int?c}" id="titleId${int?c}" type="hidden"/>
+                                    </td>
+                                    <td width="100">
+                                        <input type="text" id="amountTotal${int?c}" name="amountTotal${int?c}" class="int1 width-70" value="0.00" readonly="readonly"/>
+                                    </td>
+                                    <#list 1..12 as c>
                                         <td width="100">
-                                            <input type="text" id="amountTotal${int?c}" name="amountTotal${int?c}" class="int1 width-70" value="0.00" readonly="readonly"/>
+                                            <input type="text" id="amount${int?c}_${c?c}" name="amount${int?c}_${c?c}" class="int1 width-70 amt" value="0.00"/>
                                         </td>
-                                        <#list 1..12 as c>
-                                            <td width="100">
-                                                <input type="text" id="amount${int?c}_${c?c}" name="amount${int?c}_${c?c}" class="int1 width-70 amt" value="0.00"/>
-                                            </td>
-                                        </#list>
-                                    </tr>
                                     </#list>
-                                </#if>
-                                    <tr id="addTr">
-                                        <td colspan="15" style="padding-left: 5px;">
-                                            <button class="btn" type="button" id="addBudget">增加预算项目行</button>
-                                            <button class="btn" type="button" id="deleteBudget">删除预算项目行</button>
-                                        </td>
-                                    </tr>
-                                    </tbody>
-                                </table>
+                                </tr>
+                                </#list>
+                            </#if>
+                            <tr id="addTr">
+                                <td colspan="15" style="padding-left: 5px;">
+                                    <button class="btn" type="button" id="addBudget">增加预算项目行</button>
+                                    <button class="btn" type="button" id="deleteBudget">删除预算项目行</button>
+                                </td>
+                            </tr>
                         </#if>
+                        </tbody>
+                        </table>
+                        </div>
+                        <#--<#if typeList?exists&&typeList?size gt 0>-->
+                                <#--<table class="layout table table-bordered table-hover tableBgColor nomar nopadding">-->
+                                    <#--<thead>-->
+                                    <#--<tr>-->
+                                        <#--<td style="width: 160px;">归属部门</td>-->
+                                        <#--<td width="160">费用类别</td>-->
+                                        <#--<td width="160">会计科目</td>-->
+                                        <#--<td width="120">年合计</td>-->
+                                        <#--<td width="100">1月</td>-->
+                                        <#--<td width="100">2月</td>-->
+                                        <#--<td width="100">3月</td>-->
+                                        <#--<td width="100">4月</td>-->
+                                        <#--<td width="100">5月</td>-->
+                                        <#--<td width="100">6月</td>-->
+                                        <#--<td width="100">7月</td>-->
+                                        <#--<td width="100">8月</td>-->
+                                        <#--<td width="100">9月</td>-->
+                                        <#--<td width="100">10月</td>-->
+                                        <#--<td width="100">11月</td>-->
+                                        <#--<td width="100">12月</td>-->
+                                    <#--</tr>-->
+                                    <#--</thead>-->
+                                    <#--<tbody>-->
+                                <#--<#if sysBudgetAmountList?exists&&sysBudgetAmountList?size gt 0&&rows?exists>-->
+                                    <#--<#list 1..rows as int>-->
+                                    <#--<tr index="${int?c}">-->
+                                        <#--<td width="160">-->
+                                            <#--<select class="int2 width-100">-->
+                                                <#--<option>${hrDepartment.deptName?if_exists}</option>-->
+                                            <#--</select>-->
+                                        <#--</td>-->
+                                        <#--<td width="160">-->
+                                            <#--<select class="int2 width-100" id="typeId${int?c}" name="typeId${int?c}">-->
+                                                <#--<#list typeList as type>-->
+                                                    <#--<option value="${type.id?c}">${type.expenseType?if_exists}</option>-->
+                                                <#--</#list>-->
+                                            <#--</select>-->
+                                        <#--</td>-->
+                                        <#--<td width="160">-->
+                                            <#--<input  class="width-100 km" type="text" id="titleName${int?c}" name="titleName${int?c}" placeholder="财务科目"-->
+                                                    <#--readonly="readonly">-->
+                                            <#--<input name="titleId${int?c}" id="titleId${int?c}" type="hidden"/>-->
+                                        <#--</td>-->
+                                        <#--<td width="100">-->
+                                            <#--<input type="text" id="amountTotal${int?c}" name="amountTotal${int?c}" class="int1 width-70" value="0.00" readonly="readonly"/>-->
+                                        <#--</td>-->
+                                        <#--<#list 1..12 as c>-->
+                                            <#--<td width="100">-->
+                                                <#--<input type="text" id="amount${int?c}_${c?c}" name="amount${int?c}_${c?c}" class="int1 width-70 amt" value="0.00"/>-->
+                                            <#--</td>-->
+                                        <#--</#list>-->
+                                    <#--</tr>-->
+                                    <#--</#list>-->
+                                <#--<#else >-->
+                                    <#--<#list 1..10 as int>-->
+                                    <#--<tr index="${int?c}">-->
+                                        <#--<td width="160">-->
+                                            <#--<select class="int2 width-100">-->
+                                                <#--<option>${hrDepartment.deptName?if_exists}</option>-->
+                                            <#--</select>-->
+                                        <#--</td>-->
+                                        <#--<td width="160">-->
+                                            <#--<select class="int2 width-100" id="typeId${int?c}" name="typeId${int?c}">-->
+                                                <#--<#list typeList as type>-->
+                                                    <#--<option value="${type.id?c}">${type.expenseType?if_exists}</option>-->
+                                                <#--</#list>-->
+                                            <#--</select>-->
+                                        <#--</td>-->
+                                        <#--<td width="160">-->
+                                            <#--<input  class="width-100 km" type="text" id="titleName${int?c}" name="titleName${int?c}" placeholder="财务科目"-->
+                                                    <#--readonly="readonly">-->
+                                            <#--<input name="titleId${int?c}" id="titleId${int?c}" type="hidden"/>-->
+                                        <#--</td>-->
+                                        <#--<td width="100">-->
+                                            <#--<input type="text" id="amountTotal${int?c}" name="amountTotal${int?c}" class="int1 width-70" value="0.00" readonly="readonly"/>-->
+                                        <#--</td>-->
+                                        <#--<#list 1..12 as c>-->
+                                            <#--<td width="100">-->
+                                                <#--<input type="text" id="amount${int?c}_${c?c}" name="amount${int?c}_${c?c}" class="int1 width-70 amt" value="0.00"/>-->
+                                            <#--</td>-->
+                                        <#--</#list>-->
+                                    <#--</tr>-->
+                                    <#--</#list>-->
+                                <#--</#if>-->
+                                    <#--<tr id="addTr">-->
+                                        <#--<td colspan="15" style="padding-left: 5px;">-->
+                                            <#--<button class="btn" type="button" id="addBudget">增加预算项目行</button>-->
+                                            <#--<button class="btn" type="button" id="deleteBudget">删除预算项目行</button>-->
+                                        <#--</td>-->
+                                    <#--</tr>-->
+                                    <#--</tbody>-->
+                                <#--</table>-->
+                        <#--</#if>-->
                     </div>
                 </td>
             </tr>
