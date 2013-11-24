@@ -208,6 +208,75 @@
                     $('.treeDiv').fadeIn();
                     $('.treeDiv').find('div').show();
                 });
+
+                $('.deleteBudget',lastTr).off('click').on('click', function (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    var deleteTr=$(this).parent().parent();
+                    var index=$(deleteTr).attr('index');
+                    if(index){
+                        index=parseInt(index);
+                        if(index>1){
+                            for(var i=1;i<=12;i++){
+                                var amountObj=$('#amount'+index+"_"+i,deleteTr);
+                                if(amountObj){
+                                    WEBUTILS.validator.removeMode({
+                                        id: 'amount'+index+"_"+i
+                                    });
+                                }
+                            }
+                            $(deleteTr).remove();
+                            var reIndex=index;
+                            $('tr','.table-bordered-amt').each(function(i,o){
+                                var trIndex=$(o).attr('index');
+                                trIndex=parseInt(trIndex);
+                                if(trIndex>index){
+                                    var typeObj=$('#typeId'+trIndex,o);
+                                    if(typeObj){
+                                        $(typeObj).attr('id','typeId'+reIndex);
+                                        $(typeObj).attr('name','typeId'+reIndex);
+                                    }
+
+                                    var titleNameObj=$('#titleName'+trIndex,o);
+                                    if(titleNameObj){
+                                        $(titleNameObj).attr('id','titleName'+reIndex);
+                                        $(titleNameObj).attr('name','titleName'+reIndex);
+                                    }
+
+                                    var titleObj=$('#titleId'+trIndex,o);
+                                    if(titleObj){
+                                        $(titleObj).attr('id','titleId'+reIndex);
+                                        $(titleObj).attr('name','titleId'+reIndex);
+                                    }
+                                    var amountTotalObj=$('#amountTotal'+trIndex,o);
+                                    if(amountTotalObj){
+                                        $(amountTotalObj).attr('id','amountTotal'+reIndex);
+                                        $(amountTotalObj).attr('name','amountTotal'+reIndex);
+                                    }
+                                    for(var i=1;i<=12;i++){
+                                        var amountObj=$('#amount'+trIndex+"_"+i,o);
+                                        if(amountObj){
+                                            $(amountObj).attr('id','amount'+reIndex+"_"+i);
+                                            $(amountObj).attr('name','amount'+reIndex+"_"+i);
+                                            WEBUTILS.validator.removeMode({
+                                                id: 'amount'+trIndex+"_"+i
+                                            });
+                                            WEBUTILS.validator.addMode({
+                                                id: 'amount'+reIndex+"_"+i,
+                                                required: true,
+                                                pattern: [
+                                                    {type: 'blank', exp: '!=', msg: ''}
+                                                ]
+                                            });
+                                        }
+                                    }
+                                    $(o).attr('index',reIndex);
+                                    reIndex=reIndex+1;
+                                }
+                            });
+                        }
+                    }
+                });
             }
         });
         <#if idSets?exists&&idSets?size gt 0>
