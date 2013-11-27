@@ -48,6 +48,8 @@ public class SysBudgetAmount extends IdEntity implements Tracker {
 
     private String useYn;
 
+    private String lockYn;
+
     @Id
     @GeneratedValue(generator="SYS_BUDGET_AMOUNT")
     @GenericGenerator(name="SYS_BUDGET_AMOUNT",strategy="seqhilo",parameters={@Parameter(name="sequence",value="SEQ_SYS_BUDGET_AMOUNT")})
@@ -171,5 +173,14 @@ public class SysBudgetAmount extends IdEntity implements Tracker {
 
     public void setTypeId(SysBudgetType typeId) {
         this.typeId = typeId;
+    }
+
+    @Column(name = "LOCK_YN")
+    public String getLockYn() {
+        return lockYn;
+    }
+
+    public void setLockYn(String lockYn) {
+        this.lockYn = lockYn;
     }
 }

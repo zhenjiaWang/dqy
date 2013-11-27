@@ -46,9 +46,11 @@ public class HrDepartment extends IdEntity implements Tracker {
 
     private String useYn;
 
+    private Double budgetAmount;
+
     @Id
-    @GeneratedValue(generator="HR_DEPARTMENT")
-    @GenericGenerator(name="HR_DEPARTMENT",strategy="seqhilo",parameters={@Parameter(name="sequence",value="SEQ_HR_DEPARTMENT")})
+    @GeneratedValue(generator = "HR_DEPARTMENT")
+    @GenericGenerator(name = "HR_DEPARTMENT", strategy = "seqhilo", parameters = {@Parameter(name = "sequence", value = "SEQ_HR_DEPARTMENT")})
     public Long getId() {
         return id;
     }
@@ -58,7 +60,7 @@ public class HrDepartment extends IdEntity implements Tracker {
     }
 
 
-    @Column(name = "CREATED",updatable = false)
+    @Column(name = "CREATED", updatable = false)
     public Date getCreated() {
         return created;
     }
@@ -157,5 +159,14 @@ public class HrDepartment extends IdEntity implements Tracker {
 
     public void setDeptNo(String deptNo) {
         this.deptNo = deptNo;
+    }
+
+    @Transient
+    public Double getBudgetAmount() {
+        return budgetAmount;
+    }
+
+    public void setBudgetAmount(Double budgetAmount) {
+        this.budgetAmount = budgetAmount;
     }
 }

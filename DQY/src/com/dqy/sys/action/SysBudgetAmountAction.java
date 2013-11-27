@@ -7,6 +7,11 @@ import com.dqy.hr.service.HrDepartmentService;
 import com.dqy.sys.entity.*;
 import com.dqy.sys.service.*;
 import com.dqy.web.support.ActionSupport;
+import com.dqy.wf.entity.WfReqDaily;
+import com.dqy.wf.entity.WfReqDailyDetail;
+import com.dqy.wf.entity.WfReqRePaymentDetail;
+import com.dqy.wf.service.WfReqDailyDetailService;
+import com.dqy.wf.service.WfReqRePaymentDetailService;
 import com.google.inject.Inject;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -34,6 +39,11 @@ public class SysBudgetAmountAction extends ActionSupport<SysBudgetAmount> {
     @Inject
     private SysBudgetTypeService sysBudgetTypeService;
 
+    @Inject
+    private WfReqDailyDetailService wfReqDailyDetailService;
+
+    @Inject
+    private WfReqRePaymentDetailService wfReqRePaymentDetailService;
 
     @Inject
     private SysFinancialTitleService sysFinancialTitleService;
@@ -73,6 +83,14 @@ public class SysBudgetAmountAction extends ActionSupport<SysBudgetAmount> {
     private Double totalAmount;
 
     @ReqSet
+    private Double totalPassAmount;
+
+    @ReqSet
+    private Double totalIngAmount;
+
+    @ReqSet
+    private Double remnantAmount;
+    @ReqSet
     private List<Integer> yearList;
 
     @ReqSet
@@ -86,7 +104,8 @@ public class SysBudgetAmountAction extends ActionSupport<SysBudgetAmount> {
 
     @ReqSet
     private List<SysBudgetType> typeList;
-
+    @ReqSet
+    private List<HrDepartment> departmentList;
 
     @ReqSet
     private Set<String> idSets;
@@ -132,6 +151,9 @@ public class SysBudgetAmountAction extends ActionSupport<SysBudgetAmount> {
             rows=0;
             sysBudgetAmountList=this.sysBudgetAmountService.getAmountList(userInfo.getOrgId(),currentYear,hrDepartment.getId());
             if(sysBudgetAmountList!=null&&!sysBudgetAmountList.isEmpty()){
+                if(sysBudgetAmount==null){
+                    sysBudgetAmount=sysBudgetAmountList.get(0);
+                }
                 idSets=new HashSet<String>();
                 budgetAmountMap=new HashMap<String, Double>();
                 for(SysBudgetAmount budgetAmount:sysBudgetAmountList){
@@ -146,6 +168,134 @@ public class SysBudgetAmountAction extends ActionSupport<SysBudgetAmount> {
             totalAmount=sysBudgetAmountService.geTotalAmount(userInfo.getOrgId(),currentYear,hrDepartment.getId());
             if(totalAmount==null){
                 totalAmount=0.00d;
+            }
+
+        }
+        return "success";  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @PageFlow(result = {@Result(name = "success", path = "/sys/budgetAmount!approve.dhtml?currentYear=${currentYear}&deptId=${deptId}", type = Dispatcher.Redirect)})
+    public String lock() throws Exception {
+        UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
+        if (userInfo != null&&deptId!=null&&currentYear!=null) {
+           List<SysBudgetAmount> budgetAmountList= this.sysBudgetAmountService.getAmountList(userInfo.getOrgId(),currentYear, deptId);
+            if(budgetAmountList!=null&&!budgetAmountList.isEmpty()){
+                for(SysBudgetAmount budgetAmount:budgetAmountList){
+                    budgetAmount.setLockYn("Y");
+                    bind(budgetAmount);
+                }
+                this.sysBudgetAmountService.save(budgetAmountList);
+            }
+        }
+        return "success";  //To change body of implemented methods use File | Settings | File Templates.
+    }
+    @PageFlow(result = {@Result(name = "success", path = "/sys/budgetAmount!approve.dhtml?currentYear=${currentYear}&deptId=${deptId}", type = Dispatcher.Redirect)})
+    public String unLock() throws Exception {
+        UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
+        if (userInfo != null&&deptId!=null&&currentYear!=null) {
+            List<SysBudgetAmount> budgetAmountList= this.sysBudgetAmountService.getAmountList(userInfo.getOrgId(),currentYear, deptId);
+            if(budgetAmountList!=null&&!budgetAmountList.isEmpty()){
+                for(SysBudgetAmount budgetAmount:budgetAmountList){
+                    budgetAmount.setLockYn("N");
+                    bind(budgetAmount);
+                }
+                this.sysBudgetAmountService.save(budgetAmountList);
+            }
+        }
+        return "success";  //To change body of implemented methods use File | Settings | File Templates.
+    }
+    @PageFlow(result = {@Result(name = "success", path = "/view/sys/budgetAmount/approve.ftl", type = Dispatcher.FreeMarker)})
+    public String approve() throws Exception {
+        UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
+        if (userInfo != null) {
+            totalAmount = 0.00d;
+            userInfo.setTopMenu("budget");
+            userInfo.setLeftMenu("budgetAmountApprove");
+            Date currentDate = DateFormatUtil.getCurrentDate(false);
+            if (currentYear == null) {
+                currentYear = DateFormatUtil.getDayInYear(currentDate);
+            }
+            yearList = new ArrayList<Integer>();
+            yearList.add(currentYear - 1);
+            yearList.add(currentYear);
+            yearList.add(currentYear + 1);
+            yearList.add(currentYear + 2);
+
+            List<Selector> selectorList=new ArrayList<Selector>();
+            selectorList.add(SelectorUtils.$eq("orgId.id",userInfo.getOrgId()));
+            selectorList.add(SelectorUtils.$order("expenseType"));
+            selectorList.add(SelectorUtils.$eq("useYn","Y"));
+            typeList= this.sysBudgetTypeService.getAllList(selectorList);
+
+            if(deptId==null){
+                deptId=userInfo.getDepartmentId();
+            }
+
+            selectorList.clear();
+            selectorList.add(SelectorUtils.$eq("orgId.id",userInfo.getOrgId()));
+            selectorList.add(SelectorUtils.$order("deptNo"));
+            selectorList.add(SelectorUtils.$eq("useYn","Y"));
+            departmentList = this.hrDepartmentService.getByList(selectorList);
+            if(departmentList!=null&&!departmentList.isEmpty()){
+                for(HrDepartment department:departmentList){
+                    totalAmount=sysBudgetAmountService.geTotalAmount(userInfo.getOrgId(),currentYear,department.getId());
+                    if(totalAmount==null){
+                        totalAmount=0.00d;
+                    }
+                    department.setBudgetAmount(totalAmount);
+                }
+            }
+            hrDepartment = this.hrDepartmentService.getById(deptId);
+
+            rows=0;
+            sysBudgetAmountList=this.sysBudgetAmountService.getAmountList(userInfo.getOrgId(),currentYear,hrDepartment.getId());
+            if(sysBudgetAmountList!=null&&!sysBudgetAmountList.isEmpty()){
+                if(sysBudgetAmount==null){
+                    sysBudgetAmount=sysBudgetAmountList.get(0);
+                }
+                idSets=new HashSet<String>();
+                budgetAmountMap=new HashMap<String, Double>();
+                for(SysBudgetAmount budgetAmount:sysBudgetAmountList){
+                    idSets.add(get(budgetAmount,"typeId.id")+"_"+get(budgetAmount,"titleId.id")+"_"+get(budgetAmount,"titleId.titleName"));
+                    budgetAmountMap.put(get(budgetAmount,"typeId.id")+"_"+get(budgetAmount,"titleId.id")+"_"+budgetAmount.getMonth(),
+                            budgetAmount.getAmount());
+                }
+                if(idSets!=null&&!idSets.isEmpty()){
+                    rows=idSets.size();
+                }
+            }
+            totalAmount=sysBudgetAmountService.geTotalAmount(userInfo.getOrgId(),currentYear,hrDepartment.getId());
+            if(totalAmount==null){
+                totalAmount=0.00d;
+            }
+            String startDateStr=currentYear+"-01-01 00:00:01";
+            String endDateStr=currentYear+"-12-31 23:23:59";
+            Date startDate=DateFormatUtil.parse(startDateStr,DateFormatUtil.YMDHMS_PATTERN);
+            Date endDate=DateFormatUtil.parse(endDateStr,DateFormatUtil.YMDHMS_PATTERN);
+            Double dailyIng=this.wfReqDailyDetailService.getSumAmountByIng(userInfo.getOrgId(),hrDepartment.getId(),startDate,endDate);
+            Double dailyPass=this.wfReqDailyDetailService.getSumAmountByPass(userInfo.getOrgId(),hrDepartment.getId(),startDate,endDate);
+
+            Double rePaymentIng=this.wfReqRePaymentDetailService.getSumAmountByIng(userInfo.getOrgId(),hrDepartment.getId(),startDate,endDate);
+            Double rePaymentPass=this.wfReqRePaymentDetailService.getSumAmountByPass(userInfo.getOrgId(),hrDepartment.getId(),startDate,endDate);
+            if(dailyIng==null){
+                dailyIng=0.00d;
+            }
+            if(dailyPass==null){
+                dailyPass=0.00d;
+            }
+            if(rePaymentIng==null){
+                rePaymentIng=0.00d;
+            }
+            if(rePaymentPass==null){
+                rePaymentPass=0.00d;
+            }
+            totalIngAmount=dailyIng+rePaymentIng;
+
+            totalPassAmount=dailyPass+rePaymentPass;
+
+            remnantAmount=totalPassAmount-totalAmount;
+            if(remnantAmount.doubleValue()<0){
+                remnantAmount=0.00d;
             }
         }
         return "success";  //To change body of implemented methods use File | Settings | File Templates.
@@ -194,6 +344,7 @@ public class SysBudgetAmountAction extends ActionSupport<SysBudgetAmount> {
                                     sysBudgetAmount.setMonth(month);
                                     sysBudgetAmount.setAmount(amount);
                                     sysBudgetAmount.setUseYn("Y");
+                                    sysBudgetAmount.setLockYn("N");
                                     bind(sysBudgetAmount);
                                     sysBudgetAmountList.add(sysBudgetAmount);
                                 }

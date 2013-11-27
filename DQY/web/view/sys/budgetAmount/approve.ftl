@@ -9,12 +9,7 @@
 
 <link type="text/css" href="/css/zTreeStyle/zTreeStyle.css" rel="stylesheet">
 <script src="/js/jquery.ztree.all-3.5.min.js"></script>
-    <#assign lockYn="N">
-    <#if sysBudgetAmount?exists>
-        <#if sysBudgetAmount.lockYn=="Y">
-            <#assign lockYn="Y">
-        </#if>
-    </#if>
+
 <script type="text/javascript">
     var srcNode;
     var currentTrIndex;
@@ -82,7 +77,8 @@
 
     function search() {
         var currentYear = $('#currentYear').val();
-        document.location.href = '/sys/budgetAmount.dhtml?currentYear=' + currentYear;
+        var deptId = $('#deptId').val();
+        document.location.href = '/sys/budgetAmount!approve.dhtml?currentYear=' + currentYear+'&deptId='+deptId;
     }
     function calSum() {
         var sum = 0;
@@ -127,14 +123,24 @@
             search();
         });
 
-        $('#resetBtn').off('click').on('click', function (e) {
+        $('#lockBtn').off('click').on('click', function (e) {
             e.preventDefault();
             e.stopPropagation();
-            WEBUTILS.alert.alertComfirm('重置预算', '您确认要重置当前预算?', function () {
+            WEBUTILS.alert.alertComfirm('锁定预算', '您确认要锁定当前预算?锁定后其他负责人无法进行修改', function () {
                 WEBUTILS.alert.close();
-                $('input[type="text"]','.table-bordered-amt').each(function(){
-                    $(this).val('0.00');
-                });
+                var currentYear = $('#currentYear').val();
+                var deptId = $('#deptId').val();
+                document.location.href = '/sys/budgetAmount!lock.dhtml?currentYear=' + currentYear+'&deptId='+deptId;
+            });
+        });
+        $('#unLockBtn').off('click').on('click', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            WEBUTILS.alert.alertComfirm('解锁预算', '您确认要解锁当前预算?解锁后预算可能会被其他负责人修改', function () {
+                WEBUTILS.alert.close();
+                var currentYear = $('#currentYear').val();
+                var deptId = $('#deptId').val();
+                document.location.href = '/sys/budgetAmount!unLock.dhtml?currentYear=' + currentYear+'&deptId='+deptId;
             });
         });
         $('#saveBtn').off('click').on('click', function (e) {
@@ -427,19 +433,28 @@
                 $('.treeDiv').fadeOut();
             }
         });
-        <#if lockYn=="Y">
-        $('.amt','.table-bordered-amt').attr('readonly','readonly');
-        </#if>
+
 
     });
 </script>
-
 <!--搜索begin-->
 <form class="form-horizontal" action="/sys/budgetAmount!save.dhtml" method="POST" name="editForm"
       id="editForm">
     <div class="r-top clearfix">
-        <input type="text" id="deptName" name="deptName" placeholder="预算部门" <#if hrDepartment?exists>
-               value="${(hrDepartment.deptName)?if_exists}" </#if>disabled>
+        <select class="span2 marl15" id="deptId" name="deptId">
+            <#if departmentList?exists&&departmentList?size gt 0>
+                <#list departmentList as dept>
+                    <option value="${dept.id?c}" <#if deptId==dept.id>selected="selected" </#if>>
+                        <#if dept.deptLevel gt 1>
+                            <#list 1..dept.deptLevel as i>
+                                &nbsp;&nbsp;
+                            </#list>
+                        </#if>
+                    ${dept.deptName?if_exists}(年预算:${dept.budgetAmount?double})
+                    </option>
+                </#list>
+            </#if>
+        </select>
         <select class="span2 marl15" id="currentYear" name="currentYear">
             <#if yearList?exists&&yearList?size gt 0>
                 <#list yearList as year>
@@ -449,10 +464,15 @@
                 </#list>
             </#if>
         </select>
-        <#if lockYn=="N">
-            <button class="btn btn-danger floatright" type="button" id="resetBtn">重置</button>
-            <button class="btn btn-success floatright marr10" type="button" id="saveBtn">保存</button>
+        <#if sysBudgetAmount?exists>
+            <#if sysBudgetAmount.lockYn=="Y">
+                <button class="btn btn-danger floatright" type="button" id="unLockBtn">解锁</button>
+            <#elseif sysBudgetAmount.lockYn=="N">
+                <button class="btn btn-danger floatright" type="button" id="lockBtn">锁定</button>
+            </#if>
         </#if>
+
+        <button class="btn btn-success floatright marr10" type="button" id="saveBtn">保存</button>
         <input type="hidden" id="deptId" name="deptId" <#if hrDepartment?exists> value="${hrDepartment.id?c}" </#if>/>
     </div>
     <!--搜索over-->
@@ -482,10 +502,11 @@
             <tr>
                 <td colspan="2">
                     <table class="table nomar">
-                        <tbody>
-                        <tr>
-                            <td class="nopadding p-top5"><span
-                                    class="label label-info yearAmountTotal">预算总额：${totalAmount?if_exists}</span></td>
+                        <tbody><tr>
+                            <td class="nopadding p-top5 "><span class="label label-info yearAmountTotal">预算总额：${totalAmount?if_exists}</span></td>
+                            <td class="nopadding p-top5"><span class="label label-success">已产生-已审批：${totalPassAmount?if_exists}</span></td>
+                            <td class="nopadding p-top5"><span class="label label-warning">已产生-待审批：${totalIngAmount?if_exists}</span></td>
+                            <td class="nopadding p-top5"><span class="label label-important">超出预算金额：${remnantAmount?if_exists}</span></td>
                         </tr>
                         </tbody>
                     </table>
@@ -498,7 +519,7 @@
                         <table class="layout table table-bordered table-hover tableBgColor nomar nopadding ">
                             <thead>
                             <tr>
-                                <td width="13"><a id="addBudget" href="##"><#if lockYn=="N"><i class="icon-plus"></i><#else > <i class="icon-ban-circle"></i></#if></a></td>
+                                <td width="13"><a id="addBudget" href="##"><i class="icon-plus"></i></a></td>
                                 <td width="103"><strong>费用类别</strong></td>
                                 <td width="124"><strong>费用名称</strong></td>
                                 <td width="86"><strong>年汇总</strong></td>
@@ -529,17 +550,9 @@
                                 <tr index="${int?c}">
                                     <td width="60">
                                         <#if int_index gt 0>
-                                            <#if lockYn=="N">
                                             <a href="##" class="deleteBudget"><i class="icon-minus"></i></a>
-                                            <#else>
-                                                <i class="icon-ban-circle"></i>
-                                            </#if>
                                         <#else >
-                                            <#if lockYn=="N">
-                                                <i class="icon-ban-circle"></i>
-                                            <#else>
-                                                <i class="icon-ban-circle"></i>
-                                            </#if>
+                                            <i class="icon-ban-circle"></i>
                                         </#if>
                                     </td>
                                     <td width="160">

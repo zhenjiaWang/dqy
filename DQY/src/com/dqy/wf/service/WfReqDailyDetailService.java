@@ -8,6 +8,7 @@ import org.guiceside.persistence.TransactionType;
 import org.guiceside.persistence.Transactional;
 import org.guiceside.persistence.hibernate.dao.hquery.HQuery;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -76,5 +77,26 @@ public class WfReqDailyDetailService extends HQuery {
     public List<WfReqDailyDetail> getDetailListByDailyId(Long dailyId) {
         return $($eq("dailyId.id", dailyId),$order("id")).list(WfReqDailyDetail.class);
     }
+
+    @Transactional(type = TransactionType.READ_ONLY)
+    public Double getSumAmountByPass(Long orgId,Long deptId,Date startDate,Date endDate) {
+        return $($alias("dailyId","dailyId"),$alias("dailyId.reqId","reqId"),
+                $eq("reqId.orgId.id",orgId),$eq("reqId.applyState",2),
+                $eq("reqId.applyResult",1), $eq("reqId.complete",1),
+                $eq("expenseDept.id", deptId),
+                $ge("created",startDate),$le("created",endDate),
+                $sum("amount")).value(WfReqDailyDetail.class, Double.class);
+    }
+
+    @Transactional(type = TransactionType.READ_ONLY)
+    public Double getSumAmountByIng(Long orgId,Long deptId,Date startDate,Date endDate) {
+        return $($alias("dailyId","dailyId"),$alias("dailyId.reqId","reqId"),
+                $eq("reqId.orgId.id",orgId),$eq("reqId.applyState",1),
+                $eq("reqId.applyResult",0), $eq("reqId.complete",0),
+                $eq("expenseDept.id", deptId),
+                $ge("created",startDate),$le("created",endDate),
+                $sum("amount")).value(WfReqDailyDetail.class,Double.class);
+    }
+
 
 }

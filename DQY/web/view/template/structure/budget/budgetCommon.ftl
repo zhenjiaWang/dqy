@@ -49,8 +49,8 @@
                     <li class="budgetAmount">
                         <a class="cur" href="/sys/budgetAmount.dhtml">预算填写</a>
                     </li>
-                    <li class="org">
-                        <a class="cur" href="#">预算审核</a>
+                    <li class="budgetAmountApprove">
+                        <a class="cur" href="/sys/budgetAmount!approve.dhtml">预算审核</a>
                     </li>
                 </ul>
                 <ul class="item-nav"><!--ul上的current是为了控制当前这一组的背景色，li上的current是为了控制二级菜单-->
