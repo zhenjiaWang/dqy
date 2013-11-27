@@ -496,6 +496,19 @@
                 </tr>
                 <tr>
                     <td colspan="2">
+                        <table class="table nomar">
+                            <tbody><tr>
+                                <td class="nopadding p-top5 "><span class="label label-info yearAmountTotal">预算总额：${totalAmount?if_exists}</span></td>
+                                <td class="nopadding p-top5"><span class="label label-success">已产生-已审批：${totalPassAmount?if_exists}</span></td>
+                                <td class="nopadding p-top5"><span class="label label-warning">已产生-待审批：${totalIngAmount?if_exists}</span></td>
+                                <td class="nopadding p-top5"><span class="label label-important">超出预算金额：${remnantAmount?if_exists}</span></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
                         <table style="width: 100%;"
                                class="layout table table-bordered table-hover tableBgColor nomar nopadding">
                             <thead>

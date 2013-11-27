@@ -216,6 +216,7 @@
                         </td>
                     </tr>
                     </#if>
+
                     <#if trueList?exists&&trueList?size gt 0>
                     <tr style="display: none;" id="trueList">
                         <td colspan="2">

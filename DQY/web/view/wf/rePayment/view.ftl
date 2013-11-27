@@ -182,6 +182,19 @@
                         </tr>
                         </#if>
                     </#if>
+                    <tr>
+                        <td colspan="2">
+                            <table class="table nomar">
+                                <tbody><tr>
+                                    <td class="nopadding p-top5 "><span class="label label-info yearAmountTotal">预算总额：${totalAmount?if_exists}</span></td>
+                                    <td class="nopadding p-top5"><span class="label label-success">已产生-已审批：${totalPassAmount?if_exists}</span></td>
+                                    <td class="nopadding p-top5"><span class="label label-warning">已产生-待审批：${totalIngAmount?if_exists}</span></td>
+                                    <td class="nopadding p-top5"><span class="label label-important">超出预算金额：${remnantAmount?if_exists}</span></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
                     <#if detailList?exists&&detailList?size gt 0>
                     <tr>
                         <td colspan="2">
@@ -214,18 +227,6 @@
                         </td>
                     </tr>
                     </#if>
-                <tr>
-                    <td colspan="2">
-                        <div class="control-group" style="margin-bottom: 5px;">
-                            <label class="control-label" for="wfReqRePayment.remarks"
-                                   style="width: 60px;color: #898989;">备注</label>
-
-                            <div class="controls" style="margin-left: 70px;">
-                                <label style="margin-top: 5px;padding-left:5px;font-size: 12px;word-wrap: break-word;word-break: break-all;">${(wfReqRePayment.remarks)?if_exists}</label>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
                     <#if wfReq.financialYn=="Y">
                     <tr>
                         <td colspan="2">

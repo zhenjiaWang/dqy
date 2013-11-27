@@ -6,6 +6,7 @@ import com.dqy.hr.entity.HrDepartment;
 import com.dqy.hr.service.HrDepartmentService;
 import com.dqy.sys.entity.SysBudgetTitle;
 import com.dqy.sys.entity.SysBudgetType;
+import com.dqy.sys.service.SysBudgetAmountService;
 import com.dqy.sys.service.SysBudgetTitleService;
 import com.dqy.sys.service.SysBudgetTypeService;
 import com.dqy.sys.service.SysOrgService;
@@ -34,6 +35,11 @@ public class WfReqRePaymentAction extends WfReqSupportAction<WfReqRePayment> {
 
     @Inject
     private WfVariableGlobalService wfVariableGlobalService;
+    @Inject
+    private WfReqDailyDetailService wfReqDailyDetailService;
+
+    @Inject
+    private SysBudgetAmountService sysBudgetAmountService;
 
     @Inject
     private WfReqService wfReqService;
@@ -129,6 +135,18 @@ public class WfReqRePaymentAction extends WfReqSupportAction<WfReqRePayment> {
     private List<WfReqAtt> reqAttList;
 
 
+    @ReqSet
+    private Double totalAmount;
+
+    @ReqSet
+    private Double totalPassAmount;
+
+    @ReqSet
+    private Double totalIngAmount;
+
+    @ReqSet
+    private Double remnantAmount;
+
     @Override
     @PageFlow(result = {@Result(name = "success", path = "/view/wf/rePayment/input.ftl", type = Dispatcher.FreeMarker)})
     public String execute() throws Exception {
@@ -166,6 +184,45 @@ public class WfReqRePaymentAction extends WfReqSupportAction<WfReqRePayment> {
                         reAmount=0.00d;
                     }
                     advanceAccount.setReAmount(reAmount);
+                }
+            }
+
+            HrDepartment hrDepartment=this.hrDepartmentService.getById(userInfo.getDepartmentId());
+            Date cudDate=DateFormatUtil.getCurrentDate(false);
+            Integer currentYear=DateFormatUtil.getDayInYear(cudDate);
+            if(hrDepartment!=null&&currentYear!=null){
+                totalAmount=sysBudgetAmountService.geTotalAmount(userInfo.getOrgId(),currentYear,hrDepartment.getId());
+                if(totalAmount==null){
+                    totalAmount=0.00d;
+                }
+                String startDateStr=currentYear+"-01-01 00:00:01";
+                String endDateStr=currentYear+"-12-31 23:23:59";
+                Date startDate=DateFormatUtil.parse(startDateStr,DateFormatUtil.YMDHMS_PATTERN);
+                Date endDate=DateFormatUtil.parse(endDateStr,DateFormatUtil.YMDHMS_PATTERN);
+                Double dailyIng=this.wfReqDailyDetailService.getSumAmountByIng(userInfo.getOrgId(),hrDepartment.getId(),startDate,endDate);
+                Double dailyPass=this.wfReqDailyDetailService.getSumAmountByPass(userInfo.getOrgId(),hrDepartment.getId(),startDate,endDate);
+
+                Double rePaymentIng=this.wfReqRePaymentDetailService.getSumAmountByIng(userInfo.getOrgId(),hrDepartment.getId(),startDate,endDate);
+                Double rePaymentPass=this.wfReqRePaymentDetailService.getSumAmountByPass(userInfo.getOrgId(),hrDepartment.getId(),startDate,endDate);
+                if(dailyIng==null){
+                    dailyIng=0.00d;
+                }
+                if(dailyPass==null){
+                    dailyPass=0.00d;
+                }
+                if(rePaymentIng==null){
+                    rePaymentIng=0.00d;
+                }
+                if(rePaymentPass==null){
+                    rePaymentPass=0.00d;
+                }
+                totalIngAmount=dailyIng+rePaymentIng;
+
+                totalPassAmount=dailyPass+rePaymentPass;
+
+                remnantAmount=totalPassAmount-totalAmount;
+                if(remnantAmount.doubleValue()<0){
+                    remnantAmount=0.00d;
                 }
             }
         }
@@ -250,6 +307,11 @@ public class WfReqRePaymentAction extends WfReqSupportAction<WfReqRePayment> {
                 if(wfReq!=null){
                     reqCommentsList = this.wfReqCommentsService.getCommentsListByReqId(wfReq.getId());
                     reqAttList=wfReqAttService.getByReqId(wfReq.getId());
+
+                    HrDepartment hrDepartment=wfReq.getUserId().getDeptId();
+                    if(hrDepartment!=null){
+                        totalBudgetAmount(hrDepartment,wfReq.getSendDate(),userInfo);
+                    }
                 }
             }
         }
@@ -270,9 +332,53 @@ public class WfReqRePaymentAction extends WfReqSupportAction<WfReqRePayment> {
                     }
                     reqCommentsList = this.wfReqCommentsService.getCommentsListByReqId(wfReq.getId());
                     reqAttList=wfReqAttService.getByReqId(wfReq.getId());
+
+                    HrDepartment hrDepartment=wfReq.getUserId().getDeptId();
+                    if(hrDepartment!=null){
+                        totalBudgetAmount(hrDepartment,wfReq.getSendDate(),userInfo);
+                    }
                 }
             }
         }
         return "success";
+    }
+
+    private void totalBudgetAmount(HrDepartment hrDepartment,Date cudDate,UserInfo userInfo){
+        Integer currentYear=DateFormatUtil.getDayInYear(cudDate);
+        if(hrDepartment!=null&&currentYear!=null){
+            totalAmount=sysBudgetAmountService.geTotalAmount(userInfo.getOrgId(),currentYear,hrDepartment.getId());
+            if(totalAmount==null){
+                totalAmount=0.00d;
+            }
+            String startDateStr=currentYear+"-01-01 00:00:01";
+            String endDateStr=currentYear+"-12-31 23:23:59";
+            Date startDate=DateFormatUtil.parse(startDateStr,DateFormatUtil.YMDHMS_PATTERN);
+            Date endDate=DateFormatUtil.parse(endDateStr,DateFormatUtil.YMDHMS_PATTERN);
+            Double dailyIng=this.wfReqDailyDetailService.getSumAmountByIng(userInfo.getOrgId(),hrDepartment.getId(),startDate,endDate);
+            Double dailyPass=this.wfReqDailyDetailService.getSumAmountByPass(userInfo.getOrgId(),hrDepartment.getId(),startDate,endDate);
+
+            Double rePaymentIng=this.wfReqRePaymentDetailService.getSumAmountByIng(userInfo.getOrgId(),hrDepartment.getId(),startDate,endDate);
+            Double rePaymentPass=this.wfReqRePaymentDetailService.getSumAmountByPass(userInfo.getOrgId(),hrDepartment.getId(),startDate,endDate);
+            if(dailyIng==null){
+                dailyIng=0.00d;
+            }
+            if(dailyPass==null){
+                dailyPass=0.00d;
+            }
+            if(rePaymentIng==null){
+                rePaymentIng=0.00d;
+            }
+            if(rePaymentPass==null){
+                rePaymentPass=0.00d;
+            }
+            totalIngAmount=dailyIng+rePaymentIng;
+
+            totalPassAmount=dailyPass+rePaymentPass;
+
+            remnantAmount=totalPassAmount-totalAmount;
+            if(remnantAmount.doubleValue()<0){
+                remnantAmount=0.00d;
+            }
+        }
     }
 }

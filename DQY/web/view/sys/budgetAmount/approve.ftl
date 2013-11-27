@@ -434,6 +434,21 @@
             }
         });
 
+        $('.amt','.table-bordered-amt').off('mouseenter').on('mouseenter',function(){
+            var tr=$(this).parent().parent();
+            if(tr){
+                var index=$(tr).attr('index');
+                if(index){
+                    var typeId=$('#typeId'+index).val();
+                    var typeName=$('option[value="'+typeId+'"]','#typeId'+index).text();
+                    var titleName=$('#titleName'+index).val();
+                    if(titleName==''){
+                        titleName='暂无';
+                    }
+                    $(this).attr('title','费用类别:'+typeName+'\n费用项目:'+titleName);
+                }
+            }
+        });
 
     });
 </script>
@@ -471,9 +486,8 @@
                 <button class="btn btn-danger floatright" type="button" id="lockBtn">锁定</button>
             </#if>
         </#if>
-
         <button class="btn btn-success floatright marr10" type="button" id="saveBtn">保存</button>
-        <input type="hidden" id="deptId" name="deptId" <#if hrDepartment?exists> value="${hrDepartment.id?c}" </#if>/>
+        <input type="hidden" id="approveBudget" name="approveBudget"  value="1"/>
     </div>
     <!--搜索over-->
 

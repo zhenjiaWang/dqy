@@ -66,6 +66,8 @@ public class SysBudgetAmountAction extends ActionSupport<SysBudgetAmount> {
     @ReqSet
     private Long id;
 
+    @ReqGet
+    private String approveBudget;
 
     @ReqGet
     @ReqSet
@@ -301,7 +303,8 @@ public class SysBudgetAmountAction extends ActionSupport<SysBudgetAmount> {
         return "success";  //To change body of implemented methods use File | Settings | File Templates.
     }
 
-    @PageFlow(result = {@Result(name = "success", path = "/sys/budgetAmount.dhtml?currentYear=${currentYear}&deptId=${deptId}", type = Dispatcher.Redirect)})
+    @PageFlow(result = {@Result(name = "success", path = "/sys/budgetAmount.dhtml?currentYear=${currentYear}", type = Dispatcher.Redirect),
+            @Result(name = "successApprove", path = "/sys/budgetAmount!approve.dhtml?currentYear=${currentYear}&deptId=${deptId}", type = Dispatcher.Redirect)})
     public String save() throws Exception {
         UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
         if (userInfo != null) {
@@ -357,6 +360,9 @@ public class SysBudgetAmountAction extends ActionSupport<SysBudgetAmount> {
                     }
                 }
             }
+        }
+        if(StringUtils.isNotBlank(approveBudget)){
+            return "successApprove";
         }
         return "success";
     }

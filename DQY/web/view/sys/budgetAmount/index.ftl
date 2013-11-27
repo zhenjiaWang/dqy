@@ -427,6 +427,21 @@
                 $('.treeDiv').fadeOut();
             }
         });
+        $('.amt','.table-bordered-amt').off('mouseenter').on('mouseenter',function(){
+            var tr=$(this).parent().parent();
+            if(tr){
+                var index=$(tr).attr('index');
+                if(index){
+                    var typeId=$('#typeId'+index).val();
+                    var typeName=$('option[value="'+typeId+'"]','#typeId'+index).text();
+                    var titleName=$('#titleName'+index).val();
+                    if(titleName==''){
+                        titleName='暂无';
+                    }
+                    $(this).attr('title','费用类别:'+typeName+'\n费用项目:'+titleName);
+                }
+            }
+        });
         <#if lockYn=="Y">
         $('.amt','.table-bordered-amt').attr('readonly','readonly');
         </#if>
@@ -437,6 +452,10 @@
 <!--搜索begin-->
 <form class="form-horizontal" action="/sys/budgetAmount!save.dhtml" method="POST" name="editForm"
       id="editForm">
+    <div class="alert">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <strong>告知!</strong> 当前${hrDepartment.deptName?if_exists} ${currentYear?c}年度预算已被锁定，暂时无法修改！
+    </div>
     <div class="r-top clearfix">
         <input type="text" id="deptName" name="deptName" placeholder="预算部门" <#if hrDepartment?exists>
                value="${(hrDepartment.deptName)?if_exists}" </#if>disabled>
@@ -456,7 +475,6 @@
         <input type="hidden" id="deptId" name="deptId" <#if hrDepartment?exists> value="${hrDepartment.id?c}" </#if>/>
     </div>
     <!--搜索over-->
-
     <div style="min-height: 419px;" class="mart10">
         <table class="application nomar">
             <tbody>
