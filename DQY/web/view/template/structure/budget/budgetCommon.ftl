@@ -42,17 +42,27 @@
             <#--<dd><a href="#"><i class="icon-hand-right"></i> 已驳回</a></dd>-->
         <#--</dl>-->
         <!--左侧目录树begin-->
+
         <div class="side-left floatleft marl15">
             <div class="side-left-in font12">
                 <!--一组begin-->
-                <ul class="item-nav"><!--ul上的current是为了控制当前这一组的背景色，li上的current是为了控制二级菜单-->
-                    <li class="budgetAmount">
-                        <a class="cur" href="/sys/budgetAmount.dhtml">预算填写</a>
-                    </li>
-                    <li class="budgetAmountApprove">
-                        <a class="cur" href="/sys/budgetAmount!approve.dhtml">预算审核</a>
-                    </li>
-                </ul>
+                <#assign roleId=userInfo["roleId"]?if_exists>
+                <#if roleId?exists>
+                    <#if roleId?contains("SET_BUDGET")||roleId?contains("APPROVE_BUDGET")>
+                        <ul class="item-nav"><!--ul上的current是为了控制当前这一组的背景色，li上的current是为了控制二级菜单-->
+                            <#if roleId?contains("SET_BUDGET")>
+                                <li class="budgetAmount">
+                                    <a class="cur" href="/sys/budgetAmount.dhtml">预算填写</a>
+                                </li>
+                            </#if>
+                            <#if roleId?contains("APPROVE_BUDGET")>
+                                <li class="budgetAmountApprove">
+                                    <a class="cur" href="/sys/budgetAmount!approve.dhtml">预算审核</a>
+                                </li>
+                            </#if>
+                        </ul>
+                    </#if>
+                </#if>
                 <ul class="item-nav"><!--ul上的current是为了控制当前这一组的背景色，li上的current是为了控制二级菜单-->
                     <li class="financialTitle">
                         <a class="cur" href="#">预算汇总</a>

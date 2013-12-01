@@ -2,8 +2,12 @@
 <#import "/view/common/core.ftl" as c>
 <@wfCommon.wf_common>
 <link href="/css/validator/validator.css" rel="stylesheet"/>
+<link href="/js/editor/themes/default/css/umeditor.min.css" type="text/css" rel="stylesheet">
 <script type="text/javascript" src="/js/webutils/webutils.validator.js"></script>
 <script type="text/javascript" src="/js/webutils/reg.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/editor/umeditor.config.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/editor/umeditor.min.js"></script>
+<script type="text/javascript" src="/js/editor/lang/zh-cn/zh-cn.js"></script>
 
 <link href="/css/kendo.common.css" rel="stylesheet"/>
 <link href="/css/kendo.metro.min.css" rel="stylesheet"/>
@@ -163,9 +167,21 @@
         uploadRemove=false;
     }
 
+    function getContent() {
+        return UM.getEditor('editor').getContent();
+    }
+    function hasContent() {
+        return UM.getEditor('editor').hasContents();
+    }
+
+
     $(document).ready(function () {
         initValidator();
-
+        var ue = UM.getEditor('editor', {
+            lang:'zh-cn',
+            langPath:UMEDITOR_CONFIG.UMEDITOR_HOME_URL + "lang/",
+            focus: true
+        });
         $('#wfReqAdvanceAccount\\.payMethod').change(function(){
             var payMethod=$('#wfReqAdvanceAccount\\.payMethod').val();
             if(payMethod=="2"){
@@ -188,6 +204,7 @@
             WEBUTILS.validator.checkAll();
             window.setTimeout(function () {
                 var passed = WEBUTILS.validator.isPassed();
+                $('#wfReqAdvanceAccount\\.remarks').val(getContent());
                 if (passed) {
                     WEBUTILS.popWindow.createPopWindow(750, 535, '选择流程', '/wf/reqMyFlow!myFlowList.dhtml?applyId=${applyId?if_exists}');
                 } else {
@@ -348,15 +365,9 @@
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="2">
-                        <div class="control-group" style="margin-bottom: 5px;">
-                            <label class="control-label" for="wfReqAdvanceAccount.remarks"
-                                   style="width: 60px;color: #898989;">备注</label>
-
-                            <div class="controls" style="margin-left: 70px;">
-                                <textarea rows="4" style="width: 95%;" class="font12" id="wfReqAdvanceAccount.remarks" name="wfReqAdvanceAccount.remarks" maxlength="400"></textarea>
-                                <span class="help-inline"></span>
-                            </div>
+                    <td colspan="2" style="border-top: 0px;">
+                        <div style="width:790px;">
+                            <script type="text/plain" id="editor" style="width:790px;height:200px;"></script>
                         </div>
                     </td>
                 </tr>
@@ -383,6 +394,8 @@
             <input type="hidden" name="wfReq.applyId" id="wfReq.applyId" value="${applyId?if_exists}">
             <input type="hidden" name="wfReq.id" id="wfReq.id">
             <input type="hidden" name="flowId" id="flowId">
+            <input type="hidden" name="wfReqAdvanceAccount.remarks" id="wfReqAdvanceAccount.remarks">
+
             <input type="hidden" name="wfReq.nodeCount" id="wfReq.nodeCount" value="0">
             <div id="nodeFlowHidden"></div>
         </form>

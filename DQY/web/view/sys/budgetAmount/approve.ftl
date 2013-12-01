@@ -122,7 +122,13 @@
         $('#currentYear').change(function () {
             search();
         });
-
+        $('#exportBtn').off('click').on('click', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            var currentYear = $('#currentYear').val();
+            var deptId = $('#deptId').val();
+            document.location.href='/sys/budgetAmount!export.dhtml?currentYear='+currentYear+'&deptId='+deptId;
+        });
         $('#lockBtn').off('click').on('click', function (e) {
             e.preventDefault();
             e.stopPropagation();
@@ -486,6 +492,7 @@
                 <button class="btn btn-danger floatright" type="button" id="lockBtn">锁定</button>
             </#if>
         </#if>
+        <button class="btn btn-info floatright marr10" type="button" id="exportBtn">导出</button>
         <button class="btn btn-success floatright marr10" type="button" id="saveBtn">保存</button>
         <input type="hidden" id="approveBudget" name="approveBudget"  value="1"/>
     </div>

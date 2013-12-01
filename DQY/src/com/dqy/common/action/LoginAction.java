@@ -146,6 +146,10 @@ public class LoginAction extends BaseAction {
         UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
         if (userInfo != null) {
             userInfo.setTopMenu("index");
+            userInfo.setTopMenuApply(0);
+            userInfo.setTopMenuBudget(0);
+            userInfo.setTopMenuInfo(0);
+            userInfo.setTopMenuSys(0);
 
             Integer unRead = wfReqTaskService.getCountUnRead(userInfo.getOrgId(), userInfo.getUserId());
             if (unRead == null) {
@@ -233,6 +237,35 @@ public class LoginAction extends BaseAction {
                     }
                 }
             }
+            List<String> roleList = userInfo.getRoleList();
+            if (roleList != null && !roleList.isEmpty()) {
+                if (roleList.contains("SYS_GROUP")) {
+                    userInfo.setTopMenuSys(1);
+                } else if (roleList.contains("SYS_USER")) {
+                    userInfo.setTopMenuSys(1);
+                } else if (roleList.contains("SYS_FINANCIAL") || roleList.contains("SYS_BUDGET")) {
+                    if (roleList.contains("SYS_FINANCIAL")) {
+                        userInfo.setTopMenuSys(1);
+                    } else if (roleList.contains("SYS_BUDGET")) {
+                        userInfo.setTopMenuSys(1);
+                    }
+                } else if (roleList.contains("SYS_APPROVE")) {
+                    userInfo.setTopMenuSys(1);
+                }
+
+                if (roleList.contains("SET_BUDGET") || roleList.contains("APPROVE_BUDGET")) {
+                    if (roleList.contains("SET_BUDGET")) {
+                        userInfo.setTopMenuBudget(1);
+                    } else if (roleList.contains("APPROVE_BUDGET")) {
+                        userInfo.setTopMenuBudget(1);
+                    }
+                }
+                if (roleList.contains("LOOK_BUDGET")) {
+                    userInfo.setTopMenuBudget(1);
+                }
+            }
+            userInfo.setTopMenuApply(1);
+
         }
         return "success";  //To change body of implemented methods use File | Settings | File Templates.
     }

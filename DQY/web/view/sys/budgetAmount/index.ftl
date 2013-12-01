@@ -127,6 +127,13 @@
             search();
         });
 
+
+        $('#exportBtn').off('click').on('click', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            var currentYear = $('#currentYear').val();
+            document.location.href='/sys/budgetAmount!export.dhtml?currentYear='+currentYear;
+        });
         $('#resetBtn').off('click').on('click', function (e) {
             e.preventDefault();
             e.stopPropagation();
@@ -452,10 +459,12 @@
 <!--搜索begin-->
 <form class="form-horizontal" action="/sys/budgetAmount!save.dhtml" method="POST" name="editForm"
       id="editForm">
-    <div class="alert">
-        <button type="button" class="close" data-dismiss="alert">&times;</button>
-        <strong>告知!</strong> 当前${hrDepartment.deptName?if_exists} ${currentYear?c}年度预算已被锁定，暂时无法修改！
-    </div>
+    <#if lockYn=="Y">
+        <div class="alert">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong>告知!</strong> 当前${hrDepartment.deptName?if_exists} ${currentYear?c}年度预算已被锁定，暂时无法修改！
+        </div>
+    </#if>
     <div class="r-top clearfix">
         <input type="text" id="deptName" name="deptName" placeholder="预算部门" <#if hrDepartment?exists>
                value="${(hrDepartment.deptName)?if_exists}" </#if>disabled>
@@ -472,6 +481,7 @@
             <button class="btn btn-danger floatright" type="button" id="resetBtn">重置</button>
             <button class="btn btn-success floatright marr10" type="button" id="saveBtn">保存</button>
         </#if>
+        <button class="btn btn-info floatright marr10" type="button" id="exportBtn">导出</button>
         <input type="hidden" id="deptId" name="deptId" <#if hrDepartment?exists> value="${hrDepartment.id?c}" </#if>/>
     </div>
     <!--搜索over-->

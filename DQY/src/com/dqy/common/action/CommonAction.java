@@ -251,21 +251,21 @@ public class CommonAction extends BaseAction {
         if (userInfo != null) {
             orgId = userInfo.getOrgId();
             if (approveTypeId == null) {
-                node = new JSONObject();
-                node.put("name", "审批岗位");
-                node.put("id", "1");
-                node.put("approveType", "1");
-                node.put("nodeType", -1);
-                node.put("isParent", true);
-                jsonArray.add(node);
-
-                node = new JSONObject();
-                node.put("name", "直属上司");
-                node.put("id", "2");
-                node.put("approveType", "2");
-                node.put("nodeType", -1);
-                node.put("isParent", true);
-                jsonArray.add(node);
+//                node = new JSONObject();
+//                node.put("name", "审批岗位");
+//                node.put("id", "1");
+//                node.put("approveType", "1");
+//                node.put("nodeType", -1);
+//                node.put("isParent", true);
+//                jsonArray.add(node);
+//
+//                node = new JSONObject();
+//                node.put("name", "直属上司");
+//                node.put("id", "2");
+//                node.put("approveType", "2");
+//                node.put("nodeType", -1);
+//                node.put("isParent", true);
+//                jsonArray.add(node);
 
                 node = new JSONObject();
                 node.put("name", "审批人员");
@@ -380,6 +380,30 @@ public class CommonAction extends BaseAction {
                     }
                 } else if (roleList.contains("SYS_APPROVE")) {
                     authUrl = "/wf/variableGlobal.dhtml";
+                }
+                if (StringUtils.isNotBlank(authUrl)) {
+                    return "success";
+                }
+            }
+        }
+        return "index";  //To change body of implemented methods use File | Settings | File Templates.
+    }
+    @PageFlow(result = {@Result(name = "success", path = "${authUrl}", type = Dispatcher.Redirect),
+            @Result(name = "index", path = "/common/login!index.dhtml", type = Dispatcher.Redirect)})
+    public String budgetIndex() throws Exception {
+        UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
+        if (userInfo != null) {
+            List<String> roleList = userInfo.getRoleList();
+            if (roleList != null && !roleList.isEmpty()) {
+                if (roleList.contains("SET_BUDGET") || roleList.contains("APPROVE_BUDGET")) {
+                    if (roleList.contains("SET_BUDGET")) {
+                        authUrl = "/sys/budgetAmount.dhtml";
+                    } else if (roleList.contains("APPROVE_BUDGET")) {
+                        authUrl = "/sys/budgetAmount!approve.dhtml";
+                    }
+                }
+                if (roleList.contains("LOOK_BUDGET")) {
+                    //authUrl = "/sys/orgGroup.dhtml";
                 }
                 if (StringUtils.isNotBlank(authUrl)) {
                     return "success";

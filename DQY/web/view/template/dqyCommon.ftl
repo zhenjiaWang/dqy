@@ -68,9 +68,16 @@
                     <li class="index"><a href="/common/login!index.dhtml"><em></em>首 页</a></li>
                     <li class="apply"><a href="/wf/advanceAccount.dhtml"><em></em>申请平台</a></li>
                     <li class="info no"><a href="#"><em></em>信息平台</a></li>
-                    <li class="budget"><a href="/sys/budgetAmount.dhtml"><em></em>预算管理</a></li>
-
-                    <li class="sys"><a href="/common/common!sysIndex.dhtml"><em></em>系统管理</a></li>
+                    <#if userInfo["topMenuBudget"] gt 0>
+                        <li class="budget"><a href="/common/common!budgetIndex.dhtml"><em></em>预算管理</a></li>
+                    <#else >
+                        <li class="budget no"><a href="##"><em></em>预算管理</a></li>
+                    </#if>
+                    <#if userInfo["topMenuSys"] gt 0>
+                        <li class="sys"><a href="/common/common!sysIndex.dhtml"><em></em>系统管理</a></li>
+                    <#else >
+                        <li class="sys no"><a href="##"><em></em>系统管理</a></li>
+                    </#if>
                 </ul>
             </div>
             <!--右侧begin-->

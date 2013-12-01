@@ -137,7 +137,8 @@ public class HrUserAction extends ActionSupport<HrUser> {
                     roleNameMap.put("SYS_FINANCIAL","财务科目管理");
                     roleNameMap.put("SYS_BUDGET","预算科目管理");
                     roleNameMap.put("LOOK_BUDGET","预算查看");
-                    roleNameMap.put("SET_BUDGET","预算设置");
+                    roleNameMap.put("SET_BUDGET","预算填报");
+                    roleNameMap.put("APPROVE_BUDGET","预算审核");
                     roleNameMap.put("TASK_FINANCIAL","财务审批");
                     roleNameMap.put("GENERAL","普通用户");
 

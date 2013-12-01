@@ -86,6 +86,14 @@ public class UserInfo implements Serializable {
 
     private Integer reqRejected;
 
+    private Integer topMenuApply;
+
+    private Integer topMenuInfo;
+
+    private Integer topMenuBudget;
+
+    private Integer topMenuSys;
+
     public String getSessionId() {
         return sessionId;
     }
@@ -324,5 +332,37 @@ public class UserInfo implements Serializable {
 
     public void setReqRejected(Integer reqRejected) {
         this.reqRejected = reqRejected;
+    }
+
+    public Integer getTopMenuApply() {
+        return topMenuApply;
+    }
+
+    public void setTopMenuApply(Integer topMenuApply) {
+        this.topMenuApply = topMenuApply;
+    }
+
+    public Integer getTopMenuInfo() {
+        return topMenuInfo;
+    }
+
+    public void setTopMenuInfo(Integer topMenuInfo) {
+        this.topMenuInfo = topMenuInfo;
+    }
+
+    public Integer getTopMenuBudget() {
+        return topMenuBudget;
+    }
+
+    public void setTopMenuBudget(Integer topMenuBudget) {
+        this.topMenuBudget = topMenuBudget;
+    }
+
+    public Integer getTopMenuSys() {
+        return topMenuSys;
+    }
+
+    public void setTopMenuSys(Integer topMenuSys) {
+        this.topMenuSys = topMenuSys;
     }
 }

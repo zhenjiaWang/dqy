@@ -89,8 +89,14 @@ public class SysBudgetAmountService extends HQuery {
 
     @Transactional(type = TransactionType.READ_ONLY)
     public List<SysBudgetAmount> getAmountList(Long orgId,Integer year,Long deptId) {
-        return $($eq("orgId.id",orgId),$eq("year",year),$eq("deptId.id",deptId),$order("typeId.id"),$order("titleId.id")).list(SysBudgetAmount.class);
+        return $($eq("orgId.id",orgId),$eq("year",year),$eq("deptId.id",deptId),$order("typeId.id"),$order("titleId.id"),$order("month")).list(SysBudgetAmount.class);
     }
+
+    @Transactional(type = TransactionType.READ_ONLY)
+    public List<SysBudgetAmount> getAmountList(Long orgId,Integer year,Long deptId,Long typeId,Long titleId) {
+        return $($eq("orgId.id",orgId),$eq("year",year),$eq("deptId.id",deptId),$eq("typeId.id",typeId),$eq("titleId.id",titleId),$order("month")).list(SysBudgetAmount.class);
+    }
+
 
     @Transactional(type = TransactionType.READ_ONLY)
     public Double geTotalAmount(Long orgId,Integer year,Long deptId) {
