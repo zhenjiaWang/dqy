@@ -5,6 +5,7 @@ import com.dqy.sys.entity.SysBudgetOwen;
 import com.google.inject.Singleton;
 import org.guiceside.persistence.TransactionType;
 import org.guiceside.persistence.Transactional;
+import org.guiceside.persistence.hibernate.dao.enums.Match;
 import org.guiceside.persistence.hibernate.dao.hquery.HQuery;
 import org.guiceside.persistence.hibernate.dao.hquery.Selector;
 
@@ -97,6 +98,17 @@ public class SysBudgetAmountService extends HQuery {
         return $($eq("orgId.id",orgId),$eq("year",year),$eq("deptId.id",deptId),$eq("typeId.id",typeId),$eq("titleId.id",titleId),$order("month")).list(SysBudgetAmount.class);
     }
 
+    @Transactional(type = TransactionType.READ_ONLY)
+    public Double countAmountListByTitleNo(Long orgId,Integer year,Long deptId,Long typeId,String titleNo,Integer month) {
+        return $($alias("titleId","titleId"),$eq("orgId.id",orgId),$eq("year",year),$eq("deptId.id",deptId),$eq("typeId.id",typeId),$like("titleId.titleNo",titleNo, Match.END),$eq("month",month),
+                $sum("amount")).value(SysBudgetAmount.class,
+                Double.class);
+    }
+
+    @Transactional(type = TransactionType.READ_ONLY)
+    public List<SysBudgetAmount> getAmountListByTitleLv2(Long orgId,Integer year,Long deptId) {
+        return $($alias("titleId","titleId"),$eq("orgId.id",orgId),$eq("year",year),$eq("deptId.id",deptId),$eq("titleId.titleLevel",2),$order("typeId.id"),$order("titleId.id"),$order("month")).list(SysBudgetAmount.class);
+    }
 
     @Transactional(type = TransactionType.READ_ONLY)
     public Double geTotalAmount(Long orgId,Integer year,Long deptId) {

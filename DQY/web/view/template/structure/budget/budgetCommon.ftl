@@ -64,14 +64,11 @@
                     </#if>
                 </#if>
                 <ul class="item-nav"><!--ul上的current是为了控制当前这一组的背景色，li上的current是为了控制二级菜单-->
-                    <li class="financialTitle">
-                        <a class="cur" href="#">预算汇总</a>
+                    <li class="budgetMonitor">
+                        <a class="cur" href="/sys/budgetAmount!monitor.dhtml">预算监控</a>
                     </li>
                     <li class="budgetType">
-                        <a class="cur" href="#">预算监控</a>
-                    </li>
-                    <li class=budgetTitle>
-                        <a class="cur" href="#">预算对比</a>
+                        <a class="cur" href="#">整体监控</a>
                     </li>
                 </ul>
                 <!--一组over-->

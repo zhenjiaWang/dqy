@@ -2,6 +2,7 @@ package com.dqy.sys.action;
 
 import com.dqy.common.UserInfo;
 import com.dqy.common.UserSession;
+import com.dqy.common.entity.TempBudgetAmount;
 import com.dqy.hr.entity.HrDepartment;
 import com.dqy.hr.service.HrDepartmentService;
 import com.dqy.sys.entity.*;
@@ -117,6 +118,9 @@ public class SysBudgetAmountAction extends ActionSupport<SysBudgetAmount> {
     private List<SysBudgetType> typeList;
     @ReqSet
     private List<HrDepartment> departmentList;
+
+    @ReqSet
+    private List<TempBudgetAmount> tempBudgetAmountList;
 
     @ReqSet
     private Set<String> idSets;
@@ -601,5 +605,69 @@ public class SysBudgetAmountAction extends ActionSupport<SysBudgetAmount> {
         return "success";
     }
 
+    @PageFlow(result = {@Result(name = "success", path = "/view/sys/budgetAmount/monitor.ftl", type = Dispatcher.FreeMarker)})
+    public String monitor() throws Exception {
+        UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
+        if (userInfo != null) {
+            totalAmount = 0.00d;
+            userInfo.setTopMenu("budget");
+            userInfo.setLeftMenu("budgetMonitor");
+            Date currentDate = DateFormatUtil.getCurrentDate(false);
+            if (currentYear == null) {
+                currentYear = DateFormatUtil.getDayInYear(currentDate);
+            }
+            yearList = new ArrayList<Integer>();
+            yearList.add(currentYear - 1);
+            yearList.add(currentYear);
+            yearList.add(currentYear + 1);
+            yearList.add(currentYear + 2);
+
+            hrDepartment = this.hrDepartmentService.getById(userInfo.getDepartmentId());
+
+            rows = 0;
+            sysBudgetAmountList = this.sysBudgetAmountService.getAmountListByTitleLv2(userInfo.getOrgId(), currentYear, hrDepartment.getId());
+            if (sysBudgetAmountList != null && !sysBudgetAmountList.isEmpty()) {
+                if (sysBudgetAmount == null) {
+                    sysBudgetAmount = sysBudgetAmountList.get(0);
+                }
+                idSets = new HashSet<String>();
+                for (SysBudgetAmount budgetAmount : sysBudgetAmountList) {
+                    idSets.add(get(budgetAmount, "typeId.id") + "_" + get(budgetAmount, "titleId.id"));
+                }
+                if (idSets != null && !idSets.isEmpty()) {
+                    rows = idSets.size();
+                    for(String idStr:idSets){
+                        String[] idStrs = idStr.split("_");
+                        Long typeID = BeanUtils.convertValue(idStrs[0], Long.class);
+                        Long titleID = BeanUtils.convertValue(idStrs[1], Long.class);
+                        if (typeID != null && titleID != null) {
+                            tempBudgetAmountList=new ArrayList<TempBudgetAmount>();
+                            SysBudgetType budgetType = this.sysBudgetTypeService.getById(typeID);
+                            SysFinancialTitle financialTitle = this.sysFinancialTitleService.getById(titleID);
+                            if (budgetType != null && financialTitle != null) {
+                                TempBudgetAmount tempBudgetAmount=new TempBudgetAmount();
+                                tempBudgetAmount.setHrDepartment(hrDepartment);
+                                tempBudgetAmount.setSysBudgetType(budgetType);
+                                tempBudgetAmount.setSysFinancialTitle(financialTitle);
+                                for(int i=1;i<=12;i++){
+                                    Double amountTotalMonth=this.sysBudgetAmountService.countAmountListByTitleNo(userInfo.getOrgId(), currentYear, hrDepartment.getId(), budgetType.getId(), financialTitle.getTitleNo(),i);
+                                    if(amountTotalMonth==null){
+                                        amountTotalMonth=0.0d;
+                                    }
+                                    BeanUtils.setValue(tempBudgetAmount,"monthAmount"+i,amountTotalMonth);
+                                }
+                                tempBudgetAmountList.add(tempBudgetAmount);
+                            }
+                        }
+                    }
+                }
+            }
+            totalAmount = sysBudgetAmountService.geTotalAmount(userInfo.getOrgId(), currentYear, hrDepartment.getId());
+            if (totalAmount == null) {
+                totalAmount = 0.00d;
+            }
+        }
+        return "success";  //To change body of implemented methods use File | Settings | File Templates.
+    }
 
 }
