@@ -318,8 +318,8 @@
                 });
             }
         });
-        <#if idSets?exists&&idSets?size gt 0>
-        <#list idSets as tt>
+        <#if idList?exists&&idList?size gt 0>
+        <#list idList as tt>
         <#assign ids=tt?split("_")>
         <#if ids?exists>
             $('#typeId${(tt_index+1)}','.table-bordered-amt').val('${ids[0]?if_exists}');

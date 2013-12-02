@@ -20,10 +20,10 @@ import jxl.write.WritableCellFormat;
 import jxl.write.WritableFont;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
-import org.apache.commons.lang.StringUtils;
 import org.guiceside.commons.TokenUtils;
 import org.guiceside.commons.lang.BeanUtils;
 import org.guiceside.commons.lang.DateFormatUtil;
+import org.guiceside.commons.lang.StringUtils;
 import org.guiceside.persistence.entity.search.SelectorUtils;
 import org.guiceside.persistence.hibernate.dao.hquery.Selector;
 import org.guiceside.support.file.FileManager;
@@ -124,7 +124,8 @@ public class SysBudgetAmountAction extends ActionSupport<SysBudgetAmount> {
 
     @ReqSet
     private Set<String> idSets;
-
+    @ReqSet
+    private List<String> idList;
 
     @ReqSet
     private Map<String, List<SysBudgetTitle>> budgetTitleMap;
@@ -168,14 +169,19 @@ public class SysBudgetAmountAction extends ActionSupport<SysBudgetAmount> {
                     sysBudgetAmount = sysBudgetAmountList.get(0);
                 }
                 idSets = new HashSet<String>();
+                idList=new ArrayList<String>();
                 budgetAmountMap = new HashMap<String, Double>();
                 for (SysBudgetAmount budgetAmount : sysBudgetAmountList) {
-                    idSets.add(get(budgetAmount, "typeId.id") + "_" + get(budgetAmount, "titleId.id") + "_" + get(budgetAmount, "titleId.titleName"));
+                    String temp=get(budgetAmount, "typeId.id") + "_" + get(budgetAmount, "titleId.id") + "_" + get(budgetAmount, "titleId.titleName");
+                    if(!idSets.contains(temp)){
+                        idList.add(temp);
+                        idSets.add(temp);
+                    }
                     budgetAmountMap.put(get(budgetAmount, "typeId.id") + "_" + get(budgetAmount, "titleId.id") + "_" + budgetAmount.getMonth(),
                             budgetAmount.getAmount());
                 }
-                if (idSets != null && !idSets.isEmpty()) {
-                    rows = idSets.size();
+                if (idList != null && !idList.isEmpty()) {
+                    rows = idList.size();
                 }
             }
             totalAmount = sysBudgetAmountService.geTotalAmount(userInfo.getOrgId(), currentYear, hrDepartment.getId());
@@ -281,11 +287,16 @@ public class SysBudgetAmountAction extends ActionSupport<SysBudgetAmount> {
                     if (sysBudgetAmountList != null && !sysBudgetAmountList.isEmpty()) {
                         budgetAmountMap = new HashMap<String, Double>();
                         idSets = new HashSet<String>();
+                        idList=new ArrayList<String>();
                         for (SysBudgetAmount budgetAmount : sysBudgetAmountList) {
-                            idSets.add(get(budgetAmount, "typeId.id") + "_" + get(budgetAmount, "titleId.id"));
+                            String temp=get(budgetAmount, "typeId.id") + "_" + get(budgetAmount, "titleId.id");
+                            if(!idSets.contains(temp)){
+                                idList.add(temp);
+                                idSets.add(temp);
+                            }
                         }
-                        if (idSets != null && !idSets.isEmpty()) {
-                            for (String idStr : idSets) {
+                        if (idList != null && !idList.isEmpty()) {
+                            for (String idStr : idList) {
                                 String[] idStrs = idStr.split("_");
                                 Long typeID = BeanUtils.convertValue(idStrs[0], Long.class);
                                 Long titleID = BeanUtils.convertValue(idStrs[1], Long.class);
@@ -496,14 +507,19 @@ public class SysBudgetAmountAction extends ActionSupport<SysBudgetAmount> {
                     sysBudgetAmount = sysBudgetAmountList.get(0);
                 }
                 idSets = new HashSet<String>();
+                idList=new ArrayList<String>();
                 budgetAmountMap = new HashMap<String, Double>();
                 for (SysBudgetAmount budgetAmount : sysBudgetAmountList) {
-                    idSets.add(get(budgetAmount, "typeId.id") + "_" + get(budgetAmount, "titleId.id") + "_" + get(budgetAmount, "titleId.titleName"));
+                    String temp=get(budgetAmount, "typeId.id") + "_" + get(budgetAmount, "titleId.id") + "_" + get(budgetAmount, "titleId.titleName");
+                    if(!idSets.contains(temp)){
+                        idList.add(temp);
+                        idSets.add(temp);
+                    }
                     budgetAmountMap.put(get(budgetAmount, "typeId.id") + "_" + get(budgetAmount, "titleId.id") + "_" + budgetAmount.getMonth(),
                             budgetAmount.getAmount());
                 }
-                if (idSets != null && !idSets.isEmpty()) {
-                    rows = idSets.size();
+                if (idList != null && !idList.isEmpty()) {
+                    rows = idList.size();
                 }
             }
             totalAmount = sysBudgetAmountService.geTotalAmount(userInfo.getOrgId(), currentYear, hrDepartment.getId());
@@ -625,37 +641,54 @@ public class SysBudgetAmountAction extends ActionSupport<SysBudgetAmount> {
             hrDepartment = this.hrDepartmentService.getById(userInfo.getDepartmentId());
 
             rows = 0;
-            sysBudgetAmountList = this.sysBudgetAmountService.getAmountListByTitleLv2(userInfo.getOrgId(), currentYear, hrDepartment.getId());
+            sysBudgetAmountList = this.sysBudgetAmountService.getAmountList(userInfo.getOrgId(), currentYear, hrDepartment.getId());
             if (sysBudgetAmountList != null && !sysBudgetAmountList.isEmpty()) {
                 if (sysBudgetAmount == null) {
                     sysBudgetAmount = sysBudgetAmountList.get(0);
                 }
                 idSets = new HashSet<String>();
+                idList=new ArrayList<String>();
                 for (SysBudgetAmount budgetAmount : sysBudgetAmountList) {
-                    idSets.add(get(budgetAmount, "typeId.id") + "_" + get(budgetAmount, "titleId.id"));
+                    String titleNo=get(budgetAmount, "titleId.titleNo");
+                    if(StringUtils.isNotBlank(titleNo)){
+                        if(titleNo.length()<6){
+                            continue;
+                        }
+                        if(titleNo.length()>6){
+                            titleNo=titleNo.substring(0,6);
+                        }
+                    }
+                    String temp=get(budgetAmount, "typeId.id") + "_" + titleNo;
+                    if(!idSets.contains(temp)){
+                        idList.add(temp);
+                        idSets.add(temp);
+                    }
                 }
-                if (idSets != null && !idSets.isEmpty()) {
+                if (idList != null && !idList.isEmpty()) {
                     rows = idSets.size();
-                    for(String idStr:idSets){
+                    tempBudgetAmountList=new ArrayList<TempBudgetAmount>();
+                    for(String idStr:idList){
                         String[] idStrs = idStr.split("_");
                         Long typeID = BeanUtils.convertValue(idStrs[0], Long.class);
-                        Long titleID = BeanUtils.convertValue(idStrs[1], Long.class);
-                        if (typeID != null && titleID != null) {
-                            tempBudgetAmountList=new ArrayList<TempBudgetAmount>();
+                        String titleID = idStrs[1];
+                        if (typeID != null && StringUtils.isNotBlank(titleID)) {
                             SysBudgetType budgetType = this.sysBudgetTypeService.getById(typeID);
-                            SysFinancialTitle financialTitle = this.sysFinancialTitleService.getById(titleID);
+                            SysFinancialTitle financialTitle = this.sysFinancialTitleService.getByNo(userInfo.getOrgId(),titleID);
                             if (budgetType != null && financialTitle != null) {
                                 TempBudgetAmount tempBudgetAmount=new TempBudgetAmount();
                                 tempBudgetAmount.setHrDepartment(hrDepartment);
                                 tempBudgetAmount.setSysBudgetType(budgetType);
                                 tempBudgetAmount.setSysFinancialTitle(financialTitle);
+                                Double yearAmount=0.00d;
                                 for(int i=1;i<=12;i++){
                                     Double amountTotalMonth=this.sysBudgetAmountService.countAmountListByTitleNo(userInfo.getOrgId(), currentYear, hrDepartment.getId(), budgetType.getId(), financialTitle.getTitleNo(),i);
                                     if(amountTotalMonth==null){
                                         amountTotalMonth=0.0d;
                                     }
                                     BeanUtils.setValue(tempBudgetAmount,"monthAmount"+i,amountTotalMonth);
+                                    yearAmount+=amountTotalMonth;
                                 }
+                                tempBudgetAmount.setYearAmount(yearAmount);
                                 tempBudgetAmountList.add(tempBudgetAmount);
                             }
                         }

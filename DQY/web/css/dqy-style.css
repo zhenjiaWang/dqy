@@ -184,7 +184,7 @@ table.nopadding{border-left:0;}
 table.nopadding tr td{padding:0 10px;height: 35px;line-height: 35px;}
 .scroll-x{width:800px;height: 500px;border:1px solid #ccc;border-width:1px;}
 .scroll-x table{position: relative;top:-1px;left:-1px;}
-.scroll-x table,.scroll-x .table-scroll{width:1400px;}
+.scroll-x table,.scroll-x .table-scroll{width:1631px;}
 td .dqy-eidt{position: relative;top:1px;*top:0;}
 /*2013-09-22*/
 .weather{height:40px;}
@@ -269,7 +269,7 @@ table.print-table td,table.print-table th{border:1px solid #000;line-height: 30p
 .print-title{width:600px;}
 /*2013-11-23*/
 .scroll-x{padding-top:37px;position: relative;overflow-x:scroll;}
-.scroll-x-inner{width:1631px;height:480px;overflow:hidden;overflow-y:scroll;}
+.scroll-x-inner{width:1631px;height:480px;overflow:hidden;overflow-y:auto;}
 .top-fied{width:1631px;position:absolute;left:0;top:0;padding-right:16px;}
 .top-fied table{width:1631px;}
 .top-fied table td{padding:0 10px!important;}

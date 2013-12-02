@@ -13,7 +13,7 @@
 <script type="text/javascript">
     function search() {
         var currentYear = $('#currentYear').val();
-        document.location.href = '/sys/budgetAmount.dhtml?currentYear=' + currentYear;
+        document.location.href = '/sys/budgetAmount!monitor.dhtml?currentYear=' + currentYear;
     }
     $(document).ready(function () {
         $('#currentYear').change(function () {
@@ -100,34 +100,23 @@
                             </thead>
                         </table>
                     </div>
-
-
                         <div class="scroll-x-inner">
-                        <table class="layout table table-bordered table-hover tableBgColor nomar nopadding table-bordered-amt">
-                        <tbody>
-                        <#if tempBudgetAmountList?exists&&tempBudgetAmountList?size gt 0>
-                        <#list tempBudgetAmountList as budgetAmount>
-                        <tr>
-
-                            <td width="235">
-                            ${(budgetAmount.sysBudgetType.expenseType)?if_exists}
-                            </td>
-                            <td width="288">
-                            ${(budgetAmount.sysFinancialTitle.titleName)?if_exists}
-                            </td>
-                            <td width="171">
-                                0
-                            </td>
-                            <#list 1..12 as month>
-                                <td width="200">
-                                ${(budgetAmount["monthAmount"+month])?if_exists}
-                                </td>
-                            </#list>
-                        </tr>
-                        </#list>
-                        </#if>
-                        </tbody>
-                        </table>
+                            <table class="layout table table-bordered table-hover tableBgColor nomar nopadding ">
+                                <tbody>
+                                <#if tempBudgetAmountList?exists&&tempBudgetAmountList?size gt 0>
+                                <#list tempBudgetAmountList as budgetAmount>
+                                <tr>
+                                    <td width="103">${(budgetAmount.sysBudgetType.expenseType)?if_exists}</td>
+                                    <td width="124">${(budgetAmount.sysFinancialTitle.titleName)?if_exists}</td>
+                                    <td width="86">${budgetAmount.yearAmount?if_exists}</td>
+                                    <#list  1..12 as month>
+                                        <td width="86">${budgetAmount["monthAmount"+month]?if_exists}</td>
+                                    </#list>
+                                </tr>
+                                </#list>
+                                </#if>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </td>
