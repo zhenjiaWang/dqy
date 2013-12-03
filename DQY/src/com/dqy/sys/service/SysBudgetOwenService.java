@@ -5,6 +5,7 @@ import com.google.inject.Singleton;
 import org.guiceside.commons.Page;
 import org.guiceside.persistence.TransactionType;
 import org.guiceside.persistence.Transactional;
+import org.guiceside.persistence.hibernate.dao.enums.Match;
 import org.guiceside.persistence.hibernate.dao.hquery.HQuery;
 import org.guiceside.persistence.hibernate.dao.hquery.Selector;
 
@@ -75,6 +76,13 @@ public class SysBudgetOwenService extends HQuery {
     @Transactional(type = TransactionType.READ_ONLY)
     public List<Long> getBudgetIdList(Long orgId) {
         return $($eq("orgId.id",orgId),$distinct("budgetTitle.id")).list(SysBudgetOwen.class,Long.class);
+    }
+
+    @Transactional(type = TransactionType.READ_ONLY)
+    public List<Long> getBudgetIdList(Long orgId,String titleNo) {
+        return $($alias("titleId","titleId"),$eq("orgId.id",orgId),
+                $like("titleId.titleNo",titleNo, Match.END),
+                $distinct("budgetTitle.id")).list(SysBudgetOwen.class, Long.class);
     }
 
     @Transactional(type = TransactionType.READ_ONLY)

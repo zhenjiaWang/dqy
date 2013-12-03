@@ -47,6 +47,9 @@ public class SysBudgetAmountAction extends ActionSupport<SysBudgetAmount> {
     private SysBudgetAmountService sysBudgetAmountService;
 
     @Inject
+    private SysBudgetOwenService sysBudgetOwenService;
+
+    @Inject
     private SysBudgetTypeService sysBudgetTypeService;
 
     @Inject
@@ -85,6 +88,18 @@ public class SysBudgetAmountAction extends ActionSupport<SysBudgetAmount> {
 
     @ReqGet
     @ReqSet
+    private Integer month;
+
+    @ReqGet
+    @ReqSet
+    private Long typeId;
+
+    @ReqGet
+    @ReqSet
+    private String titleNo;
+
+    @ReqGet
+    @ReqSet
     private Integer rows;
 
     @ReqGet
@@ -113,6 +128,12 @@ public class SysBudgetAmountAction extends ActionSupport<SysBudgetAmount> {
 
     @ReqSet
     private List<SysFinancialTitle> titleList;
+
+    @ReqSet
+    private List<WfReqRePaymentDetail> paymentDetailList;
+
+    @ReqSet
+    private List<WfReqDailyDetail> dailyDetailList;
 
     @ReqSet
     private List<SysBudgetType> typeList;
@@ -169,11 +190,11 @@ public class SysBudgetAmountAction extends ActionSupport<SysBudgetAmount> {
                     sysBudgetAmount = sysBudgetAmountList.get(0);
                 }
                 idSets = new HashSet<String>();
-                idList=new ArrayList<String>();
+                idList = new ArrayList<String>();
                 budgetAmountMap = new HashMap<String, Double>();
                 for (SysBudgetAmount budgetAmount : sysBudgetAmountList) {
-                    String temp=get(budgetAmount, "typeId.id") + "_" + get(budgetAmount, "titleId.id") + "_" + get(budgetAmount, "titleId.titleName");
-                    if(!idSets.contains(temp)){
+                    String temp = get(budgetAmount, "typeId.id") + "_" + get(budgetAmount, "titleId.id") + "_" + get(budgetAmount, "titleId.titleName");
+                    if (!idSets.contains(temp)) {
                         idList.add(temp);
                         idSets.add(temp);
                     }
@@ -287,10 +308,10 @@ public class SysBudgetAmountAction extends ActionSupport<SysBudgetAmount> {
                     if (sysBudgetAmountList != null && !sysBudgetAmountList.isEmpty()) {
                         budgetAmountMap = new HashMap<String, Double>();
                         idSets = new HashSet<String>();
-                        idList=new ArrayList<String>();
+                        idList = new ArrayList<String>();
                         for (SysBudgetAmount budgetAmount : sysBudgetAmountList) {
-                            String temp=get(budgetAmount, "typeId.id") + "_" + get(budgetAmount, "titleId.id");
-                            if(!idSets.contains(temp)){
+                            String temp = get(budgetAmount, "typeId.id") + "_" + get(budgetAmount, "titleId.id");
+                            if (!idSets.contains(temp)) {
                                 idList.add(temp);
                                 idSets.add(temp);
                             }
@@ -325,7 +346,7 @@ public class SysBudgetAmountAction extends ActionSupport<SysBudgetAmount> {
 
                                             createExcel.setCellRow(row);
                                             createExcel.setCellCol(col);
-                                            createExcel.setFormula(formatSum(col+1, row, col+12, row),blackCenterAll);
+                                            createExcel.setFormula(formatSum(col + 1, row, col + 12, row), blackCenterAll);
                                             col++;
 
                                             for (SysBudgetAmount budgetAmount : sysBudgetAmountList) {
@@ -425,6 +446,7 @@ public class SysBudgetAmountAction extends ActionSupport<SysBudgetAmount> {
         String formula = "SUM(" + startCell + ":" + endCell + ")";
         return formula;
     }
+
     @PageFlow(result = {@Result(name = "success", path = "/sys/budgetAmount!approve.dhtml?currentYear=${currentYear}&deptId=${deptId}", type = Dispatcher.Redirect)})
     public String lock() throws Exception {
         UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
@@ -507,11 +529,11 @@ public class SysBudgetAmountAction extends ActionSupport<SysBudgetAmount> {
                     sysBudgetAmount = sysBudgetAmountList.get(0);
                 }
                 idSets = new HashSet<String>();
-                idList=new ArrayList<String>();
+                idList = new ArrayList<String>();
                 budgetAmountMap = new HashMap<String, Double>();
                 for (SysBudgetAmount budgetAmount : sysBudgetAmountList) {
-                    String temp=get(budgetAmount, "typeId.id") + "_" + get(budgetAmount, "titleId.id") + "_" + get(budgetAmount, "titleId.titleName");
-                    if(!idSets.contains(temp)){
+                    String temp = get(budgetAmount, "typeId.id") + "_" + get(budgetAmount, "titleId.id") + "_" + get(budgetAmount, "titleId.titleName");
+                    if (!idSets.contains(temp)) {
                         idList.add(temp);
                         idSets.add(temp);
                     }
@@ -621,6 +643,39 @@ public class SysBudgetAmountAction extends ActionSupport<SysBudgetAmount> {
         return "success";
     }
 
+    @PageFlow(result = {@Result(name = "success", path = "/view/sys/budgetAmount/monitorList.ftl", type = Dispatcher.FreeMarker)})
+    public String monitorList() throws Exception {
+        UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
+        if (userInfo != null&&typeId!=null&&StringUtils.isNotBlank(titleNo)) {
+            Date currentDate = DateFormatUtil.getCurrentDate(false);
+            if (currentYear == null) {
+                currentYear = DateFormatUtil.getDayInYear(currentDate);
+            }
+            if(deptId==null){
+                deptId=userInfo.getDepartmentId();
+            }
+            String startDateStr=null;
+            String endDateStr=null;
+            if(month!=null){
+                String monthStr=month<10?"0"+month:month+"";
+                 startDateStr = currentYear + "-"+monthStr+"-01 00:00:01";
+                 endDateStr = currentYear + "-"+monthStr+"-31 23:23:59";
+            }else{
+                startDateStr = currentYear + "-01-01 00:00:01";
+                endDateStr = currentYear + "-12-31 23:23:59";
+            }
+            Date startDate = DateFormatUtil.parse(startDateStr, DateFormatUtil.YMDHMS_PATTERN);
+            Date endDate = DateFormatUtil.parse(endDateStr, DateFormatUtil.YMDHMS_PATTERN);
+            hrDepartment = this.hrDepartmentService.getById(userInfo.getDepartmentId());
+
+            List<Long> titleIds = this.sysBudgetOwenService.getBudgetIdList(userInfo.getOrgId(), titleNo);
+            if(hrDepartment!=null&&!titleIds.isEmpty()){
+                dailyDetailList= this.wfReqDailyDetailService.getListSumAmountByPass(userInfo.getOrgId(),hrDepartment.getId(),typeId,titleIds,startDate,endDate);
+                paymentDetailList=this.wfReqRePaymentDetailService.getListSumAmountByPass(userInfo.getOrgId(),hrDepartment.getId(),typeId,titleIds,startDate,endDate);
+            }
+        }
+        return "success";
+    }
     @PageFlow(result = {@Result(name = "success", path = "/view/sys/budgetAmount/monitor.ftl", type = Dispatcher.FreeMarker)})
     public String monitor() throws Exception {
         UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
@@ -647,48 +702,72 @@ public class SysBudgetAmountAction extends ActionSupport<SysBudgetAmount> {
                     sysBudgetAmount = sysBudgetAmountList.get(0);
                 }
                 idSets = new HashSet<String>();
-                idList=new ArrayList<String>();
+                idList = new ArrayList<String>();
                 for (SysBudgetAmount budgetAmount : sysBudgetAmountList) {
-                    String titleNo=get(budgetAmount, "titleId.titleNo");
-                    if(StringUtils.isNotBlank(titleNo)){
-                        if(titleNo.length()<6){
+                    String titleNo = get(budgetAmount, "titleId.titleNo");
+                    if (StringUtils.isNotBlank(titleNo)) {
+                        if (titleNo.length() < 6) {
                             continue;
                         }
-                        if(titleNo.length()>6){
-                            titleNo=titleNo.substring(0,6);
+                        if (titleNo.length() > 6) {
+                            titleNo = titleNo.substring(0, 6);
                         }
                     }
-                    String temp=get(budgetAmount, "typeId.id") + "_" + titleNo;
-                    if(!idSets.contains(temp)){
+                    String temp = get(budgetAmount, "typeId.id") + "_" + titleNo;
+                    if (!idSets.contains(temp)) {
                         idList.add(temp);
                         idSets.add(temp);
                     }
                 }
                 if (idList != null && !idList.isEmpty()) {
                     rows = idSets.size();
-                    tempBudgetAmountList=new ArrayList<TempBudgetAmount>();
-                    for(String idStr:idList){
+                    tempBudgetAmountList = new ArrayList<TempBudgetAmount>();
+                    for (String idStr : idList) {
                         String[] idStrs = idStr.split("_");
                         Long typeID = BeanUtils.convertValue(idStrs[0], Long.class);
                         String titleID = idStrs[1];
                         if (typeID != null && StringUtils.isNotBlank(titleID)) {
                             SysBudgetType budgetType = this.sysBudgetTypeService.getById(typeID);
-                            SysFinancialTitle financialTitle = this.sysFinancialTitleService.getByNo(userInfo.getOrgId(),titleID);
+                            SysFinancialTitle financialTitle = this.sysFinancialTitleService.getByNo(userInfo.getOrgId(), titleID);
                             if (budgetType != null && financialTitle != null) {
-                                TempBudgetAmount tempBudgetAmount=new TempBudgetAmount();
+                                TempBudgetAmount tempBudgetAmount = new TempBudgetAmount();
                                 tempBudgetAmount.setHrDepartment(hrDepartment);
                                 tempBudgetAmount.setSysBudgetType(budgetType);
                                 tempBudgetAmount.setSysFinancialTitle(financialTitle);
-                                Double yearAmount=0.00d;
-                                for(int i=1;i<=12;i++){
-                                    Double amountTotalMonth=this.sysBudgetAmountService.countAmountListByTitleNo(userInfo.getOrgId(), currentYear, hrDepartment.getId(), budgetType.getId(), financialTitle.getTitleNo(),i);
-                                    if(amountTotalMonth==null){
-                                        amountTotalMonth=0.0d;
+                                Double yearAmount = 0.00d;
+                                Double yearHappendAmount = 0.00d;
+                                List<Long> titleIds = this.sysBudgetOwenService.getBudgetIdList(userInfo.getOrgId(), financialTitle.getTitleNo());
+                                for (int i = 1; i <= 12; i++) {
+                                    Double amountTotalMonth = this.sysBudgetAmountService.countAmountListByTitleNo(userInfo.getOrgId(), currentYear, hrDepartment.getId(), budgetType.getId(), financialTitle.getTitleNo(), i);
+                                    if (amountTotalMonth == null) {
+                                        amountTotalMonth = 0.0d;
                                     }
-                                    BeanUtils.setValue(tempBudgetAmount,"monthAmount"+i,amountTotalMonth);
-                                    yearAmount+=amountTotalMonth;
+                                    BeanUtils.setValue(tempBudgetAmount, "monthAmount" + i, amountTotalMonth);
+                                    yearAmount += amountTotalMonth;
+
+                                    Double amountTotalHappend = null;
+                                    Double amountTotalHappendTemp = null;
+                                    if (titleIds != null && !titleIds.isEmpty()) {
+                                        String monthStr=i<10?"0"+i:i+"";
+                                        String startDateStr = currentYear + "-"+monthStr+"-01 00:00:01";
+                                        String endDateStr = currentYear + "-"+monthStr+"-31 23:23:59";
+                                        Date startDate = DateFormatUtil.parse(startDateStr, DateFormatUtil.YMDHMS_PATTERN);
+                                        Date endDate = DateFormatUtil.parse(endDateStr, DateFormatUtil.YMDHMS_PATTERN);
+                                        amountTotalHappend = this.wfReqDailyDetailService.getSumAmountByPass(userInfo.getOrgId(), hrDepartment.getId(), budgetType.getId(), titleIds, startDate, endDate);
+                                        amountTotalHappendTemp = this.wfReqRePaymentDetailService.getSumAmountByPass(userInfo.getOrgId(), hrDepartment.getId(), budgetType.getId(), titleIds, startDate, endDate);
+                                    }
+                                    if (amountTotalHappend == null) {
+                                        amountTotalHappend = 0.0d;
+                                    }
+                                    if (amountTotalHappendTemp == null) {
+                                        amountTotalHappendTemp = 0.0d;
+                                    }
+                                    BeanUtils.setValue(tempBudgetAmount, "happendAmount" + i, amountTotalHappend + amountTotalHappendTemp);
+                                    yearHappendAmount += amountTotalHappend + amountTotalHappendTemp;
+
                                 }
                                 tempBudgetAmount.setYearAmount(yearAmount);
+                                tempBudgetAmount.setYearHappendAmount(yearHappendAmount);
                                 tempBudgetAmountList.add(tempBudgetAmount);
                             }
                         }

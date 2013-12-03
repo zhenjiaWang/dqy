@@ -89,6 +89,28 @@ public class WfReqDailyDetailService extends HQuery {
     }
 
     @Transactional(type = TransactionType.READ_ONLY)
+    public Double getSumAmountByPass(Long orgId,Long deptId,Long expenseType,List<Long> titleIds, Date startDate,Date endDate) {
+        return $($alias("dailyId","dailyId"),$alias("dailyId.reqId","reqId"),
+                $eq("reqId.orgId.id",orgId),$eq("reqId.applyState",2),
+                $eq("reqId.applyResult",1), $eq("reqId.complete",1),
+                $eq("expenseDept.id", deptId),
+                $eq("expenseType.id", expenseType),
+                $in("expenseTitle.id", titleIds),
+                $ge("created",startDate),$le("created",endDate),
+                $sum("amount")).value(WfReqDailyDetail.class, Double.class);
+    }
+
+    @Transactional(type = TransactionType.READ_ONLY)
+    public List<WfReqDailyDetail> getListSumAmountByPass(Long orgId,Long deptId,Long expenseType,List<Long> titleIds, Date startDate,Date endDate) {
+        return $($alias("dailyId","dailyId"),$alias("dailyId.reqId","reqId"),
+                $eq("reqId.orgId.id",orgId),$eq("reqId.applyState",2),
+                $eq("reqId.applyResult",1), $eq("reqId.complete",1),
+                $eq("expenseDept.id", deptId),
+                $eq("expenseType.id", expenseType),
+                $in("expenseTitle.id", titleIds),
+                $ge("created",startDate),$le("created",endDate)).list(WfReqDailyDetail.class);
+    }
+    @Transactional(type = TransactionType.READ_ONLY)
     public Double getSumAmountByIng(Long orgId,Long deptId,Date startDate,Date endDate) {
         return $($alias("dailyId","dailyId"),$alias("dailyId.reqId","reqId"),
                 $eq("reqId.orgId.id",orgId),$eq("reqId.applyState",1),

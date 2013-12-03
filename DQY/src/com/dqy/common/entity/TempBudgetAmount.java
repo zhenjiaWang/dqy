@@ -45,7 +45,33 @@ public class TempBudgetAmount implements Serializable {
 
     private Double monthAmount12;
 
+    private Double happendAmount1;
+
+    private Double happendAmount2;
+
+    private Double happendAmount3;
+
+    private Double happendAmount4;
+
+    private Double happendAmount5;
+
+    private Double happendAmount6;
+
+    private Double happendAmount7;
+
+    private Double happendAmount8;
+
+    private Double happendAmount9;
+
+    private Double happendAmount10;
+
+    private Double happendAmount11;
+
+    private Double happendAmount12;
+
     private Double yearAmount;
+
+    private Double yearHappendAmount;
 
     public HrDepartment getHrDepartment() {
         return hrDepartment;
@@ -173,5 +199,109 @@ public class TempBudgetAmount implements Serializable {
 
     public void setYearAmount(Double yearAmount) {
         this.yearAmount = yearAmount;
+    }
+
+    public Double getHappendAmount1() {
+        return happendAmount1;
+    }
+
+    public void setHappendAmount1(Double happendAmount1) {
+        this.happendAmount1 = happendAmount1;
+    }
+
+    public Double getHappendAmount2() {
+        return happendAmount2;
+    }
+
+    public void setHappendAmount2(Double happendAmount2) {
+        this.happendAmount2 = happendAmount2;
+    }
+
+    public Double getHappendAmount3() {
+        return happendAmount3;
+    }
+
+    public void setHappendAmount3(Double happendAmount3) {
+        this.happendAmount3 = happendAmount3;
+    }
+
+    public Double getHappendAmount4() {
+        return happendAmount4;
+    }
+
+    public void setHappendAmount4(Double happendAmount4) {
+        this.happendAmount4 = happendAmount4;
+    }
+
+    public Double getHappendAmount5() {
+        return happendAmount5;
+    }
+
+    public void setHappendAmount5(Double happendAmount5) {
+        this.happendAmount5 = happendAmount5;
+    }
+
+    public Double getHappendAmount6() {
+        return happendAmount6;
+    }
+
+    public void setHappendAmount6(Double happendAmount6) {
+        this.happendAmount6 = happendAmount6;
+    }
+
+    public Double getHappendAmount7() {
+        return happendAmount7;
+    }
+
+    public void setHappendAmount7(Double happendAmount7) {
+        this.happendAmount7 = happendAmount7;
+    }
+
+    public Double getHappendAmount8() {
+        return happendAmount8;
+    }
+
+    public void setHappendAmount8(Double happendAmount8) {
+        this.happendAmount8 = happendAmount8;
+    }
+
+    public Double getHappendAmount9() {
+        return happendAmount9;
+    }
+
+    public void setHappendAmount9(Double happendAmount9) {
+        this.happendAmount9 = happendAmount9;
+    }
+
+    public Double getHappendAmount10() {
+        return happendAmount10;
+    }
+
+    public void setHappendAmount10(Double happendAmount10) {
+        this.happendAmount10 = happendAmount10;
+    }
+
+    public Double getHappendAmount11() {
+        return happendAmount11;
+    }
+
+    public void setHappendAmount11(Double happendAmount11) {
+        this.happendAmount11 = happendAmount11;
+    }
+
+    public Double getHappendAmount12() {
+        return happendAmount12;
+    }
+
+    public void setHappendAmount12(Double happendAmount12) {
+        this.happendAmount12 = happendAmount12;
+    }
+
+    public Double getYearHappendAmount() {
+        return yearHappendAmount;
+    }
+
+    public void setYearHappendAmount(Double yearHappendAmount) {
+        this.yearHappendAmount = yearHappendAmount;
     }
 }
