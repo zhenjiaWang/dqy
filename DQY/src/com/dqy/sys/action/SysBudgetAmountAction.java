@@ -778,6 +778,192 @@ public class SysBudgetAmountAction extends ActionSupport<SysBudgetAmount> {
             if (totalAmount == null) {
                 totalAmount = 0.00d;
             }
+
+            String startDateStr = currentYear + "-01-01 00:00:01";
+            String endDateStr = currentYear + "-12-31 23:23:59";
+            Date startDate = DateFormatUtil.parse(startDateStr, DateFormatUtil.YMDHMS_PATTERN);
+            Date endDate = DateFormatUtil.parse(endDateStr, DateFormatUtil.YMDHMS_PATTERN);
+            Double dailyIng = this.wfReqDailyDetailService.getSumAmountByIng(userInfo.getOrgId(), hrDepartment.getId(), startDate, endDate);
+            Double dailyPass = this.wfReqDailyDetailService.getSumAmountByPass(userInfo.getOrgId(), hrDepartment.getId(), startDate, endDate);
+
+            Double rePaymentIng = this.wfReqRePaymentDetailService.getSumAmountByIng(userInfo.getOrgId(), hrDepartment.getId(), startDate, endDate);
+            Double rePaymentPass = this.wfReqRePaymentDetailService.getSumAmountByPass(userInfo.getOrgId(), hrDepartment.getId(), startDate, endDate);
+            if (dailyIng == null) {
+                dailyIng = 0.00d;
+            }
+            if (dailyPass == null) {
+                dailyPass = 0.00d;
+            }
+            if (rePaymentIng == null) {
+                rePaymentIng = 0.00d;
+            }
+            if (rePaymentPass == null) {
+                rePaymentPass = 0.00d;
+            }
+            totalIngAmount = dailyIng + rePaymentIng;
+
+            totalPassAmount = dailyPass + rePaymentPass;
+
+            remnantAmount = totalPassAmount - totalAmount;
+            if (remnantAmount.doubleValue() < 0) {
+                remnantAmount = 0.00d;
+            }
+        }
+        return "success";  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+
+    @PageFlow(result = {@Result(name = "success", path = "/view/sys/budgetAmount/monitorAll.ftl", type = Dispatcher.FreeMarker)})
+    public String monitorAll() throws Exception {
+        UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
+        if (userInfo != null) {
+            totalAmount = 0.00d;
+            userInfo.setTopMenu("budget");
+            userInfo.setLeftMenu("budgetMonitorAll");
+            Date currentDate = DateFormatUtil.getCurrentDate(false);
+            if (currentYear == null) {
+                currentYear = DateFormatUtil.getDayInYear(currentDate);
+            }
+            yearList = new ArrayList<Integer>();
+            yearList.add(currentYear - 1);
+            yearList.add(currentYear);
+            yearList.add(currentYear + 1);
+            yearList.add(currentYear + 2);
+
+            List<Selector> selectorList=new ArrayList<Selector>();
+            selectorList.add(SelectorUtils.$eq("orgId.id", userInfo.getOrgId()));
+            selectorList.add(SelectorUtils.$order("deptNo"));
+            selectorList.add(SelectorUtils.$eq("useYn", "Y"));
+            departmentList = this.hrDepartmentService.getByList(selectorList);
+
+            if (departmentList != null && !departmentList.isEmpty()) {
+                for (HrDepartment department : departmentList) {
+                    totalAmount = sysBudgetAmountService.geTotalAmount(userInfo.getOrgId(), currentYear, department.getId());
+                    if (totalAmount == null) {
+                        totalAmount = 0.00d;
+                    }
+                    department.setBudgetAmount(totalAmount);
+                }
+            }
+
+            if(deptId==null){
+                deptId=userInfo.getDepartmentId();
+            }
+            hrDepartment = this.hrDepartmentService.getById(deptId);
+
+            rows = 0;
+            sysBudgetAmountList = this.sysBudgetAmountService.getAmountList(userInfo.getOrgId(), currentYear, hrDepartment.getId());
+            if (sysBudgetAmountList != null && !sysBudgetAmountList.isEmpty()) {
+                if (sysBudgetAmount == null) {
+                    sysBudgetAmount = sysBudgetAmountList.get(0);
+                }
+                idSets = new HashSet<String>();
+                idList = new ArrayList<String>();
+                for (SysBudgetAmount budgetAmount : sysBudgetAmountList) {
+                    String titleNo = get(budgetAmount, "titleId.titleNo");
+                    if (StringUtils.isNotBlank(titleNo)) {
+                        if (titleNo.length() < 6) {
+                            continue;
+                        }
+                        if (titleNo.length() > 6) {
+                            titleNo = titleNo.substring(0, 6);
+                        }
+                    }
+                    String temp = get(budgetAmount, "typeId.id") + "_" + titleNo;
+                    if (!idSets.contains(temp)) {
+                        idList.add(temp);
+                        idSets.add(temp);
+                    }
+                }
+                if (idList != null && !idList.isEmpty()) {
+                    rows = idSets.size();
+                    tempBudgetAmountList = new ArrayList<TempBudgetAmount>();
+                    for (String idStr : idList) {
+                        String[] idStrs = idStr.split("_");
+                        Long typeID = BeanUtils.convertValue(idStrs[0], Long.class);
+                        String titleID = idStrs[1];
+                        if (typeID != null && StringUtils.isNotBlank(titleID)) {
+                            SysBudgetType budgetType = this.sysBudgetTypeService.getById(typeID);
+                            SysFinancialTitle financialTitle = this.sysFinancialTitleService.getByNo(userInfo.getOrgId(), titleID);
+                            if (budgetType != null && financialTitle != null) {
+                                TempBudgetAmount tempBudgetAmount = new TempBudgetAmount();
+                                tempBudgetAmount.setHrDepartment(hrDepartment);
+                                tempBudgetAmount.setSysBudgetType(budgetType);
+                                tempBudgetAmount.setSysFinancialTitle(financialTitle);
+                                Double yearAmount = 0.00d;
+                                Double yearHappendAmount = 0.00d;
+                                List<Long> titleIds = this.sysBudgetOwenService.getBudgetIdList(userInfo.getOrgId(), financialTitle.getTitleNo());
+                                for (int i = 1; i <= 12; i++) {
+                                    Double amountTotalMonth = this.sysBudgetAmountService.countAmountListByTitleNo(userInfo.getOrgId(), currentYear, hrDepartment.getId(), budgetType.getId(), financialTitle.getTitleNo(), i);
+                                    if (amountTotalMonth == null) {
+                                        amountTotalMonth = 0.0d;
+                                    }
+                                    BeanUtils.setValue(tempBudgetAmount, "monthAmount" + i, amountTotalMonth);
+                                    yearAmount += amountTotalMonth;
+
+                                    Double amountTotalHappend = null;
+                                    Double amountTotalHappendTemp = null;
+                                    if (titleIds != null && !titleIds.isEmpty()) {
+                                        String monthStr=i<10?"0"+i:i+"";
+                                        String startDateStr = currentYear + "-"+monthStr+"-01 00:00:01";
+                                        String endDateStr = currentYear + "-"+monthStr+"-31 23:23:59";
+                                        Date startDate = DateFormatUtil.parse(startDateStr, DateFormatUtil.YMDHMS_PATTERN);
+                                        Date endDate = DateFormatUtil.parse(endDateStr, DateFormatUtil.YMDHMS_PATTERN);
+                                        amountTotalHappend = this.wfReqDailyDetailService.getSumAmountByPass(userInfo.getOrgId(), hrDepartment.getId(), budgetType.getId(), titleIds, startDate, endDate);
+                                        amountTotalHappendTemp = this.wfReqRePaymentDetailService.getSumAmountByPass(userInfo.getOrgId(), hrDepartment.getId(), budgetType.getId(), titleIds, startDate, endDate);
+                                    }
+                                    if (amountTotalHappend == null) {
+                                        amountTotalHappend = 0.0d;
+                                    }
+                                    if (amountTotalHappendTemp == null) {
+                                        amountTotalHappendTemp = 0.0d;
+                                    }
+                                    BeanUtils.setValue(tempBudgetAmount, "happendAmount" + i, amountTotalHappend + amountTotalHappendTemp);
+                                    yearHappendAmount += amountTotalHappend + amountTotalHappendTemp;
+
+                                }
+                                tempBudgetAmount.setYearAmount(yearAmount);
+                                tempBudgetAmount.setYearHappendAmount(yearHappendAmount);
+                                tempBudgetAmountList.add(tempBudgetAmount);
+                            }
+                        }
+                    }
+                }
+            }
+            totalAmount = sysBudgetAmountService.geTotalAmount(userInfo.getOrgId(), currentYear, hrDepartment.getId());
+            if (totalAmount == null) {
+                totalAmount = 0.00d;
+            }
+
+            String startDateStr = currentYear + "-01-01 00:00:01";
+            String endDateStr = currentYear + "-12-31 23:23:59";
+            Date startDate = DateFormatUtil.parse(startDateStr, DateFormatUtil.YMDHMS_PATTERN);
+            Date endDate = DateFormatUtil.parse(endDateStr, DateFormatUtil.YMDHMS_PATTERN);
+            Double dailyIng = this.wfReqDailyDetailService.getSumAmountByIng(userInfo.getOrgId(), hrDepartment.getId(), startDate, endDate);
+            Double dailyPass = this.wfReqDailyDetailService.getSumAmountByPass(userInfo.getOrgId(), hrDepartment.getId(), startDate, endDate);
+
+            Double rePaymentIng = this.wfReqRePaymentDetailService.getSumAmountByIng(userInfo.getOrgId(), hrDepartment.getId(), startDate, endDate);
+            Double rePaymentPass = this.wfReqRePaymentDetailService.getSumAmountByPass(userInfo.getOrgId(), hrDepartment.getId(), startDate, endDate);
+            if (dailyIng == null) {
+                dailyIng = 0.00d;
+            }
+            if (dailyPass == null) {
+                dailyPass = 0.00d;
+            }
+            if (rePaymentIng == null) {
+                rePaymentIng = 0.00d;
+            }
+            if (rePaymentPass == null) {
+                rePaymentPass = 0.00d;
+            }
+            totalIngAmount = dailyIng + rePaymentIng;
+
+            totalPassAmount = dailyPass + rePaymentPass;
+
+            remnantAmount = totalPassAmount - totalAmount;
+            if (remnantAmount.doubleValue() < 0) {
+                remnantAmount = 0.00d;
+            }
         }
         return "success";  //To change body of implemented methods use File | Settings | File Templates.
     }

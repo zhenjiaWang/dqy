@@ -67,8 +67,8 @@
                     <li class="budgetMonitor">
                         <a class="cur" href="/sys/budgetAmount!monitor.dhtml">预算监控</a>
                     </li>
-                    <li class="budgetType">
-                        <a class="cur" href="#">整体监控</a>
+                    <li class="budgetMonitorAll">
+                        <a class="cur" href="/sys/budgetAmount!monitorAll.dhtml">整体监控</a>
                     </li>
                 </ul>
                 <!--一组over-->

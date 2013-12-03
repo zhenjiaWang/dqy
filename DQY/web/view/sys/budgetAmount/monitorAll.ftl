@@ -13,7 +13,8 @@
 <script type="text/javascript">
     function search() {
         var currentYear = $('#currentYear').val();
-        document.location.href = '/sys/budgetAmount!monitor.dhtml?currentYear=' + currentYear;
+        var deptId = $('#deptId').val();
+        document.location.href = '/sys/budgetAmount!monitor.dhtml?currentYear=' + currentYear+'&deptId='+deptId;
     }
     $(document).ready(function () {
         $('#currentYear').change(function () {
@@ -21,11 +22,12 @@
         });
         $('.monitorList').off('click').on('click',function(){
             var currentYear = $('#currentYear').val();
+            var deptId = $('#deptId').val();
             var typeId=$(this).attr('typeId');
             var titleNo=$(this).attr('titleNo');
             var month=$(this).attr('month');
             WEBUTILS.popWindow.createPopWindow(800, 600, '费用明细', '/sys/budgetAmount!monitorList.dhtml?currentYear='+currentYear+
-            '&typeId='+typeId+'&titleNo='+titleNo+'&month='+month);
+            '&typeId='+typeId+'&titleNo='+titleNo+'&month='+month+'&deptId='+deptId);
         });
 
     });
@@ -35,8 +37,20 @@
 <form class="form-horizontal" action="##" method="POST" name="editForm"
       id="editForm">
     <div class="r-top clearfix">
-        <input type="text" id="deptName" name="deptName" placeholder="预算部门" <#if hrDepartment?exists>
-               value="${(hrDepartment.deptName)?if_exists}" </#if>disabled>
+        <select class="span2 marl15" id="deptId" name="deptId">
+            <#if departmentList?exists&&departmentList?size gt 0>
+                <#list departmentList as dept>
+                    <option value="${dept.id?c}" <#if deptId==dept.id>selected="selected" </#if>>
+                        <#if dept.deptLevel gt 1>
+                            <#list 1..dept.deptLevel as i>
+                                &nbsp;&nbsp;
+                            </#list>
+                        </#if>
+                    ${dept.deptName?if_exists}(年预算:${dept.budgetAmount?double})
+                    </option>
+                </#list>
+            </#if>
+        </select>
         <select class="span2 marl15" id="currentYear" name="currentYear">
             <#if yearList?exists&&yearList?size gt 0>
                 <#list yearList as year>
