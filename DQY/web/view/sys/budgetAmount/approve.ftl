@@ -189,6 +189,12 @@
             if(index){
                 index=parseInt(index);
                 $('input',lastTr).val('0.00');
+                var trAObj=$('#trA'+index,lastTr);
+                if(trAObj){
+                    $(trAObj).attr('id','trA'+(index+1));
+                    $(trAObj).attr('name','trA'+(index+1));
+                }
+
                 var typeObj=$('#typeId'+index,lastTr);
                 if(typeObj){
                     $(typeObj).attr('id','typeId'+(index+1));
@@ -316,6 +322,7 @@
                         }
                     }
                 });
+                document.location.href='#trA'+index;
             }
         });
         <#if idList?exists&&idList?size gt 0>
@@ -571,7 +578,7 @@
                                 <tr index="${int?c}">
                                     <td width="60">
                                         <#if int_index gt 0>
-                                            <a href="##" class="deleteBudget"><i class="icon-minus"></i></a>
+                                            <a href="##" class="deleteBudget" id="trA${int?c}" name="trA${int?c}"><i class="icon-minus"></i></a>
                                         <#else >
                                             <i class="icon-ban-circle"></i>
                                         </#if>
@@ -603,7 +610,7 @@
                                 <tr index="${int?c}">
                                     <td width="60">
                                         <#if int_index gt 0>
-                                            <a href="##" class="deleteBudget"><i class="icon-minus"></i></a>
+                                            <a href="##" class="deleteBudget" id="trA${int?c}" name="trA${int?c}"><i class="icon-minus"></i></a>
                                         <#else >
                                             <i class="icon-ban-circle"></i>
                                         </#if>

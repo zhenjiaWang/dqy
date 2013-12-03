@@ -63,14 +63,22 @@
                         </ul>
                     </#if>
                 </#if>
-                <ul class="item-nav"><!--ul上的current是为了控制当前这一组的背景色，li上的current是为了控制二级菜单-->
-                    <li class="budgetMonitor">
-                        <a class="cur" href="/sys/budgetAmount!monitor.dhtml">预算监控</a>
-                    </li>
-                    <li class="budgetMonitorAll">
-                        <a class="cur" href="/sys/budgetAmount!monitorAll.dhtml">整体监控</a>
-                    </li>
-                </ul>
+                <#if roleId?exists>
+                    <#if roleId?contains("LOOK_BUDGET")||roleId?contains("APPROVE_BUDGET")>
+                        <ul class="item-nav"><!--ul上的current是为了控制当前这一组的背景色，li上的current是为了控制二级菜单-->
+                            <#if roleId?contains("LOOK_BUDGET")>
+                                <li class="budgetMonitor">
+                                    <a class="cur" href="/sys/budgetAmount!monitor.dhtml">预算监控</a>
+                                </li>
+                            </#if>
+                            <#if roleId?contains("APPROVE_BUDGET")>
+                                <li class="budgetMonitorAll">
+                                    <a class="cur" href="/sys/budgetAmount!monitorAll.dhtml">整体监控</a>
+                                </li>
+                            </#if>
+                        </ul>
+                    </#if>
+                </#if>
                 <!--一组over-->
             </div>
         </div>

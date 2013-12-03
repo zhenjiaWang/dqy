@@ -78,6 +78,7 @@
 <script type="text/javascript">
     var submited = false;
     var uploadRemove=false;
+    var tempTitleName = false;
     function initValidator() {
         WEBUTILS.validator.init({
             modes: [
@@ -232,6 +233,117 @@
                         });
             }
         });
+
+        $('.titleNo').off('keydown').on('keydown', function (e) {
+            var titleNoObj = $(this);
+            tempTitleName = $(titleNoObj).val();
+        });
+        $('.titleNo').off('keyup').on('keyup', function (e) {
+            var titleNoObj = $(this);
+            e = (e) ? e : ((window.event) ? window.event : "");
+            var keyCode = e.keyCode ? e.keyCode : (e.which ? e.which : e.charCode);
+            var searchKey = $(this).val();
+            if (keyCode == 8 || keyCode == 46) {
+                var seq = $(titleNoObj).attr('seq');
+                if (seq) {
+                    if ($('#titleId' + seq).val() != '') {
+                        if (confirm("确认清空当前费用项目?")) {
+                            $('#titleNo' + seq).val('');
+                            $('#titleId' + seq).val('');
+                        } else {
+                            if (tempTitleName) {
+                                $('#titleNo' + seq).val(tempTitleName);
+                                tempTitleName = false;
+                            }
+                        }
+                    }
+                }
+            }
+            if (keyCode == 13) {
+                if (searchKey && searchKey != '') {
+                    searchKey = encodeURI(searchKey);
+                    if ($('.titlepop').is(':visible')) {
+                        var li = $('.active', '.titlepop');
+                        if (li) {
+                            var seq = $(titleNoObj).attr('seq');
+                            if (seq) {
+                                $('#titleNo' + seq).val($(li).attr('titleName'));
+                                $('#titleId' + seq).val($(li).attr('uid'));
+                            }
+                        }
+                        $('.titlepop').hide();
+                    } else {
+                        $.ajax({
+                            type: 'GET',
+                            url: '/common/common!searchBudgetTitle.dhtml?searchKey=' + searchKey,
+                            dataType: 'json',
+                            success: function (jsonData) {
+                                if (jsonData) {
+                                    if (jsonData['result'] == '0') {
+                                        $('ul', '.titlepop').empty();
+                                        var titleList = jsonData['titleList'];
+                                        if (titleList) {
+                                            $(titleList).each(function (i, o) {
+                                                $('ul', '.titlepop').append('<li  uid="' + o['id'] + '" titleName="' + o["titleName"] + '"><a href="##">(' + o["titleNo"] + ')' + o["titleName"] + '</a></li>');
+                                            });
+                                            var left = $(titleNoObj).offset().left;
+                                            var top = $(titleNoObj).offset().top + 30;
+                                            $('.titlepop').css({left: left + 'px', top: top + 'px'}).show();
+                                            $('li', '.titlepop').first().addClass('active');
+                                            $('li', '.titlepop').off('click').on('click',function(){
+                                                if ($('.titlepop').is(':visible')) {
+                                                    var li = $(this);
+                                                    if (li) {
+                                                        var seq = $(titleNoObj).attr('seq');
+                                                        if (seq) {
+                                                            $('#titleNo' + seq).val($(li).attr('titleName'));
+                                                            $('#titleId' + seq).val($(li).attr('uid'));
+                                                        }
+                                                    }
+                                                    $('.titlepop').hide();
+                                                }
+                                            });
+                                        } else {
+                                            alert('暂无结果,请重新输入');
+                                        }
+                                    } else {
+                                        alert('暂无结果,请重新输入');
+                                    }
+                                }
+                            },
+                            error: function (jsonData) {
+
+                            }
+                        });
+                    }
+                }
+            } else {
+                var searchCount = $('li', '.titlepop').size();
+                if (keyCode == 38) {
+                    //up
+                    var li = $('.active', '.titlepop');
+                    var currentIndex = $(li).index();
+                    $('li', '.titlepop').removeClass('active');
+                    if (currentIndex == 0) {
+                        $('li', '.titlepop').last().addClass('active');
+                    } else {
+                        $(li).prev().addClass('active');
+                    }
+                } else if (keyCode == 40) {
+                    //down
+                    var li = $('.active', '.titlepop');
+                    var currentIndex = $(li).index();
+                    $('li', '.titlepop').removeClass('active');
+                    if (currentIndex == searchCount - 1) {
+                        $('li', '.titlepop').first().addClass('active');
+                    } else {
+                        $(li).next().addClass('active');
+                    }
+                } else if (keyCode == 13) {
+
+                }
+            }
+        });
     }
 
     function getContent() {
@@ -248,6 +360,19 @@
             focus: true
         });
         $('#nextBtn').off('click').on('click', function () {
+            var titleIdFlag=true;
+            $('.titleNo').each(function(i,o){
+                var seq=$(o).attr('seq');
+                if(seq){
+                    if($('#titleId'+seq).val()==''){
+                        titleIdFlag=false;
+                    }
+                }
+            });
+            if(!titleIdFlag){
+                alert('请确认每一项费用项目都进行填写');
+                return false;
+            }
             var detailCount = $('.detailTr').last().attr('seq');
             if(detailCount){
                 $('#detailCount').val(detailCount);
@@ -507,15 +632,11 @@
                                         </#list>
                                     </#if>
                                 </select></td>
-                                <td><select class="int2 width-100" id="titleId1" name="titleId1">
-                                    <#if titleList?exists&&titleList?size gt 0>
-                                        <#list titleList as title>
-                                            <option value="${title.id?c}">
-                                            ${title.titleName?if_exists}
-                                            </option>
-                                        </#list>
-                                    </#if>
-                                </select></td>
+                                <td>
+                                    <input type="text" class="int1 width-100 titleNo" id="titleNo1" name="titleNo1"
+                                           placeholder="费用项目" maxlength="20" seq="1">
+                                    <input type="hidden" class="int1 width-100" id="titleId1" name="titleId1">
+                                </td>
                                 <td data-date-format="yyyy-mm-dd" data-date="" class="date dateTd">
                                     <div class="control-group" style="margin-bottom: 0px;">
                                         <input type="text" class="int1 width-100" id="date1" name="date1" >

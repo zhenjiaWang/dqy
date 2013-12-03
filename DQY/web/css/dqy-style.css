@@ -273,7 +273,28 @@ table.print-table td,table.print-table th{border:1px solid #000;line-height: 30p
 .top-fied{width:1631px;position:absolute;left:0;top:0;padding-right:16px;}
 .top-fied table{width:1631px;}
 .top-fied table td{padding:0 10px!important;}
-
+.titlepop{
+    background-color: #FFFFFF;
+    border-radius: 6px;
+    position: absolute;
+    width: 200px;
+}
+.titlepop ul.dropdown-menu {
+    display: block;
+    float: none;
+    position: inherit;
+    width: 90%;
+}
+.titlepop ul {
+    margin-left: 5px;
+}
+.titlepop ul li {
+    line-height: 25px;
+    list-style-type: none;
+}
+.nomar {
+    margin: 0 !important;
+}
 
 
 

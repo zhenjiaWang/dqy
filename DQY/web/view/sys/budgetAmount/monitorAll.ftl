@@ -14,10 +14,13 @@
     function search() {
         var currentYear = $('#currentYear').val();
         var deptId = $('#deptId').val();
-        document.location.href = '/sys/budgetAmount!monitor.dhtml?currentYear=' + currentYear+'&deptId='+deptId;
+        document.location.href = '/sys/budgetAmount!monitorAll.dhtml?currentYear=' + currentYear+'&deptId='+deptId;
     }
     $(document).ready(function () {
         $('#currentYear').change(function () {
+            search();
+        });
+        $('#deptId').change(function () {
             search();
         });
         $('.monitorList').off('click').on('click',function(){

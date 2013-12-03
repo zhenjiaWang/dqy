@@ -9,9 +9,11 @@ import com.dqy.hr.entity.HrUser;
 import com.dqy.hr.service.HrDepartmentService;
 import com.dqy.hr.service.HrUserService;
 import com.dqy.sys.entity.SysAuthorized;
+import com.dqy.sys.entity.SysBudgetTitle;
 import com.dqy.sys.entity.SysFinancialTitle;
 import com.dqy.sys.entity.SysOrg;
 import com.dqy.sys.service.SysAuthorizedService;
+import com.dqy.sys.service.SysBudgetTitleService;
 import com.dqy.sys.service.SysFinancialTitleService;
 import com.dqy.sys.service.SysOrgService;
 import com.dqy.wf.entity.WfVariableGlobal;
@@ -23,11 +25,13 @@ import ognl.NoSuchPropertyException;
 import org.apache.http.HttpRequest;
 import org.guiceside.commons.FileIdUtils;
 import org.guiceside.commons.FileObject;
+import org.guiceside.commons.Page;
 import org.guiceside.commons.lang.BeanUtils;
 import org.guiceside.commons.lang.DateFormatUtil;
 import org.guiceside.commons.lang.StringUtils;
 import org.guiceside.persistence.entity.Tracker;
 import org.guiceside.persistence.entity.search.SelectorUtils;
+import org.guiceside.persistence.hibernate.dao.enums.Match;
 import org.guiceside.persistence.hibernate.dao.hquery.Selector;
 import org.guiceside.support.file.FileManager;
 import org.guiceside.support.upload.FileUploadManager;
@@ -56,6 +60,9 @@ public class CommonAction extends BaseAction {
 
     @Inject
     private HrDepartmentService hrDepartmentService;
+
+    @Inject
+    private SysBudgetTitleService sysBudgetTitleService;
 
     @Inject
     private WfVariableGlobalService wfVariableGlobalService;
@@ -103,6 +110,9 @@ public class CommonAction extends BaseAction {
 
     @ReqGet
     private String fileNames;
+
+    @ReqGet
+    private String searchKey;
 
     @ReqSet
     private List<SysFinancialTitle> titleList;
@@ -534,6 +544,41 @@ public class CommonAction extends BaseAction {
             }
         }
         return null;
+    }
+
+
+    public String searchBudgetTitle() throws Exception {
+        UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
+        JSONObject root=new JSONObject();
+        root.put("result",-1);
+        JSONArray jsonArray = new JSONArray();
+        JSONObject node = null;
+        if (userInfo != null&&StringUtils.isNotBlank(searchKey)) {
+            if (orgId == null) {
+                orgId = userInfo.getOrgId();
+            }
+            List<Selector> selectorList=new ArrayList<Selector>();
+            selectorList.add(SelectorUtils.$eq("orgId.id", orgId));
+            selectorList.add(SelectorUtils.$or(SelectorUtils.$like("titleNo",searchKey, Match.END),SelectorUtils.$like("titleName",searchKey)));
+            selectorList.add(SelectorUtils.$eq("useYn","Y"));
+            Page<SysBudgetTitle> titlePage=this.sysBudgetTitleService.getPageList(0,10,selectorList);
+            if(titlePage!=null){
+                List<SysBudgetTitle> sysBudgetTitleList=titlePage.getResultList();
+                if(sysBudgetTitleList!=null&&!sysBudgetTitleList.isEmpty()){
+                    for(SysBudgetTitle budgetTitle:sysBudgetTitleList){
+                        node = new JSONObject();
+                        node.put("titleName", StringUtils.defaultIfEmpty(budgetTitle.getTitleName()));
+                        node.put("titleNo", StringUtils.defaultIfEmpty(budgetTitle.getTitleNo()));
+                        node.put("id", StringUtils.defaultIfEmpty(budgetTitle.getId()));
+                        jsonArray.add(node);
+                    }
+                }
+            }
+        }
+        root.put("titleList",jsonArray);
+        root.put("result",0);
+        writeJsonByAction(root.toString());
+        return null; //To change body of implemented methods use File | Settings | File Templates.
     }
 
     protected void bind(Object entity, UserInfo userInfo) throws Exception {
