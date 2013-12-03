@@ -19,6 +19,15 @@
         $('#currentYear').change(function () {
             search();
         });
+        $('.monitorList').off('click').on('click',function(){
+            var currentYear = $('#currentYear').val();
+            var typeId=$(this).attr('typeId');
+            var titleNo=$(this).attr('titleNo');
+            var month=$(this).attr('month');
+            WEBUTILS.popWindow.createPopWindow(800, 600, '费用明细', '/sys/budgetAmount!monitorList.dhtml?currentYear='+currentYear+
+            '&typeId='+typeId+'&titleNo='+titleNo+'&month='+month);
+        });
+
     });
 </script>
 
@@ -108,9 +117,17 @@
                                 <tr>
                                     <td width="103">${(budgetAmount.sysBudgetType.expenseType)?if_exists}</td>
                                     <td width="124">${(budgetAmount.sysFinancialTitle.titleName)?if_exists}</td>
-                                    <td width="86">${budgetAmount.yearAmount?if_exists}</td>
+                                    <td width="86" class="monitorList" style="cursor: pointer;" typeId="${(budgetAmount.sysBudgetType.id)?c}"
+                                            titleNo="${(budgetAmount.sysFinancialTitle.titleNo)?if_exists}" month="">
+                                        <span style="color: darkgreen">${budgetAmount.yearAmount?if_exists}</span>/
+                                        <span style="color: chocolate">${budgetAmount.yearHappendAmount?if_exists}</span>
+                                    </td>
                                     <#list  1..12 as month>
-                                        <td width="86">${budgetAmount["monthAmount"+month]?if_exists}</td>
+                                        <td width="86" class="monitorList" style="cursor: pointer;"  typeId="${(budgetAmount.sysBudgetType.id)?c}"
+                                            titleNo="${(budgetAmount.sysFinancialTitle.titleNo)?if_exists}" month="${month?c}">
+                                            <span style="color: darkgreen">${budgetAmount["monthAmount"+month]?if_exists}</span>/
+                                            <span style="color: chocolate">${budgetAmount["happendAmount"+month]?if_exists}</span>
+                                        </td>
                                     </#list>
                                 </tr>
                                 </#list>
