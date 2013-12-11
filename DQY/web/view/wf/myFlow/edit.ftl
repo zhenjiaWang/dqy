@@ -130,7 +130,7 @@
 
             <div class="controls">
                 <input type="text" id="applyName" name="applyName"  disabled
-                       value="${applyId?if_exists}">
+                       value="${applyName?if_exists}">
                 <span class="help-inline"></span>
             </div>
         </div>

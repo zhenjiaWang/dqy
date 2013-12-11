@@ -75,6 +75,9 @@ public class WfReqMyFlowAction extends ActionSupport<WfReqMyFlow> {
     @ReqSet
     private Long flowId;
 
+    @ReqSet
+    private String applyName;
+
     @Override
     public String execute() throws Exception {
 
@@ -88,6 +91,17 @@ public class WfReqMyFlowAction extends ActionSupport<WfReqMyFlow> {
             wfReqMyFlow = this.wfReqMyFlowService.getById(id);
             if (wfReqMyFlow != null) {
                 applyId = wfReqMyFlow.getApplyId();
+            }
+        }
+        if(StringUtils.isNotBlank(applyId)){
+            if(applyId.equals("ADVANCE_ACCOUNT")){
+                applyName="预支申请";
+            }else if(applyId.equals("REPAYMENT")){
+                applyName="还款申请";
+            }else if(applyId.equals("DAILY")){
+                applyName="费用报销";
+            }else if(applyId.equals("BUSINESS")){
+                applyName="事务申请";
             }
         }
         return "success";
