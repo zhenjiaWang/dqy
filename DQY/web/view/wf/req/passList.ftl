@@ -53,19 +53,24 @@
             <th>标题</th>
             <th width="60">申请人</th>
             <th width="110">日期</th>
-            <th width="50">操作</th>
+            <th width="110">操作</th>
         </tr>
         </thead>
         <tbody>
             <#if reqList?exists&&reqList?size gt 0>
                 <#list reqList as req>
                 <tr <#if (req_index+1)%2!=0>class="oddBgColor"</#if>>
-                    <td style="text-align: center;">${req.reqNo?if_exists}</td>
-                    <td>${req.subject?if_exists}</td>
+                    <td style="text-align: left;" >
+                        <div class="txt_hidden">${req.reqNo?if_exists}</div>
+                    </td>
+                    <td>
+                        <div class="txt_hidden">${req.subject?if_exists}</div>
+                    </td>
                     <td style="text-align: center;">${(req.userId.userName)?if_exists}</td>
                     <td style="text-align: center;">${(req.sendDate)?string("yyyy-MM-dd HH:mm")}</td>
                     <td style="text-align: center;">
                         <span style="cursor: pointer;" class="viewReq"  uid="${req.id?c}"><i class="icon-file"></i>查看</span>
+                        <a href="/wf/req!print.dhtml?id=${req.id?c}" target="_blank"><i class="icon-print"></i>打印</a>
                     </td>
                 </tr>
                 </#list>

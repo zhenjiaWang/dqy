@@ -61,8 +61,12 @@
             <#if reqTaskList?exists&&reqTaskList?size gt 0>
                 <#list reqTaskList as reqTask>
                 <tr <#if (reqTask_index+1)%2!=0>class="oddBgColor"</#if>>
-                    <td style="text-align: center;">${(reqTask.reqId.reqNo)?if_exists}</td>
-                    <td>${(reqTask.reqId.subject)?if_exists}</td>
+                    <td style="text-align: left;" >
+                        <div class="txt_hidden">${(reqTask.reqId.reqNo)?if_exists}</div>
+                    </td>
+                    <td>
+                        <div class="txt_hidden">${(reqTask.reqId.subject)?if_exists}</div>
+                    </td>
                     <td style="text-align: center;">${(reqTask.reqId.userId.userName)?if_exists}</td>
                     <td style="text-align: center;">
                         <#if reqTask.taskRead==0>

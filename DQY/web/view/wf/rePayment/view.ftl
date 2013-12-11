@@ -227,6 +227,18 @@
                         </td>
                     </tr>
                     </#if>
+                    <tr>
+                        <td colspan="2">
+                            <div class="control-group" style="margin-bottom: 5px;">
+                                <label class="control-label" for="wfReqRePayment.remarks"
+                                       style="width: 60px;color: #898989;">备注</label>
+
+                                <div class="controls" style="margin-left: 70px;">
+                                    <label style="margin-top: 5px;padding-left:5px;font-size: 12px;">${(wfReqRePayment.remarks)?if_exists}</label>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
                     <#if wfReq.financialYn=="Y">
                     <tr>
                         <td colspan="2">
@@ -293,6 +305,9 @@
     </div>
     <p class="mart10  clearfix">
         <button class="btn btn-inverse floatright " type="button" id="backBtn">返回</button>
+        <#if wfReq.complete==1&&wfReq.applyState==2&&wfReq.applyResult==1>
+            <a href="/wf/req!print.dhtml?id=${wfReq.id?c}" id="printA" target="_blank"><button class="btn btn-info floatright " type="button" id="printBtn">打印</button></a>
+        </#if>
     </p>
     </#if>
 </@wfCommon.wf_common>

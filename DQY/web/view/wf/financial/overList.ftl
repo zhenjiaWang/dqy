@@ -60,8 +60,12 @@
             <#if reqList?exists&&reqList?size gt 0>
                 <#list reqList as req>
                 <tr <#if (req_index+1)%2!=0>class="oddBgColor"</#if>>
-                    <td style="text-align: center;">${(req.reqNo)?if_exists}</td>
-                    <td>${(req.subject)?if_exists}</td>
+                    <td style="text-align: left;" >
+                        <div class="txt_hidden">${req.reqNo?if_exists}</div>
+                    </td>
+                    <td>
+                        <div class="txt_hidden">${req.subject?if_exists}</div>
+                    </td>
                     <td style="text-align: center;">${(req.userId.userName)?if_exists}</td>
                     <td style="text-align: center;">${(req.created)?string("yyyy-MM-dd HH:mm")}</td>
                     <td style="text-align: center;">

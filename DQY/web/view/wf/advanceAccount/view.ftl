@@ -255,6 +255,9 @@
     </div>
     <p class="mart10  clearfix">
         <button class="btn btn-inverse floatright " type="button" id="backBtn">返回</button>
+        <#if wfReq.complete==1&&wfReq.applyState==2&&wfReq.applyResult==1>
+            <a href="/wf/req!print.dhtml?id=${wfReq.id?c}" id="printA" target="_blank"><button class="btn btn-info floatright " type="button" id="printBtn">打印</button></a>
+        </#if>
     </p>
     </#if>
 </@wfCommon.wf_common>
