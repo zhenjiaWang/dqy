@@ -11,6 +11,7 @@ import com.dqy.wf.entity.*;
 import com.dqy.wf.service.*;
 import com.google.inject.Inject;
 import org.guiceside.commons.lang.DateFormatUtil;
+import org.guiceside.commons.lang.StringUtils;
 import org.guiceside.persistence.entity.search.SelectorUtils;
 import org.guiceside.persistence.hibernate.dao.hquery.Selector;
 import org.guiceside.web.annotation.*;
@@ -87,6 +88,8 @@ public class WfReqBusinessAction extends WfReqSupportAction<WfReqBusiness> {
     @ReqSet
     private List<WfReqAtt> reqAttList;
 
+    @ReqSet
+    private String applyName;
 
 
     @Override
@@ -114,7 +117,31 @@ public class WfReqBusinessAction extends WfReqSupportAction<WfReqBusiness> {
         }
         return "success";  //To change body of implemented methods use File | Settings | File Templates.
     }
-
+    @PageFlow(result = {@Result(name = "success", path = "/view/wf/business/print.ftl", type = Dispatcher.FreeMarker)})
+    public String print() throws Exception {
+        UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
+        if (userInfo != null && reqId != null) {
+            wfReqBusiness = this.wfReqBusinessService.getByReqId(reqId);
+            if (wfReqBusiness != null) {
+                wfReq = wfReqBusiness.getReqId();
+                if (wfReq != null) {
+                    reqCommentsList = this.wfReqCommentsService.getCommentsListByReqId(wfReq.getId());
+                }
+                if(StringUtils.isNotBlank(applyId)){
+                    if(applyId.equals("ADVANCE_ACCOUNT")){
+                        applyName="预支申请";
+                    }else if(applyId.equals("REPAYMENT")){
+                        applyName="还款申请";
+                    }else if(applyId.equals("DAILY")){
+                        applyName="费用报销";
+                    }else if(applyId.equals("BUSINESS")){
+                        applyName="事务申请";
+                    }
+                }
+            }
+        }
+        return "success";
+    }
     @PageFlow(result = {@Result(name = "success", path = "/view/wf/business/view.ftl", type = Dispatcher.FreeMarker)})
     public String view() throws Exception {
         UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());

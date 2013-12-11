@@ -147,6 +147,10 @@ public class WfReqRePaymentAction extends WfReqSupportAction<WfReqRePayment> {
     @ReqSet
     private Double remnantAmount;
 
+    @ReqSet
+    private String applyName;
+
+
     @Override
     @PageFlow(result = {@Result(name = "success", path = "/view/wf/rePayment/input.ftl", type = Dispatcher.FreeMarker)})
     public String execute() throws Exception {
@@ -271,6 +275,33 @@ public class WfReqRePaymentAction extends WfReqSupportAction<WfReqRePayment> {
             this.wfReqRePaymentService.save(wfReqRePayment,detailList,wfReq,  wfReqCommentsList, wfReqNoSeq, reqNodeApproveList, reqTaskList, wfReqMyFlowLast,reqAttList);
         }
         return "success";  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @PageFlow(result = {@Result(name = "success", path = "/view/wf/rePayment/print.ftl", type = Dispatcher.FreeMarker)})
+    public String print() throws Exception {
+        UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
+        if (userInfo != null && reqId != null) {
+            wfReqRePayment=this.wfReqRePaymentService.getByReqId(reqId);
+            if(wfReqRePayment!=null){
+                detailList=this.wfReqRePaymentDetailService.getDetailListByRePaymentId(wfReqRePayment.getId());
+                wfReq = wfReqRePayment.getReqId();
+                if (wfReq != null) {
+                    reqCommentsList = this.wfReqCommentsService.getCommentsListByReqId(wfReq.getId());
+                }
+                if(StringUtils.isNotBlank(applyId)){
+                    if(applyId.equals("ADVANCE_ACCOUNT")){
+                        applyName="预支申请";
+                    }else if(applyId.equals("REPAYMENT")){
+                        applyName="还款申请";
+                    }else if(applyId.equals("DAILY")){
+                        applyName="费用报销";
+                    }else if(applyId.equals("BUSINESS")){
+                        applyName="事务申请";
+                    }
+                }
+            }
+        }
+        return "success";
     }
 
     @PageFlow(result = {@Result(name = "success", path = "/view/wf/rePayment/view.ftl", type = Dispatcher.FreeMarker)})

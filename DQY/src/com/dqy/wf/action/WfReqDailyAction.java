@@ -155,6 +155,10 @@ public class WfReqDailyAction extends WfReqSupportAction<WfReqDaily> {
     @ReqSet
     private Double remnantAmount;
 
+    @ReqSet
+    private String applyName;
+
+
     @Override
     @PageFlow(result = {@Result(name = "success", path = "/view/wf/daily/input.ftl", type = Dispatcher.FreeMarker),
             @Result(name = "true", path = "/view/wf/daily/inputTrue.ftl", type = Dispatcher.FreeMarker)})
@@ -373,6 +377,35 @@ public class WfReqDailyAction extends WfReqSupportAction<WfReqDaily> {
                 if (wfReq != null) {
                     reqCommentsList = this.wfReqCommentsService.getCommentsListByReqId(wfReq.getId());
                     reqAttList=wfReqAttService.getByReqId(wfReq.getId());
+                }
+            }
+        }
+        return "success";
+    }
+
+    @PageFlow(result = {@Result(name = "success", path = "/view/wf/daily/print.ftl", type = Dispatcher.FreeMarker)})
+    public String print() throws Exception {
+        UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
+        if (userInfo != null && reqId != null) {
+            wfReqDaily = this.wfReqDailyService.getByReqId(reqId);
+            if (wfReqDaily != null) {
+                detailList = this.wfReqDailyDetailService.getDetailListByDailyId(wfReqDaily.getId());
+                trueList=this.wfReqDailyTrueService.getDetailListByDailyId(wfReqDaily.getId());
+                wfReq = wfReqDaily.getReqId();
+
+                if (wfReq != null) {
+                    reqCommentsList = this.wfReqCommentsService.getCommentsListByReqId(wfReq.getId());
+                }
+                if(StringUtils.isNotBlank(applyId)){
+                    if(applyId.equals("ADVANCE_ACCOUNT")){
+                        applyName="预支申请";
+                    }else if(applyId.equals("REPAYMENT")){
+                        applyName="还款申请";
+                    }else if(applyId.equals("DAILY")){
+                        applyName="费用报销";
+                    }else if(applyId.equals("BUSINESS")){
+                        applyName="事务申请";
+                    }
                 }
             }
         }

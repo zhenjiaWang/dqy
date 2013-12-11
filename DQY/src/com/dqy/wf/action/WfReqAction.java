@@ -619,6 +619,22 @@ public class WfReqAction extends ActionSupport<WfReq> {
         }
         return "success";
     }
+
+    @PageFlow(result = {@Result(name = "ADVANCE_ACCOUNT", path = "/wf/advanceAccount!print.dhtml?reqId=${wfReq.id}", type = Dispatcher.Redirect),
+            @Result(name = "REPAYMENT", path = "/wf/rePayment!print.dhtml?reqId=${wfReq.id}", type = Dispatcher.Redirect),
+            @Result(name = "DAILY", path = "/wf/daily!print.dhtml?reqId=${wfReq.id}", type = Dispatcher.Redirect),
+            @Result(name = "BUSINESS", path = "/wf/business!print.dhtml?reqId=${wfReq.id}", type = Dispatcher.Redirect)})
+    public String print() throws Exception {
+        UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
+        if (userInfo != null && id != null) {
+            wfReq = this.wfReqService.getById(id);
+            if (wfReq != null) {
+                applyId = wfReq.getApplyId();
+            }
+        }
+        return applyId;
+    }
+
     @PageFlow(result = {@Result(name = "ADVANCE_ACCOUNT", path = "/wf/advanceAccount!view.dhtml?reqId=${wfReq.id}", type = Dispatcher.Redirect),
             @Result(name = "REPAYMENT", path = "/wf/rePayment!view.dhtml?reqId=${wfReq.id}", type = Dispatcher.Redirect),
             @Result(name = "DAILY", path = "/wf/daily!view.dhtml?reqId=${wfReq.id}", type = Dispatcher.Redirect),

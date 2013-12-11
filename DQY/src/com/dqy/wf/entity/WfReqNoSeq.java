@@ -30,6 +30,8 @@ public class WfReqNoSeq extends IdEntity implements Tracker {
 
     private Integer dateYear;
 
+    private Integer dateMonth;
+
     private Integer nextSeq;
 
     private Date created;
@@ -135,5 +137,14 @@ public class WfReqNoSeq extends IdEntity implements Tracker {
 
     public void setNextSeq(Integer nextSeq) {
         this.nextSeq = nextSeq;
+    }
+
+    @Column(name = "DATE_MONTH")
+    public Integer getDateMonth() {
+        return dateMonth;
+    }
+
+    public void setDateMonth(Integer dateMonth) {
+        this.dateMonth = dateMonth;
     }
 }

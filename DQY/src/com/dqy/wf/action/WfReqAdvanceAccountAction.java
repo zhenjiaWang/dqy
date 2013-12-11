@@ -86,6 +86,9 @@ public class WfReqAdvanceAccountAction extends WfReqSupportAction<WfReqAdvanceAc
     @ReqSet
     private List<WfReqAtt> reqAttList;
 
+    @ReqSet
+    private String applyName;
+
 
     @Override
     @PageFlow(result = {@Result(name = "success", path = "/view/wf/advanceAccount/input.ftl", type = Dispatcher.FreeMarker)})
@@ -113,7 +116,31 @@ public class WfReqAdvanceAccountAction extends WfReqSupportAction<WfReqAdvanceAc
         }
         return "success";  //To change body of implemented methods use File | Settings | File Templates.
     }
-
+    @PageFlow(result = {@Result(name = "success", path = "/view/wf/advanceAccount/print.ftl", type = Dispatcher.FreeMarker)})
+    public String print() throws Exception {
+        UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
+        if (userInfo != null && reqId != null) {
+            wfReqAdvanceAccount=this.wfReqAdvanceAccountService.getByReqId(reqId);
+            if(wfReqAdvanceAccount!=null){
+                wfReq = wfReqAdvanceAccount.getReqId();
+                if (wfReq != null) {
+                    reqCommentsList = this.wfReqCommentsService.getCommentsListByReqId(wfReq.getId());
+                }
+                if(StringUtils.isNotBlank(applyId)){
+                    if(applyId.equals("ADVANCE_ACCOUNT")){
+                        applyName="预支申请";
+                    }else if(applyId.equals("REPAYMENT")){
+                        applyName="还款申请";
+                    }else if(applyId.equals("DAILY")){
+                        applyName="费用报销";
+                    }else if(applyId.equals("BUSINESS")){
+                        applyName="事务申请";
+                    }
+                }
+            }
+        }
+        return "success";
+    }
     @PageFlow(result = {@Result(name = "success", path = "/view/wf/advanceAccount/view.ftl", type = Dispatcher.FreeMarker)})
     public String view() throws Exception {
         UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());

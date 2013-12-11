@@ -168,9 +168,9 @@ public class WfReqSupportAction<T> extends ActionSupport<T> {
                         }
                         WfReqNo wfReqNo = this.wfReqNoService.getCurrentReqNo(userInfo.getOrgId(),wfReq.getApplyId());
                         if(wfReqNo!=null){
-                            reqNo = wfReqNo.getReqNo() + "-" + wfReqNoSeq.getDateYear() + "-" + no;
+                            reqNo = wfReqNo.getReqNo()  + wfReqNoSeq.getDateYear() +  no;
                         }else{
-                            reqNo = "NO" + "-" + wfReqNoSeq.getDateYear() + "-" + no;
+                            reqNo = "NO"  + wfReqNoSeq.getDateYear() + no;
                         }
                     }
                     wfReq.setReqNo(reqNo);
@@ -285,13 +285,15 @@ public class WfReqSupportAction<T> extends ActionSupport<T> {
     private WfReqNoSeq buildReqNo(Long orgId, String applyId) throws Exception {
         Date currentDate = DateFormatUtil.getCurrentDate(true);
         int dateYear = DateFormatUtil.getDayInYear(currentDate);
-        WfReqNoSeq wfReqNoSeq = wfReqNoSeqService.getCurrentReqNoSeq(orgId, applyId, dateYear);
+        int dateMonth=DateFormatUtil.getDayInMonth(currentDate)+1;
+        WfReqNoSeq wfReqNoSeq = wfReqNoSeqService.getCurrentReqNoSeq(orgId, applyId, dateYear,dateMonth);
         if (wfReqNoSeq == null) {
             SysOrg sysOrg = this.sysOrgService.getById(orgId);
             wfReqNoSeq = new WfReqNoSeq();
             wfReqNoSeq.setOrgId(sysOrg);
             wfReqNoSeq.setApplyId(applyId);
             wfReqNoSeq.setDateYear(dateYear);
+            wfReqNoSeq.setDateMonth(dateMonth);
             wfReqNoSeq.setNextSeq(1);
             wfReqNoSeq.setUseYn("Y");
         } else {

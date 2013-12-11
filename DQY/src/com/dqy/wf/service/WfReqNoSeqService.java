@@ -52,7 +52,7 @@ public class WfReqNoSeqService extends HQuery {
 
 
     @Transactional(type = TransactionType.READ_ONLY)
-    public WfReqNoSeq getCurrentReqNoSeq(Long orgId, String applyId, Integer dateYear) {
-        return $($eq("orgId.id", orgId), $eq("applyId", applyId), $eq("dateYear", dateYear), $eq("useYn", "Y")).get(WfReqNoSeq.class);
+    public WfReqNoSeq getCurrentReqNoSeq(Long orgId, String applyId, Integer dateYear,Integer dateMonth) {
+        return $($eq("orgId.id", orgId), $eq("applyId", applyId), $eq("dateYear", dateYear),  $eq("dateMonth", dateMonth), $eq("useYn", "Y")).get(WfReqNoSeq.class);
     }
 }
