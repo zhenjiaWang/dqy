@@ -24,6 +24,15 @@
                 document.location.href='/wf/req!view.dhtml?id='+uid;
             }
         });
+        $('.stopReq').off('click').on('click', function () {
+            var uid = $(this).attr('uid');
+            if (uid) {
+                if(confirm("你确定要撤销当前申请?")){
+                    document.location.href='/wf/req!stop.dhtml?id='+uid;
+                }
+            }
+        });
+
         $('#searchBtn').off('click').on('click', function () {
             pagerAction(0,10);
         });
@@ -53,7 +62,7 @@
             <th>标题</th>
             <th width="60">申请人</th>
             <th width="110">日期</th>
-            <th width="50">操作</th>
+            <th width="110">操作</th>
         </tr>
         </thead>
         <tbody>
@@ -66,6 +75,7 @@
                     <td style="text-align: center;">${(req.sendDate)?string("yyyy-MM-dd HH:mm")}</td>
                     <td style="text-align: center;">
                         <span style="cursor: pointer;" class="viewReq"  uid="${req.id?c}"><i class="icon-file"></i>查看</span>
+                        <span style="cursor: pointer;" class="stopReq"  uid="${req.id?c}"><i class="icon-ban-circle"></i>撤销</span>
                     </td>
                 </tr>
                 </#list>

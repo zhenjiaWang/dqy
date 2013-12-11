@@ -581,7 +581,44 @@ public class WfReqAction extends ActionSupport<WfReq> {
         writeJsonByAction(root.toString());
         return null;
     }
+    @PageFlow(result = {@Result(name = "success", path = "/wf/req!ingList.dhtml", type = Dispatcher.Redirect)})
+    public String stop() throws Exception {
+        UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
+        if (userInfo != null && id != null) {
+            wfReq = this.wfReqService.getById(id);
+            if (wfReq != null) {
+                wfReq.setComplete(1);
+                Date cudDate=DateFormatUtil.getCurrentDate(true);
+                wfReq.setCompleteDate(cudDate);
+                wfReq.setApplyState(2);
+                wfReq.setApplyResult(2);
+                wfReq.setTip(0);
+                bind(wfReq);
 
+                HrUser user=hrUserService.getById(userInfo.getUserId());
+                reqCommentsList=new ArrayList<WfReqComments>();
+                WfReqComments comments = new WfReqComments();
+                comments.setReqId(wfReq);
+                comments.setApprove(0);
+                comments.setUserId(user);
+                comments.setAction(13);
+                comments.setUseYn("Y");
+                bind(comments);
+                reqCommentsList.add(comments);
+
+                WfReqComments doneComments = new WfReqComments();
+                doneComments.setReqId(wfReq);
+                doneComments.setApprove(0);
+                doneComments.setUserId(user);
+                doneComments.setAction(7);
+                doneComments.setUseYn("Y");
+                bind(doneComments);
+                reqCommentsList.add(doneComments);
+                this.wfReqService.save(wfReq,reqCommentsList);
+            }
+        }
+        return "success";
+    }
     @PageFlow(result = {@Result(name = "ADVANCE_ACCOUNT", path = "/wf/advanceAccount!view.dhtml?reqId=${wfReq.id}", type = Dispatcher.Redirect),
             @Result(name = "REPAYMENT", path = "/wf/rePayment!view.dhtml?reqId=${wfReq.id}", type = Dispatcher.Redirect),
             @Result(name = "DAILY", path = "/wf/daily!view.dhtml?reqId=${wfReq.id}", type = Dispatcher.Redirect),

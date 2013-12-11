@@ -188,6 +188,8 @@ public class WfReqComments extends IdEntity implements Tracker {
             actionDesc = "执行人查看";
         }else if (getAction().intValue() == 12) {
             actionDesc = "执行人处理";
+        }else if (getAction().intValue() == 13) {
+            actionDesc = "申请人撤销";
         }
         return actionDesc;
     }

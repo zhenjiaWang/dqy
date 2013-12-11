@@ -121,7 +121,13 @@ public class WfReqService extends HQuery {
                 $eq("applyState", 2), $eq("applyResult", 2),
                 $eq("complete", 1), $eq("tip", 1), $eq("useYn", "Y")).value(WfReq.class, Integer.class);
     }
-
+    @Transactional(type = TransactionType.READ_WRITE)
+    public void save(WfReq wfReq, List<WfReqComments> reqCommentsList) {
+        $(wfReq).save();
+        if (reqCommentsList != null && !reqCommentsList.isEmpty()) {
+            this.wfReqCommentsService.save(reqCommentsList);
+        }
+    }
     @Transactional(type = TransactionType.READ_WRITE)
     public void save(WfReq wfReq, List<WfReqComments> reqCommentsList,
                      WfReqNoSeq wfReqNoSeq, List<WfReqNodeApprove> reqNodeApproveList, List<WfReqTask> reqTaskList,

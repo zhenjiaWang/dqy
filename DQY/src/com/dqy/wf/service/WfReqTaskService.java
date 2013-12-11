@@ -93,12 +93,12 @@ public class WfReqTaskService extends HQuery {
 
     @Transactional(type = TransactionType.READ_ONLY)
     public Integer getCountUnRead(Long orgId, Long userId) {
-        return $($count("id"), $eq("orgId.id", orgId), $eq("userId.id", userId), $eq("taskRead", 0), $eq("taskState", 0), $eq("useYn", "Y")).value(WfReqTask.class, Integer.class);
+        return $($alias("reqId","reqId"),$count("id"), $eq("orgId.id", orgId), $eq("userId.id", userId), $eq("taskRead", 0), $eq("taskState", 0), $eq("reqId.complete", 0),$eq("useYn", "Y")).value(WfReqTask.class, Integer.class);
     }
 
     @Transactional(type = TransactionType.READ_ONLY)
     public Integer getCountUnApprove(Long orgId, Long userId) {
-        return $($count("id"), $eq("orgId.id", orgId), $eq("userId.id", userId), $eq("taskRead", 1), $eq("taskState", 0), $eq("useYn", "Y")).value(WfReqTask.class, Integer.class);
+        return $($alias("reqId","reqId"),$count("id"), $eq("orgId.id", orgId), $eq("userId.id", userId), $eq("taskRead", 1), $eq("taskState", 0),$eq("reqId.complete", 0), $eq("useYn", "Y")).value(WfReqTask.class, Integer.class);
     }
 
     @Transactional(type = TransactionType.READ_ONLY)

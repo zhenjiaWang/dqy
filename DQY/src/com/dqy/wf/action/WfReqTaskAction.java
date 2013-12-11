@@ -239,23 +239,19 @@ public class WfReqTaskAction extends ActionSupport<WfReqTask> {
             Long orgId = userInfo.getOrgId();
             Long userId = userInfo.getUserId();
             if (orgId != null && userId != null) {
+                selectorList.add(SelectorUtils.$alias("reqId", "reqId"));
                 selectorList.add(SelectorUtils.$eq("orgId.id", orgId));
                 selectorList.add(SelectorUtils.$eq("userId.id", userId));
                 selectorList.add(SelectorUtils.$eq("taskState", 0));
-                boolean aliasReq = false;
+                selectorList.add(SelectorUtils.$eq("reqId.complete", 0));
                 if(StringUtils.isNotBlank(keyword)){
-                    selectorList.add(SelectorUtils.$alias("reqId", "reqId"));
                     selectorList.add(SelectorUtils.$or(SelectorUtils.$like("reqId.reqNo",keyword),SelectorUtils.$like("reqId.subject",keyword)));
                 }
                 if (StringUtils.isNotBlank(searchType) && StringUtils.isNotBlank(searchKey)) {
                     if (searchType.equals("reqNo")) {
-                        selectorList.add(SelectorUtils.$alias("reqId", "reqId"));
                         selectorList.add(SelectorUtils.$like("reqId.reqNo", searchKey));
-                        aliasReq = true;
                     } else if (searchType.equals("subject")) {
-                        selectorList.add(SelectorUtils.$alias("reqId", "reqId"));
                         selectorList.add(SelectorUtils.$like("reqId.subject", searchKey));
-                        aliasReq = true;
                     }
                 }
                 if (searchDate != null) {
@@ -269,14 +265,9 @@ public class WfReqTaskAction extends ActionSupport<WfReqTask> {
                     if (orderKey.equals("receiveDate")) {
                         selectorList.add(SelectorUtils.$order("receiveDate", isAsc()));
                     } else if (orderKey.equals("exigency")) {
-                        if (!aliasReq) {
-                            selectorList.add(SelectorUtils.$alias("reqId", "reqId"));
-                        }
+
                         selectorList.add(SelectorUtils.$order("reqId.exigency", isAsc()));
                     } else if (orderKey.equals("applyType")) {
-                        if (!aliasReq) {
-                            selectorList.add(SelectorUtils.$alias("reqId", "reqId"));
-                        }
                         selectorList.add(SelectorUtils.$order("reqId.applyId.id", isAsc()));
                     }
                 } else {
