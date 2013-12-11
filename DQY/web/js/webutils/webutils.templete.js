@@ -310,12 +310,12 @@ var flowApproveDQY=' <div class="control-group" nodeSeq="{nodeSeq}">' +
 
 
 var rePaymentDetail='<tr seq="{seq}" class="detailTr">' +
-    '<td><select class="int2 width-100" id="deptId{seq}" name="deptId{seq}">' +
-    '</select></td>' +
+    '<td><div class="control-group" style="margin-bottom: 0px;"><input type="text" class="int1 width-100 dept" id="deptName{seq}" name="deptName{seq}" readonly="readonly" placeholder="选择部门">' +
+    '<input type="hidden"  id="deptId{seq}" name="deptId{seq}" ></div></td>' +
     '<td><select class="int2 width-100" id="typeId{seq}" name="typeId{seq}">' +
     '</select></td>' +
-    '<td><input type="text" class="int1 width-100 titleNo" id="titleNo{seq}" name="titleNo{seq}" placeholder="费用项目" maxlength="20" seq="{seq}">' +
-    '<input type="hidden" class="int1 width-100" id="titleId{seq}" name="titleId{seq}" ></td>' +
+    '<td><select class="int2 width-100" id="titleId{seq}" name="titleId{seq}">' +
+    '</select></td>' +
     '<td data-date-format="yyyy-mm-dd" data-date="" class="date dateTd">' +
     '<div class="control-group" style="margin-bottom: 0px;">' +
     '<input type="text" class="int1 width-100" id="date{seq}" name="date{seq}" >' +
@@ -324,13 +324,13 @@ var rePaymentDetail='<tr seq="{seq}" class="detailTr">' +
     '<td><input type="text" class="int1 width-70 amt" id="amount{seq}" name="amount{seq}" value="0.00"></td>' +
     '<td><input type="text" class="int1 " style="width: 95%;" id="remarks{seq}" name="remarks{seq}"></td>' +
     '</tr>';
-var rePaymentDetailTrue='<tr seq="{seq}" class="detailTr{type}">' +
-    '<td><select class="int2 width-100" id="deptId{seq}_{type}" name="deptId{seq}_{type}">' +
-    '</select></td>' +
+var rePaymentDetailTrue='<tr seq="{seq}" class="detailTr{type}" type="{type}">' +
+    '<td><div class="control-group" style="margin-bottom: 0px;"><input type="text" class="int1 width-100 dept" id="deptName{seq}_{type}" name="deptName{seq}_{type}" readonly="readonly" placeholder="选择部门">' +
+    '<input type="hidden"  id="deptId{seq}_{type}" name="deptId{seq}_{type}" ></div></td>' +
     '<td><select class="int2 width-100" id="typeId{seq}_{type}" name="typeId{seq}_{type}">' +
     '</select></td>' +
-    '<td><input type="text" class="int1 width-100 titleNo" id="titleNo{seq}_{type}" name="titleNo{seq}_{type}" placeholder="费用项目" maxlength="20" seq="{seq}_{type}">' +
-    '<input type="hidden" class="int1 width-100" id="titleId{seq}_{type}" name="titleId{seq}_{type}"></td>' +
+    '<td><select class="int2 width-100" id="titleId{seq}_{type}" name="titleId{seq}_{type}">' +
+    '</select></td>' +
     '<td data-date-format="yyyy-mm-dd" data-date="" class="date dateTd">' +
     '<div class="control-group" style="margin-bottom: 0px;">' +
     '<input type="text" class="int1 width-100" id="date{seq}_{type}" name="date{seq}_{type}" >' +

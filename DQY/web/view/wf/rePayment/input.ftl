@@ -16,6 +16,10 @@
 <link href="/css/kendo.dataviz.min.css" rel="stylesheet"/>
 <link href="/css/kendo.dataviz.metro.min.css" rel="stylesheet"/>
 <script type="text/javascript" src="/js/kendo.web.min.js"></script>
+
+
+<link type="text/css" href="/css/zTreeStyle/zTreeStyle.css" rel="stylesheet">
+<script src="/js/jquery.ztree.all-3.5.min.js"></script>
 <style scoped>
     .file-icon {
         display: inline-block;
@@ -90,7 +94,32 @@
 <script type="text/javascript">
 var submited = false;
 var uploadRemove = false;
-var tempTitleName = false;
+var currentSEQ = false;
+
+var srcNode;
+var setting = {
+    view: {
+        selectedMulti: false
+    },
+    async: {
+        enable: true,
+        url: "/common/common!orgTreeData.dhtml",
+        autoParam: ["id=parentId", "name=n", "level=lv"]
+    },
+    callback: {
+        onClick: zTreeOnClick
+    }
+};
+function zTreeOnClick(event, treeId, treeNode) {
+    srcNode = treeNode;
+    if (treeNode&&currentSEQ) {
+        $('#deptId'+currentSEQ).val(treeNode['id']);
+        $('#deptName'+currentSEQ).val(treeNode['name']);
+        $('#deptName'+currentSEQ).trigger('blur');
+        $('.treeDiv').fadeOut();
+        currentSEQ=false;
+    }
+}
 function initValidator() {
     WEBUTILS.validator.init({
         modes: [
@@ -121,6 +150,13 @@ function initValidator() {
                 pattern: [
                     {type: 'reg', exp: '_date', msg: '`'}
                 ]
+            },
+            {
+                id: 'deptName1',
+                required: true,
+                pattern: [
+                    {type: 'blank', exp: '!=', msg: '`'}
+                ]
             }
         ]
     }, true);
@@ -145,19 +181,6 @@ function addFlow() {
 }
 
 function bindSelect(seq) {
-    <#if departmentList?exists&&departmentList?size gt 0>
-        $('#deptId' + seq).empty();
-        <#list departmentList as dept>
-            var levelStr = '';
-            <#if dept.deptLevel gt 1>
-                <#list 1..dept.deptLevel as i>
-                    levelStr += '&nbsp;&nbsp;';
-                </#list>
-            </#if>
-            $('#deptId' + seq).append('<option value="${dept.id?c}">' + levelStr + '${dept.deptName?if_exists}</option>');
-        </#list>
-        $('#deptId' + seq).val('${deptId?c}');
-    </#if>
     <#if typeList?exists&&typeList?size gt 0>
         $('#typeId' + seq).empty();
         <#list typeList as type>
@@ -241,115 +264,21 @@ function dateEvent() {
                     });
         }
     });
-    $('.titleNo').off('keydown').on('keydown', function (e) {
-        var titleNoObj = $(this);
-        tempTitleName = $(titleNoObj).val();
-    });
-    $('.titleNo').off('keyup').on('keyup', function (e) {
-        var titleNoObj = $(this);
-        e = (e) ? e : ((window.event) ? window.event : "");
-        var keyCode = e.keyCode ? e.keyCode : (e.which ? e.which : e.charCode);
-        var searchKey = $(this).val();
-        if (keyCode == 8 || keyCode == 46) {
-            var seq = $(titleNoObj).attr('seq');
-            if (seq) {
-                if ($('#titleId' + seq).val() != '') {
-                    if (confirm("确认清空当前费用项目?")) {
-                        $('#titleNo' + seq).val('');
-                        $('#titleId' + seq).val('');
-                    } else {
-                        if (tempTitleName) {
-                            $('#titleNo' + seq).val(tempTitleName);
-                            tempTitleName = false;
-                        }
-                    }
+    $('.dept').off('click').on('click', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        currentSEQ=$(this).parent().parent().parent().attr('seq');
+        var left = $(this).offset().left ;
+        var top = $(this).offset().top -25;
+        top += $(this).height();
+        $('.treeDiv').css({
+                    top: top,
+                    left: left,
+                    zIndex: 99999
                 }
-            }
-        }
-        if (keyCode == 13) {
-            if (searchKey && searchKey != '') {
-                searchKey = encodeURI(searchKey);
-                if ($('.titlepop').is(':visible')) {
-                    var li = $('.active', '.titlepop');
-                    if (li) {
-                        var seq = $(titleNoObj).attr('seq');
-                        if (seq) {
-                            $('#titleNo' + seq).val($(li).attr('titleName'));
-                            $('#titleId' + seq).val($(li).attr('uid'));
-                        }
-                    }
-                    $('.titlepop').hide();
-                } else {
-                    $.ajax({
-                        type: 'GET',
-                        url: '/common/common!searchBudgetTitle.dhtml?searchKey=' + searchKey,
-                        dataType: 'json',
-                        success: function (jsonData) {
-                            if (jsonData) {
-                                if (jsonData['result'] == '0') {
-                                    $('ul', '.titlepop').empty();
-                                    var titleList = jsonData['titleList'];
-                                    if (titleList) {
-                                        $(titleList).each(function (i, o) {
-                                            $('ul', '.titlepop').append('<li  uid="' + o['id'] + '" titleName="' + o["titleName"] + '"><a href="##">(' + o["titleNo"] + ')' + o["titleName"] + '</a></li>');
-                                        });
-                                        var left = $(titleNoObj).offset().left;
-                                        var top = $(titleNoObj).offset().top + 30;
-                                        $('.titlepop').css({left: left + 'px', top: top + 'px'}).show();
-                                        $('li', '.titlepop').first().addClass('active');
-                                        $('li', '.titlepop').off('click').on('click',function(){
-                                            if ($('.titlepop').is(':visible')) {
-                                                var li = $(this);
-                                                if (li) {
-                                                    var seq = $(titleNoObj).attr('seq');
-                                                    if (seq) {
-                                                        $('#titleNo' + seq).val($(li).attr('titleName'));
-                                                        $('#titleId' + seq).val($(li).attr('uid'));
-                                                    }
-                                                }
-                                                $('.titlepop').hide();
-                                            }
-                                        });
-                                    } else {
-                                        alert('暂无结果,请重新输入');
-                                    }
-                                } else {
-                                    alert('暂无结果,请重新输入');
-                                }
-                            }
-                        },
-                        error: function (jsonData) {
-
-                        }
-                    });
-                }
-            }
-        } else {
-            var searchCount = $('li', '.titlepop').size();
-            if (keyCode == 38) {
-                //up
-                var li = $('.active', '.titlepop');
-                var currentIndex = $(li).index();
-                $('li', '.titlepop').removeClass('active');
-                if (currentIndex == 0) {
-                    $('li', '.titlepop').last().addClass('active');
-                } else {
-                    $(li).prev().addClass('active');
-                }
-            } else if (keyCode == 40) {
-                //down
-                var li = $('.active', '.titlepop');
-                var currentIndex = $(li).index();
-                $('li', '.titlepop').removeClass('active');
-                if (currentIndex == searchCount - 1) {
-                    $('li', '.titlepop').first().addClass('active');
-                } else {
-                    $(li).next().addClass('active');
-                }
-            } else if (keyCode == 13) {
-
-            }
-        }
+        );
+        $('.treeDiv').fadeIn();
+        $('.treeDiv').find('div').show();
     });
 }
 
@@ -362,27 +291,18 @@ function hasContent() {
 
 $(document).ready(function () {
     initValidator();
+    $.fn.zTree.init($("#treeDemo"), setting);
+
     var ue = UM.getEditor('editor', {
         lang: 'zh-cn',
         langPath: UMEDITOR_CONFIG.UMEDITOR_HOME_URL + "lang/",
         focus: true
     });
-    $('#nextBtn').off('click').on('click', function () {
+    $('#nextBtn').off('click').on('click', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
         var adId = $('#wfReqRePayment\\.advanceId\\.id').val();
         var detailCount = $('.detailTr').last().attr('seq');
-        var titleIdFlag=true;
-        $('.titleNo').each(function(i,o){
-            var seq=$(o).attr('seq');
-            if(seq){
-                if($('#titleId'+seq).val()==''){
-                    titleIdFlag=false;
-                }
-            }
-        });
-        if(!titleIdFlag){
-            alert('请确认每一项费用项目都进行填写');
-            return false;
-        }
         if (adId && adId != '0' && detailCount) {
             $('#detailCount').val(detailCount);
             WEBUTILS.validator.checkAll();
@@ -399,7 +319,9 @@ $(document).ready(function () {
             alert('暂时无法申请');
         }
     });
-    $('#addDetail').off('click').on('click', function () {
+    $('#addDetail').off('click').on('click', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
         var currentNodeSeq = $('.detailTr').last().attr('seq');
         if (currentNodeSeq) {
             currentNodeSeq = parseInt(currentNodeSeq);
@@ -419,12 +341,21 @@ $(document).ready(function () {
                     {type: 'reg', exp: '_date', msg: ''}
                 ]
             });
+            WEBUTILS.validator.addMode({
+                id: 'deptName' + nextNodeSeq,
+                required: true,
+                pattern: [
+                    {type: 'blank', exp: '!=', msg: ''}
+                ]
+            });
             bindSelect(nextNodeSeq);
             dateEvent();
             submited = false;
         }
     });
-    $('#deleteDetail').off('click').on('click', function () {
+    $('#deleteDetail').off('click').on('click', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
         var currentNodeSeq = $('.detailTr').last().attr('seq');
         if (currentNodeSeq) {
             currentNodeSeq = parseInt(currentNodeSeq);
@@ -435,6 +366,9 @@ $(document).ready(function () {
                 });
                 WEBUTILS.validator.removeMode({
                     id: 'date' + currentNodeSeq
+                });
+                WEBUTILS.validator.removeMode({
+                    id: 'deptName' + currentNodeSeq
                 });
             }
         }
@@ -496,6 +430,12 @@ $(document).ready(function () {
             WEBUTILS.validator.removeMode({
                 id: 'wfReqRePayment\\.payee'
             });
+        }
+    });
+
+    $('.application').off('click').on('click', function (e) {
+        if ($('.treeDiv').is(':visible')) {
+            $('.treeDiv').fadeOut();
         }
     });
 });
@@ -676,29 +616,21 @@ $(document).ready(function () {
                     <td width="100">费用项目</td>
                     <td width="110">费用日期</td>
                     <td width="90">金额</td>
-                    <td>备注
-                        <a href="#" id="deleteDetail" style="float: right;"><i class="icon-minus"></i>
+                    <td>
+                        <a href="##" id="addDetail" ><i class="icon-plus"></i> 增加</a>
+                        <a href="##" id="deleteDetail" ><i class="icon-minus"></i>
                             删除</a>
-                        <a href="#" id="addDetail" style="float: right;"><i class="icon-plus"></i> 增加</a>
                     </td>
                 </tr>
                 </thead>
                 <tbody>
                 <tr seq="1" class="detailTr">
-                    <td><select class="int2 width-100" id="deptId1" name="deptId1">
-                        <#if departmentList?exists&&departmentList?size gt 0>
-                            <#list departmentList as dept>
-                                <option value="${dept.id?c}" <#if deptId==dept.id>selected="selected" </#if>>
-                                    <#if dept.deptLevel gt 1>
-                                        <#list 1..dept.deptLevel as i>
-                                            &nbsp;&nbsp;
-                                        </#list>
-                                    </#if>
-                                ${dept.deptName?if_exists}
-                                </option>
-                            </#list>
-                        </#if>
-                    </select></td>
+                    <td>
+                        <div class="control-group" style="margin-bottom: 0px;">
+                            <input type="text" class="int1 width-100 dept" id="deptName1" name="deptName1" readonly="readonly" placeholder="选择部门">
+                            <input type="hidden"  id="deptId1" name="deptId1" >
+                        </div>
+                    </td>
                     <td><select class="int2 width-100" id="typeId1" name="typeId1">
                         <#if typeList?exists&&typeList?size gt 0>
                             <#list typeList as type>
@@ -709,9 +641,15 @@ $(document).ready(function () {
                         </#if>
                     </select></td>
                     <td>
-                        <input type="text" class="int1 width-100 titleNo" id="titleNo1" name="titleNo1"
-                               placeholder="费用项目" maxlength="20" seq="1">
-                        <input type="hidden" class="int1 width-100" id="titleId1" name="titleId1">
+                        <select class="int2 width-100" id="titleId1" name="titleId1">
+                            <#if titleList?exists&&titleList?size gt 0>
+                                <#list titleList as title>
+                                    <option value="${title.id?c}">
+                                    ${title.titleName?if_exists}
+                                    </option>
+                                </#list>
+                            </#if>
+                        </select>
                     </td>
                     <td data-date-format="yyyy-mm-dd" data-date="" class="date dateTd">
                         <div class="control-group" style="margin-bottom: 0px;">

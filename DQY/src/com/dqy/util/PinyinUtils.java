@@ -319,7 +319,7 @@ public class PinyinUtils {
     }
 
     public static void main(String[] args) {
-        System.out.println(getUID("西湖区",4));
+        System.out.println(getUID("西湖区",2));
     }
 
 

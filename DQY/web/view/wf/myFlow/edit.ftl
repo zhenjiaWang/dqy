@@ -19,7 +19,8 @@
         async: {
             enable: true,
             url: "/common/common!approveTreeData.dhtml",
-            autoParam: ["id=parentId", "approveType=approveTypeId", "nodeType=nodeType"]
+            autoParam: ["id=parentId", "approveType=approveTypeId", "nodeType=nodeType"],
+            otherParam:  { "notMe":"Y"}
         },
         callback: {
             onClick: zTreeOnClick

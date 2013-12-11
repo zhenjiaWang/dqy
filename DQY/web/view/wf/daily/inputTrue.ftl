@@ -16,6 +16,9 @@
 <link href="/css/kendo.dataviz.min.css" rel="stylesheet"/>
 <link href="/css/kendo.dataviz.metro.min.css" rel="stylesheet"/>
 <script type="text/javascript" src="/js/kendo.web.min.js"></script>
+
+<link type="text/css" href="/css/zTreeStyle/zTreeStyle.css" rel="stylesheet">
+<script src="/js/jquery.ztree.all-3.5.min.js"></script>
 <style scoped>
     .file-icon
     {
@@ -78,7 +81,35 @@
 <script type="text/javascript">
     var submited = false;
     var uploadRemove=false;
-    var tempTitleName = false;
+    var currentSEQ = false;
+    var currentTYPE = false;
+
+    var srcNode;
+    var setting = {
+        view: {
+            selectedMulti: false
+        },
+        async: {
+            enable: true,
+            url: "/common/common!orgTreeData.dhtml",
+            autoParam: ["id=parentId", "name=n", "level=lv"]
+        },
+        callback: {
+            onClick: zTreeOnClick
+        }
+    };
+    function zTreeOnClick(event, treeId, treeNode) {
+        srcNode = treeNode;
+        if (treeNode&&currentSEQ) {
+            $('#deptId'+currentSEQ).val(treeNode['id']);
+            $('#deptName'+currentSEQ+'_'+currentTYPE).val(treeNode['name']);
+            $('#deptName'+currentSEQ+'_'+currentTYPE).trigger('blur');
+            $('.treeDiv').fadeOut();
+            currentSEQ=false;
+            currentTYPE=false;
+        }
+    }
+
     function initValidator() {
         WEBUTILS.validator.init({
             modes: [
@@ -134,6 +165,18 @@
                     pattern: [
                         {type: 'blank', exp: '!=', msg: '不能为空'}
                     ]
+                },{
+                    id: 'deptName1_1',
+                    required: true,
+                    pattern: [
+                        {type: 'blank', exp: '!=', msg: '`'}
+                    ]
+                },{
+                    id: 'deptName1_2',
+                    required: true,
+                    pattern: [
+                        {type: 'blank', exp: '!=', msg: '`'}
+                    ]
                 }
             ]
         }, true);
@@ -157,19 +200,6 @@
         $('.modal-header', '#myModal').find('.close').trigger('click');
     }
     function bindSelect(type,seq){
-        <#if departmentList?exists&&departmentList?size gt 0>
-            $('#deptId'+seq+'_'+type).empty();
-            <#list departmentList as dept>
-                var levelStr='';
-                <#if dept.deptLevel gt 1>
-                    <#list 1..dept.deptLevel as i>
-                        levelStr+='&nbsp;&nbsp;';
-                    </#list>
-                </#if>
-                $('#deptId'+seq+'_'+type).append('<option value="${dept.id?c}">'+levelStr+'${dept.deptName?if_exists}</option>');
-            </#list>
-            $('#deptId'+seq+'_'+type).val('${deptId?c}');
-        </#if>
         <#if typeList?exists&&typeList?size gt 0>
             $('#typeId'+seq+'_'+type).empty();
             <#list typeList as type>
@@ -270,116 +300,22 @@
             }
         });
 
-        $('.titleNo').off('keydown').on('keydown', function (e) {
-            var titleNoObj = $(this);
-            tempTitleName = $(titleNoObj).val();
-        });
-
-        $('.titleNo').off('keyup').on('keyup', function (e) {
-            var titleNoObj = $(this);
-            e = (e) ? e : ((window.event) ? window.event : "");
-            var keyCode = e.keyCode ? e.keyCode : (e.which ? e.which : e.charCode);
-            var searchKey = $(this).val();
-            if (keyCode == 8 || keyCode == 46) {
-                var seq = $(titleNoObj).attr('seq');
-                if (seq) {
-                    if ($('#titleId' + seq).val() != '') {
-                        if (confirm("确认清空当前费用项目?")) {
-                            $('#titleNo' + seq).val('');
-                            $('#titleId' + seq).val('');
-                        } else {
-                            if (tempTitleName) {
-                                $('#titleNo' + seq).val(tempTitleName);
-                                tempTitleName = false;
-                            }
-                        }
+        $('.dept').off('click').on('click', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            currentSEQ=$(this).parent().parent().parent().attr('seq');
+            currentTYPE=$(this).parent().parent().parent().attr('type');
+            var left = $(this).offset().left ;
+            var top = $(this).offset().top -25;
+            top += $(this).height();
+            $('.treeDiv').css({
+                        top: top,
+                        left: left,
+                        zIndex: 99999
                     }
-                }
-            }
-            if (keyCode == 13) {
-                if (searchKey && searchKey != '') {
-                    searchKey = encodeURI(searchKey);
-                    if ($('.titlepop').is(':visible')) {
-                        var li = $('.active', '.titlepop');
-                        if (li) {
-                            var seq = $(titleNoObj).attr('seq');
-                            if (seq) {
-                                $('#titleNo' + seq).val($(li).attr('titleName'));
-                                $('#titleId' + seq).val($(li).attr('uid'));
-                            }
-                        }
-                        $('.titlepop').hide();
-                    } else {
-                        $.ajax({
-                            type: 'GET',
-                            url: '/common/common!searchBudgetTitle.dhtml?searchKey=' + searchKey,
-                            dataType: 'json',
-                            success: function (jsonData) {
-                                if (jsonData) {
-                                    if (jsonData['result'] == '0') {
-                                        $('ul', '.titlepop').empty();
-                                        var titleList = jsonData['titleList'];
-                                        if (titleList) {
-                                            $(titleList).each(function (i, o) {
-                                                $('ul', '.titlepop').append('<li  uid="' + o['id'] + '" titleName="' + o["titleName"] + '"><a href="##">(' + o["titleNo"] + ')' + o["titleName"] + '</a></li>');
-                                            });
-                                            var left = $(titleNoObj).offset().left;
-                                            var top = $(titleNoObj).offset().top + 30;
-                                            $('.titlepop').css({left: left + 'px', top: top + 'px'}).show();
-                                            $('li', '.titlepop').first().addClass('active');
-                                            $('li', '.titlepop').off('click').on('click',function(){
-                                                if ($('.titlepop').is(':visible')) {
-                                                    var li = $(this);
-                                                    if (li) {
-                                                        var seq = $(titleNoObj).attr('seq');
-                                                        if (seq) {
-                                                            $('#titleNo' + seq).val($(li).attr('titleName'));
-                                                            $('#titleId' + seq).val($(li).attr('uid'));
-                                                        }
-                                                    }
-                                                    $('.titlepop').hide();
-                                                }
-                                            });
-                                        } else {
-                                            alert('暂无结果,请重新输入');
-                                        }
-                                    } else {
-                                        alert('暂无结果,请重新输入');
-                                    }
-                                }
-                            },
-                            error: function (jsonData) {
-
-                            }
-                        });
-                    }
-                }
-            } else {
-                var searchCount = $('li', '.titlepop').size();
-                if (keyCode == 38) {
-                    //up
-                    var li = $('.active', '.titlepop');
-                    var currentIndex = $(li).index();
-                    $('li', '.titlepop').removeClass('active');
-                    if (currentIndex == 0) {
-                        $('li', '.titlepop').last().addClass('active');
-                    } else {
-                        $(li).prev().addClass('active');
-                    }
-                } else if (keyCode == 40) {
-                    //down
-                    var li = $('.active', '.titlepop');
-                    var currentIndex = $(li).index();
-                    $('li', '.titlepop').removeClass('active');
-                    if (currentIndex == searchCount - 1) {
-                        $('li', '.titlepop').first().addClass('active');
-                    } else {
-                        $(li).next().addClass('active');
-                    }
-                } else if (keyCode == 13) {
-
-                }
-            }
+            );
+            $('.treeDiv').fadeIn();
+            $('.treeDiv').find('div').show();
         });
     }
 
@@ -391,25 +327,15 @@
     }
     $(document).ready(function () {
         initValidator();
+        $.fn.zTree.init($("#treeDemo"), setting);
         var ue = UM.getEditor('editor', {
             lang:'zh-cn',
             langPath:UMEDITOR_CONFIG.UMEDITOR_HOME_URL + "lang/",
             focus: true
         });
-        $('#nextBtn').off('click').on('click', function () {
-            var titleIdFlag=true;
-            $('.titleNo').each(function(i,o){
-                var seq=$(o).attr('seq');
-                if(seq){
-                    if($('#titleId'+seq).val()==''){
-                        titleIdFlag=false;
-                    }
-                }
-            });
-            if(!titleIdFlag){
-                alert('请确认每一项费用项目都进行填写');
-                return false;
-            }
+        $('#nextBtn').off('click').on('click', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
             var detailCount1 = $('.detailTr1').last().attr('seq');
             var detailCount2 = $('.detailTr2').last().attr('seq');
             if(detailCount1&&detailCount2){
@@ -427,7 +353,9 @@
                 }, 500);
             }
         });
-        $('.addDetail').off('click').on('click', function () {
+        $('.addDetail').off('click').on('click', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
             var type=$(this).attr('type');
             if(type){
                 var currentNodeSeq = $('.detailTr'+type).last().attr('seq');
@@ -449,13 +377,22 @@
                             {type: 'reg', exp: '_date', msg: ''}
                         ]
                     });
+                    WEBUTILS.validator.addMode({
+                        id: 'deptName' + nextNodeSeq+'_'+type,
+                        required: true,
+                        pattern: [
+                            {type: 'blank', exp: '!=', msg: ''}
+                        ]
+                    });
                     bindSelect(type,nextNodeSeq);
                     dateEvent();
                     submited = false;
                 }
             }
         });
-        $('.deleteDetail').off('click').on('click', function () {
+        $('.deleteDetail').off('click').on('click', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
             var type=$(this).attr('type');
             if(type){
                 var currentNodeSeq = $('.detailTr'+type).last().attr('seq');
@@ -468,6 +405,9 @@
                         });
                         WEBUTILS.validator.removeMode({
                             id: 'date' + currentNodeSeq+'_'+type
+                        });
+                        WEBUTILS.validator.removeMode({
+                            id: 'deptName' + currentNodeSeq+'_'+type
                         });
                     }
                 }
@@ -525,6 +465,11 @@
             template: kendo.template($('#fileTemplate').html())
         });
         dateEvent();
+        $('.application').off('click').on('click', function (e) {
+            if ($('.treeDiv').is(':visible')) {
+                $('.treeDiv').fadeOut();
+            }
+        });
     });
 </script>
 <!--搜索begin-->
@@ -668,29 +613,22 @@
                                 <td width="110">费用日期</td>
                                 <td width="80">金额</td>
                                 <td>
-                                    <a href="/wf/daily.dhtml" id="trueDetail" style="float: right;"><i class="icon-eye-close"></i>&nbsp;</a>
-                                    <a href="#" type="1" class="deleteDetail" style="float: right;"><i class="icon-minus"></i>
+                                    <a href="##" type="1" class="addDetail"><i class="icon-plus"></i> 增加</a>
+                                    <a href="##" type="1" class="deleteDetail"><i class="icon-minus"></i>
                                         删除</a>
-                                    <a href="#" type="1" class="addDetail" style="float: right;"><i class="icon-plus"></i> 增加</a>
+                                    <a href="/wf/daily.dhtml" id="trueDetail" ><i class="icon-eye-close"></i>&nbsp;</a>
+
                                 </td>
                             </tr>
                             </thead>
                             <tbody>
-                            <tr seq="1" class="detailTr1">
-                                <td><select class="int2 width-100" id="deptId1_1" name="deptId1_1">
-                                    <#if departmentList?exists&&departmentList?size gt 0>
-                                        <#list departmentList as dept>
-                                            <option value="${dept.id?c}" <#if deptId==dept.id>selected="selected" </#if>>
-                                                <#if dept.deptLevel gt 1>
-                                                    <#list 1..dept.deptLevel as i>
-                                                        &nbsp;&nbsp;
-                                                    </#list>
-                                                </#if>
-                                            ${dept.deptName?if_exists}
-                                            </option>
-                                        </#list>
-                                    </#if>
-                                </select></td>
+                            <tr seq="1" class="detailTr1" type="1">
+                                <td>
+                                    <div class="control-group" style="margin-bottom: 0px;">
+                                        <input type="text" class="int1 width-100 dept" id="deptName1_1" name="deptName1_1" readonly="readonly" placeholder="选择部门">
+                                        <input type="hidden"  id="deptId1_1" name="deptId1_1" >
+                                    </div>
+                                </td>
                                 <td><select class="int2 width-100" id="typeId1_1" name="typeId1_1">
                                     <#if typeList?exists&&typeList?size gt 0>
                                         <#list typeList as type>
@@ -701,10 +639,15 @@
                                     </#if>
                                 </select></td>
                                 <td>
-                                    <input type="text" class="int1 width-100 titleNo" id="titleNo1_1" name="titleNo1_1"
-                                           placeholder="费用项目" maxlength="20" seq="1_1">
-                                    <input type="hidden" class="int1 width-100" id="titleId1_1" name="titleId1_1">
-
+                                    <select class="int2 width-100" id="titleId1_1" name="titleId1_1">
+                                        <#if titleList?exists&&titleList?size gt 0>
+                                            <#list titleList as title>
+                                                <option value="${title.id?c}">
+                                                ${title.titleName?if_exists}
+                                                </option>
+                                            </#list>
+                                        </#if>
+                                    </select>
                                     </td>
                                 <td data-date-format="yyyy-mm-dd" data-date="" class="date dateTd">
                                     <div class="control-group" style="margin-bottom: 0px;">
@@ -730,29 +673,21 @@
                                 <td width="110">费用日期</td>
                                 <td width="80">金额</td>
                                 <td>
-                                    <a href="/wf/daily.dhtml" id="trueDetail" style="float: right;"><i class="icon-eye-close"></i>&nbsp;</a>
-                                    <a href="#" type="2" class="deleteDetail" style="float: right;"><i class="icon-minus"></i>
+                                    <a href="##" type="2" class="addDetail" ><i class="icon-plus"></i> 增加</a>
+                                    <a href="##" type="2" class="deleteDetail" ><i class="icon-minus"></i>
                                         删除</a>
-                                    <a href="#" type="2" class="addDetail" style="float: right;"><i class="icon-plus"></i> 增加</a>
+                                    <a href="/wf/daily.dhtml" id="trueDetail" ><i class="icon-eye-close"></i>&nbsp;</a>
                                 </td>
                             </tr>
                             </thead>
                             <tbody>
-                            <tr seq="1" class="detailTr2">
-                                <td><select class="int2 width-100" id="deptId1_2" name="deptId1_2">
-                                    <#if departmentList?exists&&departmentList?size gt 0>
-                                        <#list departmentList as dept>
-                                            <option value="${dept.id?c}" <#if deptId==dept.id>selected="selected" </#if>>
-                                                <#if dept.deptLevel gt 1>
-                                                    <#list 1..dept.deptLevel as i>
-                                                        &nbsp;&nbsp;
-                                                    </#list>
-                                                </#if>
-                                            ${dept.deptName?if_exists}
-                                            </option>
-                                        </#list>
-                                    </#if>
-                                </select></td>
+                            <tr seq="1" class="detailTr2" type="2">
+                                <td>
+                                    <div class="control-group" style="margin-bottom: 0px;">
+                                        <input type="text" class="int1 width-100 dept" id="deptName1_2" name="deptName1_2" readonly="readonly" placeholder="选择部门">
+                                        <input type="hidden"  id="deptId1_2" name="deptId1_2" >
+                                    </div>
+                                </td>
                                 <td><select class="int2 width-100" id="typeId1_2" name="typeId1_2">
                                     <#if typeList?exists&&typeList?size gt 0>
                                         <#list typeList as type>
@@ -763,9 +698,15 @@
                                     </#if>
                                 </select></td>
                                 <td>
-                                    <input type="text" class="int1 width-100 titleNo" id="titleNo1_2" name="titleNo1_2"
-                                           placeholder="费用项目" maxlength="20" seq="1_2">
-                                    <input type="hidden" class="int1 width-100" id="titleId1_2" name="titleId1_2">
+                                    <select class="int2 width-100" id="titleId1_2" name="titleId1_2">
+                                        <#if titleList?exists&&titleList?size gt 0>
+                                            <#list titleList as title>
+                                                <option value="${title.id?c}">
+                                                ${title.titleName?if_exists}
+                                                </option>
+                                            </#list>
+                                        </#if>
+                                    </select>
                                 </td>
                                 <td data-date-format="yyyy-mm-dd" data-date="" class="date dateTd">
                                     <div class="control-group" style="margin-bottom: 0px;">

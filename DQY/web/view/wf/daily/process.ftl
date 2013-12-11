@@ -323,11 +323,14 @@
                 <tbody>
                     <#if reqCommentsList?exists&&reqCommentsList?size gt 0>
                         <#list reqCommentsList as comments>
-                        <tr style="background-color:#ffffff">
-                            <td>${(comments.userId.userName)?if_exists}</td>
-                            <td>${comments.actionDesc?if_exists}</td>
-                            <td>${comments.created?string("yyyy-MM-dd HH:mm")}</td>
-                            <td>${comments.content?if_exists}</td>
+                            <#if comments.action!=1>
+                            <tr style="background-color:#ffffff">
+                                <td>${(comments.userId.userName)?if_exists}</td>
+                                <td>${comments.actionDesc?if_exists}</td>
+                                <td>${comments.created?string("yyyy-MM-dd HH:mm")}</td>
+                                <td>${comments.content?if_exists}</td>
+                            </tr>
+                            </#if>
                         </#list>
                     </#if>
                 </tbody>

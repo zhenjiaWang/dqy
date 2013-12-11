@@ -160,12 +160,6 @@ public class WfReqRePaymentAction extends WfReqSupportAction<WfReqRePayment> {
             deptId=userInfo.getDepartmentId();
             List<Selector> selectorList=new ArrayList<Selector>();
             selectorList.add(SelectorUtils.$eq("orgId.id",userInfo.getOrgId()));
-            selectorList.add(SelectorUtils.$order("deptNo"));
-            selectorList.add(SelectorUtils.$eq("useYn","Y"));
-            departmentList = this.hrDepartmentService.getByList(selectorList);
-
-            selectorList=new ArrayList<Selector>();
-            selectorList.add(SelectorUtils.$eq("orgId.id",userInfo.getOrgId()));
             selectorList.add(SelectorUtils.$order("expenseType"));
             selectorList.add(SelectorUtils.$eq("useYn","Y"));
             typeList= this.sysBudgetTypeService.getAllList(selectorList);

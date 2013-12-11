@@ -53,6 +53,8 @@
 
                 }
             });
+        }else{
+            $('#nodeUL').empty();
         }
     }
 
@@ -85,30 +87,34 @@
             document.location.href='/wf/reqMyFlow!input.dhtml?applyId=${applyId?if_exists}';
         });
         $('#delteFlowBtn').off('click').on('click', function () {
-            var flowId=$('#flowId').val();
+            var flowId=$('#myFlowId').val();
             if(flowId&&flowId!=''){
-                $.ajax({
-                    type:'GET',
-                    url:'/wf/reqMyFlow!delete.dhtml?id='+flowId,
-                    dataType:'json',
-                    success:function (jsonData) {
-                        if (jsonData) {
-                            if (jsonData['result'] == '0') {
-                                flowId = jsonData['flowId'];
-                                if (flowId) {
-                                    var flowName = $('option[value="' + flowId + '"]', '#flowId').text();
-                                    $('option[value="' + flowId + '"]', '#flowId').remove();
-                                    if($('option','#flowId').size()==0){
-                                        $('#flowId').append(' <option value="">[请自拟流程]</option>');
+                if(confirm("确认要删除这个申请吗?")){
+                    $.ajax({
+                        type:'GET',
+                        url:'/wf/reqMyFlow!delete.dhtml?id='+flowId,
+                        dataType:'json',
+                        success:function (jsonData) {
+                            if (jsonData) {
+                                if (jsonData['result'] == '0') {
+                                    flowId = jsonData['flowId'];
+                                    if (flowId) {
+                                        var flowName = $('option[value="' + flowId + '"]', '#myFlowId').text();
+                                        $('option[value="' + flowId + '"]', '#myFlowId').remove();
+                                        if($('option','#myFlowId').size()==0){
+                                            $('#myFlowId').append(' <option value="">[请自拟流程]</option>');
+                                        }
+                                        loadFlowNode();
+                                        WEBUTILS.alert.alertSuccess('操作成功',"审批流程 "+flowName+" 已经删除!")
                                     }
                                 }
                             }
-                        }
-                    },
-                    error:function (jsonData) {
+                        },
+                        error:function (jsonData) {
 
-                    }
-                });
+                        }
+                    });
+                }
             }
         });
         loadFlowNode();

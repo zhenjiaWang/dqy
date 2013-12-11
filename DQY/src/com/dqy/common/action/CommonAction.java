@@ -92,6 +92,9 @@ public class CommonAction extends BaseAction {
     @ReqSet
     private Long orgId;
 
+    @ReqGet
+    private String notMe;
+
     @ReqSet
     private String authUrl;
 
@@ -261,22 +264,6 @@ public class CommonAction extends BaseAction {
         if (userInfo != null) {
             orgId = userInfo.getOrgId();
             if (approveTypeId == null) {
-//                node = new JSONObject();
-//                node.put("name", "审批岗位");
-//                node.put("id", "1");
-//                node.put("approveType", "1");
-//                node.put("nodeType", -1);
-//                node.put("isParent", true);
-//                jsonArray.add(node);
-//
-//                node = new JSONObject();
-//                node.put("name", "直属上司");
-//                node.put("id", "2");
-//                node.put("approveType", "2");
-//                node.put("nodeType", -1);
-//                node.put("isParent", true);
-//                jsonArray.add(node);
-
                 node = new JSONObject();
                 node.put("name", "审批人员");
                 node.put("id", "3");
@@ -345,13 +332,21 @@ public class CommonAction extends BaseAction {
                         }
                     }
                     if (userList != null && !userList.isEmpty()) {
+                        boolean flag=true;
                         for (HrUser hrUser : userList) {
-                            node = new JSONObject();
-                            node.put("name", StringUtils.defaultIfEmpty(hrUser.getUserName()));
-                            node.put("id", StringUtils.defaultIfEmpty(hrUser.getId()));
-                            node.put("approveType", approveTypeId);
-                            node.put("nodeType", 1);
-                            jsonArray.add(node);
+                            if(StringUtils.isNotBlank(notMe)){
+                                if(hrUser.getId().equals(userInfo.getUserId())){
+                                    flag=false;
+                                }
+                            }
+                            if(flag){
+                                node = new JSONObject();
+                                node.put("name", StringUtils.defaultIfEmpty(hrUser.getUserName()));
+                                node.put("id", StringUtils.defaultIfEmpty(hrUser.getId()));
+                                node.put("approveType", approveTypeId);
+                                node.put("nodeType", 1);
+                                jsonArray.add(node);
+                            }
                         }
                     }
                     if (authorizedList != null && !authorizedList.isEmpty()) {
@@ -559,7 +554,7 @@ public class CommonAction extends BaseAction {
             }
             List<Selector> selectorList=new ArrayList<Selector>();
             selectorList.add(SelectorUtils.$eq("orgId.id", orgId));
-            selectorList.add(SelectorUtils.$or(SelectorUtils.$like("titleNo",searchKey, Match.END),SelectorUtils.$like("titleName",searchKey)));
+            selectorList.add(SelectorUtils.$or(SelectorUtils.$like("titlePy",searchKey, Match.END),SelectorUtils.$like("titleName",searchKey)));
             selectorList.add(SelectorUtils.$eq("useYn","Y"));
             Page<SysBudgetTitle> titlePage=this.sysBudgetTitleService.getPageList(0,10,selectorList);
             if(titlePage!=null){

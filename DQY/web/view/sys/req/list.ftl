@@ -21,7 +21,9 @@
         $('.deleteReq').off('click').on('click', function () {
             var uid = $(this).attr('uid');
             if (uid) {
-                document.location.href='/wf/req!delete.dhtml?id='+uid;
+                if(confirm("确认要删除这个申请吗?")){
+                    document.location.href='/wf/req!delete.dhtml?id='+uid;
+                }
             }
         });
         $('#searchBtn').off('click').on('click', function () {

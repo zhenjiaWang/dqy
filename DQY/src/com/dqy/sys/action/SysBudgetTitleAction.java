@@ -10,6 +10,7 @@ import com.dqy.sys.entity.SysOrg;
 import com.dqy.sys.service.SysBudgetTitleService;
 import com.dqy.sys.service.SysBudgetTypeService;
 import com.dqy.sys.service.SysOrgService;
+import com.dqy.util.PinyinUtils;
 import com.dqy.web.support.ActionSupport;
 import com.google.inject.Inject;
 import net.sf.json.JSONArray;
@@ -81,6 +82,13 @@ public class SysBudgetTitleAction extends ActionSupport<SysBudgetTitle> {
         if (userInfo != null) {
             userInfo.setTopMenu("sys");
             userInfo.setLeftMenu("budgetTitle");
+            budgetTitleList=this.sysBudgetTitleService.getAllList(null);
+            if(budgetTitleList!=null&&!budgetTitleList.isEmpty()){
+                for(SysBudgetTitle budgetTitle:budgetTitleList){
+                    budgetTitle.setTitlePy(PinyinUtils.getJPinYin(budgetTitle.getTitleName()));
+                }
+                this.sysBudgetTitleService.save(budgetTitleList);
+            }
             pageObj = this.sysBudgetTitleService.getPageList(getStart(), rows, searchModeCallback());
             if(pageObj!=null){
                 budgetTitleList=pageObj.getResultList();
@@ -129,6 +137,7 @@ public class SysBudgetTitleAction extends ActionSupport<SysBudgetTitle> {
             if(sysOrg!=null){
                 sysBudgetTitle.setOrgId(sysOrg);
             }
+            sysBudgetTitle.setTitlePy(PinyinUtils.getJPinYin(sysBudgetTitle.getTitleName()));
             this.bind(sysBudgetTitle);
             this.sysBudgetTitleService.save(sysBudgetTitle);
         }

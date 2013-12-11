@@ -53,7 +53,7 @@
                             <#elseif req.applyState==2>
                                 <#if req.applyResult==1>
                                     <span class="cross nocross floatright">已通过</span>
-                                <#elseif task.applyResult==2>
+                                <#elseif req.applyResult==2>
                                     <span class="cross floatright">未通过</span>
                                 </#if>
                             </#if>
