@@ -82,12 +82,6 @@
                 </#if>
             </#if>
             <tr>
-                <th>用途</th>
-                <td colspan="3">
-                ${(wfReqAdvanceAccount.purpose)?if_exists}
-                </td>
-            </tr>
-            <tr>
                 <th>备注</th>
                 <td colspan="3">
                 ${(wfReqAdvanceAccount.remarks)?if_exists}

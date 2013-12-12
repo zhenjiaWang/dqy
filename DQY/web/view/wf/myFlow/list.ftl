@@ -64,8 +64,14 @@
     function dataSubmit() {
         if (!submited) {
             window.setTimeout(function () {
-                var nodeCount=$('.nodeLi[nodeSeq!="0000"]','#nodeUL').size();
-                if(nodeCount>0){
+                var flag=false;
+                $('li','#nodeUL').each(function(i,o){
+                    var nodeSeq=$(o).attr('nodeSeq');
+                    if(nodeSeq&&nodeSeq!='0000'){
+                        flag=true;
+                    }
+                });
+                if(flag){
                     var r=confirm("确定要提交申请并且启动审批流程吗");
                     if(r==true){
                         if (!submited) {
@@ -76,7 +82,7 @@
                             }, 1000);
                         }
                     }
-                }else if(nodeCount==0){
+                }else if(!flag){
                     WEBUTILS.alert.alertError('错误','请选择一个审批流程再进行提交，没有审批流程请自行创建');
                 }
             }, 500);

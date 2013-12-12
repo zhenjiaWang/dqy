@@ -70,7 +70,7 @@
                         <div class="control-group" style="margin-bottom: 5px;">
                             <label class="control-label" for="wfReq.subject"
                                    style="width: 60px;color: #898989;">标题</label>
-                            <div class="controls" style="margin-left: 70px;">
+                            <div class="controls" style="margin-left: 70px;*margin-left:0;">
                                 <label style="margin-top: 5px;padding-left:5px;font-size: 12px;word-wrap: break-word;word-break: break-all;">${wfReq.subject?if_exists}</label>
                             </div>
                         </div>
@@ -82,7 +82,7 @@
                             <label class="control-label"
                                    style="width: 60px;color: #898989;">申请人</label>
 
-                            <div class="controls" style="margin-left: 70px;">
+                            <div class="controls" style="margin-left: 70px;*margin-left:0;">
                                 <label style="margin-top: 5px;padding-left:5px;font-size: 12px;">${(wfReq.userId.userName)?if_exists}</label>
                             </div>
                         </div>
@@ -92,7 +92,7 @@
                             <label class="control-label"
                                    style="width: 60px;color: #898989;">申请时间</label>
 
-                            <div class="controls" style="margin-left: 70px;">
+                            <div class="controls" style="margin-left: 70px;*margin-left:0;">
                                 <label style="margin-top: 5px;padding-left:5px;font-size: 12px;">${(wfReq.sendDate)?string("yyyy-MM-dd HH:mm")}</label>
                             </div>
                         </div>
@@ -104,7 +104,7 @@
                             <label class="control-label" for="wfReqAdvanceAccount.amount"
                                    style="width: 60px;color: #898989;">预支金额</label>
 
-                            <div class="controls" style="margin-left: 70px;">
+                            <div class="controls" style="margin-left: 70px;*margin-left:0;">
                                 <label style="margin-top: 5px;padding-left:5px;font-size: 12px;">${(wfReqAdvanceAccount.amount)?double}</label>
                             </div>
                         </div>
@@ -114,7 +114,7 @@
                             <label class="control-label" for="wfReqAdvanceAccount.payMethod"
                                    style="width: 60px;color: #898989;">支付方式</label>
 
-                            <div class="controls" style="margin-left: 70px;" >
+                            <div class="controls" style="margin-left: 70px;*margin-left:0;" >
                                 <label style="margin-top: 5px;padding-left:5px;font-size: 12px;">
                                     <#if wfReqAdvanceAccount.payMethod?exists>
                                         <#if wfReqAdvanceAccount.payMethod==1>
@@ -138,7 +138,7 @@
                                     <label class="control-label" for="wfReq.subject"
                                            style="width: 60px;color: #898989;">收款单位</label>
 
-                                    <div class="controls" style="margin-left: 70px;">
+                                    <div class="controls" style="margin-left: 70px;*margin-left:0;">
                                         <label style="margin-top: 5px;padding-left:5px;font-size: 12px;word-wrap: break-word;word-break: break-all;">${wfReqAdvanceAccount.payee?if_exists}</label>
                                     </div>
                                 </div>
@@ -150,7 +150,7 @@
                                     <label class="control-label"
                                            style="width: 60px;color: #898989;">开户行</label>
 
-                                    <div class="controls" style="margin-left: 70px;">
+                                    <div class="controls" style="margin-left: 70px;*margin-left:0;">
                                         <label style="margin-top: 5px;padding-left:5px;font-size: 12px;">${(wfReqAdvanceAccount.bank)?if_exists}</label>
                                     </div>
                                 </div>
@@ -160,7 +160,7 @@
                                     <label class="control-label"
                                            style="width: 60px;color: #898989;">帐号</label>
 
-                                    <div class="controls" style="margin-left: 70px;">
+                                    <div class="controls" style="margin-left: 70px;*margin-left:0;">
                                         <label style="margin-top: 5px;padding-left:5px;font-size: 12px;">${(wfReqAdvanceAccount.bankAccount)?if_exists}</label>
                                     </div>
                                 </div>
@@ -171,22 +171,10 @@
                 <tr>
                     <td colspan="2">
                         <div class="control-group" style="margin-bottom: 5px;">
-                            <label class="control-label" for="wfReqAdvanceAccount.purpose"
-                                   style="width: 60px;color: #898989;">用途</label>
-
-                            <div class="controls" style="margin-left: 70px;">
-                                <label style="margin-top: 5px;padding-left:5px;font-size: 12px;word-wrap: break-word;word-break: break-all;">${(wfReqAdvanceAccount.purpose)?if_exists}</label>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        <div class="control-group" style="margin-bottom: 5px;">
                             <label class="control-label" for="wfReqAdvanceAccount.remarks"
                                    style="width: 60px;color: #898989;">备注</label>
 
-                            <div class="controls" style="margin-left: 70px;">
+                            <div class="controls" style="margin-left: 70px;*margin-left:0;">
                                 <label style="margin-top: 5px;padding-left:5px;font-size: 12px;word-wrap: break-word;word-break: break-all;">${(wfReqAdvanceAccount.remarks)?if_exists}</label>
                             </div>
                         </div>
@@ -199,7 +187,7 @@
                             <label class="control-label" for="wfReqAdvanceAccount.remarks"
                                    style="width: 60px;color: #898989;">财务</label>
 
-                            <div class="controls" style="margin-left: 70px;">
+                            <div class="controls" style="margin-left: 70px;*margin-left:0;">
                                 <label style="margin-top: 5px;padding-left:5px;font-size: 12px;word-wrap: break-word;word-break: break-all;">[已办理] ${wfReq.financialDesc?if_exists}</label>
                             </div>
                         </div>

@@ -92,13 +92,6 @@
                     pattern: [
                         {type: 'number', exp: '==', msg: '不能为空'}
                     ]
-                },
-                {
-                    id: 'wfReqAdvanceAccount\\.purpose',
-                    required: true,
-                    pattern: [
-                        {type: 'blank', exp: '!=', msg: '不能为空'}
-                    ]
                 }
             ]
         }, true);
@@ -257,7 +250,7 @@
                             <label class="control-label" for="wfReq.subject"
                                    style="width: 60px;color: #898989;">标题</label>
 
-                            <div class="controls" style="margin-left: 70px;">
+                            <div class="controls" style="margin-left: 70px;*margin-left:0;">
                                 <input style="width: 95%;" type="text" id="wfReq.subject" name="wfReq.subject"
                                        placeholder="请输入标题" maxlength="20">
                                 <span class="help-inline"></span>
@@ -271,7 +264,7 @@
                             <label class="control-label"
                                    style="width: 60px;color: #898989;">申请人</label>
 
-                            <div class="controls" style="margin-left: 70px;">
+                            <div class="controls" style="margin-left: 70px;*margin-left:0;">
                                 <label style="margin-top: 5px;padding-left:5px;font-size: 12px;">${userInfo.userName?if_exists}</label>
                             </div>
                         </div>
@@ -281,7 +274,7 @@
                             <label class="control-label"
                                    style="width: 60px;color: #898989;">申请时间</label>
 
-                            <div class="controls" style="margin-left: 70px;">
+                            <div class="controls" style="margin-left: 70px;*margin-left:0;">
                                 <label style="margin-top: 5px;padding-left:5px;font-size: 12px;">${sendDate?string("yyyy-MM-dd HH:mm:ss")}</label>
                             </div>
                         </div>
@@ -293,7 +286,7 @@
                             <label class="control-label" for="wfReqAdvanceAccount.amount"
                                    style="width: 60px;color: #898989;">预支金额</label>
 
-                            <div class="controls" style="margin-left: 70px;">
+                            <div class="controls" style="margin-left: 70px;*margin-left:0;">
                                 <input type="text" id="wfReqAdvanceAccount.amount" name="wfReqAdvanceAccount.amount" placeholder="预支金额" maxlength="10">
                                 <span class="help-inline"></span>
                             </div>
@@ -304,7 +297,7 @@
                             <label class="control-label" for="wfReqAdvanceAccount.payMethod"
                                    style="width: 60px;color: #898989;">支付方式</label>
 
-                            <div class="controls" style="margin-left: 70px;" >
+                            <div class="controls" style="margin-left: 70px;*margin-left:0;" >
                                 <select class="int2 width-160" id="wfReqAdvanceAccount.payMethod" name="wfReqAdvanceAccount.payMethod">
                                     <option value="1">现金</option>
                                     <option value="2">银行转账</option>
@@ -320,7 +313,7 @@
                             <label class="control-label" for="wfReqAdvanceAccount.payee"
                                    style="width: 60px;color: #898989;">收款单位</label>
 
-                            <div class="controls" style="margin-left: 70px;">
+                            <div class="controls" style="margin-left: 70px;*margin-left:0;">
                                 <input style="width: 95%;" type="text" id="wfReqAdvanceAccount.payee" name="wfReqAdvanceAccount.payee"
                                        placeholder="收款单位/人" maxlength="20">
                                 <span class="help-inline"></span>
@@ -334,7 +327,7 @@
                             <label class="control-label" for="wfReqAdvanceAccount.bank"
                                    style="width: 60px;color: #898989;">开户行</label>
 
-                            <div class="controls" style="margin-left: 70px;">
+                            <div class="controls" style="margin-left: 70px;*margin-left:0;">
                                 <input type="text" id="wfReqAdvanceAccount.bank" name="wfReqAdvanceAccount.bank" placeholder="开户行" maxlength="20">
                                 <span class="help-inline"></span>
                             </div>
@@ -344,21 +337,8 @@
                         <div class="control-group" style="margin-bottom: 5px;">
                             <label class="control-label" for="wfReqAdvanceAccount.bankAccount"
                                    style="width: 60px;color: #898989;">帐号</label>
-                            <div class="controls" style="margin-left: 70px;">
+                            <div class="controls" style="margin-left: 70px;*margin-left:0;">
                                 <input type="text" id="wfReqAdvanceAccount.bankAccount" name="wfReqAdvanceAccount.bankAccount" placeholder="银行帐号" maxlength="20">
-                                <span class="help-inline"></span>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        <div class="control-group" style="margin-bottom: 5px;">
-                            <label class="control-label" for="wfReqAdvanceAccount.purpose"
-                                   style="width: 60px;color: #898989;">用途</label>
-
-                            <div class="controls" style="margin-left: 70px;">
-                                <textarea rows="2" style="width: 95%;" class=" font12" id="wfReqAdvanceAccount.purpose" name="wfReqAdvanceAccount.purpose" maxlength="100"></textarea>
                                 <span class="help-inline"></span>
                             </div>
                         </div>

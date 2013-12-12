@@ -426,7 +426,7 @@
                             <label class="control-label" for="wfReq.subject"
                                    style="width: 60px;color: #898989;">标题</label>
 
-                            <div class="controls" style="margin-left: 70px;">
+                            <div class="controls" style="margin-left: 70px;*margin-left:0;">
                                 <input style="width: 95%;" type="text" id="wfReq.subject" name="wfReq.subject"
                                        placeholder="请输入标题" maxlength="20">
                                 <span class="help-inline"></span>
@@ -440,7 +440,7 @@
                             <label class="control-label"
                                    style="width: 60px;color: #898989;">申请人</label>
 
-                            <div class="controls" style="margin-left: 70px;">
+                            <div class="controls" style="margin-left: 70px;*margin-left:0;">
                                 <label style="margin-top: 5px;padding-left:5px;font-size: 12px;">${userInfo.userName?if_exists}</label>
                             </div>
                         </div>
@@ -450,7 +450,7 @@
                             <label class="control-label"
                                    style="width: 60px;color: #898989;">申请时间</label>
 
-                            <div class="controls" style="margin-left: 70px;">
+                            <div class="controls" style="margin-left: 70px;*margin-left:0;">
                                 <label style="margin-top: 5px;padding-left:5px;font-size: 12px;">${sendDate?string("yyyy-MM-dd HH:mm:ss")}</label>
                             </div>
                         </div>
@@ -462,7 +462,7 @@
                             <label class="control-label" for="wfReqDaily.payee"
                                    style="width: 60px;color: #898989;">收款单位</label>
 
-                            <div class="controls" style="margin-left: 70px;">
+                            <div class="controls" style="margin-left: 70px;*margin-left:0;">
                                 <input style="width: 95%;" type="text" id="wfReqDaily.payee" name="wfReqDaily.payee"
                                        placeholder="收款单位/人" maxlength="20">
                                 <span class="help-inline"></span>
@@ -476,7 +476,7 @@
                             <label class="control-label" for="wfReqDaily.bank"
                                    style="width: 60px;color: #898989;">开户行</label>
 
-                            <div class="controls" style="margin-left: 70px;">
+                            <div class="controls" style="margin-left: 70px;*margin-left:0;">
                                 <input type="text" id="wfReqDaily.bank" name="wfReqDaily.bank" placeholder="开户行" maxlength="20">
                                 <span class="help-inline"></span>
                             </div>
@@ -486,7 +486,7 @@
                         <div class="control-group" style="margin-bottom: 5px;">
                             <label class="control-label" for="wfReqDaily.bankAccount"
                                    style="width: 60px;color: #898989;">帐号</label>
-                            <div class="controls" style="margin-left: 70px;">
+                            <div class="controls" style="margin-left: 70px;*margin-left:0;">
                                 <input type="text" id="wfReqDaily.bankAccount" name="wfReqDaily.bankAccount" placeholder="银行帐号" maxlength="20">
                                 <span class="help-inline"></span>
                             </div>
@@ -499,7 +499,7 @@
                             <label class="control-label" for="wfReqDaily.amount"
                                    style="width: 60px;color: #898989;">报销金额</label>
 
-                            <div class="controls" style="margin-left: 70px;">
+                            <div class="controls" style="margin-left: 70px;*margin-left:0;">
                                 <input type="text" id="wfReqDaily.amount" name="wfReqDaily.amount"
                                        placeholder="报销金额" maxlength="10" readonly="readonly">
                                 <span class="help-inline"></span>

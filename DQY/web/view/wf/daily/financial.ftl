@@ -84,7 +84,7 @@
                             <label class="control-label" for="wfReq.subject"
                                    style="width: 60px;color: #898989;">标题</label>
 
-                            <div class="controls" style="margin-left: 70px;">
+                            <div class="controls" style="margin-left: 70px;*margin-left:0;">
                                 <label style="margin-top: 5px;padding-left:5px;font-size: 12px;word-wrap: break-word;word-break: break-all;">${wfReq.subject?if_exists}</label>
                             </div>
                         </div>
@@ -96,7 +96,7 @@
                             <label class="control-label"
                                    style="width: 60px;color: #898989;">申请人</label>
 
-                            <div class="controls" style="margin-left: 70px;">
+                            <div class="controls" style="margin-left: 70px;*margin-left:0;">
                                 <label style="margin-top: 5px;padding-left:5px;font-size: 12px;">${(wfReq.userId.userName)?if_exists}</label>
                             </div>
                         </div>
@@ -106,7 +106,7 @@
                             <label class="control-label"
                                    style="width: 60px;color: #898989;">申请时间</label>
 
-                            <div class="controls" style="margin-left: 70px;">
+                            <div class="controls" style="margin-left: 70px;*margin-left:0;">
                                 <label style="margin-top: 5px;padding-left:5px;font-size: 12px;">${(wfReq.sendDate)?string("yyyy-MM-dd HH:mm")}</label>
                             </div>
                         </div>
@@ -118,7 +118,7 @@
                             <label class="control-label" for="wfReq.subject"
                                    style="width: 60px;color: #898989;">收款单位</label>
 
-                            <div class="controls" style="margin-left: 70px;">
+                            <div class="controls" style="margin-left: 70px;*margin-left:0;">
                                 <label style="margin-top: 5px;padding-left:5px;font-size: 12px;word-wrap: break-word;word-break: break-all;">${wfReqDaily.payee?if_exists}</label>
                             </div>
                         </div>
@@ -130,7 +130,7 @@
                             <label class="control-label"
                                    style="width: 60px;color: #898989;">开户行</label>
 
-                            <div class="controls" style="margin-left: 70px;">
+                            <div class="controls" style="margin-left: 70px;*margin-left:0;">
                                 <label style="margin-top: 5px;padding-left:5px;font-size: 12px;">${(wfReqDaily.bank)?if_exists}</label>
                             </div>
                         </div>
@@ -140,7 +140,7 @@
                             <label class="control-label"
                                    style="width: 60px;color: #898989;">帐号</label>
 
-                            <div class="controls" style="margin-left: 70px;">
+                            <div class="controls" style="margin-left: 70px;*margin-left:0;">
                                 <label style="margin-top: 5px;padding-left:5px;font-size: 12px;">${(wfReqDaily.bankAccount)?if_exists}</label>
                             </div>
                         </div>
@@ -153,7 +153,7 @@
                                 <label class="control-label" for="wfReqDaily.amount"
                                        style="width: 60px;color: #898989;">报销金额</label>
 
-                                <div class="controls" style="margin-left: 70px;">
+                                <div class="controls" style="margin-left: 70px;*margin-left:0;">
                                     <label style="margin-top: 5px;padding-left:5px;font-size: 12px;">${(wfReqDaily.amount)?double}</label>
                                 </div>
                             </div>
@@ -163,7 +163,7 @@
                                 <label class="control-label" for="wfReqDaily.trueAmount"
                                        style="width: 60px;color: #898989;">实际花费</label>
 
-                                <div class="controls" style="margin-left: 70px;">
+                                <div class="controls" style="margin-left: 70px;*margin-left:0;">
                                     <label style="margin-top: 5px;padding-left:5px;font-size: 12px;">${(wfReqDaily.trueAmount)?double}</label>
                                 </div>
                             </div>
@@ -176,7 +176,7 @@
                                 <label class="control-label" for="wfReqDaily.amount"
                                        style="width: 60px;color: #898989;">报销金额</label>
 
-                                <div class="controls" style="margin-left: 70px;">
+                                <div class="controls" style="margin-left: 70px;*margin-left:0;">
                                     <label style="margin-top: 5px;padding-left:5px;font-size: 12px;">${(wfReqDaily.amount)?double}</label>
                                 </div>
                             </div>
@@ -269,7 +269,7 @@
                             <label class="control-label" for="wfReqDaily.remarks"
                                    style="width: 60px;color: #898989;">备注</label>
 
-                            <div class="controls" style="margin-left: 70px;">
+                            <div class="controls" style="margin-left: 70px;*margin-left:0;">
                                 <label style="margin-top: 5px;padding-left:5px;font-size: 12px;word-wrap: break-word;word-break: break-all;">${(wfReqDaily.remarks)?if_exists}</label>
                             </div>
                         </div>

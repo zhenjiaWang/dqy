@@ -87,7 +87,7 @@
                         <div class="control-group" style="margin-bottom: 5px;">
                             <label class="control-label" for="wfReq.subject"
                                    style="width: 60px;color: #898989;">标题</label>
-                            <div class="controls" style="margin-left: 70px;">
+                            <div class="controls" style="margin-left: 70px;*margin-left:0;">
                                 <label style="margin-top: 5px;padding-left:5px;font-size: 12px;">${wfReq.subject?if_exists}</label>
                             </div>
                         </div>
@@ -99,7 +99,7 @@
                             <label class="control-label"
                                    style="width: 60px;color: #898989;">申请人</label>
 
-                            <div class="controls" style="margin-left: 70px;">
+                            <div class="controls" style="margin-left: 70px;*margin-left:0;">
                                 <label style="margin-top: 5px;padding-left:5px;font-size: 12px;">${(wfReq.userId.userName)?if_exists}</label>
                             </div>
                         </div>
@@ -109,7 +109,7 @@
                             <label class="control-label"
                                    style="width: 60px;color: #898989;">申请时间</label>
 
-                            <div class="controls" style="margin-left: 70px;">
+                            <div class="controls" style="margin-left: 70px;*margin-left:0;">
                                 <label style="margin-top: 5px;padding-left:5px;font-size: 12px;">${(wfReq.sendDate)?string("yyyy-MM-dd HH:mm")}</label>
                             </div>
                         </div>

@@ -458,7 +458,7 @@ $(document).ready(function () {
                 <label class="control-label" for="wfReq.subject"
                        style="width: 60px;color: #898989;">标题</label>
 
-                <div class="controls" style="margin-left: 70px;">
+                <div class="controls" style="margin-left: 70px;*margin-left:0;">
                     <input style="width: 95%;" type="text" id="wfReq.subject" name="wfReq.subject"
                            placeholder="请输入标题" maxlength="20">
                     <span class="help-inline"></span>
@@ -472,7 +472,7 @@ $(document).ready(function () {
                 <label class="control-label"
                        style="width: 60px;color: #898989;">申请人</label>
 
-                <div class="controls" style="margin-left: 70px;">
+                <div class="controls" style="margin-left: 70px;*margin-left:0;">
                     <label style="margin-top: 5px;padding-left:5px;font-size: 12px;">${userInfo.userName?if_exists}</label>
                 </div>
             </div>
@@ -482,7 +482,7 @@ $(document).ready(function () {
                 <label class="control-label"
                        style="width: 60px;color: #898989;">申请时间</label>
 
-                <div class="controls" style="margin-left: 70px;">
+                <div class="controls" style="margin-left: 70px;*margin-left:0;">
                     <label style="margin-top: 5px;padding-left:5px;font-size: 12px;">${sendDate?string("yyyy-MM-dd HH:mm:ss")}</label>
                 </div>
             </div>
@@ -494,7 +494,7 @@ $(document).ready(function () {
                 <label class="control-label" for="wfReqRePayment.advanceId.id"
                        style="width: 60px;color: #898989;">预支申请</label>
 
-                <div class="controls" style="margin-left: 70px;">
+                <div class="controls" style="margin-left: 70px;*margin-left:0;">
                     <select class="int2" style="width: 300px;" id="wfReqRePayment.advanceId.id"
                             name="wfReqRePayment.advanceId.id">
                         <#if reqAdvanceAccountList?exists&&reqAdvanceAccountList?size gt 0>
@@ -517,7 +517,7 @@ $(document).ready(function () {
                 <label class="control-label" for="wfReqRePayment.amount"
                        style="width: 60px;color: #898989;">还款金额</label>
 
-                <div class="controls" style="margin-left: 70px;">
+                <div class="controls" style="margin-left: 70px;*margin-left:0;">
                     <input type="text" id="wfReqRePayment.amount" name="wfReqRePayment.amount"
                            placeholder="还款金额" maxlength="10" readonly="readonly">
                     <span class="help-inline"></span>
@@ -529,7 +529,7 @@ $(document).ready(function () {
                 <label class="control-label" for="wfReqRePayment.payMethod"
                        style="width: 60px;color: #898989;">支付方式</label>
 
-                <div class="controls" style="margin-left: 70px;">
+                <div class="controls" style="margin-left: 70px;*margin-left:0;">
                     <select class="int2 width-160" id="wfReqRePayment.payMethod"
                             name="wfReqRePayment.payMethod">
                         <option value="1">现金</option>
@@ -546,7 +546,7 @@ $(document).ready(function () {
                 <label class="control-label" for="wfReqRePayment.payee"
                        style="width: 60px;color: #898989;">收款单位</label>
 
-                <div class="controls" style="margin-left: 70px;">
+                <div class="controls" style="margin-left: 70px;*margin-left:0;">
                     <input style="width: 95%;" type="text" id="wfReqRePayment.payee" name="wfReqRePayment.payee"
                            placeholder="收款单位/人" maxlength="20">
                     <span class="help-inline"></span>
@@ -560,7 +560,7 @@ $(document).ready(function () {
                 <label class="control-label" for="wfReqRePayment.bank"
                        style="width: 60px;color: #898989;">开户行</label>
 
-                <div class="controls" style="margin-left: 70px;">
+                <div class="controls" style="margin-left: 70px;*margin-left:0;">
                     <input type="text" id="wfReqRePayment.bank" name="wfReqRePayment.bank" placeholder="开户行"
                            maxlength="20">
                     <span class="help-inline"></span>
@@ -572,7 +572,7 @@ $(document).ready(function () {
                 <label class="control-label" for="wfReqRePayment.bankAccount"
                        style="width: 60px;color: #898989;">帐号</label>
 
-                <div class="controls" style="margin-left: 70px;">
+                <div class="controls" style="margin-left: 70px;*margin-left:0;">
                     <input type="text" id="wfReqRePayment.bankAccount" name="wfReqRePayment.bankAccount"
                            placeholder="银行帐号" maxlength="20">
                     <span class="help-inline"></span>
