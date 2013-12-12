@@ -4,9 +4,6 @@
 <@wfCommon.wf_common>
 
 <script type="text/javascript">
-    function reload(){
-        document.location.reload();
-    }
     function pagerAction(start, rows) {
         var searchUrl = '/wf/reqTask!approveList.dhtml';
         searchUrl += '?start=' + start + '&rows=' + rows;

@@ -2,9 +2,6 @@
 <#import "/view/common/core.ftl" as c>
 <@sysCommon.sys_common>
 <script type="text/javascript">
-    function reload(){
-        document.location.reload();
-    }
     function pagerAction(start, rows) {
         var searchUrl = '/hr/user.dhtml';
         searchUrl += '?start=' + start + '&rows=' + rows;

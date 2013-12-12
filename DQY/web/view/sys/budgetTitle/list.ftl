@@ -4,9 +4,6 @@
 <@sysCommon.sys_common>
 
 <script type="text/javascript">
-    function reload(){
-        document.location.reload();
-    }
     function pagerAction(start, rows) {
         var searchUrl = '/sys/budgetTitle.dhtml';
         searchUrl += '?start=' + start + '&rows=' + rows;

@@ -3,9 +3,6 @@
 <@sysCommon.sys_common>
 
 <script type="text/javascript">
-    function reload(){
-        document.location.reload();
-    }
     $(document).ready(function () {
         $('.editReqNo').off('click').on('click', function () {
             var uid = $(this).attr('uid');

@@ -19,6 +19,9 @@
         }
     </style>
     <script type="text/javascript">
+        function reload(){
+            document.location.reload();
+        }
         $(document).ready(function () {
             $('body').off('.data-api');
 
@@ -52,6 +55,10 @@
                     $('.sys','#topMenu').addClass('no');
                 </#if>
             </#if>
+
+            $('#changePwd').off('click').on('click',function(){
+                WEBUTILS.popWindow.createPopWindow(550, null, '设置密码', '/hr/user!changePwd.dhtml?id=${userInfo['userId']?c}');
+            });
         });
     </script>
     <div class="container">
@@ -102,7 +109,7 @@
                     </ul>
                 </div>
                 <p class="clearfix mart20 p-top5 font12 aligncenter">
-                    <a href="#"><em class="dqy-ico dqy-ico-set"></em>帐户设置</a> |
+                    <a href="##" id="changePwd"><em class="dqy-ico dqy-ico-set"></em>密码修改</a> |
                     <a href="/common/login!logout.dhtml"><em class="dqy-ico dqy-ico-out"></em>退出登录</a>
                 </p>
             </div>
