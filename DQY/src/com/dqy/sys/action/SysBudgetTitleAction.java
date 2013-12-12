@@ -82,13 +82,6 @@ public class SysBudgetTitleAction extends ActionSupport<SysBudgetTitle> {
         if (userInfo != null) {
             userInfo.setTopMenu("sys");
             userInfo.setLeftMenu("budgetTitle");
-            budgetTitleList=this.sysBudgetTitleService.getAllList(null);
-            if(budgetTitleList!=null&&!budgetTitleList.isEmpty()){
-                for(SysBudgetTitle budgetTitle:budgetTitleList){
-                    budgetTitle.setTitlePy(PinyinUtils.getJPinYin(budgetTitle.getTitleName()));
-                }
-                this.sysBudgetTitleService.save(budgetTitleList);
-            }
             pageObj = this.sysBudgetTitleService.getPageList(getStart(), rows, searchModeCallback());
             if(pageObj!=null){
                 budgetTitleList=pageObj.getResultList();

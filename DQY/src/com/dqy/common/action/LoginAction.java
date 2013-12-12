@@ -2,6 +2,9 @@ package com.dqy.common.action;
 
 import com.dqy.common.UserInfo;
 import com.dqy.common.UserSession;
+import com.dqy.email.XmapiImpl;
+import com.dqy.email.XmapiImplServiceLocator;
+import com.dqy.email.XmapiSoapBindingStub;
 import com.dqy.hr.entity.HrUser;
 import com.dqy.hr.service.HrUserService;
 import com.dqy.sys.entity.SysAuthorized;
@@ -143,6 +146,7 @@ public class LoginAction extends BaseAction {
 
     @PageFlow(result = {@Result(name = "success", path = "/view/index.ftl", type = Dispatcher.FreeMarker)})
     public String index() throws Exception {
+        System.out.println("wwwwwwwwwwwwwwwwwwwwwwwww");
         UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
         if (userInfo != null) {
             userInfo.setTopMenu("index");
@@ -266,6 +270,22 @@ public class LoginAction extends BaseAction {
             }
             userInfo.setTopMenuApply(1);
 
+
+            try {
+                XmapiImplServiceLocator locator = new XmapiImplServiceLocator();
+                XmapiImpl service = locator.getxmapi();
+                // If authorization is required
+                //((XmapiSoapBindingStub)service).setUsername("user3");
+
+                //((XmapiSoapBindingStub)service).setPassword("pass3");
+                // invoke business method
+                String str=service.getDomainUserlist("dqy.com.cn");
+                System.out.println(str);
+            } catch (javax.xml.rpc.ServiceException ex) {
+                ex.printStackTrace();
+            } catch (java.rmi.RemoteException ex) {
+                ex.printStackTrace();
+            }
         }
         return "success";  //To change body of implemented methods use File | Settings | File Templates.
     }

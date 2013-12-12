@@ -197,7 +197,7 @@ td .dqy-eidt{position: relative;top:1px;*top:0;}
 .pay-colinner{border:1px solid #ABADB3;height:350px;overflow-y: scroll;}
 .pay-colinner ul li{margin:5px 0;}
 .pay-colinner ul li a{padding:0 0 0 10px;line-height: 20px;display: block;}
-.table th, .table td{vertical-align: middle;padding:6px;padding:3px 6px 0 6px;}
+.table th, .table td{vertical-align: middle;padding:6px;}
 span.label{border-radius: 0;padding:5px 10px;}
 .well{padding:10px;margin-bottom: 10px;position: relative;background: none;box-shadow: none;border: 0;}
 .well-in{position: absolute;top:7px;right:10px;}
