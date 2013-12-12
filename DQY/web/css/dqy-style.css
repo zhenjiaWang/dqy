@@ -54,7 +54,7 @@ div.width-120 .dqy-clander{position:absolute;right:0;top:4px;}
 .header{height:90px;background: url(../images/cssimg/header-bg.jpg) repeat-x;}
 .logo{margin:10px 0 0 50px;display:block;}
 .nav{margin:0;}
-.nav li{float:left;margin-left:25px;padding-top: 10px;}
+.nav li{float:left;margin-left:20px;padding-top: 10px;}
 .nav li a{color:#919191;display: inline-block;border-bottom: 3px solid transparent;*padding-bottom:1px;position: relative;}
 .nav li a em{display:inline-block;width:23px;height:23px;font-size: 0;line-height:0;margin-right:5px;}
 .nav li a:hover,.nav li.current a{border-bottom:3px solid #8fc120;}

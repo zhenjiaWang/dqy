@@ -4,15 +4,14 @@ import com.dqy.common.UserInfo;
 import com.dqy.common.UserSession;
 import com.dqy.email.XmapiImpl;
 import com.dqy.email.XmapiImplServiceLocator;
-import com.dqy.email.XmapiSoapBindingStub;
 import com.dqy.hr.entity.HrUser;
 import com.dqy.hr.service.HrUserService;
 import com.dqy.sys.entity.SysAuthorized;
-import com.dqy.sys.entity.SysFinancialTitle;
 import com.dqy.sys.entity.SysOrg;
 import com.dqy.sys.service.SysAuthorizedService;
 import com.dqy.sys.service.SysFinancialTitleService;
 import com.dqy.sys.service.SysOrgService;
+import com.dqy.util.EncryptUtil;
 import com.dqy.wf.entity.WfReq;
 import com.dqy.wf.entity.WfReqTask;
 import com.dqy.wf.service.WfReqService;
@@ -146,7 +145,6 @@ public class LoginAction extends BaseAction {
 
     @PageFlow(result = {@Result(name = "success", path = "/view/index.ftl", type = Dispatcher.FreeMarker)})
     public String index() throws Exception {
-        System.out.println("wwwwwwwwwwwwwwwwwwwwwwwww");
         UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
         if (userInfo != null) {
             userInfo.setTopMenu("index");
@@ -271,21 +269,41 @@ public class LoginAction extends BaseAction {
             userInfo.setTopMenuApply(1);
 
 
-            try {
-                XmapiImplServiceLocator locator = new XmapiImplServiceLocator();
-                XmapiImpl service = locator.getxmapi();
-                // If authorization is required
-                //((XmapiSoapBindingStub)service).setUsername("user3");
-
-                //((XmapiSoapBindingStub)service).setPassword("pass3");
-                // invoke business method
-                String str=service.getDomainUserlist("dqy.com.cn");
-                System.out.println(str);
-            } catch (javax.xml.rpc.ServiceException ex) {
-                ex.printStackTrace();
-            } catch (java.rmi.RemoteException ex) {
-                ex.printStackTrace();
-            }
+//            try {
+//                XmapiImplServiceLocator locator = new XmapiImplServiceLocator();
+//                XmapiImpl service = locator.getxmapi();
+//                // If authorization is required
+//                //((XmapiSoapBindingStub)service).setUsername("user3");
+//
+//                //((XmapiSoapBindingStub)service).setPassword("pass3");
+//                // invoke business method
+//                String userid="wzj1215";
+//                String domain="dqy.com.cn";
+//                String passwd="yanger1215";
+//                int crypttype4=0;
+//                int gid=33;
+//                int departmentid=-1;
+//                String username="wzj";
+//                String offic="";
+//                String mobile="";
+//                String phone="" ;
+//                String fax="" ;
+//                String alias="" ;
+//                String alias2="";
+//                int roleId=0;
+//                int changepwd=0;
+//                String account="dqy.com.cn";
+//                String sign="Dg4#6Q2yxNa";
+//                String jmSign=EncryptUtil.encrypt(userid+domain+passwd+sign,EncryptUtil.MD5);
+//                System.out.println(jmSign);
+//                int result=service.regUser_New(userid, domain, passwd, crypttype4, gid, departmentid, username, offic, mobile,
+//                        phone, fax, alias, alias2, roleId, changepwd, account, jmSign);
+//                System.out.println(result);
+//            } catch (javax.xml.rpc.ServiceException ex) {
+//                ex.printStackTrace();
+//            } catch (java.rmi.RemoteException ex) {
+//                ex.printStackTrace();
+//            }
         }
         return "success";  //To change body of implemented methods use File | Settings | File Templates.
     }
