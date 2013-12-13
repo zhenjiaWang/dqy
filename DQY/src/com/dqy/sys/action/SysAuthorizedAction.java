@@ -145,7 +145,6 @@ public class SysAuthorizedAction extends ActionSupport<SysAuthorized> {
                 roleList = new ArrayList<String>();
                 roleList.add("SYS_GROUP");
                 roleList.add("SYS_USER");
-                roleList.add("SYS_APPROVE");
                 roleList.add("SYS_FINANCIAL");
                 roleList.add("SYS_BUDGET");
                 roleList.add("LOOK_BUDGET");
@@ -157,7 +156,6 @@ public class SysAuthorizedAction extends ActionSupport<SysAuthorized> {
                 roleNameMap = new HashMap<String, String>();
                 roleNameMap.put("SYS_GROUP", "集团机构管理");
                 roleNameMap.put("SYS_USER", "部门用户管理");
-                roleNameMap.put("SYS_APPROVE", "审批岗位设置");
                 roleNameMap.put("SYS_FINANCIAL", "财务科目管理");
                 roleNameMap.put("SYS_BUDGET", "预算科目管理");
                 roleNameMap.put("LOOK_BUDGET", "预算查看");

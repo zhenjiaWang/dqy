@@ -383,8 +383,6 @@ public class CommonAction extends BaseAction {
                     } else if (roleList.contains("SYS_BUDGET")) {
                         authUrl = "/sys/budgetType.dhtml";
                     }
-                } else if (roleList.contains("SYS_APPROVE")) {
-                    authUrl = "/wf/variableGlobal.dhtml";
                 }
                 if (StringUtils.isNotBlank(authUrl)) {
                     return "success";
