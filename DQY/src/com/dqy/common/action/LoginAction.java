@@ -251,6 +251,8 @@ public class LoginAction extends BaseAction {
                     } else if (roleList.contains("SYS_BUDGET")) {
                         userInfo.setTopMenuSys(1);
                     }
+                } else if (roleList.contains("SYS_APPROVE")) {
+                    userInfo.setTopMenuSys(1);
                 }
 
                 if (roleList.contains("SET_BUDGET") || roleList.contains("APPROVE_BUDGET")) {
