@@ -73,9 +73,9 @@
                     </div>
                 </div>
                 <@c.token/>
-                <#if childCount==0>
-                    <button class="btn btn-danger floatright" type="button" id="btnDelete">删除</button>
-                </#if>
+                <#--<#if childCount==0>-->
+                    <#--<button class="btn btn-danger floatright" type="button" id="btnDelete">删除</button>-->
+                <#--</#if>-->
                 <button class="btn btn-info floatright marr10" type="button" id="editBtn">编辑</button>
                 <button class="btn btn-warning floatright marr10" type="button" id="newBtn">新增</button>
         </form>

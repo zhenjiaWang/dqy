@@ -4,6 +4,7 @@ import com.dqy.common.UserInfo;
 import com.dqy.common.UserSession;
 import com.dqy.hr.entity.HrDepartment;
 import com.dqy.hr.service.HrDepartmentService;
+import com.dqy.hr.service.HrUserService;
 import com.dqy.sys.entity.SysOrg;
 import com.dqy.sys.entity.SysOrgGroup;
 import com.dqy.sys.service.SysOrgGroupService;
@@ -36,6 +37,9 @@ public class HrDepartmentAction extends ActionSupport<HrDepartment> {
 
     @Inject
     private HrDepartmentService hrDepartmentService;
+
+    @Inject
+    private HrUserService hrUserService;
 
     @ReqGet
     @ModelDriver
@@ -165,6 +169,15 @@ public class HrDepartmentAction extends ActionSupport<HrDepartment> {
                 this.hrDepartment = this.hrDepartmentService.getById(id);
                 if (hrDepartment != null) {
                     childCount = this.hrDepartmentService.getCountByParentId(userInfo.getOrgId(), hrDepartment.getId(), true);
+                    if(childCount==null){
+                        childCount=0;
+                    }
+                    if(childCount.intValue()==0){
+                        childCount= this.hrUserService.getCountUserByDeptId(userInfo.getOrgId(),userInfo.getGroupId(),hrDepartment.getId());
+                    }
+                    if(childCount==null){
+                        childCount=0;
+                    }
                     parentDepartment = hrDepartment.getParentId();
                 }
             }
