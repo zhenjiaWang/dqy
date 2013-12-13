@@ -119,16 +119,14 @@
                 <h2 class="aligncenter font16">快速导航</h2>
                 <ul class="news">
                     <li class="clearfix">
-                        <a href="#">未审批申请</a>
-                        <span class="noread floatright">进入</span>
+                        <a href="/wf/reqTask!approveList.dhtml">未审批申请<span class="noread floatright">进入</span></a>
                     </li>
                     <li class="clearfix">
-                        <a href="#">未处理事务</a>
-                        <span class="noread floatright">进入</span>
+                        <a href="/wf/req!ingList.dhtml">已提交申请<span class="noread floatright">进入</span></a>
                     </li>
                     <li class="clearfix">
-                        <a href="#">公司企业邮箱</a>
-                        <span class="noread floatright">进入</span>
+                        <a href="http://mail.dqy.com.cn" target="_blank">公司企业邮箱<span class="noread floatright">进入</span>
+                        </a>
                     </li>
                 </ul>
             </div>
