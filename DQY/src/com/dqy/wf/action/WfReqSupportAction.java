@@ -166,11 +166,17 @@ public class WfReqSupportAction<T> extends ActionSupport<T> {
                         } else {
                             no = String.valueOf(next);
                         }
+                        String monthNo=null;
+                        if(wfReqNoSeq.getDateMonth().intValue()<10){
+                            monthNo="0"+wfReqNoSeq.getDateMonth();
+                        }else{
+                            monthNo=wfReqNoSeq.getDateMonth()+"";
+                        }
                         WfReqNo wfReqNo = this.wfReqNoService.getCurrentReqNo(userInfo.getOrgId(),wfReq.getApplyId());
                         if(wfReqNo!=null){
-                            reqNo = wfReqNo.getReqNo()  + wfReqNoSeq.getDateYear() +  no;
+                            reqNo = wfReqNo.getReqNo()  + wfReqNoSeq.getDateYear() +monthNo+  no;
                         }else{
-                            reqNo = "NO"  + wfReqNoSeq.getDateYear() + no;
+                            reqNo = "NO"  + wfReqNoSeq.getDateYear() +monthNo+ no;
                         }
                     }
                     wfReq.setReqNo(reqNo);

@@ -92,9 +92,6 @@
                         <li class="req">
                             <a class="cur" href="/wf/req!adminList.dhtml">申请管理</a>
                         </li>
-                        <li class="variableGlobal">
-                            <a class="cur" href="/wf/variableGlobal.dhtml">审批岗位</a>
-                        </li>
                         <li class="reqNo">
                             <a class="cur" href="/wf/reqNo.dhtml">申请编号</a>
                         </li>
