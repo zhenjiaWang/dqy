@@ -8,7 +8,7 @@ WEBUTILS.popWindow = (function () {
                 $('#myModal').width(width);
             }
             if(height){
-                $('#myModalFrame','#myModal').attr('height',(height-120));
+                //$('#myModalFrame','#myModal').attr('height',(height-120));
                 $('#myModal').height(height);
             }else{
                 height=437;

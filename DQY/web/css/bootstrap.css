@@ -4772,6 +4772,7 @@ a.thumbnail:focus {
   overflow-y: auto;
   max-height: 400px;
   padding: 15px;
+  overflow-x:hidden;
 }
 .modal-form {
   margin-bottom: 0;

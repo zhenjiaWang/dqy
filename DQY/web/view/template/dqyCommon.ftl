@@ -129,7 +129,7 @@
         <div class="modal-body">
             <iframe
                     id="myModalFrame" name="myModalFrame" src="/view/common/blank.html"
-                    width="100%" height="300"
+                    width="100%"
                     frameborder="0"></iframe>
         </div>
         <div class="modal-footer">
