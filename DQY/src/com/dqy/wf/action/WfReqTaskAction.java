@@ -309,8 +309,15 @@ public class WfReqTaskAction extends ActionSupport<WfReqTask> {
     public String process() throws Exception {
         UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
         if (id != null && userInfo != null) {
+            userInfo.setTopMenu("apply");
+            userInfo.setLeftMenu("myTask");
             wfReqTask = this.wfReqTaskService.getById(id);
             if (wfReqTask != null) {
+                if(wfReqTask.getTaskState().intValue()==0){
+                    userInfo.setChildMenu("approve");
+                }else  if(wfReqTask.getTaskState().intValue()==1){
+                    userInfo.setChildMenu("done");
+                }
                 HrUser user = this.hrUserService.getById(userInfo.getUserId());
                 if (wfReqTask.getTaskState().intValue() == 1) {
                     return "view";
