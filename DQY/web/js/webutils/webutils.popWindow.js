@@ -9,7 +9,7 @@ WEBUTILS.popWindow = (function () {
             }
             if(height){
                 //$('#myModalFrame','#myModal').attr('height',(height-120));
-                $('#myModal').height(height);
+                //$('#myModal').height(height);
             }else{
                 height=437;
             }
