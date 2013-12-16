@@ -4759,6 +4759,7 @@ a.thumbnail:focus {
 .modal-header {
   padding: 9px 15px;
   border-bottom: 1px solid #eee;
+  *padding:0;
 }
 .modal-header .close {
   margin-top: 2px;
@@ -5093,6 +5094,7 @@ button.close {
   background: transparent;
   border: 0;
   -webkit-appearance: none;
+  position:absolute;right:0;top:5px;
 }
 .pull-right {
   float: right;
