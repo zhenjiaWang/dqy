@@ -105,11 +105,13 @@ public class HrUserAction extends ActionSupport<HrUser> {
         List<Selector> selectorList = new ArrayList<Selector>();
         UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
         if (userInfo != null) {
+            selectorList.add(SelectorUtils.$alias("deptId","deptId"));
             selectorList.add(SelectorUtils.$eq("groupId.id", userInfo.getGroupId()));
             selectorList.add(SelectorUtils.$eq("orgId.id", userInfo.getOrgId()));
             if(StringUtils.isNotBlank(keyword)){
                 selectorList.add(SelectorUtils.$or(SelectorUtils.$like("userName",keyword),SelectorUtils.$like("userNo",keyword)));
             }
+            selectorList.add(SelectorUtils.$order("deptId.deptNo"));
             selectorList.add(SelectorUtils.$order("userNo"));
         }
         return selectorList;
