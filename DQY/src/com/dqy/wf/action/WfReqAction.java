@@ -642,9 +642,19 @@ public class WfReqAction extends ActionSupport<WfReq> {
     public String view() throws Exception {
         UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
         if (userInfo != null && id != null) {
+            userInfo.setTopMenu("apply");
+            userInfo.setLeftMenu("myReq");
+
             wfReq = this.wfReqService.getById(id);
             if (wfReq != null) {
                 applyId = wfReq.getApplyId();
+                if(wfReq.getApplyResult().intValue()==0){
+                    userInfo.setChildMenu("ing");
+                }else if(wfReq.getApplyResult().intValue()==1){
+                    userInfo.setChildMenu("pass");
+                }if(wfReq.getApplyResult().intValue()==2){
+                    userInfo.setChildMenu("overrule");
+                }
                 if (wfReq.getUserId().getId().equals(userInfo.getUserId())) {
                     if (wfReq.getTip().intValue() == 1) {
                         wfReq.setTip(0);
