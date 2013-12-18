@@ -7,7 +7,7 @@
         $('.editReqNo').off('click').on('click', function () {
             var uid = $(this).attr('uid');
             if (uid) {
-                WEBUTILS.popWindow.createPopWindow(550, 300, '编辑申请编号', '/wf/reqNo!input.dhtml?applyId='+uid);
+                WEBUTILS.popWindow.createPopWindow(550, null, '编辑申请编号', '/wf/reqNo!input.dhtml?applyId='+uid);
             }
         });
     });

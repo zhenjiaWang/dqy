@@ -18,13 +18,13 @@
         $('.editBT').off('click').on('click', function () {
             var uid = $(this).attr('uid');
             if (uid) {
-                WEBUTILS.popWindow.createPopWindow(550, 400, '编辑科目关系', '/sys/budgetOwen!input.dhtml?id='+uid);
+                WEBUTILS.popWindow.createPopWindow(550, 450, '编辑科目关系', '/sys/budgetOwen!input.dhtml?id='+uid);
             }
         });
         $('.addBT').off('click').on('click', function () {
             var uid = $(this).attr('uid');
             if (uid) {
-                WEBUTILS.popWindow.createPopWindow(550, 400, '添加科目关系', '/sys/budgetOwen!input.dhtml?budgetTitleId='+uid);
+                WEBUTILS.popWindow.createPopWindow(550, 450, '添加科目关系', '/sys/budgetOwen!input.dhtml?budgetTitleId='+uid);
             }
         });
         $('.stopBT').off('click').on('click', function () {
