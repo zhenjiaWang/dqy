@@ -112,7 +112,6 @@ public class HrUserAction extends ActionSupport<HrUser> {
                 selectorList.add(SelectorUtils.$or(SelectorUtils.$like("userName",keyword),SelectorUtils.$like("userNo",keyword)));
             }
             selectorList.add(SelectorUtils.$order("deptId.deptNo"));
-            selectorList.add(SelectorUtils.$order("userNo"));
         }
         return selectorList;
     }
