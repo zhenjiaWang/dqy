@@ -39,21 +39,21 @@
         $('.addDept').off('click').on('click', function () {
             var uid = $(this).attr('uid');
             if (uid) {
-                WEBUTILS.popWindow.createPopWindow(550, 600, '指派部门', '/sys/authorized!dept.dhtml?id='+uid);
+                WEBUTILS.popWindow.createPopWindow(550, 450, '指派部门', '/sys/authorized!dept.dhtml?id='+uid);
             }
         });
         $('.editDept').off('click').on('click', function () {
             var uid = $(this).attr('uid');
             if (uid) {
-                WEBUTILS.popWindow.createPopWindow(550, 600, '修改指派部门', '/sys/authorized!dept.dhtml?id='+uid);
+                WEBUTILS.popWindow.createPopWindow(550, 450, '修改指派部门', '/sys/authorized!dept.dhtml?id='+uid);
             }
         });
 
         $('#editBtn').off('click').on('click', function () {
-            WEBUTILS.popWindow.createPopWindow(800, 600, '编辑信息', '/hr/user!input.dhtml?id=${hrUser.id?c}');
+            WEBUTILS.popWindow.createPopWindow(800, 450, '编辑信息', '/hr/user!input.dhtml?id=${hrUser.id?c}');
         });
         $('#newBtn').off('click').on('click', function () {
-            WEBUTILS.popWindow.createPopWindow(800, 600, '新增用户', '/hr/user!input.dhtml');
+            WEBUTILS.popWindow.createPopWindow(800, 450, '新增用户', '/hr/user!input.dhtml');
         });
 
         $('#searchBtn').off('click').on('click', function () {
