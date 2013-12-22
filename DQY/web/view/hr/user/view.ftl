@@ -66,6 +66,19 @@
                 pagerAction(0,10);
             }
         });
+        $('#deleteEmailBtn').off('click').on('click', function () {
+           if(confirm("确定要删除该${hrUser.userName?if_exists}的公司邮箱:${hrUser.userEmail?if_exists}@dqy.com.cn")){
+               document.location.href='/hr/user!deleteEmail.dhtml?id=${hrUser.id?c}';
+           }
+        });
+        $('#createEmailBtn').off('click').on('click', function () {
+            WEBUTILS.popWindow.createPopWindow(800, 450, '创建邮箱', '/hr/user!inputEmail.dhtml?id=${hrUser.id?c}');
+        });
+
+        $('#passwordEmailBtn').off('click').on('click', function () {
+            WEBUTILS.popWindow.createPopWindow(550, null, '设置邮箱密码', '/hr/user!changeEmailPwd.dhtml?id=${hrUser.id?c}');
+        });
+
     });
 </script>
 <!--搜索begin-->
@@ -83,7 +96,7 @@
     <table width="100%" class="layout">
         <thead>
         <tr>
-            <td colspan="3"><strong>个人信息</strong></td>
+            <td colspan="3"><strong>个人信息 <#if hrUser.userEmail?exists>${hrUser.userEmail?if_exists}@dqy.com.cn</#if></strong></td>
             <td style="text-align: right;">
                 <button class="btn btn-info" type="button" id="editBtn">编辑</button>
             </td>
@@ -175,6 +188,21 @@
         <tr>
             <td style="width: 50%;"><strong>授权信息</strong></td>
             <td style="text-align: right;">
+
+                    <#if Session["userSession"]?exists>
+                        <#assign userInfo=Session["userSession"]?if_exists>
+                        <#assign roleId=userInfo["roleId"]?if_exists>
+                        <#if roleId?exists>
+                            <#if roleId?contains("EMAIL_ADMIN")>
+                                <#if hrUser.userEmail?exists>
+                                    <button class="btn btn-primary" type="button" id="deleteEmailBtn">删除邮箱</button>
+                                    <button class="btn btn-primary" type="button" id="passwordEmailBtn">更改邮箱密码</button>
+                                <#else >
+                                    <button class="btn btn-primary" type="button" id="createEmailBtn">创建邮箱</button>
+                                </#if>
+                            </#if>
+                        </#if>
+                    </#if>
                 <#if !isPassword>
                     <button class="btn btn-primary" type="button" id="passwordBtn">设置密码</button>
                 <#else >

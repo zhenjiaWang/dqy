@@ -53,8 +53,8 @@
             <th width="80">员工编号</th>
             <th width="100">员工名称</th>
             <th width="100">担任岗位</th>
-            <th width="80">所属部门</th>
-            <th>所属机构</th>
+            <th width="100">所属部门</th>
+            <th>邮箱地址</th>
             <th width="100">操作</th>
         </tr>
         </thead>
@@ -64,9 +64,9 @@
                 <tr <#if (user_index+1)%2!=0>class="oddBgColor"</#if>>
                     <td>${user.userNo?if_exists}</td>
                     <td>${user.userName?if_exists}</td>
-                    <td>${(user.jobName)?if_exists}</td>
-                    <td>${(user.deptId.deptName)?if_exists}</td>
-                    <td>${(user.orgId.orgName)?if_exists}</td>
+                    <td><div class="txt_hidden">${(user.jobName)?if_exists}</div></td>
+                    <td><div class="txt_hidden">${(user.deptId.deptName)?if_exists}</div></td>
+                    <td><div class="txt_hidden">${(user.userEmail)?if_exists}@dqy.com.cn</div></td>
                     <td style="text-align: center;">
                         <span style="cursor: pointer;" class="viewUser"  uid="${user.id?c}"><i class="icon-user"></i>查看</span>
                     </td>

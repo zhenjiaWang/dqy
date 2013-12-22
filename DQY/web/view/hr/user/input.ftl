@@ -214,7 +214,6 @@
                             <span class="help-inline"></span>
                         </div>
                     </div>
-
                 </td>
             </tr>
             <tr>
@@ -272,6 +271,20 @@
                     </div>
                 </td>
             </tr>
+            <#if !hrUser?exists||!hrUser.userEmail?exists>
+            <tr>
+                <td colspan="2">
+                    <div class="control-group">
+                        <label class="control-label" for="hrUser.userEmail" style="width: 60px;">开通邮箱</label>
+                        <div class="controls" style="margin-left: 80px;">
+                            <label class="checkbox">
+                                <input type="checkbox" value="Y" id="openEmail" name="openEmail"> （保存信息以后自动跳转）
+                            </label>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            </#if>
             </tbody>
         </table>
         <input type="hidden" name="hrUser.id" id="hrUser.id">

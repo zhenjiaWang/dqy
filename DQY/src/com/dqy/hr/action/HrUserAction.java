@@ -2,6 +2,9 @@ package com.dqy.hr.action;
 
 import com.dqy.common.UserInfo;
 import com.dqy.common.UserSession;
+import com.dqy.email.WsManagerUser;
+import com.dqy.email.XmapiImpl;
+import com.dqy.email.XmapiImplServiceLocator;
 import com.dqy.hr.entity.HrDepartment;
 import com.dqy.hr.entity.HrUser;
 import com.dqy.hr.entity.HrUserDetail;
@@ -14,6 +17,7 @@ import com.dqy.sys.entity.SysOrgGroup;
 import com.dqy.sys.service.SysAuthorizedService;
 import com.dqy.sys.service.SysOrgGroupService;
 import com.dqy.sys.service.SysOrgService;
+import com.dqy.util.EncryptUtil;
 import com.dqy.web.support.ActionSupport;
 import com.google.inject.Inject;
 import net.sf.json.JSONObject;
@@ -62,6 +66,11 @@ public class HrUserAction extends ActionSupport<HrUser> {
     @ReqSet
     private HrUserDetail hrUserDetail;
 
+    @ReqGet
+    private String openEmail;
+
+    @ReqSet
+    private int emailErrorCode;
 
     @ReqGet
     @ReqSet
@@ -105,11 +114,11 @@ public class HrUserAction extends ActionSupport<HrUser> {
         List<Selector> selectorList = new ArrayList<Selector>();
         UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
         if (userInfo != null) {
-            selectorList.add(SelectorUtils.$alias("deptId","deptId"));
+            selectorList.add(SelectorUtils.$alias("deptId", "deptId"));
             selectorList.add(SelectorUtils.$eq("groupId.id", userInfo.getGroupId()));
             selectorList.add(SelectorUtils.$eq("orgId.id", userInfo.getOrgId()));
-            if(StringUtils.isNotBlank(keyword)){
-                selectorList.add(SelectorUtils.$or(SelectorUtils.$like("userName",keyword),SelectorUtils.$like("userNo",keyword)));
+            if (StringUtils.isNotBlank(keyword)) {
+                selectorList.add(SelectorUtils.$or(SelectorUtils.$like("userName", keyword), SelectorUtils.$like("userNo", keyword)));
             }
             selectorList.add(SelectorUtils.$order("deptId.deptNo"));
         }
@@ -121,50 +130,51 @@ public class HrUserAction extends ActionSupport<HrUser> {
         UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
         if (userInfo != null && id != null) {
             hrUser = this.hrUserService.getById(id);
-            if(hrUser!=null){
-                if(StringUtils.isBlank(hrUser.getUserPwd())){
-                    isPassword=false;
-                }else{
-                    isPassword=true;
+            if (hrUser != null) {
+                if (StringUtils.isBlank(hrUser.getUserPwd())) {
+                    isPassword = false;
+                } else {
+                    isPassword = true;
                 }
-                hrUserDetail=this.hrUserDetailService.getByUserId(hrUser.getId());
+                hrUserDetail = this.hrUserDetailService.getByUserId(hrUser.getId());
                 List<SysOrg> orgAllList = this.sysOrgService.getOrgListByGroupId(userInfo.getGroupId());
-                authorizedList=this.sysAuthorizedService.getAuthorizedList(userInfo.getGroupId(),hrUser.getId());
-                if(authorizedList!=null&&!authorizedList.isEmpty()){
-                   Map<String,String> roleNameMap=new HashMap<String, String>();
-                    roleNameMap.put("SYS_GROUP","集团机构管理");
-                    roleNameMap.put("SYS_USER","部门用户管理");
-                    roleNameMap.put("SYS_APPROVE","审批管理");
-                    roleNameMap.put("SYS_FINANCIAL","财务科目管理");
-                    roleNameMap.put("SYS_BUDGET","预算科目管理");
-                    roleNameMap.put("LOOK_BUDGET","预算查看");
-                    roleNameMap.put("SET_BUDGET","预算填报");
-                    roleNameMap.put("APPROVE_BUDGET","预算审核");
-                    roleNameMap.put("TASK_FINANCIAL","财务审批");
-                    roleNameMap.put("GENERAL","普通用户");
+                authorizedList = this.sysAuthorizedService.getAuthorizedList(userInfo.getGroupId(), hrUser.getId());
+                if (authorizedList != null && !authorizedList.isEmpty()) {
+                    Map<String, String> roleNameMap = new HashMap<String, String>();
+                    roleNameMap.put("SYS_GROUP", "集团机构管理");
+                    roleNameMap.put("SYS_USER", "部门用户管理");
+                    roleNameMap.put("SYS_APPROVE", "审批管理");
+                    roleNameMap.put("SYS_FINANCIAL", "财务科目管理");
+                    roleNameMap.put("SYS_BUDGET", "预算科目管理");
+                    roleNameMap.put("LOOK_BUDGET", "预算查看");
+                    roleNameMap.put("SET_BUDGET", "预算填报");
+                    roleNameMap.put("APPROVE_BUDGET", "预算审核");
+                    roleNameMap.put("TASK_FINANCIAL", "财务审批");
+                    roleNameMap.put("EMAIL_ADMIN", "邮箱管理");
+                    roleNameMap.put("GENERAL", "普通用户");
 
-                    for(SysAuthorized authorized:authorizedList){
-                        String roleName="";
-                        String roleId=authorized.getRoleId();
-                        if(StringUtils.isNotBlank(roleId)){
-                            String[] roleIds=roleId.split(",");
-                            if(roleIds!=null&&roleIds.length>0){
-                                for(String r:roleIds){
-                                    roleName+=roleNameMap.get(r)+",";
+                    for (SysAuthorized authorized : authorizedList) {
+                        String roleName = "";
+                        String roleId = authorized.getRoleId();
+                        if (StringUtils.isNotBlank(roleId)) {
+                            String[] roleIds = roleId.split(",");
+                            if (roleIds != null && roleIds.length > 0) {
+                                for (String r : roleIds) {
+                                    roleName += roleNameMap.get(r) + ",";
                                 }
                             }
                         }
-                        if(StringUtils.isBlank(roleName)){
-                            roleName="&nbsp;";
+                        if (StringUtils.isBlank(roleName)) {
+                            roleName = "&nbsp;";
                         }
                         authorized.setRoleName(roleName);
                     }
                 }
-                if(orgAllList!=null&&!orgAllList.isEmpty()){
-                    if(authorizedList!=null&&!authorizedList.isEmpty()){
-                        isAuthorized=orgAllList.size()==authorizedList.size()?false:true;
-                    }else{
-                        isAuthorized=true;
+                if (orgAllList != null && !orgAllList.isEmpty()) {
+                    if (authorizedList != null && !authorizedList.isEmpty()) {
+                        isAuthorized = orgAllList.size() == authorizedList.size() ? false : true;
+                    } else {
+                        isAuthorized = true;
                     }
                 }
             }
@@ -199,9 +209,9 @@ public class HrUserAction extends ActionSupport<HrUser> {
         UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
         if (id != null && userInfo != null) {
             hrUser = this.hrUserService.getById(id);
-            if(hrUser!=null){
-                hrUserDetail=this.hrUserDetailService.getByUserId(hrUser.getId());
-                if(hrUserDetail!=null){
+            if (hrUser != null) {
+                hrUserDetail = this.hrUserDetailService.getByUserId(hrUser.getId());
+                if (hrUserDetail != null) {
                     hrUser.setUserSex(hrUserDetail.getUserSex());
                     hrUser.setBirthday(hrUserDetail.getBirthday());
                     hrUser.setEduLevel(hrUserDetail.getEduLevel());
@@ -210,7 +220,11 @@ public class HrUserAction extends ActionSupport<HrUser> {
         }
         return "success";  //To change body of implemented methods use File | Settings | File Templates.
     }
+
+
+
     @Token
+    @PageFlow(result = {@Result(name = "success", path = "/hr/user!inputEmail.dhtml?id=${hrUser.id}", type = Dispatcher.Redirect)})
     public String save() throws Exception {
         UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
         if (userInfo != null && hrUser != null) {
@@ -218,73 +232,73 @@ public class HrUserAction extends ActionSupport<HrUser> {
                 HrUser old = this.hrUserService.getById(hrUser.getId());
                 old.setJobName(hrUser.getJobName());
                 old.setUserName(hrUser.getUserName());
-                HrDepartment department=this.hrDepartmentService.getById(hrUser.getDeptId().getId());
-                if(department!=null){
+                HrDepartment department = this.hrDepartmentService.getById(hrUser.getDeptId().getId());
+                if (department != null) {
                     old.setDeptId(department);
                 }
                 old.setWorkArea(hrUser.getWorkArea());
                 old.setEntryDate(hrUser.getEntryDate());
                 old.setUserState(hrUser.getUserState());
                 old.setUserNo(hrUser.getUserNo());
-                hrUserDetail=this.hrUserDetailService.getByUserId(hrUser.getId());
-                if(hrUserDetail!=null){
+                hrUserDetail = this.hrUserDetailService.getByUserId(hrUser.getId());
+                if (hrUserDetail != null) {
                     hrUserDetail.setEduLevel(hrUser.getEduLevel());
                     hrUserDetail.setUserSex(hrUser.getUserSex());
                     hrUserDetail.setBirthday(hrUser.getBirthday());
                 }
                 this.bind(old);
                 this.bind(hrUserDetail);
-                this.hrUserService.save(old,hrUserDetail);
-            }else{
-                Date entryDate=hrUser.getEntryDate();
-                if(entryDate!=null){
-                    if(StringUtils.isBlank(hrUser.getUserNo())){
-                        Integer entryCount=this.hrUserService.getCountUserByEntryDate(userInfo.getOrgId(),userInfo.getGroupId(),entryDate);
-                        if(entryCount==null){
-                            entryCount=0;
+                this.hrUserService.save(old, hrUserDetail);
+            } else {
+                Date entryDate = hrUser.getEntryDate();
+                if (entryDate != null) {
+                    if (StringUtils.isBlank(hrUser.getUserNo())) {
+                        Integer entryCount = this.hrUserService.getCountUserByEntryDate(userInfo.getOrgId(), userInfo.getGroupId(), entryDate);
+                        if (entryCount == null) {
+                            entryCount = 0;
                         }
-                        entryCount+=1;
-                        Integer year=DateFormatUtil.getDayInYear(entryDate);
-                        Integer month=DateFormatUtil.getDayInMonth(entryDate)+1;
-                        String yearStr=year.toString();
-                        if(StringUtils.isNotBlank(yearStr)){
-                            yearStr=yearStr.substring(2);
+                        entryCount += 1;
+                        Integer year = DateFormatUtil.getDayInYear(entryDate);
+                        Integer month = DateFormatUtil.getDayInMonth(entryDate) + 1;
+                        String yearStr = year.toString();
+                        if (StringUtils.isNotBlank(yearStr)) {
+                            yearStr = yearStr.substring(2);
                         }
                         String userNo;
-                        if(month.intValue()<10){
-                            userNo=yearStr+"0"+month;
-                        }else{
-                            userNo=yearStr+""+month;
+                        if (month.intValue() < 10) {
+                            userNo = yearStr + "0" + month;
+                        } else {
+                            userNo = yearStr + "" + month;
                         }
-                        if(entryCount.intValue()<10){
-                            userNo+="000"+entryCount;
-                        }else if(entryCount.intValue()<100){
-                            userNo+="00"+entryCount;
-                        }else if(entryCount.intValue()<1000){
-                            userNo+="0"+entryCount;
+                        if (entryCount.intValue() < 10) {
+                            userNo += "000" + entryCount;
+                        } else if (entryCount.intValue() < 100) {
+                            userNo += "00" + entryCount;
+                        } else if (entryCount.intValue() < 1000) {
+                            userNo += "0" + entryCount;
                         }
                         hrUser.setUserNo(userNo);
                     }
-                    HrDepartment department=null;
-                    if(hrUser.getDeptId()!=null){
-                        if(hrUser.getDeptId().getId()!=null){
-                             department=hrDepartmentService.getById(hrUser.getDeptId().getId());
-                            if(department!=null){
+                    HrDepartment department = null;
+                    if (hrUser.getDeptId() != null) {
+                        if (hrUser.getDeptId().getId() != null) {
+                            department = hrDepartmentService.getById(hrUser.getDeptId().getId());
+                            if (department != null) {
                                 hrUser.setDeptId(department);
                             }
                         }
                     }
-                    SysOrg sysOrg=this.sysOrgService.getById(userInfo.getOrgId());
-                    if(sysOrg!=null){
+                    SysOrg sysOrg = this.sysOrgService.getById(userInfo.getOrgId());
+                    if (sysOrg != null) {
                         hrUser.setOrgId(sysOrg);
                     }
-                    SysOrgGroup sysOrgGroup=this.sysOrgGroupService.getById(userInfo.getGroupId());
-                    if(sysOrgGroup!=null){
+                    SysOrgGroup sysOrgGroup = this.sysOrgGroupService.getById(userInfo.getGroupId());
+                    if (sysOrgGroup != null) {
                         hrUser.setGroupId(sysOrgGroup);
                     }
                     hrUser.setUseYn("Y");
                     bind(hrUser);
-                    hrUserDetail=new HrUserDetail();
+                    hrUserDetail = new HrUserDetail();
                     hrUserDetail.setUserId(hrUser);
                     hrUserDetail.setBirthday(hrUser.getBirthday());
                     hrUserDetail.setEduLevel(hrUser.getEduLevel());
@@ -301,9 +315,14 @@ public class HrUserAction extends ActionSupport<HrUser> {
                     authorized.setUseYn("Y");
                     authorized.setRoleId("GENERAL");
                     bind(authorized);
-                    this.hrUserService.save(hrUser,hrUserDetail,authorized);
+                    this.hrUserService.save(hrUser, hrUserDetail, authorized);
                 }
 
+            }
+        }
+        if (StringUtils.isNotBlank(openEmail)) {
+            if (openEmail.equals("Y")) {
+                return "success";
             }
         }
         return "saveSuccess";
@@ -339,4 +358,152 @@ public class HrUserAction extends ActionSupport<HrUser> {
         writeJsonByAction(item.toString());
         return null;
     }
+
+    @PageFlow(result = {@Result(name = "error", path = "/view/hr/user/inputEmail.ftl", type = Dispatcher.FreeMarker)})
+    public String createEmail() throws Exception {
+        String result = "error";
+        UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
+        if (userInfo != null && id != null&&hrUser!=null) {
+            String userid = hrUser.getUserEmail();
+            String domain = "dqy.com.cn";
+            String passwd = hrUser.getEmailPwd();
+            hrUser = this.hrUserService.getById(id);
+            if(hrUser!=null){
+                try {
+                    XmapiImplServiceLocator locator = new XmapiImplServiceLocator();
+                    XmapiImpl service = locator.getxmapi();
+                    // If authorization is required
+                    //((XmapiSoapBindingStub)service).setUsername("user3");
+
+                    //((XmapiSoapBindingStub)service).setPassword("pass3");
+                    // invoke business method
+                    int crypttype4 = 0;
+                    int gid = 33;
+                    int departmentid = -1;
+                    String username = EncryptUtil.getBASE64(hrUser.getUserName());
+                    String offic = "";
+                    String mobile = "";
+                    String phone = "";
+                    String fax = "";
+                    String alias = "";
+                    String alias2 = "";
+                    int roleId = 0;
+                    int changepwd = 0;
+                    String account = "dqy.com.cn";
+                    String sign = "Dg4#6Q2yxNa";
+                    String jmSign = EncryptUtil.encrypt(userid + domain + passwd + sign, EncryptUtil.MD5);
+                    int emailResult = service.regUser_New(userid, domain, passwd, crypttype4, gid, departmentid, username, offic, mobile,
+                            phone, fax, alias, alias2, roleId, changepwd, account, jmSign);
+                    if (emailResult == 0) {
+                        result = "saveSuccess";
+                        hrUser.setUserEmail(userid);
+                        hrUser.setEmailPwd(passwd);
+                        bind(hrUser);
+                        this.hrUserService.save(hrUser);
+                    }
+                    emailErrorCode = emailResult;
+                } catch (javax.xml.rpc.ServiceException ex) {
+                    ex.printStackTrace();
+                } catch (java.rmi.RemoteException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }
+        return result;
+    }
+
+    @PageFlow(result = {@Result(name = "success", path = "/view/hr/user/inputEmail.ftl", type = Dispatcher.FreeMarker)})
+    public String inputEmail() throws Exception {
+        UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
+        if (userInfo != null && id != null) {
+            hrUser = this.hrUserService.getById(id);
+        }
+        return "success";
+    }
+
+    @PageFlow(result = {@Result(name = "success", path = "/hr/user!view.dhtml?id=${hrUser.id}", type = Dispatcher.Redirect)})
+    public String deleteEmail() throws Exception {
+        String result = "success";
+        UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
+        if (userInfo != null && id != null) {
+            hrUser = this.hrUserService.getById(id);
+            if(hrUser!=null){
+                String userid = hrUser.getUserEmail();
+                String domain = "dqy.com.cn";
+                try {
+                    XmapiImplServiceLocator locator = new XmapiImplServiceLocator();
+                    XmapiImpl service = locator.getxmapi();
+                    // If authorization is required
+                    //((XmapiSoapBindingStub)service).setUsername("user3");
+
+                    //((XmapiSoapBindingStub)service).setPassword("pass3");
+                    // invoke business method
+                    String account = "dqy.com.cn";
+                    String sign = "Dg4#6Q2yxNa";
+                    String jmSign = EncryptUtil.encrypt(userid + domain  + sign, EncryptUtil.MD5);
+                    int emailResult = service.delUser_New(userid, domain, account, jmSign);
+                    System.out.println(emailResult);
+                    if (emailResult == 0) {
+                        result = "success";
+                        hrUser.setUserEmail(null);
+                        hrUser.setEmailPwd(null);
+                        bind(hrUser);
+                        this.hrUserService.save(hrUser);
+                    }
+                    emailErrorCode = emailResult;
+                } catch (javax.xml.rpc.ServiceException ex) {
+                    ex.printStackTrace();
+                } catch (java.rmi.RemoteException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }
+        return result;
+    }
+
+    @PageFlow(result = {@Result(name = "success", path = "/view/hr/user/emailPwd.ftl", type = Dispatcher.FreeMarker)})
+    public String changeEmailPwd() throws Exception {
+        UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
+        if (userInfo != null && id != null) {
+            hrUser = this.hrUserService.getById(id);
+        }
+        return "success";  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    public String saveEmailPwd() throws Exception {
+        UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
+        if (userInfo != null && id != null&&hrUser!=null) {
+            String domain = "dqy.com.cn";
+            String passwd = hrUser.getEmailPwd();
+            HrUser old = this.hrUserService.getById(id);
+            String userid = old.getUserEmail();
+            try {
+                XmapiImplServiceLocator locator = new XmapiImplServiceLocator();
+                XmapiImpl service = locator.getxmapi();
+                // If authorization is required
+                //((XmapiSoapBindingStub)service).setUsername("user3");
+
+                //((XmapiSoapBindingStub)service).setPassword("pass3");
+                // invoke business method
+                int crypttype4 = 0;
+                String account = "dqy.com.cn";
+                String sign = "Dg4#6Q2yxNa";
+                String jmSign = EncryptUtil.encrypt(userid + domain + passwd + sign, EncryptUtil.MD5);
+                int emailResult = service.modPasswd_New(userid, domain, passwd, crypttype4,account, jmSign);
+                if (emailResult == 0) {
+                    old.setEmailPwd(hrUser.getEmailPwd());
+                    old.setUseYn("Y");
+                    bind(old);
+                    hrUserService.save(old);
+                }
+                emailErrorCode = emailResult;
+            } catch (javax.xml.rpc.ServiceException ex) {
+                ex.printStackTrace();
+            } catch (java.rmi.RemoteException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return "saveSuccess";  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
 }

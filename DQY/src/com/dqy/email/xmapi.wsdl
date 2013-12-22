@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<wsdl:definitions targetNamespace="http://ma.mail.cntv.cn/axis/xmapi" xmlns:impl="http://ma.mail.cntv.cn/axis/xmapi"
+<wsdl:definitions targetNamespace="http://ma.263.net/axis/xmapi" xmlns:impl="http://ma.263.net/axis/xmapi"
                   xmlns:tns1="http://module.ma.net263.com" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
                   xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
 <!--WSDL created by Apache Axis version: 1.4
@@ -21,7 +21,239 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
   </schema>
  </wsdl:types>
 
-   <wsdl:message name="delUser_NewRequest">
+   <wsdl:message name="getDomainUserlistRequest">
+
+      <wsdl:part name="domain" type="xsd:string">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="regUser_NewResponse">
+
+      <wsdl:part name="regUser_NewReturn" type="xsd:int">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="modPasswdRequest">
+
+      <wsdl:part name="userid" type="xsd:string">
+
+      </wsdl:part>
+
+      <wsdl:part name="domain" type="xsd:string">
+
+      </wsdl:part>
+
+      <wsdl:part name="passwd" type="xsd:string">
+
+      </wsdl:part>
+
+      <wsdl:part name="crypttype" type="xsd:int">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="modUserInfoResponse">
+
+      <wsdl:part name="modUserInfoReturn" type="xsd:int">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="getDomainUserlistLengthGsoapResponse">
+
+      <wsdl:part name="getDomainUserlistLengthGsoapReturn" type="xsd:int">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="updateDisGroupResponse">
+
+      <wsdl:part name="updateDisGroupReturn" type="xsd:int">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="updateDepartmentRequest">
+
+      <wsdl:part name="userid" type="xsd:string">
+
+      </wsdl:part>
+
+      <wsdl:part name="domain" type="xsd:string">
+
+      </wsdl:part>
+
+      <wsdl:part name="departmentid" type="xsd:int">
+
+      </wsdl:part>
+
+      <wsdl:part name="departmentName" type="xsd:string">
+
+      </wsdl:part>
+
+      <wsdl:part name="deptId" type="xsd:int">
+
+      </wsdl:part>
+
+      <wsdl:part name="description" type="xsd:string">
+
+      </wsdl:part>
+
+      <wsdl:part name="listName" type="xsd:string">
+
+      </wsdl:part>
+
+      <wsdl:part name="listSync" type="xsd:string">
+
+      </wsdl:part>
+
+      <wsdl:part name="mobile" type="xsd:string">
+
+      </wsdl:part>
+
+      <wsdl:part name="account" type="xsd:string">
+
+      </wsdl:part>
+
+      <wsdl:part name="sign" type="xsd:string">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="getDomainUserlistResponse">
+
+      <wsdl:part name="getDomainUserlistReturn" type="xsd:string">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="validateResponse">
+
+      <wsdl:part name="validateReturn" type="tns1:WsManagerUser">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="authenticationResponse">
+
+      <wsdl:part name="authenticationReturn" type="xsd:int">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="createDisGroupResponse">
+
+      <wsdl:part name="createDisGroupReturn" type="xsd:int">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="getDisGroupUserRequest">
+
+      <wsdl:part name="deptId" type="xsd:int">
+
+      </wsdl:part>
+
+      <wsdl:part name="domain" type="xsd:string">
+
+      </wsdl:part>
+
+      <wsdl:part name="account" type="xsd:string">
+
+      </wsdl:part>
+
+      <wsdl:part name="sign" type="xsd:string">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="regUser_NewRequest">
+
+      <wsdl:part name="userid" type="xsd:string">
+
+      </wsdl:part>
+
+      <wsdl:part name="domain" type="xsd:string">
+
+      </wsdl:part>
+
+      <wsdl:part name="passwd" type="xsd:string">
+
+      </wsdl:part>
+
+      <wsdl:part name="crypttype" type="xsd:int">
+
+      </wsdl:part>
+
+      <wsdl:part name="gid" type="xsd:int">
+
+      </wsdl:part>
+
+      <wsdl:part name="departmentid" type="xsd:int">
+
+      </wsdl:part>
+
+      <wsdl:part name="username" type="xsd:string">
+
+      </wsdl:part>
+
+      <wsdl:part name="offic" type="xsd:string">
+
+      </wsdl:part>
+
+      <wsdl:part name="mobile" type="xsd:string">
+
+      </wsdl:part>
+
+      <wsdl:part name="phone" type="xsd:string">
+
+      </wsdl:part>
+
+      <wsdl:part name="fax" type="xsd:string">
+
+      </wsdl:part>
+
+      <wsdl:part name="alias" type="xsd:string">
+
+      </wsdl:part>
+
+      <wsdl:part name="alias2" type="xsd:string">
+
+      </wsdl:part>
+
+      <wsdl:part name="roleId" type="xsd:int">
+
+      </wsdl:part>
+
+      <wsdl:part name="changepwd" type="xsd:int">
+
+      </wsdl:part>
+
+      <wsdl:part name="account" type="xsd:string">
+
+      </wsdl:part>
+
+      <wsdl:part name="sign" type="xsd:string">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="getDisGroupRequest">
 
       <wsdl:part name="userid" type="xsd:string">
 
@@ -41,25 +273,405 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
    </wsdl:message>
 
-   <wsdl:message name="delUser_NewResponse">
+   <wsdl:message name="modStatus_NewRequest">
 
-      <wsdl:part name="delUser_NewReturn" type="xsd:int">
+      <wsdl:part name="userid" type="xsd:string">
+
+      </wsdl:part>
+
+      <wsdl:part name="domain" type="xsd:string">
+
+      </wsdl:part>
+
+      <wsdl:part name="status" type="xsd:int">
+
+      </wsdl:part>
+
+      <wsdl:part name="account" type="xsd:string">
+
+      </wsdl:part>
+
+      <wsdl:part name="sign" type="xsd:string">
 
       </wsdl:part>
 
    </wsdl:message>
 
-   <wsdl:message name="updateDepartmentResponse">
+   <wsdl:message name="deleteDisGroupRequest">
 
-      <wsdl:part name="updateDepartmentReturn" type="xsd:int">
+      <wsdl:part name="userid" type="xsd:string">
+
+      </wsdl:part>
+
+      <wsdl:part name="domain" type="xsd:string">
+
+      </wsdl:part>
+
+      <wsdl:part name="departmentId" type="xsd:int">
+
+      </wsdl:part>
+
+      <wsdl:part name="account" type="xsd:string">
+
+      </wsdl:part>
+
+      <wsdl:part name="sign" type="xsd:string">
 
       </wsdl:part>
 
    </wsdl:message>
 
-   <wsdl:message name="authenticationManager_NewResponse">
+   <wsdl:message name="modPasswdResponse">
 
-      <wsdl:part name="authenticationManager_NewReturn" type="xsd:int">
+      <wsdl:part name="modPasswdReturn" type="xsd:int">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="createDisGroupUserResponse">
+
+      <wsdl:part name="createDisGroupUserReturn" type="xsd:int">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="getDomainUserlistGsoapResponse">
+
+      <wsdl:part name="getDomainUserlistGsoapReturn" type="xsd:base64Binary">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="getDirInfo_NewRequest">
+
+      <wsdl:part name="userid" type="xsd:string">
+
+      </wsdl:part>
+
+      <wsdl:part name="domain" type="xsd:string">
+
+      </wsdl:part>
+
+      <wsdl:part name="passwd" type="xsd:string">
+
+      </wsdl:part>
+
+      <wsdl:part name="crypttype" type="xsd:int">
+
+      </wsdl:part>
+
+      <wsdl:part name="account" type="xsd:string">
+
+      </wsdl:part>
+
+      <wsdl:part name="sign" type="xsd:string">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="getDepartmentRequest">
+
+      <wsdl:part name="userid" type="xsd:string">
+
+      </wsdl:part>
+
+      <wsdl:part name="domain" type="xsd:string">
+
+      </wsdl:part>
+
+      <wsdl:part name="account" type="xsd:string">
+
+      </wsdl:part>
+
+      <wsdl:part name="sign" type="xsd:string">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="getDepartmentResponse">
+
+      <wsdl:part name="getDepartmentReturn" type="xsd:string">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="modStatusRequest">
+
+      <wsdl:part name="userid" type="xsd:string">
+
+      </wsdl:part>
+
+      <wsdl:part name="domain" type="xsd:string">
+
+      </wsdl:part>
+
+      <wsdl:part name="status" type="xsd:int">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="getDomainUserlistLengthGsoapRequest">
+
+      <wsdl:part name="domain" type="xsd:string">
+
+      </wsdl:part>
+
+      <wsdl:part name="account" type="xsd:string">
+
+      </wsdl:part>
+
+      <wsdl:part name="sign" type="xsd:string">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="authenticationRequest">
+
+      <wsdl:part name="userid" type="xsd:string">
+
+      </wsdl:part>
+
+      <wsdl:part name="domain" type="xsd:string">
+
+      </wsdl:part>
+
+      <wsdl:part name="passwd" type="xsd:string">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="aspGetDomainUserlistRequest">
+
+      <wsdl:part name="domain" type="xsd:string">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="getDomainUserlistGsoapRequest">
+
+      <wsdl:part name="domain" type="xsd:string">
+
+      </wsdl:part>
+
+      <wsdl:part name="account" type="xsd:string">
+
+      </wsdl:part>
+
+      <wsdl:part name="sign" type="xsd:string">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="updateDisGroupRequest">
+
+      <wsdl:part name="userid" type="xsd:string">
+
+      </wsdl:part>
+
+      <wsdl:part name="domain" type="xsd:string">
+
+      </wsdl:part>
+
+      <wsdl:part name="disGroupId" type="xsd:int">
+
+      </wsdl:part>
+
+      <wsdl:part name="disGroupName" type="xsd:string">
+
+      </wsdl:part>
+
+      <wsdl:part name="description" type="xsd:string">
+
+      </wsdl:part>
+
+      <wsdl:part name="parent" type="xsd:int">
+
+      </wsdl:part>
+
+      <wsdl:part name="account" type="xsd:string">
+
+      </wsdl:part>
+
+      <wsdl:part name="sign" type="xsd:string">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="getDisGroupResponse">
+
+      <wsdl:part name="getDisGroupReturn" type="xsd:string">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="modUserInfo_NewResponse">
+
+      <wsdl:part name="modUserInfo_NewReturn" type="xsd:int">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="authentication_NewRequest">
+
+      <wsdl:part name="userid" type="xsd:string">
+
+      </wsdl:part>
+
+      <wsdl:part name="domain" type="xsd:string">
+
+      </wsdl:part>
+
+      <wsdl:part name="passwd" type="xsd:string">
+
+      </wsdl:part>
+
+      <wsdl:part name="crypttype" type="xsd:int">
+
+      </wsdl:part>
+
+      <wsdl:part name="account" type="xsd:string">
+
+      </wsdl:part>
+
+      <wsdl:part name="sign" type="xsd:string">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="modGid_NewResponse">
+
+      <wsdl:part name="modGid_NewReturn" type="xsd:int">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="deleteDisGroupUserRequest">
+
+      <wsdl:part name="deptId" type="xsd:int">
+
+      </wsdl:part>
+
+      <wsdl:part name="userid" type="xsd:string">
+
+      </wsdl:part>
+
+      <wsdl:part name="domain" type="xsd:string">
+
+      </wsdl:part>
+
+      <wsdl:part name="account" type="xsd:string">
+
+      </wsdl:part>
+
+      <wsdl:part name="sign" type="xsd:string">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="deleteDepartmentRequest">
+
+      <wsdl:part name="domain" type="xsd:string">
+
+      </wsdl:part>
+
+      <wsdl:part name="departmentId" type="xsd:string">
+
+      </wsdl:part>
+
+      <wsdl:part name="account" type="xsd:string">
+
+      </wsdl:part>
+
+      <wsdl:part name="sign" type="xsd:string">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="isOpenRequest">
+
+      <wsdl:part name="status" type="xsd:int">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="aspGetDomainUserlistResponse">
+
+      <wsdl:part name="aspGetDomainUserlistReturn" type="xsd:string">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="createDisGroupRequest">
+
+      <wsdl:part name="userid" type="xsd:string">
+
+      </wsdl:part>
+
+      <wsdl:part name="domain" type="xsd:string">
+
+      </wsdl:part>
+
+      <wsdl:part name="disGroupName" type="xsd:string">
+
+      </wsdl:part>
+
+      <wsdl:part name="description" type="xsd:string">
+
+      </wsdl:part>
+
+      <wsdl:part name="parent" type="xsd:int">
+
+      </wsdl:part>
+
+      <wsdl:part name="account" type="xsd:string">
+
+      </wsdl:part>
+
+      <wsdl:part name="sign" type="xsd:string">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="modGidRequest">
+
+      <wsdl:part name="userid" type="xsd:string">
+
+      </wsdl:part>
+
+      <wsdl:part name="domain" type="xsd:string">
+
+      </wsdl:part>
+
+      <wsdl:part name="gid" type="xsd:int">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="modStatusResponse">
+
+      <wsdl:part name="modStatusReturn" type="xsd:int">
 
       </wsdl:part>
 
@@ -193,33 +805,37 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
    </wsdl:message>
 
-   <wsdl:message name="modStatusResponse">
+   <wsdl:message name="delUser_NewResponse">
 
-      <wsdl:part name="modStatusReturn" type="xsd:int">
+      <wsdl:part name="delUser_NewReturn" type="xsd:int">
 
       </wsdl:part>
 
    </wsdl:message>
 
-   <wsdl:message name="createDisGroupRequest">
+   <wsdl:message name="updateDepartmentResponse">
+
+      <wsdl:part name="updateDepartmentReturn" type="xsd:int">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="authenticationManager_NewResponse">
+
+      <wsdl:part name="authenticationManager_NewReturn" type="xsd:int">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="delUser_NewRequest">
 
       <wsdl:part name="userid" type="xsd:string">
 
       </wsdl:part>
 
       <wsdl:part name="domain" type="xsd:string">
-
-      </wsdl:part>
-
-      <wsdl:part name="disGroupName" type="xsd:string">
-
-      </wsdl:part>
-
-      <wsdl:part name="description" type="xsd:string">
-
-      </wsdl:part>
-
-      <wsdl:part name="parent" type="xsd:int">
 
       </wsdl:part>
 
@@ -228,46 +844,6 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
       </wsdl:part>
 
       <wsdl:part name="sign" type="xsd:string">
-
-      </wsdl:part>
-
-   </wsdl:message>
-
-   <wsdl:message name="modGidRequest">
-
-      <wsdl:part name="userid" type="xsd:string">
-
-      </wsdl:part>
-
-      <wsdl:part name="domain" type="xsd:string">
-
-      </wsdl:part>
-
-      <wsdl:part name="gid" type="xsd:int">
-
-      </wsdl:part>
-
-   </wsdl:message>
-
-   <wsdl:message name="getUserInfo_NewResponse">
-
-      <wsdl:part name="getUserInfo_NewReturn" type="xsd:string">
-
-      </wsdl:part>
-
-   </wsdl:message>
-
-   <wsdl:message name="delUserResponse">
-
-      <wsdl:part name="delUserReturn" type="xsd:int">
-
-      </wsdl:part>
-
-   </wsdl:message>
-
-   <wsdl:message name="modStatus_NewResponse">
-
-      <wsdl:part name="modStatus_NewReturn" type="xsd:int">
 
       </wsdl:part>
 
@@ -329,6 +905,54 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
    </wsdl:message>
 
+   <wsdl:message name="delUserResponse">
+
+      <wsdl:part name="delUserReturn" type="xsd:int">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="modStatus_NewResponse">
+
+      <wsdl:part name="modStatus_NewReturn" type="xsd:int">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="getUserInfo_NewResponse">
+
+      <wsdl:part name="getUserInfo_NewReturn" type="xsd:string">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="getSaasDomainUserlistResponse">
+
+      <wsdl:part name="getSaasDomainUserlistReturn" type="xsd:string">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="createDepartmentResponse">
+
+      <wsdl:part name="createDepartmentReturn" type="xsd:int">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="getDirInfoResponse">
+
+      <wsdl:part name="getDirInfoReturn" type="xsd:string">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
    <wsdl:message name="getSaasDomainUserlistRequest">
 
       <wsdl:part name="domain" type="xsd:string">
@@ -361,25 +985,41 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
    </wsdl:message>
 
-   <wsdl:message name="getDirInfoResponse">
+   <wsdl:message name="isOpenResponse">
 
-      <wsdl:part name="getDirInfoReturn" type="xsd:string">
-
-      </wsdl:part>
-
-   </wsdl:message>
-
-   <wsdl:message name="createDepartmentResponse">
-
-      <wsdl:part name="createDepartmentReturn" type="xsd:int">
+      <wsdl:part name="isOpenReturn" type="xsd:boolean">
 
       </wsdl:part>
 
    </wsdl:message>
 
-   <wsdl:message name="getSaasDomainUserlistResponse">
+   <wsdl:message name="getDomainUserlist_NewResponse">
 
-      <wsdl:part name="getSaasDomainUserlistReturn" type="xsd:string">
+      <wsdl:part name="getDomainUserlist_NewReturn" type="xsd:string">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="getDomainUserlist_NewRequest">
+
+      <wsdl:part name="domain" type="xsd:string">
+
+      </wsdl:part>
+
+      <wsdl:part name="account" type="xsd:string">
+
+      </wsdl:part>
+
+      <wsdl:part name="sign" type="xsd:string">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="modGidResponse">
+
+      <wsdl:part name="modGidReturn" type="xsd:int">
 
       </wsdl:part>
 
@@ -413,17 +1053,21 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
    </wsdl:message>
 
-   <wsdl:message name="modGidResponse">
+   <wsdl:message name="authenticationManager_NewRequest">
 
-      <wsdl:part name="modGidReturn" type="xsd:int">
+      <wsdl:part name="userid" type="xsd:string">
 
       </wsdl:part>
 
-   </wsdl:message>
-
-   <wsdl:message name="getDomainUserlist_NewRequest">
-
       <wsdl:part name="domain" type="xsd:string">
+
+      </wsdl:part>
+
+      <wsdl:part name="passwd" type="xsd:string">
+
+      </wsdl:part>
+
+      <wsdl:part name="crypttype" type="xsd:int">
 
       </wsdl:part>
 
@@ -432,34 +1076,6 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
       </wsdl:part>
 
       <wsdl:part name="sign" type="xsd:string">
-
-      </wsdl:part>
-
-   </wsdl:message>
-
-   <wsdl:message name="getDomainUserlist_NewResponse">
-
-      <wsdl:part name="getDomainUserlist_NewReturn" type="xsd:string">
-
-      </wsdl:part>
-
-   </wsdl:message>
-
-   <wsdl:message name="isOpenResponse">
-
-      <wsdl:part name="isOpenReturn" type="xsd:boolean">
-
-      </wsdl:part>
-
-   </wsdl:message>
-
-   <wsdl:message name="validateRequest">
-
-      <wsdl:part name="account" type="xsd:string">
-
-      </wsdl:part>
-
-      <wsdl:part name="domain" type="xsd:string">
 
       </wsdl:part>
 
@@ -513,29 +1129,13 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
    </wsdl:message>
 
-   <wsdl:message name="authenticationManager_NewRequest">
-
-      <wsdl:part name="userid" type="xsd:string">
-
-      </wsdl:part>
-
-      <wsdl:part name="domain" type="xsd:string">
-
-      </wsdl:part>
-
-      <wsdl:part name="passwd" type="xsd:string">
-
-      </wsdl:part>
-
-      <wsdl:part name="crypttype" type="xsd:int">
-
-      </wsdl:part>
+   <wsdl:message name="validateRequest">
 
       <wsdl:part name="account" type="xsd:string">
 
       </wsdl:part>
 
-      <wsdl:part name="sign" type="xsd:string">
+      <wsdl:part name="domain" type="xsd:string">
 
       </wsdl:part>
 
@@ -557,7 +1157,7 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
    </wsdl:message>
 
-   <wsdl:message name="getUserInfoRequest">
+   <wsdl:message name="modGid_NewRequest">
 
       <wsdl:part name="userid" type="xsd:string">
 
@@ -567,31 +1167,15 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
       </wsdl:part>
 
-   </wsdl:message>
-
-   <wsdl:message name="deleteDepartmentResponse">
-
-      <wsdl:part name="deleteDepartmentReturn" type="xsd:int">
+      <wsdl:part name="gid" type="xsd:int">
 
       </wsdl:part>
 
-   </wsdl:message>
-
-   <wsdl:message name="getUserInfoResponse">
-
-      <wsdl:part name="getUserInfoReturn" type="xsd:string">
+      <wsdl:part name="account" type="xsd:string">
 
       </wsdl:part>
 
-   </wsdl:message>
-
-   <wsdl:message name="delUserRequest">
-
-      <wsdl:part name="userid" type="xsd:string">
-
-      </wsdl:part>
-
-      <wsdl:part name="domain" type="xsd:string">
+      <wsdl:part name="sign" type="xsd:string">
 
       </wsdl:part>
 
@@ -649,7 +1233,7 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
    </wsdl:message>
 
-   <wsdl:message name="modGid_NewRequest">
+   <wsdl:message name="delUserRequest">
 
       <wsdl:part name="userid" type="xsd:string">
 
@@ -659,615 +1243,31 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
       </wsdl:part>
 
-      <wsdl:part name="gid" type="xsd:int">
+   </wsdl:message>
 
-      </wsdl:part>
+   <wsdl:message name="deleteDepartmentResponse">
 
-      <wsdl:part name="account" type="xsd:string">
-
-      </wsdl:part>
-
-      <wsdl:part name="sign" type="xsd:string">
+      <wsdl:part name="deleteDepartmentReturn" type="xsd:int">
 
       </wsdl:part>
 
    </wsdl:message>
 
-   <wsdl:message name="updateDepartmentRequest">
+   <wsdl:message name="getUserInfoResponse">
+
+      <wsdl:part name="getUserInfoReturn" type="xsd:string">
+
+      </wsdl:part>
+
+   </wsdl:message>
+
+   <wsdl:message name="getUserInfoRequest">
 
       <wsdl:part name="userid" type="xsd:string">
 
       </wsdl:part>
 
       <wsdl:part name="domain" type="xsd:string">
-
-      </wsdl:part>
-
-      <wsdl:part name="departmentid" type="xsd:int">
-
-      </wsdl:part>
-
-      <wsdl:part name="departmentName" type="xsd:string">
-
-      </wsdl:part>
-
-      <wsdl:part name="deptId" type="xsd:int">
-
-      </wsdl:part>
-
-      <wsdl:part name="description" type="xsd:string">
-
-      </wsdl:part>
-
-      <wsdl:part name="listName" type="xsd:string">
-
-      </wsdl:part>
-
-      <wsdl:part name="listSync" type="xsd:string">
-
-      </wsdl:part>
-
-      <wsdl:part name="mobile" type="xsd:string">
-
-      </wsdl:part>
-
-      <wsdl:part name="account" type="xsd:string">
-
-      </wsdl:part>
-
-      <wsdl:part name="sign" type="xsd:string">
-
-      </wsdl:part>
-
-   </wsdl:message>
-
-   <wsdl:message name="getDomainUserlistLengthGsoapResponse">
-
-      <wsdl:part name="getDomainUserlistLengthGsoapReturn" type="xsd:int">
-
-      </wsdl:part>
-
-   </wsdl:message>
-
-   <wsdl:message name="updateDisGroupResponse">
-
-      <wsdl:part name="updateDisGroupReturn" type="xsd:int">
-
-      </wsdl:part>
-
-   </wsdl:message>
-
-   <wsdl:message name="modUserInfoResponse">
-
-      <wsdl:part name="modUserInfoReturn" type="xsd:int">
-
-      </wsdl:part>
-
-   </wsdl:message>
-
-   <wsdl:message name="modPasswdRequest">
-
-      <wsdl:part name="userid" type="xsd:string">
-
-      </wsdl:part>
-
-      <wsdl:part name="domain" type="xsd:string">
-
-      </wsdl:part>
-
-      <wsdl:part name="passwd" type="xsd:string">
-
-      </wsdl:part>
-
-      <wsdl:part name="crypttype" type="xsd:int">
-
-      </wsdl:part>
-
-   </wsdl:message>
-
-   <wsdl:message name="getDomainUserlistRequest">
-
-      <wsdl:part name="domain" type="xsd:string">
-
-      </wsdl:part>
-
-   </wsdl:message>
-
-   <wsdl:message name="regUser_NewResponse">
-
-      <wsdl:part name="regUser_NewReturn" type="xsd:int">
-
-      </wsdl:part>
-
-   </wsdl:message>
-
-   <wsdl:message name="createDisGroupResponse">
-
-      <wsdl:part name="createDisGroupReturn" type="xsd:int">
-
-      </wsdl:part>
-
-   </wsdl:message>
-
-   <wsdl:message name="authenticationResponse">
-
-      <wsdl:part name="authenticationReturn" type="xsd:int">
-
-      </wsdl:part>
-
-   </wsdl:message>
-
-   <wsdl:message name="getDomainUserlistResponse">
-
-      <wsdl:part name="getDomainUserlistReturn" type="xsd:string">
-
-      </wsdl:part>
-
-   </wsdl:message>
-
-   <wsdl:message name="validateResponse">
-
-      <wsdl:part name="validateReturn" type="tns1:WsManagerUser">
-
-      </wsdl:part>
-
-   </wsdl:message>
-
-   <wsdl:message name="getDisGroupRequest">
-
-      <wsdl:part name="userid" type="xsd:string">
-
-      </wsdl:part>
-
-      <wsdl:part name="domain" type="xsd:string">
-
-      </wsdl:part>
-
-      <wsdl:part name="account" type="xsd:string">
-
-      </wsdl:part>
-
-      <wsdl:part name="sign" type="xsd:string">
-
-      </wsdl:part>
-
-   </wsdl:message>
-
-   <wsdl:message name="regUser_NewRequest">
-
-      <wsdl:part name="userid" type="xsd:string">
-
-      </wsdl:part>
-
-      <wsdl:part name="domain" type="xsd:string">
-
-      </wsdl:part>
-
-      <wsdl:part name="passwd" type="xsd:string">
-
-      </wsdl:part>
-
-      <wsdl:part name="crypttype" type="xsd:int">
-
-      </wsdl:part>
-
-      <wsdl:part name="gid" type="xsd:int">
-
-      </wsdl:part>
-
-      <wsdl:part name="departmentid" type="xsd:int">
-
-      </wsdl:part>
-
-      <wsdl:part name="username" type="xsd:string">
-
-      </wsdl:part>
-
-      <wsdl:part name="offic" type="xsd:string">
-
-      </wsdl:part>
-
-      <wsdl:part name="mobile" type="xsd:string">
-
-      </wsdl:part>
-
-      <wsdl:part name="phone" type="xsd:string">
-
-      </wsdl:part>
-
-      <wsdl:part name="fax" type="xsd:string">
-
-      </wsdl:part>
-
-      <wsdl:part name="alias" type="xsd:string">
-
-      </wsdl:part>
-
-      <wsdl:part name="alias2" type="xsd:string">
-
-      </wsdl:part>
-
-      <wsdl:part name="roleId" type="xsd:int">
-
-      </wsdl:part>
-
-      <wsdl:part name="changepwd" type="xsd:int">
-
-      </wsdl:part>
-
-      <wsdl:part name="account" type="xsd:string">
-
-      </wsdl:part>
-
-      <wsdl:part name="sign" type="xsd:string">
-
-      </wsdl:part>
-
-   </wsdl:message>
-
-   <wsdl:message name="getDisGroupUserRequest">
-
-      <wsdl:part name="deptId" type="xsd:int">
-
-      </wsdl:part>
-
-      <wsdl:part name="domain" type="xsd:string">
-
-      </wsdl:part>
-
-      <wsdl:part name="account" type="xsd:string">
-
-      </wsdl:part>
-
-      <wsdl:part name="sign" type="xsd:string">
-
-      </wsdl:part>
-
-   </wsdl:message>
-
-   <wsdl:message name="createDisGroupUserResponse">
-
-      <wsdl:part name="createDisGroupUserReturn" type="xsd:int">
-
-      </wsdl:part>
-
-   </wsdl:message>
-
-   <wsdl:message name="modPasswdResponse">
-
-      <wsdl:part name="modPasswdReturn" type="xsd:int">
-
-      </wsdl:part>
-
-   </wsdl:message>
-
-   <wsdl:message name="deleteDisGroupRequest">
-
-      <wsdl:part name="userid" type="xsd:string">
-
-      </wsdl:part>
-
-      <wsdl:part name="domain" type="xsd:string">
-
-      </wsdl:part>
-
-      <wsdl:part name="departmentId" type="xsd:int">
-
-      </wsdl:part>
-
-      <wsdl:part name="account" type="xsd:string">
-
-      </wsdl:part>
-
-      <wsdl:part name="sign" type="xsd:string">
-
-      </wsdl:part>
-
-   </wsdl:message>
-
-   <wsdl:message name="modStatus_NewRequest">
-
-      <wsdl:part name="userid" type="xsd:string">
-
-      </wsdl:part>
-
-      <wsdl:part name="domain" type="xsd:string">
-
-      </wsdl:part>
-
-      <wsdl:part name="status" type="xsd:int">
-
-      </wsdl:part>
-
-      <wsdl:part name="account" type="xsd:string">
-
-      </wsdl:part>
-
-      <wsdl:part name="sign" type="xsd:string">
-
-      </wsdl:part>
-
-   </wsdl:message>
-
-   <wsdl:message name="getDomainUserlistLengthGsoapRequest">
-
-      <wsdl:part name="domain" type="xsd:string">
-
-      </wsdl:part>
-
-      <wsdl:part name="account" type="xsd:string">
-
-      </wsdl:part>
-
-      <wsdl:part name="sign" type="xsd:string">
-
-      </wsdl:part>
-
-   </wsdl:message>
-
-   <wsdl:message name="authenticationRequest">
-
-      <wsdl:part name="userid" type="xsd:string">
-
-      </wsdl:part>
-
-      <wsdl:part name="domain" type="xsd:string">
-
-      </wsdl:part>
-
-      <wsdl:part name="passwd" type="xsd:string">
-
-      </wsdl:part>
-
-   </wsdl:message>
-
-   <wsdl:message name="getDepartmentResponse">
-
-      <wsdl:part name="getDepartmentReturn" type="xsd:string">
-
-      </wsdl:part>
-
-   </wsdl:message>
-
-   <wsdl:message name="modStatusRequest">
-
-      <wsdl:part name="userid" type="xsd:string">
-
-      </wsdl:part>
-
-      <wsdl:part name="domain" type="xsd:string">
-
-      </wsdl:part>
-
-      <wsdl:part name="status" type="xsd:int">
-
-      </wsdl:part>
-
-   </wsdl:message>
-
-   <wsdl:message name="getDepartmentRequest">
-
-      <wsdl:part name="userid" type="xsd:string">
-
-      </wsdl:part>
-
-      <wsdl:part name="domain" type="xsd:string">
-
-      </wsdl:part>
-
-      <wsdl:part name="account" type="xsd:string">
-
-      </wsdl:part>
-
-      <wsdl:part name="sign" type="xsd:string">
-
-      </wsdl:part>
-
-   </wsdl:message>
-
-   <wsdl:message name="getDomainUserlistGsoapResponse">
-
-      <wsdl:part name="getDomainUserlistGsoapReturn" type="xsd:base64Binary">
-
-      </wsdl:part>
-
-   </wsdl:message>
-
-   <wsdl:message name="getDirInfo_NewRequest">
-
-      <wsdl:part name="userid" type="xsd:string">
-
-      </wsdl:part>
-
-      <wsdl:part name="domain" type="xsd:string">
-
-      </wsdl:part>
-
-      <wsdl:part name="passwd" type="xsd:string">
-
-      </wsdl:part>
-
-      <wsdl:part name="crypttype" type="xsd:int">
-
-      </wsdl:part>
-
-      <wsdl:part name="account" type="xsd:string">
-
-      </wsdl:part>
-
-      <wsdl:part name="sign" type="xsd:string">
-
-      </wsdl:part>
-
-   </wsdl:message>
-
-   <wsdl:message name="getDomainUserlistGsoapRequest">
-
-      <wsdl:part name="domain" type="xsd:string">
-
-      </wsdl:part>
-
-      <wsdl:part name="account" type="xsd:string">
-
-      </wsdl:part>
-
-      <wsdl:part name="sign" type="xsd:string">
-
-      </wsdl:part>
-
-   </wsdl:message>
-
-   <wsdl:message name="updateDisGroupRequest">
-
-      <wsdl:part name="userid" type="xsd:string">
-
-      </wsdl:part>
-
-      <wsdl:part name="domain" type="xsd:string">
-
-      </wsdl:part>
-
-      <wsdl:part name="disGroupId" type="xsd:int">
-
-      </wsdl:part>
-
-      <wsdl:part name="disGroupName" type="xsd:string">
-
-      </wsdl:part>
-
-      <wsdl:part name="description" type="xsd:string">
-
-      </wsdl:part>
-
-      <wsdl:part name="parent" type="xsd:int">
-
-      </wsdl:part>
-
-      <wsdl:part name="account" type="xsd:string">
-
-      </wsdl:part>
-
-      <wsdl:part name="sign" type="xsd:string">
-
-      </wsdl:part>
-
-   </wsdl:message>
-
-   <wsdl:message name="aspGetDomainUserlistRequest">
-
-      <wsdl:part name="domain" type="xsd:string">
-
-      </wsdl:part>
-
-   </wsdl:message>
-
-   <wsdl:message name="modUserInfo_NewResponse">
-
-      <wsdl:part name="modUserInfo_NewReturn" type="xsd:int">
-
-      </wsdl:part>
-
-   </wsdl:message>
-
-   <wsdl:message name="getDisGroupResponse">
-
-      <wsdl:part name="getDisGroupReturn" type="xsd:string">
-
-      </wsdl:part>
-
-   </wsdl:message>
-
-   <wsdl:message name="aspGetDomainUserlistResponse">
-
-      <wsdl:part name="aspGetDomainUserlistReturn" type="xsd:string">
-
-      </wsdl:part>
-
-   </wsdl:message>
-
-   <wsdl:message name="deleteDepartmentRequest">
-
-      <wsdl:part name="domain" type="xsd:string">
-
-      </wsdl:part>
-
-      <wsdl:part name="departmentId" type="xsd:string">
-
-      </wsdl:part>
-
-      <wsdl:part name="account" type="xsd:string">
-
-      </wsdl:part>
-
-      <wsdl:part name="sign" type="xsd:string">
-
-      </wsdl:part>
-
-   </wsdl:message>
-
-   <wsdl:message name="isOpenRequest">
-
-      <wsdl:part name="status" type="xsd:int">
-
-      </wsdl:part>
-
-   </wsdl:message>
-
-   <wsdl:message name="deleteDisGroupUserRequest">
-
-      <wsdl:part name="deptId" type="xsd:int">
-
-      </wsdl:part>
-
-      <wsdl:part name="userid" type="xsd:string">
-
-      </wsdl:part>
-
-      <wsdl:part name="domain" type="xsd:string">
-
-      </wsdl:part>
-
-      <wsdl:part name="account" type="xsd:string">
-
-      </wsdl:part>
-
-      <wsdl:part name="sign" type="xsd:string">
-
-      </wsdl:part>
-
-   </wsdl:message>
-
-   <wsdl:message name="modGid_NewResponse">
-
-      <wsdl:part name="modGid_NewReturn" type="xsd:int">
-
-      </wsdl:part>
-
-   </wsdl:message>
-
-   <wsdl:message name="authentication_NewRequest">
-
-      <wsdl:part name="userid" type="xsd:string">
-
-      </wsdl:part>
-
-      <wsdl:part name="domain" type="xsd:string">
-
-      </wsdl:part>
-
-      <wsdl:part name="passwd" type="xsd:string">
-
-      </wsdl:part>
-
-      <wsdl:part name="crypttype" type="xsd:int">
-
-      </wsdl:part>
-
-      <wsdl:part name="account" type="xsd:string">
-
-      </wsdl:part>
-
-      <wsdl:part name="sign" type="xsd:string">
 
       </wsdl:part>
 
@@ -1749,7 +1749,7 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
          <wsdl:output name="isOpenResponse">
 
-            <wsdlsoap:body namespace="http://ma.mail.cntv.cn/axis/xmapi" use="literal"/>
+            <wsdlsoap:body namespace="http://ma.263.net/axis/xmapi" use="literal"/>
 
          </wsdl:output>
 
@@ -1767,7 +1767,7 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
          <wsdl:output name="getUserInfoResponse">
 
-            <wsdlsoap:body namespace="http://ma.mail.cntv.cn/axis/xmapi" use="literal"/>
+            <wsdlsoap:body namespace="http://ma.263.net/axis/xmapi" use="literal"/>
 
          </wsdl:output>
 
@@ -1785,7 +1785,7 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
          <wsdl:output name="validateResponse">
 
-            <wsdlsoap:body namespace="http://ma.mail.cntv.cn/axis/xmapi" use="literal"/>
+            <wsdlsoap:body namespace="http://ma.263.net/axis/xmapi" use="literal"/>
 
          </wsdl:output>
 
@@ -1803,7 +1803,7 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
          <wsdl:output name="updateDepartmentResponse">
 
-            <wsdlsoap:body namespace="http://ma.mail.cntv.cn/axis/xmapi" use="literal"/>
+            <wsdlsoap:body namespace="http://ma.263.net/axis/xmapi" use="literal"/>
 
          </wsdl:output>
 
@@ -1821,7 +1821,7 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
          <wsdl:output name="createDepartmentResponse">
 
-            <wsdlsoap:body namespace="http://ma.mail.cntv.cn/axis/xmapi" use="literal"/>
+            <wsdlsoap:body namespace="http://ma.263.net/axis/xmapi" use="literal"/>
 
          </wsdl:output>
 
@@ -1839,7 +1839,7 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
          <wsdl:output name="delUserResponse">
 
-            <wsdlsoap:body namespace="http://ma.mail.cntv.cn/axis/xmapi" use="literal"/>
+            <wsdlsoap:body namespace="http://ma.263.net/axis/xmapi" use="literal"/>
 
          </wsdl:output>
 
@@ -1857,7 +1857,7 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
          <wsdl:output name="createDisGroupUserResponse">
 
-            <wsdlsoap:body namespace="http://ma.mail.cntv.cn/axis/xmapi" use="literal"/>
+            <wsdlsoap:body namespace="http://ma.263.net/axis/xmapi" use="literal"/>
 
          </wsdl:output>
 
@@ -1875,7 +1875,7 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
          <wsdl:output name="getDepartmentResponse">
 
-            <wsdlsoap:body namespace="http://ma.mail.cntv.cn/axis/xmapi" use="literal"/>
+            <wsdlsoap:body namespace="http://ma.263.net/axis/xmapi" use="literal"/>
 
          </wsdl:output>
 
@@ -1893,7 +1893,7 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
          <wsdl:output name="regUserResponse">
 
-            <wsdlsoap:body namespace="http://ma.mail.cntv.cn/axis/xmapi" use="literal"/>
+            <wsdlsoap:body namespace="http://ma.263.net/axis/xmapi" use="literal"/>
 
          </wsdl:output>
 
@@ -1911,7 +1911,7 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
          <wsdl:output name="regUser_NewResponse">
 
-            <wsdlsoap:body namespace="http://ma.mail.cntv.cn/axis/xmapi" use="literal"/>
+            <wsdlsoap:body namespace="http://ma.263.net/axis/xmapi" use="literal"/>
 
          </wsdl:output>
 
@@ -1929,7 +1929,7 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
          <wsdl:output name="delUser_NewResponse">
 
-            <wsdlsoap:body namespace="http://ma.mail.cntv.cn/axis/xmapi" use="literal"/>
+            <wsdlsoap:body namespace="http://ma.263.net/axis/xmapi" use="literal"/>
 
          </wsdl:output>
 
@@ -1947,7 +1947,7 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
          <wsdl:output name="modPasswdResponse">
 
-            <wsdlsoap:body namespace="http://ma.mail.cntv.cn/axis/xmapi" use="literal"/>
+            <wsdlsoap:body namespace="http://ma.263.net/axis/xmapi" use="literal"/>
 
          </wsdl:output>
 
@@ -1965,7 +1965,7 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
          <wsdl:output name="modPasswd_NewResponse">
 
-            <wsdlsoap:body namespace="http://ma.mail.cntv.cn/axis/xmapi" use="literal"/>
+            <wsdlsoap:body namespace="http://ma.263.net/axis/xmapi" use="literal"/>
 
          </wsdl:output>
 
@@ -1983,7 +1983,7 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
          <wsdl:output name="getDirInfoResponse">
 
-            <wsdlsoap:body namespace="http://ma.mail.cntv.cn/axis/xmapi" use="literal"/>
+            <wsdlsoap:body namespace="http://ma.263.net/axis/xmapi" use="literal"/>
 
          </wsdl:output>
 
@@ -2001,7 +2001,7 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
          <wsdl:output name="getDirInfo_NewResponse">
 
-            <wsdlsoap:body namespace="http://ma.mail.cntv.cn/axis/xmapi" use="literal"/>
+            <wsdlsoap:body namespace="http://ma.263.net/axis/xmapi" use="literal"/>
 
          </wsdl:output>
 
@@ -2019,7 +2019,7 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
          <wsdl:output name="aspGetDomainUserlistResponse">
 
-            <wsdlsoap:body namespace="http://ma.mail.cntv.cn/axis/xmapi" use="literal"/>
+            <wsdlsoap:body namespace="http://ma.263.net/axis/xmapi" use="literal"/>
 
          </wsdl:output>
 
@@ -2037,7 +2037,7 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
          <wsdl:output name="modGidResponse">
 
-            <wsdlsoap:body namespace="http://ma.mail.cntv.cn/axis/xmapi" use="literal"/>
+            <wsdlsoap:body namespace="http://ma.263.net/axis/xmapi" use="literal"/>
 
          </wsdl:output>
 
@@ -2055,7 +2055,7 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
          <wsdl:output name="modGid_NewResponse">
 
-            <wsdlsoap:body namespace="http://ma.mail.cntv.cn/axis/xmapi" use="literal"/>
+            <wsdlsoap:body namespace="http://ma.263.net/axis/xmapi" use="literal"/>
 
          </wsdl:output>
 
@@ -2073,7 +2073,7 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
          <wsdl:output name="authenticationResponse">
 
-            <wsdlsoap:body namespace="http://ma.mail.cntv.cn/axis/xmapi" use="literal"/>
+            <wsdlsoap:body namespace="http://ma.263.net/axis/xmapi" use="literal"/>
 
          </wsdl:output>
 
@@ -2091,7 +2091,7 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
          <wsdl:output name="authentication_NewResponse">
 
-            <wsdlsoap:body namespace="http://ma.mail.cntv.cn/axis/xmapi" use="literal"/>
+            <wsdlsoap:body namespace="http://ma.263.net/axis/xmapi" use="literal"/>
 
          </wsdl:output>
 
@@ -2109,7 +2109,7 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
          <wsdl:output name="authenticationManager_NewResponse">
 
-            <wsdlsoap:body namespace="http://ma.mail.cntv.cn/axis/xmapi" use="literal"/>
+            <wsdlsoap:body namespace="http://ma.263.net/axis/xmapi" use="literal"/>
 
          </wsdl:output>
 
@@ -2127,7 +2127,7 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
          <wsdl:output name="modStatusResponse">
 
-            <wsdlsoap:body namespace="http://ma.mail.cntv.cn/axis/xmapi" use="literal"/>
+            <wsdlsoap:body namespace="http://ma.263.net/axis/xmapi" use="literal"/>
 
          </wsdl:output>
 
@@ -2145,7 +2145,7 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
          <wsdl:output name="modStatus_NewResponse">
 
-            <wsdlsoap:body namespace="http://ma.mail.cntv.cn/axis/xmapi" use="literal"/>
+            <wsdlsoap:body namespace="http://ma.263.net/axis/xmapi" use="literal"/>
 
          </wsdl:output>
 
@@ -2163,7 +2163,7 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
          <wsdl:output name="modUserInfoResponse">
 
-            <wsdlsoap:body namespace="http://ma.mail.cntv.cn/axis/xmapi" use="literal"/>
+            <wsdlsoap:body namespace="http://ma.263.net/axis/xmapi" use="literal"/>
 
          </wsdl:output>
 
@@ -2181,7 +2181,7 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
          <wsdl:output name="modUserInfo_NewResponse">
 
-            <wsdlsoap:body namespace="http://ma.mail.cntv.cn/axis/xmapi" use="literal"/>
+            <wsdlsoap:body namespace="http://ma.263.net/axis/xmapi" use="literal"/>
 
          </wsdl:output>
 
@@ -2199,7 +2199,7 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
          <wsdl:output name="deleteDepartmentResponse">
 
-            <wsdlsoap:body namespace="http://ma.mail.cntv.cn/axis/xmapi" use="literal"/>
+            <wsdlsoap:body namespace="http://ma.263.net/axis/xmapi" use="literal"/>
 
          </wsdl:output>
 
@@ -2217,7 +2217,7 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
          <wsdl:output name="createDisGroupResponse">
 
-            <wsdlsoap:body namespace="http://ma.mail.cntv.cn/axis/xmapi" use="literal"/>
+            <wsdlsoap:body namespace="http://ma.263.net/axis/xmapi" use="literal"/>
 
          </wsdl:output>
 
@@ -2235,7 +2235,7 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
          <wsdl:output name="deleteDisGroupUserResponse">
 
-            <wsdlsoap:body namespace="http://ma.mail.cntv.cn/axis/xmapi" use="literal"/>
+            <wsdlsoap:body namespace="http://ma.263.net/axis/xmapi" use="literal"/>
 
          </wsdl:output>
 
@@ -2253,7 +2253,7 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
          <wsdl:output name="updateDisGroupResponse">
 
-            <wsdlsoap:body namespace="http://ma.mail.cntv.cn/axis/xmapi" use="literal"/>
+            <wsdlsoap:body namespace="http://ma.263.net/axis/xmapi" use="literal"/>
 
          </wsdl:output>
 
@@ -2271,7 +2271,7 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
          <wsdl:output name="deleteDisGroupResponse">
 
-            <wsdlsoap:body namespace="http://ma.mail.cntv.cn/axis/xmapi" use="literal"/>
+            <wsdlsoap:body namespace="http://ma.263.net/axis/xmapi" use="literal"/>
 
          </wsdl:output>
 
@@ -2289,7 +2289,7 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
          <wsdl:output name="getDisGroupResponse">
 
-            <wsdlsoap:body namespace="http://ma.mail.cntv.cn/axis/xmapi" use="literal"/>
+            <wsdlsoap:body namespace="http://ma.263.net/axis/xmapi" use="literal"/>
 
          </wsdl:output>
 
@@ -2307,7 +2307,7 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
          <wsdl:output name="getDomainUserlistResponse">
 
-            <wsdlsoap:body namespace="http://ma.mail.cntv.cn/axis/xmapi" use="literal"/>
+            <wsdlsoap:body namespace="http://ma.263.net/axis/xmapi" use="literal"/>
 
          </wsdl:output>
 
@@ -2325,7 +2325,7 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
          <wsdl:output name="getDomainUserlist_NewResponse">
 
-            <wsdlsoap:body namespace="http://ma.mail.cntv.cn/axis/xmapi" use="literal"/>
+            <wsdlsoap:body namespace="http://ma.263.net/axis/xmapi" use="literal"/>
 
          </wsdl:output>
 
@@ -2343,7 +2343,7 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
          <wsdl:output name="getDomainUserlistGsoapResponse">
 
-            <wsdlsoap:body namespace="http://ma.mail.cntv.cn/axis/xmapi" use="literal"/>
+            <wsdlsoap:body namespace="http://ma.263.net/axis/xmapi" use="literal"/>
 
          </wsdl:output>
 
@@ -2361,7 +2361,7 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
          <wsdl:output name="getDomainUserlistLengthGsoapResponse">
 
-            <wsdlsoap:body namespace="http://ma.mail.cntv.cn/axis/xmapi" use="literal"/>
+            <wsdlsoap:body namespace="http://ma.263.net/axis/xmapi" use="literal"/>
 
          </wsdl:output>
 
@@ -2379,7 +2379,7 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
          <wsdl:output name="getSaasDomainUserlistResponse">
 
-            <wsdlsoap:body namespace="http://ma.mail.cntv.cn/axis/xmapi" use="literal"/>
+            <wsdlsoap:body namespace="http://ma.263.net/axis/xmapi" use="literal"/>
 
          </wsdl:output>
 
@@ -2397,7 +2397,7 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
          <wsdl:output name="getUserInfo_NewResponse">
 
-            <wsdlsoap:body namespace="http://ma.mail.cntv.cn/axis/xmapi" use="literal"/>
+            <wsdlsoap:body namespace="http://ma.263.net/axis/xmapi" use="literal"/>
 
          </wsdl:output>
 
@@ -2415,7 +2415,7 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
          <wsdl:output name="getDisGroupUserResponse">
 
-            <wsdlsoap:body namespace="http://ma.mail.cntv.cn/axis/xmapi" use="literal"/>
+            <wsdlsoap:body namespace="http://ma.263.net/axis/xmapi" use="literal"/>
 
          </wsdl:output>
 
@@ -2427,7 +2427,7 @@ Built on Apr 22, 2006 (06:55:48 PDT)-->
 
       <wsdl:port binding="impl:xmapiSoapBinding" name="xmapi">
 
-         <wsdlsoap:address location="http://macom.263.net/axis/xmapi"/>
+         <wsdlsoap:address location="http://ma.263.net/axis/xmapi"/>
 
       </wsdl:port>
 

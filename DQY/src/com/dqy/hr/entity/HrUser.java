@@ -45,6 +45,10 @@ public class HrUser extends IdEntity implements Tracker {
 
     private String workArea;
 
+    private String userEmail;
+
+    private String emailPwd;
+
     private Date created;
 
     private String createdBy;
@@ -208,6 +212,24 @@ public class HrUser extends IdEntity implements Tracker {
 
     public void setWorkArea(String workArea) {
         this.workArea = workArea;
+    }
+
+    @Column(name = "USER_EMAIL" )
+    public String getUserEmail() {
+        return userEmail;
+    }
+
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
+    }
+
+    @Column(name = "EMAIL_PWD")
+    public String getEmailPwd() {
+        return emailPwd;
+    }
+
+    public void setEmailPwd(String emailPwd) {
+        this.emailPwd = emailPwd;
     }
 
     @Transient

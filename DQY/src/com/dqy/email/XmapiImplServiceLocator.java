@@ -22,7 +22,7 @@ public class XmapiImplServiceLocator extends org.apache.axis.client.Service impl
     }
 
     // Use to get a proxy class for xmapi
-    private String xmapi_address = "http://macom.263.net/axis/xmapi";
+    private String xmapi_address = "http://ma.263.net/axis/xmapi";
 
     public String getxmapiAddress() {
         return xmapi_address;
@@ -105,7 +105,7 @@ public class XmapiImplServiceLocator extends org.apache.axis.client.Service impl
     }
 
     public javax.xml.namespace.QName getServiceName() {
-        return new javax.xml.namespace.QName("http://ma.mail.cntv.cn/axis/xmapi", "XmapiImplService");
+        return new javax.xml.namespace.QName("http://ma.263.net/axis/xmapi", "XmapiImplService");
     }
 
     private java.util.HashSet ports = null;
@@ -113,7 +113,7 @@ public class XmapiImplServiceLocator extends org.apache.axis.client.Service impl
     public java.util.Iterator getPorts() {
         if (ports == null) {
             ports = new java.util.HashSet();
-            ports.add(new javax.xml.namespace.QName("http://ma.mail.cntv.cn/axis/xmapi", "xmapi"));
+            ports.add(new javax.xml.namespace.QName("http://ma.263.net/axis/xmapi", "xmapi"));
         }
         return ports.iterator();
     }
