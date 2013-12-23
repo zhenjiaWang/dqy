@@ -96,8 +96,8 @@ public class HrUserService extends HQuery {
     }
 
     @Transactional(type = TransactionType.READ_WRITE)
-    public Integer getCountUserByEntryDate(Long orgId, Long groupId, Date entryDate) {
-        return $($eq("groupId.id", groupId),$eq("orgId.id", orgId), $eq("entryDate", entryDate),
+    public Integer getCountUserByEntryDate(Long orgId, Long groupId, Date startDate,Date endDate) {
+        return $($eq("groupId.id", groupId),$eq("orgId.id", orgId), $ge("entryDate", startDate),$le("entryDate", endDate),
                 $count("id")).value(HrUser.class, Integer.class);
     }
 

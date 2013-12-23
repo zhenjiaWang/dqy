@@ -120,7 +120,7 @@ public class HrUserAction extends ActionSupport<HrUser> {
             if (StringUtils.isNotBlank(keyword)) {
                 selectorList.add(SelectorUtils.$or(SelectorUtils.$like("userName", keyword), SelectorUtils.$like("userNo", keyword)));
             }
-            selectorList.add(SelectorUtils.$order("deptId.deptNo"));
+            selectorList.add(SelectorUtils.$order("userNo",false));
         }
         return selectorList;
     }
@@ -253,13 +253,23 @@ public class HrUserAction extends ActionSupport<HrUser> {
                 Date entryDate = hrUser.getEntryDate();
                 if (entryDate != null) {
                     if (StringUtils.isBlank(hrUser.getUserNo())) {
-                        Integer entryCount = this.hrUserService.getCountUserByEntryDate(userInfo.getOrgId(), userInfo.getGroupId(), entryDate);
+                        Integer year = DateFormatUtil.getDayInYear(entryDate);
+                        Integer month = DateFormatUtil.getDayInMonth(entryDate) + 1;
+                        String monthStr=null;
+                        if (month.intValue() < 10) {
+                            monthStr = "0" + month;
+                        } else {
+                            monthStr =  "" + month;
+                        }
+                        String startDateStr=year+"-"+monthStr+"-01";
+                        String endDateStr=year+"-"+monthStr+"-31";
+                        Date startDate=DateFormatUtil.parse(startDateStr,DateFormatUtil.YEAR_MONTH_DAY_PATTERN);
+                        Date endDate=DateFormatUtil.parse(endDateStr,DateFormatUtil.YEAR_MONTH_DAY_PATTERN);
+                        Integer entryCount = this.hrUserService.getCountUserByEntryDate(userInfo.getOrgId(), userInfo.getGroupId(), startDate,endDate);
                         if (entryCount == null) {
                             entryCount = 0;
                         }
                         entryCount += 1;
-                        Integer year = DateFormatUtil.getDayInYear(entryDate);
-                        Integer month = DateFormatUtil.getDayInMonth(entryDate) + 1;
                         String yearStr = year.toString();
                         if (StringUtils.isNotBlank(yearStr)) {
                             yearStr = yearStr.substring(2);
@@ -297,6 +307,7 @@ public class HrUserAction extends ActionSupport<HrUser> {
                         hrUser.setGroupId(sysOrgGroup);
                     }
                     hrUser.setUseYn("Y");
+                    hrUser.setUserPwd("111111");
                     bind(hrUser);
                     hrUserDetail = new HrUserDetail();
                     hrUserDetail.setUserId(hrUser);

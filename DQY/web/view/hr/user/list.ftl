@@ -66,7 +66,13 @@
                     <td>${user.userName?if_exists}</td>
                     <td><div class="txt_hidden">${(user.jobName)?if_exists}</div></td>
                     <td><div class="txt_hidden">${(user.deptId.deptName)?if_exists}</div></td>
-                    <td><div class="txt_hidden">${(user.userEmail)?if_exists}@dqy.com.cn</div></td>
+                    <td><div class="txt_hidden">
+                        <#if user.userEmail?exists>
+                        ${(user.userEmail)?if_exists}@dqy.com.cn
+                        <#else >
+                            暂无
+                        </#if>
+                    </div></td>
                     <td style="text-align: center;">
                         <span style="cursor: pointer;" class="viewUser"  uid="${user.id?c}"><i class="icon-user"></i>查看</span>
                     </td>
