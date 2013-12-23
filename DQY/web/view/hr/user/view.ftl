@@ -251,9 +251,13 @@
                     <span title="${(authorized.roleName)?if_exists}">${(authorized.roleName)?if_exists}</span>
                     </td>
                     <td style="text-align: center;">
-                        <a href="###" title="增加角色" uid="${authorized.id?c}" class="addRole"><i class="icon-plus"></i>设置权限</a>
-                        <#if (authorized.orgId.id)!=(hrUser.orgId.id)&&(authorized.groupId.id)==(hrUser.groupId.id)>
-                            <a href="###" title="删除" uid="${authorized.id?c}" class="deleteAuthorized"><i class="icon-trash"></i> 删除</a>
+                        <#if roleId?exists>
+                            <#if roleId?contains("SYS_AUTHORIZED")>
+                                <a href="###" title="增加角色" uid="${authorized.id?c}" class="addRole"><i class="icon-plus"></i>设置权限</a>
+                                <#if (authorized.orgId.id)!=(hrUser.orgId.id)&&(authorized.groupId.id)==(hrUser.groupId.id)>
+                                    <a href="###" title="删除" uid="${authorized.id?c}" class="deleteAuthorized"><i class="icon-trash"></i> 删除</a>
+                                </#if>
+                            </#if>
                         </#if>
                     </td>
                 </tr>
