@@ -59,6 +59,13 @@
             $('#changePwd').off('click').on('click',function(){
                 WEBUTILS.popWindow.createPopWindow(550, null, '设置密码', '/hr/user!changePwd.dhtml?id=${userInfo['userId']?c}');
             });
+            $('#changeEmailPwd').off('click').on('click',function(){
+                <#if userInfo['userEmail']?exists>
+                    WEBUTILS.popWindow.createPopWindow(550, null, '设置邮箱密码', '/hr/user!changeEmailPwd.dhtml?id=${userInfo['userId']?c}');
+                <#else >
+                alert("暂未开通邮箱，无法修改密码!");
+                </#if>
+            });
         });
     </script>
     <div class="container">
@@ -109,7 +116,13 @@
                     </ul>
                 </div>
                 <p class="clearfix mart20 p-top5 font12 aligncenter">
-                    <a href="##" id="changePwd"><em class="dqy-ico dqy-ico-set"></em>密码修改</a> |
+                    <span>
+                       <em class="dqy-ico dqy-ico-set"></em>修改密码 |
+                       <font class="alignleft">
+                           <a href="##" id="changePwd">OA密码</a>
+                           <a href="##" id="changeEmailPwd">邮箱密码</a>
+                       </font>
+                    </span>
                     <a href="/common/login!logout.dhtml"><em class="dqy-ico dqy-ico-out"></em>退出登录</a>
                 </p>
             </div>

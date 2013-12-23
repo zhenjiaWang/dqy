@@ -46,7 +46,7 @@
             <tr>
                 <th>预支金额</th>
                 <td>
-                ${(wfReqAdvanceAccount.amount)?double}
+                ${(wfReqAdvanceAccount.amount)?c}
                 </td>
                 <th width="80">支付方式</th>
                 <td>

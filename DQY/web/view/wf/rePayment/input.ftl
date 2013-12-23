@@ -500,7 +500,7 @@ $(document).ready(function () {
                         <#if reqAdvanceAccountList?exists&&reqAdvanceAccountList?size gt 0>
                             <#list reqAdvanceAccountList as advance>
                                 <option value="${advance.id?c}">${(advance.reqId.subject)?if_exists}
-                                    &nbsp;&nbsp;已还款金额:${advance.reAmount?double}</option>
+                                    &nbsp;&nbsp;已还款金额:${advance.reAmount?c}</option>
                             </#list>
                         <#else >
                             <option value="0">没有未还款的预支申请 暂时无法选择</option>

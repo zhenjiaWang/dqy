@@ -193,13 +193,15 @@
                         <#assign userInfo=Session["userSession"]?if_exists>
                         <#assign roleId=userInfo["roleId"]?if_exists>
                         <#if roleId?exists>
-                            <#if roleId?contains("EMAIL_ADMIN")>
+                            <#if roleId?contains("EMAIL_CD")>
                                 <#if hrUser.userEmail?exists>
                                     <button class="btn btn-primary" type="button" id="deleteEmailBtn">删除邮箱</button>
-                                    <button class="btn btn-primary" type="button" id="passwordEmailBtn">更改邮箱密码</button>
                                 <#else >
                                     <button class="btn btn-primary" type="button" id="createEmailBtn">创建邮箱</button>
                                 </#if>
+                            </#if>
+                            <#if roleId?contains("EMAIL_PWD")>
+                                <button class="btn btn-primary" type="button" id="passwordEmailBtn">更改邮箱密码</button>
                             </#if>
                         </#if>
                     </#if>

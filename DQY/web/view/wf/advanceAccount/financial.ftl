@@ -111,7 +111,7 @@
                                    style="width: 60px;color: #898989;">预支金额</label>
 
                             <div class="controls" style="margin-left: 70px;*margin-left:0;">
-                                <label style="margin-top: 5px;padding-left:5px;font-size: 12px;">${(wfReqAdvanceAccount.amount)?double}</label>
+                                <label style="margin-top: 5px;padding-left:5px;font-size: 12px;">${(wfReqAdvanceAccount.amount)?c}</label>
                             </div>
                         </div>
                     </td>

@@ -99,6 +99,7 @@ public class LoginAction extends BaseAction {
                     userInfo.setOrgId(hrUser.getOrgId().getId());
                     userInfo.setOrgName(get(hrUser, "orgId.orgName"));
                     userInfo.setOrgNo(get(hrUser, "orgId.orgNo"));
+                    userInfo.setUserEmail(hrUser.getUserEmail());
                     userInfo.setAuthorize(true);
 
 

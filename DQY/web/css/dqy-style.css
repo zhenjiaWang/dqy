@@ -76,8 +76,11 @@ a.triangle{display:inline-block;border-width:6px;border-color:#95c42d #f9f9f9  #
 .search-box ul li a:hover{padding-left:7px;}
 .search-box.current a.triangle{border-color:#f9f9f9 #f9f9f9 #95c42d #f9f9f9;top:2px;}
 .search-box.current ul{display: block;}
-.top-bar p.font14 a{color:#666666;line-height: 20px;}
-.top-bar p.font14 a:hover{text-decoration: underline;}
+.top-bar p.font12 a,.top-bar p.font14 span{color:#666666;line-height: 20px;position:relative;}
+.top-bar p.font12 a:hover{text-decoration: underline;}
+.top-bar p.font12 span font{position:absolute;display:none;border:1px solid #8FC120;width:91px;background:url("../images/cssimg/cur-bg.png") repeat-x bottom center;top:50px;left:25px;padding:20px 0 5px 0;}
+.top-bar p.font12 span font a{display:block;line-height:12px;padding:7px 0 0 27px;}
+.top-bar p.font12 span:hover font{display:block}
 .choosed{display:block;width:160px;height:20px;overflow: hidden;}
 .left-count{width:546px;}
 .right-count{width:184px;}
@@ -184,11 +187,11 @@ table.nopadding{border-left:0;}
 table.nopadding tr td{padding:0 10px;height: 35px;line-height: 35px;}
 .scroll-x{width:800px;height: 500px;border:1px solid #ccc;border-width:1px;}
 .scroll-x table{position: relative;top:-1px;left:-1px;}
-.scroll-x table,.scroll-x .table-scroll{width:1631px;}
+.scroll-x table,.scroll-x .table-scroll{width:1400px;}
 td .dqy-eidt{position: relative;top:1px;*top:0;}
 /*2013-09-22*/
 .weather{height:40px;}
-.modal-header{padding:3px 0;border-bottom:none;*padding:0;}
+.modal-header{padding:3px 0;border-bottom:none;}
 .close{margin-right:10px;}
 .modal-footer{padding:10px;}
 .modal{width:400px;margin-left:-200px;top:35%;}
@@ -269,32 +272,11 @@ table.print-table td,table.print-table th{border:1px solid #000;line-height: 30p
 .print-title{width:600px;}
 /*2013-11-23*/
 .scroll-x{padding-top:37px;position: relative;overflow-x:scroll;}
-.scroll-x-inner{width:1631px;height:480px;overflow:hidden;overflow-y:auto;}
-.top-fied{width:1631px;position:absolute;left:0;top:0;padding-right:16px;}
-.top-fied table{width:1631px;}
+.scroll-x-inner{width:1610px;height:480px;overflow:hidden;overflow-y:scroll;}
+.top-fied{width:1594px;position:absolute;left:0;top:0;padding-right:16px;}
+.top-fied table{width:1594px;}
 .top-fied table td{padding:0 10px!important;}
-.titlepop{
-    background-color: #FFFFFF;
-    border-radius: 6px;
-    position: absolute;
-    width: 200px;
-}
-.titlepop ul.dropdown-menu {
-    display: block;
-    float: none;
-    position: inherit;
-    width: 90%;
-}
-.titlepop ul {
-    margin-left: 5px;
-}
-.titlepop ul li {
-    line-height: 25px;
-    list-style-type: none;
-}
-.nomar {
-    margin: 0 !important;
-}
+
 
 
 

@@ -20,7 +20,7 @@
                 <td>${(daily.expenseDept.deptName)?if_exists}</td>
                 <td>${(daily.expenseType.expenseType)?if_exists}</td>
                 <td>${(daily.expenseTitle.titleName)?if_exists}</td>
-                <td>${daily.amount?double}</td>
+                <td>${daily.amount?c}</td>
                 <td style="text-align: left;">
                     ${daily.remarks?if_exists}
                 </td>
@@ -33,7 +33,7 @@
                 <td>${(daily.expenseDept.deptName)?if_exists}</td>
                 <td>${(daily.expenseType.expenseType)?if_exists}</td>
                 <td>${(daily.expenseTitle.titleName)?if_exists}</td>
-                <td>${daily.amount?double}</td>
+                <td>${daily.amount?c}</td>
                 <td style="text-align: left;">
                 ${daily.remarks?if_exists}
                 </td>

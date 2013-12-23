@@ -52,7 +52,7 @@
             <tr>
                 <th>还款金额</th>
                 <td>
-                ${(wfReqRePayment.amount)?double}
+                ${(wfReqRePayment.amount)?c}
                 </td>
                 <th width="80">支付方式</th>
                 <td>
@@ -124,7 +124,7 @@
                     <td>${(detail.expenseType.expenseType)?if_exists}</td>
                     <td>${(detail.expenseTitle.titleName)?if_exists}</td>
                     <td>${detail.amountDate?string("yyyy-MM-dd")}</td>
-                    <td>${detail.amount?double}</td>
+                    <td>${detail.amount?c}</td>
                     <td>${detail.remarks?if_exists}</td>
                 </tr>
                 </#list>

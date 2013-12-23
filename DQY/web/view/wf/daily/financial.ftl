@@ -154,7 +154,7 @@
                                        style="width: 60px;color: #898989;">报销金额</label>
 
                                 <div class="controls" style="margin-left: 70px;*margin-left:0;">
-                                    <label style="margin-top: 5px;padding-left:5px;font-size: 12px;">${(wfReqDaily.amount)?double}</label>
+                                    <label style="margin-top: 5px;padding-left:5px;font-size: 12px;">${(wfReqDaily.amount)?c}</label>
                                 </div>
                             </div>
                         </td>
@@ -164,7 +164,7 @@
                                        style="width: 60px;color: #898989;">实际花费</label>
 
                                 <div class="controls" style="margin-left: 70px;*margin-left:0;">
-                                    <label style="margin-top: 5px;padding-left:5px;font-size: 12px;">${(wfReqDaily.trueAmount)?double}</label>
+                                    <label style="margin-top: 5px;padding-left:5px;font-size: 12px;">${(wfReqDaily.trueAmount)?c}</label>
                                 </div>
                             </div>
                         </td>
@@ -177,7 +177,7 @@
                                        style="width: 60px;color: #898989;">报销金额</label>
 
                                 <div class="controls" style="margin-left: 70px;*margin-left:0;">
-                                    <label style="margin-top: 5px;padding-left:5px;font-size: 12px;">${(wfReqDaily.amount)?double}</label>
+                                    <label style="margin-top: 5px;padding-left:5px;font-size: 12px;">${(wfReqDaily.amount)?c}</label>
                                 </div>
                             </div>
                         </td>
@@ -222,7 +222,7 @@
                                         <td>${(detail.expenseType.expenseType)?if_exists}</td>
                                         <td>${(detail.expenseTitle.titleName)?if_exists}</td>
                                         <td>${detail.amountDate?string("yyyy-MM-dd")}</td>
-                                        <td>${detail.amount?double}</td>
+                                        <td>${detail.amount?c}</td>
                                         <td>${detail.remarks?if_exists}</td>
                                     </tr>
                                     </#list>
@@ -254,7 +254,7 @@
                                         <td>${(detail.expenseType.expenseType)?if_exists}</td>
                                         <td>${(detail.expenseTitle.titleName)?if_exists}</td>
                                         <td>${detail.amountDate?string("yyyy-MM-dd")}</td>
-                                        <td>${detail.amount?double}</td>
+                                        <td>${detail.amount?c}</td>
                                         <td>${detail.remarks?if_exists}</td>
                                     </tr>
                                     </#list>

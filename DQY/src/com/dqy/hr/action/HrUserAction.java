@@ -150,7 +150,8 @@ public class HrUserAction extends ActionSupport<HrUser> {
                     roleNameMap.put("SET_BUDGET", "预算填报");
                     roleNameMap.put("APPROVE_BUDGET", "预算审核");
                     roleNameMap.put("TASK_FINANCIAL", "财务审批");
-                    roleNameMap.put("EMAIL_ADMIN", "邮箱管理");
+                    roleNameMap.put("EMAIL_CD", "邮箱管理");
+                    roleNameMap.put("EMAIL_PWD", "邮箱密码");
                     roleNameMap.put("GENERAL", "普通用户");
 
                     for (SysAuthorized authorized : authorizedList) {

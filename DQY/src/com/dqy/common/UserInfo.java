@@ -57,6 +57,8 @@ public class UserInfo implements Serializable {
     private String department;
 
     private Long departmentId;
+
+    private String userEmail;
     
     private String job;
     
@@ -364,5 +366,13 @@ public class UserInfo implements Serializable {
 
     public void setTopMenuSys(Integer topMenuSys) {
         this.topMenuSys = topMenuSys;
+    }
+
+    public String getUserEmail() {
+        return userEmail;
+    }
+
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
     }
 }

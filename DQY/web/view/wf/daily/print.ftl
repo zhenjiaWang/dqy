@@ -62,7 +62,7 @@
             <tr>
                 <th>报销金额</th>
                 <td colspan="3">
-                ${(wfReqDaily.amount)?double}
+                ${(wfReqDaily.amount)?c}
                 </td>
             </tr>
             <tr>
@@ -101,7 +101,7 @@
                     <td>${(detail.expenseType.expenseType)?if_exists}</td>
                     <td>${(detail.expenseTitle.titleName)?if_exists}</td>
                     <td>${detail.amountDate?string("yyyy-MM-dd")}</td>
-                    <td>${detail.amount?double}</td>
+                    <td>${detail.amount?c}</td>
                     <td>${detail.remarks?if_exists}</td>
                 </tr>
                 </#list>

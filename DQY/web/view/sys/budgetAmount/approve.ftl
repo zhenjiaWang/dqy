@@ -478,7 +478,7 @@
                                 &nbsp;&nbsp;
                             </#list>
                         </#if>
-                    ${dept.deptName?if_exists}(年预算:${dept.budgetAmount?double})
+                    ${dept.deptName?if_exists}(年预算:${dept.budgetAmount?c})
                     </option>
                 </#list>
             </#if>
