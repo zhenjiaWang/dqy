@@ -204,15 +204,19 @@
                                 <button class="btn btn-primary" type="button" id="passwordEmailBtn">更改邮箱密码</button>
                             </#if>
                         </#if>
+                        <#if !isPassword>
+                            <button class="btn btn-primary" type="button" id="passwordBtn">设置密码</button>
+                        <#else >
+                            <button class="btn btn-primary" type="button" id="passwordBtn">更改密码</button>
+                        </#if>
+                        <#if isAuthorized>
+                            <#if roleId?exists>
+                                <#if roleId?contains("SYS_AUTHORIZED")>
+                                    <button class="btn btn-success" type="button" id="authorizedBtn">授权机构</button>
+                                </#if>
+                            </#if>
+                        </#if>
                     </#if>
-                <#if !isPassword>
-                    <button class="btn btn-primary" type="button" id="passwordBtn">设置密码</button>
-                <#else >
-                    <button class="btn btn-primary" type="button" id="passwordBtn">更改密码</button>
-                </#if>
-                <#if isAuthorized>
-                    <button class="btn btn-success" type="button" id="authorizedBtn">授权机构</button>
-                </#if>
             </td>
         </tr>
         </thead>

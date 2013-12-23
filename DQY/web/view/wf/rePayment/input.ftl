@@ -499,7 +499,7 @@ $(document).ready(function () {
                             name="wfReqRePayment.advanceId.id">
                         <#if reqAdvanceAccountList?exists&&reqAdvanceAccountList?size gt 0>
                             <#list reqAdvanceAccountList as advance>
-                                <option value="${advance.id?c}">${(advance.reqId.subject)?if_exists}
+                                <option value="${advance.id?c}">${(advance.reqId.subject)?if_exists} 预支金额(${advance.amount?c})
                                     &nbsp;&nbsp;已还款金额:${advance.reAmount?c}</option>
                             </#list>
                         <#else >
