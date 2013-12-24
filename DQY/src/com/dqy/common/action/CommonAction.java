@@ -334,6 +334,7 @@ public class CommonAction extends BaseAction {
                     if (userList != null && !userList.isEmpty()) {
                         boolean flag=true;
                         for (HrUser hrUser : userList) {
+                            flag=true;
                             if(StringUtils.isNotBlank(notMe)){
                                 if(hrUser.getId().equals(userInfo.getUserId())){
                                     flag=false;
