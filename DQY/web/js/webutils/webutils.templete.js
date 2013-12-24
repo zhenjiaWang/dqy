@@ -321,7 +321,7 @@ var rePaymentDetail='<tr seq="{seq}" class="detailTr">' +
     '<input type="text" class="int1 width-100" id="date{seq}" name="date{seq}" >' +
     '</div>' +
     '</td>' +
-    '<td><input type="text" class="int1 width-70 amt" id="amount{seq}" name="amount{seq}" value="0.00"></td>' +
+    '<td><input type="text" class="int1 width-70 amt" id="amount{seq}" name="amount{seq}" value="0.00" style="ime-mode:disabled"></td>' +
     '<td><input type="text" class="int1 " style="width: 95%;" id="remarks{seq}" name="remarks{seq}"></td>' +
     '</tr>';
 var rePaymentDetailTrue='<tr seq="{seq}" class="detailTr{type}" type="{type}">' +
@@ -336,7 +336,7 @@ var rePaymentDetailTrue='<tr seq="{seq}" class="detailTr{type}" type="{type}">' 
     '<input type="text" class="int1 width-100" id="date{seq}_{type}" name="date{seq}_{type}" >' +
     '</div>' +
     '</td>' +
-    '<td><input type="text" class="int1 width-70 amt{type}" id="amount{seq}_{type}" name="amount{seq}_{type}" value="0.00"></td>' +
+    '<td><input type="text" class="int1 width-70 amt{type}" id="amount{seq}_{type}" name="amount{seq}_{type}" value="0.00" style="ime-mode:disabled"></td>' +
     '<td><input type="text" class="int1 " style="width: 95%;" id="remarks{seq}_{type}" name="remarks{seq}_{type}"></td>' +
     '</tr>';
 

@@ -29,7 +29,7 @@
             var typeId=$(this).attr('typeId');
             var titleNo=$(this).attr('titleNo');
             var month=$(this).attr('month');
-            WEBUTILS.popWindow.createPopWindow(800, 600, '费用明细', '/sys/budgetAmount!monitorList.dhtml?currentYear='+currentYear+
+            WEBUTILS.popWindow.createPopWindow(800, 450, '费用明细', '/sys/budgetAmount!monitorList.dhtml?currentYear='+currentYear+
             '&typeId='+typeId+'&titleNo='+titleNo+'&month='+month+'&deptId='+deptId);
         });
 

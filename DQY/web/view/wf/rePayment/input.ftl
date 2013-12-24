@@ -656,7 +656,7 @@ $(document).ready(function () {
                             <input type="text" class="int1 width-100" id="date1" name="date1">
                         </div>
                     </td>
-                    <td><input type="text" class="int1 width-70 amt" id="amount1" name="amount1" value="0.00"></td>
+                    <td><input type="text" class="int1 width-70 amt" id="amount1" name="amount1" value="0.00" style="ime-mode:disabled"></td>
                     <td><input type="text" class="int1 " style="width: 95%;" id="remarks1" name="remarks1"></td>
                 </tr>
                 </tbody>

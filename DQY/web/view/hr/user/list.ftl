@@ -22,7 +22,7 @@
             }
         });
         $('#newBtn').off('click').on('click', function () {
-            WEBUTILS.popWindow.createPopWindow(800, 600, '新增用户', '/hr/user!input.dhtml');
+            WEBUTILS.popWindow.createPopWindow(800, 450, '新增用户', '/hr/user!input.dhtml');
         });
         $('#searchBtn').off('click').on('click', function () {
             pagerAction(0,10);

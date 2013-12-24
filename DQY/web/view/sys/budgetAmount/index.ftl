@@ -598,7 +598,7 @@
                                     </td>
                                     <#list 1..12 as c>
                                         <td width="100">
-                                            <input type="text" id="amount${int?c}_${c?c}" name="amount${int?c}_${c?c}" class="int1 width-70 amt" value="0.00"/>
+                                            <input type="text" id="amount${int?c}_${c?c}" name="amount${int?c}_${c?c}" class="int1 width-70 amt" value="0.00" style="ime-mode:disabled"/>
                                         </td>
                                     </#list>
                                 </tr>
@@ -630,7 +630,7 @@
                                     </td>
                                     <#list 1..12 as c>
                                         <td width="100">
-                                            <input type="text" id="amount${int?c}_${c?c}" name="amount${int?c}_${c?c}" class="int1 width-70 amt" value="0.00"/>
+                                            <input type="text" id="amount${int?c}_${c?c}" name="amount${int?c}_${c?c}" class="int1 width-70 amt" value="0.00" style="ime-mode:disabled"/>
                                         </td>
                                     </#list>
                                 </tr>

@@ -287,7 +287,7 @@
                                    style="width: 60px;color: #898989;">预支金额</label>
 
                             <div class="controls" style="margin-left: 70px;*margin-left:0;">
-                                <input type="text" id="wfReqAdvanceAccount.amount" name="wfReqAdvanceAccount.amount" placeholder="预支金额" maxlength="10">
+                                <input type="text" onfocus=" this.style.imeMode='disabled' "  id="wfReqAdvanceAccount.amount" name="wfReqAdvanceAccount.amount" placeholder="预支金额" maxlength="10">
                                 <span class="help-inline"></span>
                             </div>
                         </div>

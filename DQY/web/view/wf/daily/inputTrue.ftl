@@ -654,7 +654,7 @@
                                         <input type="text" class="int1 width-100" id="date1_1" name="date1_1" >
                                     </div>
                                 </td>
-                                <td><input type="text" class="int1 width-70 amt1" id="amount1_1" name="amount1_1" value="0.00"></td>
+                                <td><input type="text" class="int1 width-70 amt1" id="amount1_1" name="amount1_1" value="0.00" style="ime-mode:disabled"></td>
                                 <td><input type="text" class="int1 " style="width: 95%;" id="remarks1_1" name="remarks1_1"></td>
                             </tr>
                             </tbody>
@@ -713,7 +713,7 @@
                                         <input type="text" class="int1 width-100" id="date1_2" name="date1_2" >
                                     </div>
                                 </td>
-                                <td><input type="text" class="int1 width-70 amt2" id="amount1_2" name="amount1_2" value="0.00"></td>
+                                <td><input type="text" class="int1 width-70 amt2" id="amount1_2" name="amount1_2" value="0.00" style="ime-mode:disabled"></td>
                                 <td><input type="text" class="int1 " style="width: 95%;" id="remarks1_2" name="remarks1_2"></td>
                             </tr>
                             </tbody>

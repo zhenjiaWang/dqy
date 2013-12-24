@@ -39,7 +39,7 @@
         $('.addDept').off('click').on('click', function () {
             var uid = $(this).attr('uid');
             if (uid) {
-                WEBUTILS.popWindow.createPopWindow(550, 450, '指派部门', '/sys/authorized!dept.dhtml?id='+uid);
+                WEBUTILS.popWindow.createPopWindow(550, 350, '指派部门', '/sys/authorized!dept.dhtml?id='+uid);
             }
         });
         $('.editDept').off('click').on('click', function () {
