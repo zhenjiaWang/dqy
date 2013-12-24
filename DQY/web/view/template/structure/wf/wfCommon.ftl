@@ -46,11 +46,10 @@
                     </#if>
                     <#if userInfo.taskUnRead gt 0 ||userInfo.taskUnApprove gt 0>
                         $('.myTask','.side-left-in').find('a.cur').append('<span class="ts"></span>');
-                        <#if userInfo.taskUnApprove gt 0>
-                            $('.approve','.side-left-in').find('a').append('<span class="badge badge-important marl10">${userInfo.taskUnApprove?c}</span>');
-                        </#if>
                         <#if userInfo.taskUnRead gt 0>
                             $('.approve','.side-left-in').find('a').append('<span class="badge badge-important marl10">${userInfo.taskUnRead?c}</span>');
+                        <#elseif userInfo.taskUnApprove gt 0>
+                            $('.approve','.side-left-in').find('a').append('<span class="badge badge-important marl10">${userInfo.taskUnApprove?c}</span>');
                         </#if>
                     </#if>
                 </#if>

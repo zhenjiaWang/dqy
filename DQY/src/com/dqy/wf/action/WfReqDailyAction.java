@@ -13,6 +13,7 @@ import com.dqy.sys.service.SysOrgService;
 import com.dqy.wf.entity.*;
 import com.dqy.wf.service.*;
 import com.google.inject.Inject;
+import net.sf.json.JSONObject;
 import org.guiceside.commons.TimeUtils;
 import org.guiceside.commons.lang.DateFormatUtil;
 import org.guiceside.commons.lang.StringUtils;
@@ -140,6 +141,10 @@ public class WfReqDailyAction extends WfReqSupportAction<WfReqDaily> {
     private String trueAmount;
 
     @ReqSet
+    private Integer currentYear;
+
+
+    @ReqSet
     private List<WfReqAtt> reqAttList;
 
 
@@ -157,6 +162,9 @@ public class WfReqDailyAction extends WfReqSupportAction<WfReqDaily> {
 
     @ReqSet
     private String applyName;
+
+    @ReqSet
+    private List<Integer> yearList;
 
 
     @Override
@@ -181,51 +189,22 @@ public class WfReqDailyAction extends WfReqSupportAction<WfReqDaily> {
             selectorList.add(SelectorUtils.$order("titleName"));
             selectorList.add(SelectorUtils.$eq("useYn","Y"));
             titleList= this.sysBudgetTitleService.getAllList(selectorList);
-
-            HrDepartment hrDepartment=this.hrDepartmentService.getById(userInfo.getDepartmentId());
-            Date cudDate=DateFormatUtil.getCurrentDate(false);
-            Integer currentYear=DateFormatUtil.getDayInYear(cudDate);
-            if(hrDepartment!=null&&currentYear!=null){
-                totalAmount=sysBudgetAmountService.geTotalAmount(userInfo.getOrgId(),currentYear,hrDepartment.getId());
-                if(totalAmount==null){
-                    totalAmount=0.00d;
-                }
-                String startDateStr=currentYear+"-01-01 00:00:01";
-                String endDateStr=currentYear+"-12-31 23:23:59";
-                Date startDate=DateFormatUtil.parse(startDateStr,DateFormatUtil.YMDHMS_PATTERN);
-                Date endDate=DateFormatUtil.parse(endDateStr,DateFormatUtil.YMDHMS_PATTERN);
-                Double dailyIng=this.wfReqDailyDetailService.getSumAmountByIng(userInfo.getOrgId(),hrDepartment.getId(),startDate,endDate);
-                Double dailyPass=this.wfReqDailyDetailService.getSumAmountByPass(userInfo.getOrgId(),hrDepartment.getId(),startDate,endDate);
-
-                Double rePaymentIng=this.wfReqRePaymentDetailService.getSumAmountByIng(userInfo.getOrgId(),hrDepartment.getId(),startDate,endDate);
-                Double rePaymentPass=this.wfReqRePaymentDetailService.getSumAmountByPass(userInfo.getOrgId(),hrDepartment.getId(),startDate,endDate);
-                if(dailyIng==null){
-                    dailyIng=0.00d;
-                }
-                if(dailyPass==null){
-                    dailyPass=0.00d;
-                }
-                if(rePaymentIng==null){
-                    rePaymentIng=0.00d;
-                }
-                if(rePaymentPass==null){
-                    rePaymentPass=0.00d;
-                }
-                totalIngAmount=dailyIng+rePaymentIng;
-
-                totalPassAmount=dailyPass+rePaymentPass;
-
-                remnantAmount=totalPassAmount-totalAmount;
-                if(remnantAmount.doubleValue()<0){
-                    remnantAmount=0.00d;
-                }
+            Date currentDate = DateFormatUtil.getCurrentDate(false);
+            if (currentYear == null) {
+                currentYear = DateFormatUtil.getDayInYear(currentDate);
             }
+            yearList = new ArrayList<Integer>();
+            yearList.add(currentYear - 1);
+            yearList.add(currentYear);
+            yearList.add(currentYear + 1);
         }
         if(StringUtils.isNotBlank(trueAmount)){
             return "true";
         }
         return "success";  //To change body of implemented methods use File | Settings | File Templates.
     }
+
+
 
 
     @PageFlow(result = {@Result(name = "success", path = "/wf/req!ingList.dhtml", type = Dispatcher.Redirect)})
@@ -427,7 +406,7 @@ public class WfReqDailyAction extends WfReqSupportAction<WfReqDaily> {
 
                     HrDepartment hrDepartment=wfReq.getUserId().getDeptId();
                     if(hrDepartment!=null){
-                        totalBudgetAmount(hrDepartment,wfReq.getSendDate(),userInfo);
+                        totalBudgetAmount(hrDepartment,wfReqDaily.getBudgetYear(),userInfo);
                     }
                 }
             }
@@ -454,7 +433,7 @@ public class WfReqDailyAction extends WfReqSupportAction<WfReqDaily> {
 
                     HrDepartment hrDepartment=wfReq.getUserId().getDeptId();
                     if(hrDepartment!=null){
-                        totalBudgetAmount(hrDepartment,wfReq.getSendDate(),userInfo);
+                        totalBudgetAmount(hrDepartment,wfReqDaily.getBudgetYear(),userInfo);
                     }
                 }
             }
@@ -462,15 +441,14 @@ public class WfReqDailyAction extends WfReqSupportAction<WfReqDaily> {
         return "success";
     }
 
-    private void totalBudgetAmount(HrDepartment hrDepartment,Date cudDate,UserInfo userInfo){
-        Integer currentYear=DateFormatUtil.getDayInYear(cudDate);
-        if(hrDepartment!=null&&currentYear!=null){
-            totalAmount=sysBudgetAmountService.geTotalAmount(userInfo.getOrgId(),currentYear,hrDepartment.getId());
+    private void totalBudgetAmount(HrDepartment hrDepartment,Integer budgetYear,UserInfo userInfo){
+        if(hrDepartment!=null&&budgetYear!=null){
+            totalAmount=sysBudgetAmountService.geTotalAmount(userInfo.getOrgId(),budgetYear,hrDepartment.getId());
             if(totalAmount==null){
                 totalAmount=0.00d;
             }
-            String startDateStr=currentYear+"-01-01 00:00:01";
-            String endDateStr=currentYear+"-12-31 23:23:59";
+            String startDateStr=budgetYear+"-01-01 00:00:01";
+            String endDateStr=budgetYear+"-12-31 23:23:59";
             Date startDate=DateFormatUtil.parse(startDateStr,DateFormatUtil.YMDHMS_PATTERN);
             Date endDate=DateFormatUtil.parse(endDateStr,DateFormatUtil.YMDHMS_PATTERN);
             Double dailyIng=this.wfReqDailyDetailService.getSumAmountByIng(userInfo.getOrgId(),hrDepartment.getId(),startDate,endDate);

@@ -325,8 +325,42 @@
     function hasContent() {
         return UM.getEditor('editor').hasContents();
     }
+    function loadBudgetAmount() {
+        var budgetYear=$('#wfReqDaily\\.budgetYear').val();
+        if(budgetYear&&budgetYear!=''){
+            WEBUTILS.alert.alertInfo('预算信息','正在获取'+budgetYear+'年的预算');
+            $.ajax({
+                type:'GET',
+                url:'/wf/req!getBudgetAmount.dhtml?budgetYear=' + budgetYear,
+                dataType:'json',
+                success:function (jsonData) {
+                    if (jsonData) {
+                        if (jsonData['result'] == '0') {
+                            $('#totalAmount').text(jsonData['totalAmount']);
+                            $('#totalIngAmount').text(jsonData['totalIngAmount']);
+                            $('#totalPassAmount').text(jsonData['totalPassAmount']);
+                            $('#remnantAmount').text(jsonData['remnantAmount']);
+                        }else{
+                            $('#totalAmount').text('00.00');
+                            $('#totalIngAmount').text('00.00');
+                            $('#totalPassAmount').text('00.00');
+                            $('#remnantAmount').text('00.00');
+                        }
+                    }
+                },
+                error:function (jsonData) {
+
+                }
+            });
+        }else{
+        }
+    }
     $(document).ready(function () {
         initValidator();
+        loadBudgetAmount();
+        $('#wfReqDaily\\.budgetYear').off('change').on('change', function () {
+            loadBudgetAmount();
+        });
         $.fn.zTree.init($("#treeDemo"), setting);
         var ue = UM.getEditor('editor', {
             lang:'zh-cn',
@@ -558,6 +592,23 @@
                     </td>
                 </tr>
                 <tr>
+                    <td colspan="2">
+                        <div class="control-group" style="margin-bottom: 5px;">
+                            <label class="control-label" for="wfReqDaily.budgetYear"
+                                   style="width: 60px;color: #898989;">预算年份</label>
+                            <div class="controls" style="margin-left: 70px;*margin-left:0;">
+                                <select name="wfReqDaily.budgetYear" id="wfReqDaily.budgetYear" class="int2 width-160">
+                                    <#if yearList?exists&&yearList?size gt 0>
+                                        <#list yearList as year>
+                                            <option value="${year?c}" <#if currentYear==year>selected="selected" </#if> >${year?c}年</option>
+                                        </#list>
+                                    </#if>
+                                </select>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
                     <td >
                         <div class="control-group" style="margin-bottom: 5px;">
                             <label class="control-label" for="wfReqDaily.amount"
@@ -592,10 +643,10 @@
                     <td colspan="2">
                         <table class="table nomar">
                             <tbody><tr>
-                                <td class="nopadding p-top5 "><span class="label label-info yearAmountTotal">预算总额：${totalAmount?if_exists}</span></td>
-                                <td class="nopadding p-top5"><span class="label label-success">已产生-已审批：${totalPassAmount?if_exists}</span></td>
-                                <td class="nopadding p-top5"><span class="label label-warning">已产生-待审批：${totalIngAmount?if_exists}</span></td>
-                                <td class="nopadding p-top5"><span class="label label-important">超出预算金额：${remnantAmount?if_exists}</span></td>
+                                <td class="nopadding p-top5 "><span class="label label-info yearAmountTotal">预算总额：<span id="totalAmount">00.00</span></span></td>
+                                <td class="nopadding p-top5"><span class="label label-success">已产生-已审批：<span id="totalPassAmount">00.00</span></span></td>
+                                <td class="nopadding p-top5"><span class="label label-warning">已产生-待审批：<span id="totalIngAmount">00.00</span></span></td>
+                                <td class="nopadding p-top5"><span class="label label-important">超出预算金额：<span id="remnantAmount">00.00</span></span></td>
                             </tr>
                             </tbody>
                         </table>

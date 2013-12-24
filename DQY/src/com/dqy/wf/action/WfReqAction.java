@@ -2,9 +2,12 @@ package com.dqy.wf.action;
 
 import com.dqy.common.UserInfo;
 import com.dqy.common.UserSession;
+import com.dqy.hr.entity.HrDepartment;
 import com.dqy.hr.entity.HrUser;
+import com.dqy.hr.service.HrDepartmentService;
 import com.dqy.hr.service.HrUserService;
 import com.dqy.sys.entity.SysOrg;
+import com.dqy.sys.service.SysBudgetAmountService;
 import com.dqy.sys.service.SysOrgService;
 import com.dqy.web.support.ActionSupport;
 import com.dqy.wf.entity.*;
@@ -92,6 +95,16 @@ public class WfReqAction extends ActionSupport<WfReq> {
 
     @Inject
     private WfReqRePaymentDetailService wfReqRePaymentDetailService;
+
+    @Inject
+    private HrDepartmentService hrDepartmentService;
+
+    @Inject
+    private SysBudgetAmountService sysBudgetAmountService;
+
+    @ReqGet
+    @ReqSet
+    private Integer budgetYear;
 
     @ReqGet
     @ReqSet
@@ -743,6 +756,58 @@ public class WfReqAction extends ActionSupport<WfReq> {
                 download(file, attchName);
             }
         }
+        return null;
+    }
+
+    public String getBudgetAmount() throws Exception {
+        JSONObject root=new JSONObject();
+        root.put("result","-1");
+        UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
+        if (userInfo != null) {
+            HrDepartment hrDepartment=this.hrDepartmentService.getById(userInfo.getDepartmentId());
+            Date cudDate=DateFormatUtil.getCurrentDate(false);
+            if(hrDepartment!=null&&budgetYear!=null){
+                Double totalAmount=sysBudgetAmountService.geTotalAmount(userInfo.getOrgId(),budgetYear,hrDepartment.getId());
+                if(totalAmount==null){
+                    totalAmount=0.00d;
+                }
+                String startDateStr=budgetYear+"-01-01 00:00:01";
+                String endDateStr=budgetYear+"-12-31 23:23:59";
+                Date startDate=DateFormatUtil.parse(startDateStr,DateFormatUtil.YMDHMS_PATTERN);
+                Date endDate=DateFormatUtil.parse(endDateStr,DateFormatUtil.YMDHMS_PATTERN);
+                Double dailyIng=this.wfReqDailyDetailService.getSumAmountByIng(userInfo.getOrgId(),hrDepartment.getId(),startDate,endDate);
+                Double dailyPass=this.wfReqDailyDetailService.getSumAmountByPass(userInfo.getOrgId(),hrDepartment.getId(),startDate,endDate);
+
+                Double rePaymentIng=this.wfReqRePaymentDetailService.getSumAmountByIng(userInfo.getOrgId(),hrDepartment.getId(),startDate,endDate);
+                Double rePaymentPass=this.wfReqRePaymentDetailService.getSumAmountByPass(userInfo.getOrgId(),hrDepartment.getId(),startDate,endDate);
+                if(dailyIng==null){
+                    dailyIng=0.00d;
+                }
+                if(dailyPass==null){
+                    dailyPass=0.00d;
+                }
+                if(rePaymentIng==null){
+                    rePaymentIng=0.00d;
+                }
+                if(rePaymentPass==null){
+                    rePaymentPass=0.00d;
+                }
+                Double totalIngAmount=dailyIng+rePaymentIng;
+
+                Double totalPassAmount=dailyPass+rePaymentPass;
+
+                Double remnantAmount=totalPassAmount-totalAmount;
+                if(remnantAmount.doubleValue()<0){
+                    remnantAmount=0.00d;
+                }
+                root.put("result","0");
+                root.put("totalAmount",totalAmount);
+                root.put("totalIngAmount",totalIngAmount);
+                root.put("totalPassAmount",totalPassAmount);
+                root.put("remnantAmount",remnantAmount);
+            }
+        }
+        writeJsonByAction(root.toString());
         return null;
     }
 }

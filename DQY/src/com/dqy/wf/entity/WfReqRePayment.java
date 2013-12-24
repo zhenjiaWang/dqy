@@ -37,6 +37,8 @@ public class WfReqRePayment extends IdEntity implements Tracker {
 
     private String bankAccount;
 
+    private Integer budgetYear;
+
     private String remarks;
 
     private Date created;
@@ -180,5 +182,14 @@ public class WfReqRePayment extends IdEntity implements Tracker {
 
     public void setBankAccount(String bankAccount) {
         this.bankAccount = bankAccount;
+    }
+
+    @Column(name = "BUDGET_YEAR")
+    public Integer getBudgetYear() {
+        return budgetYear;
+    }
+
+    public void setBudgetYear(Integer budgetYear) {
+        this.budgetYear = budgetYear;
     }
 }
