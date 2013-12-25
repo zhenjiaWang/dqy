@@ -252,7 +252,7 @@
 
                             <div class="controls" style="margin-left: 70px;*margin-left:0;">
                                 <input style="width: 95%;" type="text" id="wfReq.subject" name="wfReq.subject"
-                                       placeholder="请输入标题" maxlength="20">
+                                       placeholder="请输入标题" maxlength="40">
                                 <span class="help-inline"></span>
                             </div>
                         </div>
