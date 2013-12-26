@@ -233,7 +233,7 @@
 
                             <div class="controls" style="margin-left: 70px;*margin-left:0;">
                                 <input style="width: 95%;" type="text" id="wfReq.subject" name="wfReq.subject"
-                                       placeholder="请输入标题" maxlength="40">
+                                       placeholder="请输入标题" maxlength="60">
                                 <span class="help-inline"></span>
                             </div>
                         </div>
@@ -294,8 +294,6 @@
             <input type="hidden" name="wfReqBusiness.content" id="wfReqBusiness.content">
             <input type="hidden" name="wfReq.nodeCount" id="wfReq.nodeCount" value="0">
             <input type="hidden" name="attToken" id="attToken" value="<@c.tokenValue/>">
-
-
             <div id="nodeFlowHidden"></div>
         </form>
     </div>

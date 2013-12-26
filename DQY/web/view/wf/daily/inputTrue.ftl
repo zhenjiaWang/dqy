@@ -526,7 +526,7 @@
 
                             <div class="controls" style="margin-left: 70px;*margin-left:0;">
                                 <input style="width: 95%;" type="text" id="wfReq.subject" name="wfReq.subject"
-                                       placeholder="请输入标题" maxlength="40">
+                                       placeholder="请输入标题" maxlength="60">
                                 <span class="help-inline"></span>
                             </div>
                         </div>
@@ -562,7 +562,7 @@
 
                             <div class="controls" style="margin-left: 70px;*margin-left:0;">
                                 <input style="width: 95%;" type="text" id="wfReqDaily.payee" name="wfReqDaily.payee"
-                                       placeholder="收款单位/人" maxlength="20">
+                                       placeholder="收款单位/人" maxlength="60">
                                 <span class="help-inline"></span>
                             </div>
                         </div>
@@ -575,7 +575,7 @@
                                    style="width: 60px;color: #898989;">开户行</label>
 
                             <div class="controls" style="margin-left: 70px;*margin-left:0;">
-                                <input type="text" id="wfReqDaily.bank" name="wfReqDaily.bank" placeholder="开户行" maxlength="20">
+                                <input type="text" id="wfReqDaily.bank" name="wfReqDaily.bank" placeholder="开户行" maxlength="60">
                                 <span class="help-inline"></span>
                             </div>
                         </div>
@@ -585,7 +585,7 @@
                             <label class="control-label" for="wfReqDaily.bankAccount"
                                    style="width: 60px;color: #898989;">帐号</label>
                             <div class="controls" style="margin-left: 70px;*margin-left:0;">
-                                <input type="text" id="wfReqDaily.bankAccount" name="wfReqDaily.bankAccount" placeholder="银行帐号" maxlength="20">
+                                <input type="text" id="wfReqDaily.bankAccount" name="wfReqDaily.bankAccount" placeholder="银行帐号" maxlength="60">
                                 <span class="help-inline"></span>
                             </div>
                         </div>
@@ -616,7 +616,7 @@
 
                             <div class="controls" style="margin-left: 70px;*margin-left:0;">
                                 <input type="text" id="wfReqDaily.amount" name="wfReqDaily.amount"
-                                       placeholder="报销金额" maxlength="10" readonly="readonly">
+                                       placeholder="报销金额" maxlength="20" readonly="readonly">
                                 <span class="help-inline"></span>
                             </div>
                         </div>
@@ -798,6 +798,7 @@
             <input type="hidden" name="detailCount2" id="detailCount2">
             <input type="hidden" name="wfReq.nodeCount" id="wfReq.nodeCount" value="0">
             <input type="hidden" name="wfReqDaily.remarks" id="wfReqDaily.remarks">
+            <input type="hidden" name="attToken" id="attToken" value="<@c.tokenValue/>">
             <div id="nodeFlowHidden"></div>
         </form>
     </div>

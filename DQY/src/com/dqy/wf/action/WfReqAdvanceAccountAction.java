@@ -2,6 +2,8 @@ package com.dqy.wf.action;
 
 import com.dqy.common.UserInfo;
 import com.dqy.common.UserSession;
+import com.dqy.common.entity.TempAtt;
+import com.dqy.common.service.TempAttService;
 import com.dqy.sys.entity.SysOrg;
 import com.dqy.sys.service.SysOrgService;
 import com.dqy.web.support.ActionSupport;
@@ -13,6 +15,7 @@ import org.guiceside.commons.lang.DateFormatUtil;
 import org.guiceside.commons.lang.StringUtils;
 import org.guiceside.persistence.entity.search.SelectorUtils;
 import org.guiceside.persistence.hibernate.dao.hquery.Selector;
+import org.guiceside.support.file.FileManager;
 import org.guiceside.web.annotation.*;
 
 import java.util.ArrayList;
@@ -55,6 +58,9 @@ public class WfReqAdvanceAccountAction extends WfReqSupportAction<WfReqAdvanceAc
     @Inject
     private WfReqAttService wfReqAttService;
 
+    @Inject
+    private TempAttService tempAttService;
+
     @ReqGet
     @ReqSet
     private Long id;
@@ -83,11 +89,14 @@ public class WfReqAdvanceAccountAction extends WfReqSupportAction<WfReqAdvanceAc
     @ReqSet
     private Date sendDate;
 
-    @ReqSet
-    private List<WfReqAtt> reqAttList;
 
     @ReqSet
     private String applyName;
+
+
+    @ReqGet
+    @ReqSet
+    private String attToken;
 
 
     @Override

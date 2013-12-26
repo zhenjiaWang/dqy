@@ -75,6 +75,7 @@ public class WfReqSupportAction<T> extends ActionSupport<T> {
 
     protected WfReqMyFlowLast wfReqMyFlowLast;
 
+    @ReqSet
     protected List<WfReqAtt> reqAttList;
 
     @Override

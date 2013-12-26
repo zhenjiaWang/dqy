@@ -493,7 +493,7 @@ $(document).ready(function () {
 
                 <div class="controls" style="margin-left: 70px;*margin-left:0;">
                     <input style="width: 95%;" type="text" id="wfReq.subject" name="wfReq.subject"
-                           placeholder="请输入标题" maxlength="40">
+                           placeholder="请输入标题" maxlength="60">
                     <span class="help-inline"></span>
                 </div>
             </div>
@@ -596,7 +596,7 @@ $(document).ready(function () {
 
                 <div class="controls" style="margin-left: 70px;*margin-left:0;">
                     <input style="width: 95%;" type="text" id="wfReqRePayment.payee" name="wfReqRePayment.payee"
-                           placeholder="收款单位/人" maxlength="20">
+                           placeholder="收款单位/人" maxlength="60">
                     <span class="help-inline"></span>
                 </div>
             </div>
@@ -610,7 +610,7 @@ $(document).ready(function () {
 
                 <div class="controls" style="margin-left: 70px;*margin-left:0;">
                     <input type="text" id="wfReqRePayment.bank" name="wfReqRePayment.bank" placeholder="开户行"
-                           maxlength="20">
+                           maxlength="60">
                     <span class="help-inline"></span>
                 </div>
             </div>
@@ -622,7 +622,7 @@ $(document).ready(function () {
 
                 <div class="controls" style="margin-left: 70px;*margin-left:0;">
                     <input type="text" id="wfReqRePayment.bankAccount" name="wfReqRePayment.bankAccount"
-                           placeholder="银行帐号" maxlength="20">
+                           placeholder="银行帐号" maxlength="60">
                     <span class="help-inline"></span>
                 </div>
             </div>
@@ -735,7 +735,7 @@ $(document).ready(function () {
     <input type="hidden" name="detailCount" id="detailCount">
     <input type="hidden" name="wfReq.nodeCount" id="wfReq.nodeCount" value="0">
     <input type="hidden" name="wfReqRePayment.remarks" id="wfReqRePayment.remarks">
-
+    <input type="hidden" name="attToken" id="attToken" value="<@c.tokenValue/>">
     <div id="nodeFlowHidden"></div>
     </form>
     </div>
