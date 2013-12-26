@@ -242,6 +242,7 @@ public class WfReqTaskAction extends ActionSupport<WfReqTask> {
                 selectorList.add(SelectorUtils.$alias("reqId", "reqId"));
                 selectorList.add(SelectorUtils.$eq("orgId.id", orgId));
                 selectorList.add(SelectorUtils.$eq("userId.id", userId));
+                selectorList.add(SelectorUtils.$eq("reqId.applyState", 1));
                 selectorList.add(SelectorUtils.$eq("taskState", 0));
                 selectorList.add(SelectorUtils.$eq("reqId.complete", 0));
                 if(StringUtils.isNotBlank(keyword)){
