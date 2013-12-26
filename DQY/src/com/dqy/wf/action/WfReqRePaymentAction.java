@@ -131,8 +131,6 @@ public class WfReqRePaymentAction extends WfReqSupportAction<WfReqRePayment> {
     @ReqSet
     private List<HrDepartment> departmentList;
 
-    @ReqSet
-    private List<WfReqAtt> reqAttList;
 
 
     @ReqSet

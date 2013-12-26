@@ -85,8 +85,6 @@ public class WfReqBusinessAction extends WfReqSupportAction<WfReqBusiness> {
     @ReqSet
     private Date sendDate;
 
-    @ReqSet
-    private List<WfReqAtt> reqAttList;
 
     @ReqSet
     private String applyName;

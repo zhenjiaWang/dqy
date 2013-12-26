@@ -144,8 +144,6 @@ public class WfReqDailyAction extends WfReqSupportAction<WfReqDaily> {
     private Integer currentYear;
 
 
-    @ReqSet
-    private List<WfReqAtt> reqAttList;
 
 
     @ReqSet
