@@ -49,7 +49,7 @@
         <thead>
         <tr class="thColor">
             <th width="90">申请编号</th>
-            <th>标题</th>
+            <th >标题</th>
             <th width="60">申请人</th>
             <th width="110">日期</th>
             <th width="110">操作</th>
@@ -62,8 +62,8 @@
                     <td style="text-align: left;" >
                     <div class="txt_hidden">${req.reqNo?if_exists}</div>
                     </td>
-                    <td>
-                        <div class="txt_hidden">${req.subject?if_exists}</div>
+                    <td >
+                        <div class="txt_hidden" style="width: 360px;">${req.subject?if_exists}</div>
                     </td>
                     <td style="text-align: center;">${(req.userId.userName)?if_exists}</td>
                     <td style="text-align: center;">${(req.sendDate)?string("yyyy-MM-dd HH:mm")}</td>

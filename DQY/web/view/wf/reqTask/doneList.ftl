@@ -47,7 +47,7 @@
         <thead>
         <tr class="thColor">
             <th width="90">申请编号</th>
-            <th>标题</th>
+            <th >标题</th>
             <th width="60">申请人</th>
             <th width="60">审批结果</th>
             <th width="110">日期</th>
@@ -62,7 +62,7 @@
                         <div class="txt_hidden">${(reqTask.reqId.reqNo)?if_exists}</div>
                     </td>
                     <td>
-                        <div class="txt_hidden">${(reqTask.reqId.subject)?if_exists}</div>
+                        <div  class="txt_hidden" style="width: 360px;">${(reqTask.reqId.subject)?if_exists}</div>
                     </td>
                     <td style="text-align: center;">${(reqTask.reqId.userId.userName)?if_exists}</td>
                     <td style="text-align: center;">
