@@ -47,7 +47,7 @@
                     <#if reqList?exists&&reqList?size gt 0>
                     <#list reqList as req>
                         <li class="clearfix">
-                            <a href="/wf/req!view.dhtml?id=${req.id?c}">${req.subject?if_exists}</a>
+                            <div  class="txt_hidden" style="width: 190px;"><a href="/wf/req!view.dhtml?id=${req.id?c}">${req.subject?if_exists}</a></div>
                             <#if req.applyState==1>
                                 <span class="noread  floatright">审核中</span>
                             <#elseif req.applyState==2>
@@ -99,7 +99,7 @@
                     <#if taskList?exists&&taskList?size gt 0>
                         <#list taskList as task>
                             <li class="clearfix">
-                                <a href="/wf/reqTask!process.dhtml?id=${task.id?c}">${(task.reqId.subject)?if_exists}</a>
+                                <div  class="txt_hidden" style="width: 190px;"><a href="/wf/reqTask!process.dhtml?id=${task.id?c}">${(task.reqId.subject)?if_exists}</a></div>
                                 <#if task.taskRead==0>
                                     <span class="noread floatright">未查看</span>
                                 <#elseif task.taskRead==1>

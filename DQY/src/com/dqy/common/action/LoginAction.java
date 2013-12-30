@@ -179,8 +179,10 @@ public class LoginAction extends BaseAction {
             userInfo.setReqRejected(reqRejected);
 
             List<Selector> selectorList = new ArrayList<Selector>();
+            selectorList.add(SelectorUtils.$alias("reqId", "reqId"));
             selectorList.add(SelectorUtils.$eq("orgId.id", userInfo.getOrgId()));
             selectorList.add(SelectorUtils.$eq("userId.id", userInfo.getUserId()));
+            selectorList.add(SelectorUtils.$eq("reqId.applyState", 1));
             selectorList.add(SelectorUtils.$eq("taskState", 0));
             selectorList.add(SelectorUtils.$order("receiveDate", false));
             Page<WfReqTask> pageTaskObj = this.wfReqTaskService.getPageList(0, 5, selectorList);

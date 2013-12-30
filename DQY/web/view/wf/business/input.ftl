@@ -75,7 +75,6 @@
 </style>
 <script type="text/javascript">
     var submited = false;
-    var uploadRemove=false;
     function initValidator() {
         WEBUTILS.validator.init({
             modes: [
@@ -141,7 +140,7 @@
     }
 
     function onSuccess(e) {
-        if (!uploadRemove) {
+        if (e.operation == "upload") {
             var lastLi = $('li', '.k-upload-files').last();
             if (lastLi) {
                 var img=$('img',lastLi);
@@ -156,10 +155,25 @@
         }
     }
     function onRemove(e){
-        uploadRemove=true;
     }
     function onUpload(e){
-        uploadRemove=false;
+        // Array with information about the uploaded files
+        var files = e.files;
+
+        // Check the extension of each file and abort the upload if it is not .jpg
+        $.each(files, function () {
+            if (this.extension.toLowerCase() == ".exe"
+                    ||this.extension.toLowerCase() == ".dll"
+                    ||this.extension.toLowerCase() == ".js"
+                    ) {
+                WEBUTILS.msg.alertFail('抱歉,你上传的附件包含有风险的文件!');
+                e.preventDefault();
+            }
+            if(this.size>=20971520){
+                WEBUTILS.msg.alertFail('抱歉,你上传的附件超过最大20M大小限制!');
+                e.preventDefault();
+            }
+        });
     }
 
     $(document).ready(function () {

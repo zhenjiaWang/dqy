@@ -93,7 +93,6 @@
 </style>
 <script type="text/javascript">
 var submited = false;
-var uploadRemove = false;
 var currentSEQ = false;
 
 var srcNode;
@@ -233,25 +232,40 @@ function addExtensionClass(extension) {
 }
 
 function onSuccess(e) {
-    if (!uploadRemove) {
+    if (e.operation == "upload") {
         var lastLi = $('li', '.k-upload-files').last();
         if (lastLi) {
-            var img = $('img', lastLi);
-            if (img) {
-                var extension = $(img).attr('extension');
-                if (extension) {
-                    extension = extension.substring(1, extension.length);
-                    $(img).attr('src', '/images/file/' + extension + '.png');
+            var img=$('img',lastLi);
+            if(img){
+                var extension=$(img).attr('extension');
+                if(extension){
+                    extension=extension.substring(1,extension.length);
+                    $(img).attr('src','/images/file/'+extension+'.png');
                 }
             }
         }
     }
 }
-function onRemove(e) {
-    uploadRemove = true;
+function onRemove(e){
 }
-function onUpload(e) {
-    uploadRemove = false;
+function onUpload(e){
+    // Array with information about the uploaded files
+    var files = e.files;
+
+    // Check the extension of each file and abort the upload if it is not .jpg
+    $.each(files, function () {
+        if (this.extension.toLowerCase() == ".exe"
+                ||this.extension.toLowerCase() == ".dll"
+                ||this.extension.toLowerCase() == ".js"
+                ) {
+            WEBUTILS.msg.alertFail('抱歉,你上传的附件包含有风险的文件!');
+            e.preventDefault();
+        }
+        if(this.size>=20971520){
+            WEBUTILS.msg.alertFail('抱歉,你上传的附件超过最大20M大小限制!');
+            e.preventDefault();
+        }
+    });
 }
 function dateEvent() {
     $('.dateTd').each(function (i, o) {
