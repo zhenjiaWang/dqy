@@ -330,7 +330,7 @@
                 <#if budgetAmountMap?exists&&budgetAmountMap?size gt 0>
                     <#assign amount=budgetAmountMap[ids[0]?if_exists+"_"+ids[1]?if_exists+"_"+month]?if_exists/>
                     <#if amount?exists>
-                        $('#amount${(tt_index+1)}_${month?c}','.table-bordered-amt').val('${amount?if_exists}');
+                        $('#amount${(tt_index+1)}_${month?c}','.table-bordered-amt').val('${amount?c}');
                     </#if>
                 </#if>
             </#list>
@@ -524,7 +524,7 @@
                         <tbody>
                         <tr>
                             <td class="nopadding p-top5"><span
-                                    class="label label-info yearAmountTotal">预算总额：${totalAmount?if_exists}</span></td>
+                                    class="label label-info yearAmountTotal">预算总额：${totalAmount?c}</span></td>
                         </tr>
                         </tbody>
                     </table>

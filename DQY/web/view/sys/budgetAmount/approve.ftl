@@ -336,7 +336,7 @@
                 <#if budgetAmountMap?exists&&budgetAmountMap?size gt 0>
                     <#assign amount=budgetAmountMap[ids[0]?if_exists+"_"+ids[1]?if_exists+"_"+month]?if_exists/>
                     <#if amount?exists>
-                        $('#amount${(tt_index+1)}_${month?c}','.table-bordered-amt').val('${amount?if_exists}');
+                        $('#amount${(tt_index+1)}_${month?c}','.table-bordered-amt').val('${amount?c}');
                     </#if>
                 </#if>
             </#list>
@@ -531,10 +531,10 @@
                 <td colspan="2">
                     <table class="table nomar">
                         <tbody><tr>
-                            <td class="nopadding p-top5 "><span class="label label-info yearAmountTotal">预算总额：${totalAmount?if_exists}</span></td>
-                            <td class="nopadding p-top5"><span class="label label-success">已产生-已审批：${totalPassAmount?if_exists}</span></td>
-                            <td class="nopadding p-top5"><span class="label label-warning">已产生-待审批：${totalIngAmount?if_exists}</span></td>
-                            <td class="nopadding p-top5"><span class="label label-important">超出预算金额：${remnantAmount?if_exists}</span></td>
+                            <td class="nopadding p-top5 "><span class="label label-info yearAmountTotal">预算总额：${totalAmount?c}</span></td>
+                            <td class="nopadding p-top5"><span class="label label-success">已产生-已审批：${totalPassAmount?c}</span></td>
+                            <td class="nopadding p-top5"><span class="label label-warning">已产生-待审批：${totalIngAmount?c}</span></td>
+                            <td class="nopadding p-top5"><span class="label label-important">超出预算金额：${remnantAmount?c}</span></td>
                         </tr>
                         </tbody>
                     </table>
