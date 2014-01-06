@@ -67,6 +67,7 @@ public class WfReqAction extends ActionSupport<WfReq> {
     @Inject
     private WfReqDailyDetailService wfReqDailyDetailService;
 
+
     @Inject
     private WfReqDailyTrueService wfReqDailyTrueService;
 
@@ -778,6 +779,9 @@ public class WfReqAction extends ActionSupport<WfReq> {
                 Double dailyIng=this.wfReqDailyDetailService.getSumAmountByIng(userInfo.getOrgId(),hrDepartment.getId(),startDate,endDate);
                 Double dailyPass=this.wfReqDailyDetailService.getSumAmountByPass(userInfo.getOrgId(),hrDepartment.getId(),startDate,endDate);
 
+                Double dailyTrueIng=this.wfReqDailyTrueService.getSumAmountByIng(userInfo.getOrgId(),hrDepartment.getId(),startDate,endDate);
+                Double dailyTruePass=this.wfReqDailyTrueService.getSumAmountByPass(userInfo.getOrgId(),hrDepartment.getId(),startDate,endDate);
+
                 Double rePaymentIng=this.wfReqRePaymentDetailService.getSumAmountByIng(userInfo.getOrgId(),hrDepartment.getId(),startDate,endDate);
                 Double rePaymentPass=this.wfReqRePaymentDetailService.getSumAmountByPass(userInfo.getOrgId(),hrDepartment.getId(),startDate,endDate);
                 if(dailyIng==null){
@@ -786,15 +790,21 @@ public class WfReqAction extends ActionSupport<WfReq> {
                 if(dailyPass==null){
                     dailyPass=0.00d;
                 }
+                if(dailyTrueIng==null){
+                    dailyTrueIng=0.00d;
+                }
+                if(dailyTruePass==null){
+                    dailyTruePass=0.00d;
+                }
                 if(rePaymentIng==null){
                     rePaymentIng=0.00d;
                 }
                 if(rePaymentPass==null){
                     rePaymentPass=0.00d;
                 }
-                Double totalIngAmount=dailyIng+rePaymentIng;
+                Double totalIngAmount=dailyIng+dailyTrueIng+rePaymentIng;
 
-                Double totalPassAmount=dailyPass+rePaymentPass;
+                Double totalPassAmount=dailyPass+dailyTruePass+rePaymentPass;
 
                 Double remnantAmount=totalPassAmount-totalAmount;
                 if(remnantAmount.doubleValue()<0){

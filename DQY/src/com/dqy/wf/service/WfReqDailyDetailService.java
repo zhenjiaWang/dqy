@@ -83,6 +83,7 @@ public class WfReqDailyDetailService extends HQuery {
         return $($alias("dailyId","dailyId"),$alias("dailyId.reqId","reqId"),
                 $eq("reqId.orgId.id",orgId),$eq("reqId.applyState",2),
                 $eq("reqId.applyResult",1), $eq("reqId.complete",1),
+                $eq("dailyId.trueAmount",0.00d),
                 $eq("expenseDept.id", deptId),
                 $ge("created",startDate),$le("created",endDate),
                 $sum("amount")).value(WfReqDailyDetail.class, Double.class);
@@ -115,6 +116,7 @@ public class WfReqDailyDetailService extends HQuery {
         return $($alias("dailyId","dailyId"),$alias("dailyId.reqId","reqId"),
                 $eq("reqId.orgId.id",orgId),$eq("reqId.applyState",1),
                 $eq("reqId.applyResult",0), $eq("reqId.complete",0),
+                $eq("dailyId.trueAmount",0.00d),
                 $eq("expenseDept.id", deptId),
                 $ge("created",startDate),$le("created",endDate),
                 $sum("amount")).value(WfReqDailyDetail.class,Double.class);

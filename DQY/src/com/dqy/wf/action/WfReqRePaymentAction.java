@@ -35,8 +35,12 @@ public class WfReqRePaymentAction extends WfReqSupportAction<WfReqRePayment> {
 
     @Inject
     private WfVariableGlobalService wfVariableGlobalService;
+
     @Inject
     private WfReqDailyDetailService wfReqDailyDetailService;
+
+    @Inject
+    private WfReqDailyTrueService wfReqDailyTrueService;
 
     @Inject
     private SysBudgetAmountService sysBudgetAmountService;
@@ -102,8 +106,7 @@ public class WfReqRePaymentAction extends WfReqSupportAction<WfReqRePayment> {
 
 
     @ReqSet
-    public final String applyId="REPAYMENT";
-
+    public final String applyId = "REPAYMENT";
 
 
     @ReqSet
@@ -132,7 +135,6 @@ public class WfReqRePaymentAction extends WfReqSupportAction<WfReqRePayment> {
     private List<HrDepartment> departmentList;
 
 
-
     @ReqSet
     private Double totalAmount;
 
@@ -156,7 +158,6 @@ public class WfReqRePaymentAction extends WfReqSupportAction<WfReqRePayment> {
     private Integer currentYear;
 
 
-
     @Override
     @PageFlow(result = {@Result(name = "success", path = "/view/wf/rePayment/input.ftl", type = Dispatcher.FreeMarker)})
     public String execute() throws Exception {
@@ -165,20 +166,20 @@ public class WfReqRePaymentAction extends WfReqSupportAction<WfReqRePayment> {
             userInfo.setTopMenu("apply");
             userInfo.setLeftMenu("rePayment");
             userInfo.setChildMenu(null);
-            sendDate= DateFormatUtil.getCurrentDate(true);
+            sendDate = DateFormatUtil.getCurrentDate(true);
 
-            deptId=userInfo.getDepartmentId();
-            List<Selector> selectorList=new ArrayList<Selector>();
-            selectorList.add(SelectorUtils.$eq("orgId.id",userInfo.getOrgId()));
+            deptId = userInfo.getDepartmentId();
+            List<Selector> selectorList = new ArrayList<Selector>();
+            selectorList.add(SelectorUtils.$eq("orgId.id", userInfo.getOrgId()));
             selectorList.add(SelectorUtils.$order("expenseType"));
-            selectorList.add(SelectorUtils.$eq("useYn","Y"));
-            typeList= this.sysBudgetTypeService.getAllList(selectorList);
+            selectorList.add(SelectorUtils.$eq("useYn", "Y"));
+            typeList = this.sysBudgetTypeService.getAllList(selectorList);
 
-            selectorList=new ArrayList<Selector>();
-            selectorList.add(SelectorUtils.$eq("orgId.id",userInfo.getOrgId()));
+            selectorList = new ArrayList<Selector>();
+            selectorList.add(SelectorUtils.$eq("orgId.id", userInfo.getOrgId()));
             selectorList.add(SelectorUtils.$order("titleName"));
-            selectorList.add(SelectorUtils.$eq("useYn","Y"));
-            titleList= this.sysBudgetTitleService.getAllList(selectorList);
+            selectorList.add(SelectorUtils.$eq("useYn", "Y"));
+            titleList = this.sysBudgetTitleService.getAllList(selectorList);
 
             Date currentDate = DateFormatUtil.getCurrentDate(false);
             if (currentYear == null) {
@@ -189,12 +190,12 @@ public class WfReqRePaymentAction extends WfReqSupportAction<WfReqRePayment> {
             yearList.add(currentYear);
             yearList.add(currentYear + 1);
 
-            reqAdvanceAccountList=this.wfReqAdvanceAccountService.getListByReUserId(userInfo.getOrgId(),userInfo.getUserId());
-            if(reqAdvanceAccountList!=null&&!reqAdvanceAccountList.isEmpty()){
-                for(WfReqAdvanceAccount advanceAccount:reqAdvanceAccountList){
-                    Double reAmount= wfReqRePaymentService.getSumByReAmount(userInfo.getOrgId(),userInfo.getUserId(),advanceAccount.getId());
-                    if(reAmount==null){
-                        reAmount=0.00d;
+            reqAdvanceAccountList = this.wfReqAdvanceAccountService.getListByReUserId(userInfo.getOrgId(), userInfo.getUserId());
+            if (reqAdvanceAccountList != null && !reqAdvanceAccountList.isEmpty()) {
+                for (WfReqAdvanceAccount advanceAccount : reqAdvanceAccountList) {
+                    Double reAmount = wfReqRePaymentService.getSumByReAmount(userInfo.getOrgId(), userInfo.getUserId(), advanceAccount.getId());
+                    if (reAmount == null) {
+                        reAmount = 0.00d;
                     }
                     advanceAccount.setReAmount(reAmount);
                 }
@@ -206,29 +207,29 @@ public class WfReqRePaymentAction extends WfReqSupportAction<WfReqRePayment> {
     @PageFlow(result = {@Result(name = "success", path = "/wf/req!ingList.dhtml", type = Dispatcher.Redirect)})
     public String save() throws Exception {
         UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
-        if (userInfo != null&&wfReqRePayment!=null) {
+        if (userInfo != null && wfReqRePayment != null) {
             initReq();
-            Double totalAmount=0.00d;
+            Double totalAmount = 0.00d;
 
-            if(detailCount!=null){
-                detailList=new ArrayList<WfReqRePaymentDetail>();
-                for(int i=1;i<=detailCount;i++){
+            if (detailCount != null) {
+                detailList = new ArrayList<WfReqRePaymentDetail>();
+                for (int i = 1; i <= detailCount; i++) {
                     Long deptId = getParameter("deptId" + i, Long.class);
-                    Long typeId=getParameter("typeId"+i,Long.class);
-                    Long titleId=getParameter("titleId"+i,Long.class);
-                    Double amount=getParameter("amount"+i,Double.class);
-                    String dateStr=getParameter("date"+i);
-                    String remarks=getParameter("remarks"+i);
-                    if(typeId!=null&&titleId!=null&&amount!=null&& StringUtils.isNotBlank(dateStr)){
-                        if(amount==null){
-                            amount=0.00d;
+                    Long typeId = getParameter("typeId" + i, Long.class);
+                    Long titleId = getParameter("titleId" + i, Long.class);
+                    Double amount = getParameter("amount" + i, Double.class);
+                    String dateStr = getParameter("date" + i);
+                    String remarks = getParameter("remarks" + i);
+                    if (typeId != null && titleId != null && amount != null && StringUtils.isNotBlank(dateStr)) {
+                        if (amount == null) {
+                            amount = 0.00d;
                         }
-                        Date date=DateFormatUtil.parse(dateStr,DateFormatUtil.YEAR_MONTH_DAY_PATTERN);
+                        Date date = DateFormatUtil.parse(dateStr, DateFormatUtil.YEAR_MONTH_DAY_PATTERN);
                         HrDepartment hrDepartment = this.hrDepartmentService.getById(deptId);
-                        SysBudgetType budgetType=this.sysBudgetTypeService.getById(typeId);
-                        SysBudgetTitle budgetTitle=this.sysBudgetTitleService.getById(titleId);
-                        if(hrDepartment!=null&&budgetTitle!=null&&budgetType!=null&&date!=null){
-                            WfReqRePaymentDetail paymentDetail=new WfReqRePaymentDetail();
+                        SysBudgetType budgetType = this.sysBudgetTypeService.getById(typeId);
+                        SysBudgetTitle budgetTitle = this.sysBudgetTitleService.getById(titleId);
+                        if (hrDepartment != null && budgetTitle != null && budgetType != null && date != null) {
+                            WfReqRePaymentDetail paymentDetail = new WfReqRePaymentDetail();
                             paymentDetail.setRePaymentId(wfReqRePayment);
                             paymentDetail.setExpenseDept(hrDepartment);
                             paymentDetail.setExpenseType(budgetType);
@@ -238,7 +239,7 @@ public class WfReqRePaymentAction extends WfReqSupportAction<WfReqRePayment> {
                             paymentDetail.setRemarks(remarks);
                             bind(paymentDetail);
                             paymentDetail.setUseYn("Y");
-                            totalAmount+=amount;
+                            totalAmount += amount;
                             detailList.add(paymentDetail);
                         }
                     }
@@ -248,7 +249,7 @@ public class WfReqRePaymentAction extends WfReqSupportAction<WfReqRePayment> {
             wfReqRePayment.setReqId(wfReq);
             wfReqRePayment.setUseYn("Y");
             bind(wfReqRePayment);
-            this.wfReqRePaymentService.save(wfReqRePayment,detailList,wfReq,  wfReqCommentsList, wfReqNoSeq, reqNodeApproveList, reqTaskList, wfReqMyFlowLast,reqAttList);
+            this.wfReqRePaymentService.save(wfReqRePayment, detailList, wfReq, wfReqCommentsList, wfReqNoSeq, reqNodeApproveList, reqTaskList, wfReqMyFlowLast, reqAttList);
         }
         return "success";  //To change body of implemented methods use File | Settings | File Templates.
     }
@@ -257,22 +258,22 @@ public class WfReqRePaymentAction extends WfReqSupportAction<WfReqRePayment> {
     public String print() throws Exception {
         UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
         if (userInfo != null && reqId != null) {
-            wfReqRePayment=this.wfReqRePaymentService.getByReqId(reqId);
-            if(wfReqRePayment!=null){
-                detailList=this.wfReqRePaymentDetailService.getDetailListByRePaymentId(wfReqRePayment.getId());
+            wfReqRePayment = this.wfReqRePaymentService.getByReqId(reqId);
+            if (wfReqRePayment != null) {
+                detailList = this.wfReqRePaymentDetailService.getDetailListByRePaymentId(wfReqRePayment.getId());
                 wfReq = wfReqRePayment.getReqId();
                 if (wfReq != null) {
                     reqCommentsList = this.wfReqCommentsService.getCommentsListByReqId(wfReq.getId());
                 }
-                if(StringUtils.isNotBlank(applyId)){
-                    if(applyId.equals("ADVANCE_ACCOUNT")){
-                        applyName="预支申请";
-                    }else if(applyId.equals("REPAYMENT")){
-                        applyName="还款申请";
-                    }else if(applyId.equals("DAILY")){
-                        applyName="费用报销";
-                    }else if(applyId.equals("BUSINESS")){
-                        applyName="事务申请";
+                if (StringUtils.isNotBlank(applyId)) {
+                    if (applyId.equals("ADVANCE_ACCOUNT")) {
+                        applyName = "预支申请";
+                    } else if (applyId.equals("REPAYMENT")) {
+                        applyName = "还款申请";
+                    } else if (applyId.equals("DAILY")) {
+                        applyName = "费用报销";
+                    } else if (applyId.equals("BUSINESS")) {
+                        applyName = "事务申请";
                     }
                 }
             }
@@ -283,14 +284,14 @@ public class WfReqRePaymentAction extends WfReqSupportAction<WfReqRePayment> {
     @PageFlow(result = {@Result(name = "success", path = "/view/wf/rePayment/view.ftl", type = Dispatcher.FreeMarker)})
     public String view() throws Exception {
         UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
-        if (userInfo != null&&reqId!=null) {
-            wfReqRePayment=this.wfReqRePaymentService.getByReqId(reqId);
-            if(wfReqRePayment!=null){
-                detailList=this.wfReqRePaymentDetailService.getDetailListByRePaymentId(wfReqRePayment.getId());
-                wfReq=wfReqRePayment.getReqId();
-                if(wfReq!=null){
+        if (userInfo != null && reqId != null) {
+            wfReqRePayment = this.wfReqRePaymentService.getByReqId(reqId);
+            if (wfReqRePayment != null) {
+                detailList = this.wfReqRePaymentDetailService.getDetailListByRePaymentId(wfReqRePayment.getId());
+                wfReq = wfReqRePayment.getReqId();
+                if (wfReq != null) {
                     reqCommentsList = this.wfReqCommentsService.getCommentsListByReqId(wfReq.getId());
-                    reqAttList=wfReqAttService.getByReqId(wfReq.getId());
+                    reqAttList = wfReqAttService.getByReqId(wfReq.getId());
                 }
             }
         }
@@ -300,18 +301,18 @@ public class WfReqRePaymentAction extends WfReqSupportAction<WfReqRePayment> {
     @PageFlow(result = {@Result(name = "success", path = "/view/wf/rePayment/financial.ftl", type = Dispatcher.FreeMarker)})
     public String financial() throws Exception {
         UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
-        if (userInfo != null&&reqId!=null) {
-            wfReqRePayment=this.wfReqRePaymentService.getByReqId(reqId);
-            if(wfReqRePayment!=null){
-                detailList=this.wfReqRePaymentDetailService.getDetailListByRePaymentId(wfReqRePayment.getId());
-                wfReq=wfReqRePayment.getReqId();
-                if(wfReq!=null){
+        if (userInfo != null && reqId != null) {
+            wfReqRePayment = this.wfReqRePaymentService.getByReqId(reqId);
+            if (wfReqRePayment != null) {
+                detailList = this.wfReqRePaymentDetailService.getDetailListByRePaymentId(wfReqRePayment.getId());
+                wfReq = wfReqRePayment.getReqId();
+                if (wfReq != null) {
                     reqCommentsList = this.wfReqCommentsService.getCommentsListByReqId(wfReq.getId());
-                    reqAttList=wfReqAttService.getByReqId(wfReq.getId());
+                    reqAttList = wfReqAttService.getByReqId(wfReq.getId());
 
-                    HrDepartment hrDepartment=wfReq.getUserId().getDeptId();
-                    if(hrDepartment!=null){
-                        totalBudgetAmount(hrDepartment,wfReqRePayment.getBudgetYear(),userInfo);
+                    HrDepartment hrDepartment = wfReq.getUserId().getDeptId();
+                    if (hrDepartment != null) {
+                        totalBudgetAmount(hrDepartment, wfReqRePayment.getBudgetYear(), userInfo);
                     }
                 }
             }
@@ -322,21 +323,21 @@ public class WfReqRePaymentAction extends WfReqSupportAction<WfReqRePayment> {
     @PageFlow(result = {@Result(name = "success", path = "/view/wf/rePayment/process.ftl", type = Dispatcher.FreeMarker)})
     public String process() throws Exception {
         UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
-        if (userInfo != null&&taskId!=null) {
-            wfReqTask=this.wfReqTaskService.getById(taskId);
-            if(wfReqTask!=null){
-                wfReq=wfReqTask.getReqId();
-                if(wfReq!=null){
-                    wfReqRePayment=this.wfReqRePaymentService.getByReqId(wfReq.getId());
-                    if(wfReqRePayment!=null){
-                        detailList=this.wfReqRePaymentDetailService.getDetailListByRePaymentId(wfReqRePayment.getId());
+        if (userInfo != null && taskId != null) {
+            wfReqTask = this.wfReqTaskService.getById(taskId);
+            if (wfReqTask != null) {
+                wfReq = wfReqTask.getReqId();
+                if (wfReq != null) {
+                    wfReqRePayment = this.wfReqRePaymentService.getByReqId(wfReq.getId());
+                    if (wfReqRePayment != null) {
+                        detailList = this.wfReqRePaymentDetailService.getDetailListByRePaymentId(wfReqRePayment.getId());
                     }
                     reqCommentsList = this.wfReqCommentsService.getCommentsListByReqId(wfReq.getId());
-                    reqAttList=wfReqAttService.getByReqId(wfReq.getId());
+                    reqAttList = wfReqAttService.getByReqId(wfReq.getId());
 
-                    HrDepartment hrDepartment=wfReq.getUserId().getDeptId();
-                    if(hrDepartment!=null){
-                        totalBudgetAmount(hrDepartment,wfReqRePayment.getBudgetYear(),userInfo);
+                    HrDepartment hrDepartment = wfReq.getUserId().getDeptId();
+                    if (hrDepartment != null) {
+                        totalBudgetAmount(hrDepartment, wfReqRePayment.getBudgetYear(), userInfo);
                     }
                 }
             }
@@ -344,40 +345,51 @@ public class WfReqRePaymentAction extends WfReqSupportAction<WfReqRePayment> {
         return "success";
     }
 
-    private void totalBudgetAmount(HrDepartment hrDepartment,Integer budgetYear,UserInfo userInfo){
-        if(hrDepartment!=null&&budgetYear!=null){
-            totalAmount=sysBudgetAmountService.geTotalAmount(userInfo.getOrgId(),budgetYear,hrDepartment.getId());
-            if(totalAmount==null){
-                totalAmount=0.00d;
+    private void totalBudgetAmount(HrDepartment hrDepartment, Integer budgetYear, UserInfo userInfo) {
+        if (hrDepartment != null && budgetYear != null) {
+            totalAmount = sysBudgetAmountService.geTotalAmount(userInfo.getOrgId(), budgetYear, hrDepartment.getId());
+            if (totalAmount == null) {
+                totalAmount = 0.00d;
             }
-            String startDateStr=budgetYear+"-01-01 00:00:01";
-            String endDateStr=budgetYear+"-12-31 23:23:59";
-            Date startDate=DateFormatUtil.parse(startDateStr,DateFormatUtil.YMDHMS_PATTERN);
-            Date endDate=DateFormatUtil.parse(endDateStr,DateFormatUtil.YMDHMS_PATTERN);
-            Double dailyIng=this.wfReqDailyDetailService.getSumAmountByIng(userInfo.getOrgId(),hrDepartment.getId(),startDate,endDate);
-            Double dailyPass=this.wfReqDailyDetailService.getSumAmountByPass(userInfo.getOrgId(),hrDepartment.getId(),startDate,endDate);
+            String startDateStr = budgetYear + "-01-01 00:00:01";
+            String endDateStr = budgetYear + "-12-31 23:23:59";
+            Date startDate = DateFormatUtil.parse(startDateStr, DateFormatUtil.YMDHMS_PATTERN);
+            Date endDate = DateFormatUtil.parse(endDateStr, DateFormatUtil.YMDHMS_PATTERN);
+            Double dailyIng = this.wfReqDailyDetailService.getSumAmountByIng(userInfo.getOrgId(), hrDepartment.getId(), startDate, endDate);
+            Double dailyPass = this.wfReqDailyDetailService.getSumAmountByPass(userInfo.getOrgId(), hrDepartment.getId(), startDate, endDate);
 
-            Double rePaymentIng=this.wfReqRePaymentDetailService.getSumAmountByIng(userInfo.getOrgId(),hrDepartment.getId(),startDate,endDate);
-            Double rePaymentPass=this.wfReqRePaymentDetailService.getSumAmountByPass(userInfo.getOrgId(),hrDepartment.getId(),startDate,endDate);
-            if(dailyIng==null){
-                dailyIng=0.00d;
-            }
-            if(dailyPass==null){
-                dailyPass=0.00d;
-            }
-            if(rePaymentIng==null){
-                rePaymentIng=0.00d;
-            }
-            if(rePaymentPass==null){
-                rePaymentPass=0.00d;
-            }
-            totalIngAmount=dailyIng+rePaymentIng;
+            Double dailyTrueIng = this.wfReqDailyTrueService.getSumAmountByIng(userInfo.getOrgId(), hrDepartment.getId(), startDate, endDate);
+            Double dailyTruePass = this.wfReqDailyTrueService.getSumAmountByPass(userInfo.getOrgId(), hrDepartment.getId(), startDate, endDate);
 
-            totalPassAmount=dailyPass+rePaymentPass;
+            Double rePaymentIng = this.wfReqRePaymentDetailService.getSumAmountByIng(userInfo.getOrgId(), hrDepartment.getId(), startDate, endDate);
+            Double rePaymentPass = this.wfReqRePaymentDetailService.getSumAmountByPass(userInfo.getOrgId(), hrDepartment.getId(), startDate, endDate);
+            if (dailyIng == null) {
+                dailyIng = 0.00d;
+            }
+            if (dailyPass == null) {
+                dailyPass = 0.00d;
+            }
 
-            remnantAmount=totalPassAmount-totalAmount;
-            if(remnantAmount.doubleValue()<0){
-                remnantAmount=0.00d;
+            if (dailyTrueIng == null) {
+                dailyTrueIng = 0.00d;
+            }
+            if (dailyTruePass == null) {
+                dailyTruePass = 0.00d;
+            }
+
+            if (rePaymentIng == null) {
+                rePaymentIng = 0.00d;
+            }
+            if (rePaymentPass == null) {
+                rePaymentPass = 0.00d;
+            }
+            totalIngAmount = dailyIng + dailyTrueIng + rePaymentIng;
+
+            totalPassAmount = dailyPass + dailyTruePass + rePaymentPass;
+
+            remnantAmount = totalPassAmount - totalAmount;
+            if (remnantAmount.doubleValue() < 0) {
+                remnantAmount = 0.00d;
             }
         }
     }

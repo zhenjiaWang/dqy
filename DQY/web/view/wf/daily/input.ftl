@@ -454,6 +454,11 @@
                 $('.treeDiv').fadeOut();
             }
         });
+        $('#trueDetail').off('click').on('click', function (e) {
+            if(confirm("此操作将进入替票业务,您这页的数据将会丢失,需要重新填写,是否继续?")){
+                document.location.href='/wf/daily.dhtml?trueAmount=1';
+            }
+        });
     });
 </script>
 <!--搜索begin-->
@@ -605,7 +610,7 @@
                                     <a href="##" id="addDetail" ><i class="icon-plus"></i> 增加</a>
                                     <a href="##" id="deleteDetail" ><i class="icon-minus"></i>
                                         删除</a>
-                                    <a href="/wf/daily.dhtml?trueAmount=1" id="trueDetail" ><i class="icon-eye-open"></i>&nbsp;</a>
+                                    <a href="##" id="trueDetail" ><i class="icon-eye-open"></i>&nbsp;</a>
                                 </td>
                             </tr>
                             </thead>

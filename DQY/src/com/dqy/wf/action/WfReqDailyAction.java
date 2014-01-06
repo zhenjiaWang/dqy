@@ -452,6 +452,9 @@ public class WfReqDailyAction extends WfReqSupportAction<WfReqDaily> {
             Double dailyIng=this.wfReqDailyDetailService.getSumAmountByIng(userInfo.getOrgId(),hrDepartment.getId(),startDate,endDate);
             Double dailyPass=this.wfReqDailyDetailService.getSumAmountByPass(userInfo.getOrgId(),hrDepartment.getId(),startDate,endDate);
 
+            Double dailyTrueIng=this.wfReqDailyTrueService.getSumAmountByIng(userInfo.getOrgId(),hrDepartment.getId(),startDate,endDate);
+            Double dailyTruePass=this.wfReqDailyTrueService.getSumAmountByPass(userInfo.getOrgId(),hrDepartment.getId(),startDate,endDate);
+
             Double rePaymentIng=this.wfReqRePaymentDetailService.getSumAmountByIng(userInfo.getOrgId(),hrDepartment.getId(),startDate,endDate);
             Double rePaymentPass=this.wfReqRePaymentDetailService.getSumAmountByPass(userInfo.getOrgId(),hrDepartment.getId(),startDate,endDate);
             if(dailyIng==null){
@@ -460,15 +463,21 @@ public class WfReqDailyAction extends WfReqSupportAction<WfReqDaily> {
             if(dailyPass==null){
                 dailyPass=0.00d;
             }
+            if(dailyTrueIng==null){
+                dailyTrueIng=0.00d;
+            }
+            if(dailyTruePass==null){
+                dailyTruePass=0.00d;
+            }
             if(rePaymentIng==null){
                 rePaymentIng=0.00d;
             }
             if(rePaymentPass==null){
                 rePaymentPass=0.00d;
             }
-            totalIngAmount=dailyIng+rePaymentIng;
+             totalIngAmount=dailyIng+dailyTrueIng+rePaymentIng;
 
-            totalPassAmount=dailyPass+rePaymentPass;
+             totalPassAmount=dailyPass+dailyTruePass+rePaymentPass;
 
             remnantAmount=totalPassAmount-totalAmount;
             if(remnantAmount.doubleValue()<0){
