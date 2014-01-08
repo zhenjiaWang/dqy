@@ -244,7 +244,7 @@
                     </tr>
                     </#if>
                     <#if trueList?exists&&trueList?size gt 0>
-                    <tr style="display: none;" id="trueList">
+                    <tr  id="trueList">
                         <td colspan="2">
                             <table style="width: 100%;"
                                    class="layout table table-bordered table-hover tableBgColor nomar nopadding">

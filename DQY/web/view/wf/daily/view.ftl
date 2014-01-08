@@ -144,43 +144,43 @@
                         </div>
                     </td>
                 </tr>
-                <#if trueList?exists&&trueList?size gt 0>
-                <tr>
-                    <td >
-                        <div class="control-group" style="margin-bottom: 5px;">
-                            <label class="control-label" for="wfReqDaily.amount"
-                                   style="width: 60px;color: #898989;">报销金额</label>
+                    <#if trueList?exists&&trueList?size gt 0>
+                    <tr>
+                        <td >
+                            <div class="control-group" style="margin-bottom: 5px;">
+                                <label class="control-label" for="wfReqDaily.amount"
+                                       style="width: 60px;color: #898989;">报销金额</label>
 
-                            <div class="controls" style="margin-left: 70px;*margin-left:0;">
-                                <label style="margin-top: 5px;padding-left:5px;font-size: 12px;">${(wfReqDaily.amount)?c}</label>
+                                <div class="controls" style="margin-left: 70px;*margin-left:0;">
+                                    <label style="margin-top: 5px;padding-left:5px;font-size: 12px;">${(wfReqDaily.amount)?c}</label>
+                                </div>
                             </div>
-                        </div>
-                    </td>
-                    <td >
-                        <div class="control-group" style="margin-bottom: 5px;">
-                            <label class="control-label" for="wfReqDaily.trueAmount"
-                                   style="width: 60px;color: #898989;">实际花费</label>
+                        </td>
+                        <td >
+                            <div class="control-group" style="margin-bottom: 5px;">
+                                <label class="control-label" for="wfReqDaily.trueAmount"
+                                       style="width: 60px;color: #898989;">实际花费</label>
 
-                            <div class="controls" style="margin-left: 70px;*margin-left:0;">
-                                <label style="margin-top: 5px;padding-left:5px;font-size: 12px;">${(wfReqDaily.trueAmount)?c}</label>
+                                <div class="controls" style="margin-left: 70px;*margin-left:0;">
+                                    <label style="margin-top: 5px;padding-left:5px;font-size: 12px;">${(wfReqDaily.trueAmount)?c}</label>
+                                </div>
                             </div>
-                        </div>
-                    </td>
-                </tr>
-                <#else >
-                <tr>
-                    <td colspan="2">
-                        <div class="control-group" style="margin-bottom: 5px;">
-                            <label class="control-label" for="wfReqDaily.amount"
-                                   style="width: 60px;color: #898989;">报销金额</label>
+                        </td>
+                    </tr>
+                    <#else >
+                    <tr>
+                        <td colspan="2">
+                            <div class="control-group" style="margin-bottom: 5px;">
+                                <label class="control-label" for="wfReqDaily.amount"
+                                       style="width: 60px;color: #898989;">报销金额</label>
 
-                            <div class="controls" style="margin-left: 70px;*margin-left:0;">
-                                <label style="margin-top: 5px;padding-left:5px;font-size: 12px;">${(wfReqDaily.amount)?c}</label>
+                                <div class="controls" style="margin-left: 70px;*margin-left:0;">
+                                    <label style="margin-top: 5px;padding-left:5px;font-size: 12px;">${(wfReqDaily.amount)?c}</label>
+                                </div>
                             </div>
-                        </div>
-                    </td>
-                </tr>
-                </#if>
+                        </td>
+                    </tr>
+                    </#if>
                     <#if detailList?exists&&detailList?size gt 0>
                     <tr>
                         <td colspan="2">
@@ -218,7 +218,7 @@
                     </#if>
 
                     <#if trueList?exists&&trueList?size gt 0>
-                    <tr style="display: none;" id="trueList">
+                    <tr style="" id="trueList">
                         <td colspan="2">
                             <table style="width: 100%;"
                                    class="layout table table-bordered table-hover tableBgColor nomar nopadding">

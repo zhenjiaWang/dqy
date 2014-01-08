@@ -100,7 +100,7 @@
     function zTreeOnClick(event, treeId, treeNode) {
         srcNode = treeNode;
         if (treeNode&&currentSEQ) {
-            $('#deptId'+currentSEQ).val(treeNode['id']);
+            $('#deptId'+currentSEQ+'_'+currentTYPE).val(treeNode['id']);
             $('#deptName'+currentSEQ+'_'+currentTYPE).val(treeNode['name']);
             $('#deptName'+currentSEQ+'_'+currentTYPE).trigger('blur');
             $('.treeDiv').fadeOut();
