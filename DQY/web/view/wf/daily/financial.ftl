@@ -332,7 +332,7 @@
                 <tbody>
                     <#if reqCommentsList?exists&&reqCommentsList?size gt 0>
                         <#list reqCommentsList as comments>
-                            <#if comments.action!=1>
+                            <#if comments.action gt 2>
                             <tr style="background-color:#ffffff">
                                 <td>${(comments.userId.userName)?if_exists}</td>
                                 <td>${comments.actionDesc?if_exists}</td>
