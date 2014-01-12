@@ -52,6 +52,12 @@
                             $('.approve','.side-left-in').find('a').append('<span class="badge badge-important marl10">${userInfo.taskUnApprove?c}</span>');
                         </#if>
                     </#if>
+                    <#if userInfo.executeUnRead gt 0>
+                        $('.myExecute','.side-left-in').find('a.cur').append('<span class="ts"></span>');
+                        <#if userInfo.executeUnRead gt 0>
+                            $('.execute','.side-left-in').find('a').append('<span class="badge badge-important marl10">${userInfo.executeUnRead?c}</span>');
+                        </#if>
+                    </#if>
                 </#if>
             </#if>
 
@@ -112,11 +118,11 @@
                             <dd class="done"><a href="/wf/reqTask!doneList.dhtml"><i class="icon-hand-right"></i> 已审批</a></dd>
                         </dl>
                     </li>
-                    <li class=budgetTitle>
-                        <a class="cur" href="#">经办单据</a>
+                    <li class=myExecute>
+                        <a class="cur" href="##">经办单据</a>
                         <dl class="font12">
-                            <dd><a href="#"><i class="icon-hand-right"></i> 未处理</a></dd>
-                            <dd><a href="#"><i class="icon-hand-right"></i> 已处理</a></dd>
+                            <dd class="execute"><a href="/wf/reqExecute.dhtml"><i class="icon-hand-right"></i> 未查看</a></dd>
+                            <dd class="done"><a href="/wf/reqExecute!doneList.dhtml"><i class="icon-hand-right"></i> 已查看</a></dd>
                         </dl>
                     </li>
                     <#assign roleId=userInfo["roleId"]?if_exists>

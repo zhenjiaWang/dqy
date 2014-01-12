@@ -13,7 +13,9 @@ import com.dqy.sys.service.SysFinancialTitleService;
 import com.dqy.sys.service.SysOrgService;
 import com.dqy.util.EncryptUtil;
 import com.dqy.wf.entity.WfReq;
+import com.dqy.wf.entity.WfReqExecute;
 import com.dqy.wf.entity.WfReqTask;
+import com.dqy.wf.service.WfReqExecuteService;
 import com.dqy.wf.service.WfReqService;
 import com.dqy.wf.service.WfReqTaskService;
 import com.google.inject.Inject;
@@ -54,6 +56,9 @@ public class LoginAction extends BaseAction {
 
     @Inject
     private WfReqTaskService wfReqTaskService;
+
+    @Inject
+    private WfReqExecuteService wfReqExecuteService;
 
     @Inject
     private WfReqService wfReqService;
@@ -177,6 +182,13 @@ public class LoginAction extends BaseAction {
                 reqRejected = 0;
             }
             userInfo.setReqRejected(reqRejected);
+
+            Integer unExcuteRead = wfReqExecuteService.getCountUnRead(userInfo.getOrgId(), userInfo.getUserId());
+            if (unExcuteRead == null) {
+                unExcuteRead = 0;
+            }
+            userInfo.setExecuteUnRead(unExcuteRead);
+
 
             List<Selector> selectorList = new ArrayList<Selector>();
             selectorList.add(SelectorUtils.$alias("reqId", "reqId"));

@@ -46,7 +46,8 @@
                     document.location.href='/common/login!authOrg.dhtml?authOrgId='+uid;
                 }
             });
-            <#if userInfo.taskUnRead gt 0 ||userInfo.taskUnApprove gt 0||userInfo.reqPassed gt 0 ||userInfo.reqRejected gt 0>
+            <#if userInfo.taskUnRead gt 0 ||userInfo.taskUnApprove gt 0||userInfo.reqPassed gt 0 ||userInfo.reqRejected gt 0 ||
+             userInfo.executeUnRead gt 0 >
             $('.apply','#topMenu').find('a').append('<span class="ts"></span>');
             </#if>
             <#assign roleId=userInfo["roleId"]?if_exists>

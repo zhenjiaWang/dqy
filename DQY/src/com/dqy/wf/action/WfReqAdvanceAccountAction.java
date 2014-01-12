@@ -36,6 +36,9 @@ public class WfReqAdvanceAccountAction extends WfReqSupportAction<WfReqAdvanceAc
     private WfVariableGlobalService wfVariableGlobalService;
 
     @Inject
+    private WfReqExecuteService wfReqExecuteService;
+
+    @Inject
     private WfReqService wfReqService;
 
     @Inject
@@ -73,6 +76,9 @@ public class WfReqAdvanceAccountAction extends WfReqSupportAction<WfReqAdvanceAc
     @ReqSet
     private Long taskId;
 
+    @ReqGet
+    @ReqSet
+    private Long executeId;
 
     @ReqSet
     public final String applyId="ADVANCE_ACCOUNT";
@@ -81,6 +87,9 @@ public class WfReqAdvanceAccountAction extends WfReqSupportAction<WfReqAdvanceAc
 
     @ReqSet
     private WfReqTask wfReqTask;
+
+    @ReqSet
+    private WfReqExecute wfReqExecute;
 
     @ReqSet
     private List<WfReqComments> reqCommentsList;
@@ -197,6 +206,8 @@ public class WfReqAdvanceAccountAction extends WfReqSupportAction<WfReqAdvanceAc
         }
         return "success";
     }
+
+
 
 
 

@@ -71,7 +71,7 @@
             </thead>
             <tbody>
                 <#list reqCommentsList as comments>
-                    <#if comments.action!=1>
+                    <#if comments.action gt 3>
                     <tr style="background-color:#ffffff">
                         <td>${(comments.userId.userName)?if_exists}</td>
                         <td>${comments.actionDesc?if_exists}</td>

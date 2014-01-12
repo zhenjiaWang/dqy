@@ -80,6 +80,8 @@ public class UserInfo implements Serializable {
 
     private String roleId;
 
+    private Integer executeUnRead;
+
     private Integer taskUnRead;
 
     private Integer taskUnApprove;
@@ -374,5 +376,13 @@ public class UserInfo implements Serializable {
 
     public void setUserEmail(String userEmail) {
         this.userEmail = userEmail;
+    }
+
+    public Integer getExecuteUnRead() {
+        return executeUnRead;
+    }
+
+    public void setExecuteUnRead(Integer executeUnRead) {
+        this.executeUnRead = executeUnRead;
     }
 }

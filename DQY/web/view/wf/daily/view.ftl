@@ -144,6 +144,27 @@
                         </div>
                     </td>
                 </tr>
+                <tr>
+                    <td colspan="2">
+                        <div class="control-group" style="margin-bottom: 5px;">
+                            <label class="control-label" for="wfReqDaily.payMethod"
+                                   style="width: 60px;color: #898989;">支付方式</label>
+                            <div class="controls" style="margin-left: 70px;*margin-left:0;" >
+                                <label style="margin-top: 5px;padding-left:5px;font-size: 12px;">
+                                    <#if wfReqDaily.payMethod?exists>
+                                        <#if wfReqDaily.payMethod==1>
+                                            现金
+                                        <#elseif wfReqDaily.payMethod==2>
+                                            银行转账
+                                        <#elseif wfReqDaily.payMethod==3>
+                                            支票
+                                        </#if>
+                                    </#if>
+                                </label>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
                     <#if trueList?exists&&trueList?size gt 0>
                     <tr>
                         <td >

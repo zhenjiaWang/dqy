@@ -25,6 +25,9 @@ public class WfReqDaily extends IdEntity implements Tracker {
 
     private WfReq reqId;
 
+
+    private Integer payMethod;
+
     private Double amount;
 
     private Double trueAmount;
@@ -179,5 +182,14 @@ public class WfReqDaily extends IdEntity implements Tracker {
 
     public void setBudgetYear(Integer budgetYear) {
         this.budgetYear = budgetYear;
+    }
+
+    @Column(name = "PAY_METHOD")
+    public Integer getPayMethod() {
+        return payMethod;
+    }
+
+    public void setPayMethod(Integer payMethod) {
+        this.payMethod = payMethod;
     }
 }

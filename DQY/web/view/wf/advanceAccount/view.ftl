@@ -43,6 +43,9 @@
         $('#backBtn').off('click').on('click', function () {
             history.back();
         });
+        $('#executeBtn').off('click').on('click', function () {
+            WEBUTILS.popWindow.createPopWindow(650, 500, '申请转发', '/wf/reqExecute!forward.dhtml?reqId=${wfReq.id?c}');
+        });
     });
 </script>
 <div class="r-top clearfix">
@@ -245,6 +248,14 @@
         <button class="btn btn-inverse floatright " type="button" id="backBtn">返回</button>
         <#if wfReq.complete==1&&wfReq.applyState==2&&wfReq.applyResult==1>
             <a href="/wf/req!print.dhtml?id=${wfReq.id?c}" id="printA" target="_blank"><button class="btn btn-info floatright " type="button" id="printBtn">打印</button></a>
+            <#if Session["userSession"]?exists>
+                <#assign userInfo=Session["userSession"]?if_exists>
+                <#if userInfo?exists>
+                    <#if userInfo["userId"]==wfReq.userId.id>
+                        <a href="##" id="executeBtn"><button class="btn btn-warning floatright " type="button" id="printBtn">转发</button></a>
+                    </#if>
+                </#if>
+            </#if>
         </#if>
     </p>
     </#if>
