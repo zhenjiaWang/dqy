@@ -10,6 +10,7 @@
     <link type="text/css" href="/css/bootstrap.css" rel="stylesheet">
     <link rel="stylesheet" href="/css/global.css" type="text/css">
     <link type="text/css" href="/css/dqy-style.css" rel="stylesheet">
+
     <script type="text/javascript">
         $(document).ready(function () {
             $('body').off('.data-api')
@@ -82,7 +83,7 @@
             <tr>
                 <th>备注</th>
                 <td colspan="3">
-                ${(wfReqDaily.remarks)?if_exists}
+               ${(wfReqDaily.remarks)?if_exists}
                 </td>
             </tr>
             <#if wfReq.financialYn=="Y">
@@ -151,8 +152,8 @@
         <p>签字：  </p>
     </div>
 </div>
-<p></p>
 <#if trueList?exists&&trueList?size gt 0>
+<p style="page-break-after: always;"></p>
 <div class="print">
     <div>
         <div class="clearfix">
