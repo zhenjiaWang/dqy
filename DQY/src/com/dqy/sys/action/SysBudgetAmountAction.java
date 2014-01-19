@@ -23,6 +23,7 @@ import net.sf.json.JSONObject;
 import org.guiceside.commons.TokenUtils;
 import org.guiceside.commons.lang.BeanUtils;
 import org.guiceside.commons.lang.DateFormatUtil;
+import org.guiceside.commons.lang.NumberUtils;
 import org.guiceside.commons.lang.StringUtils;
 import org.guiceside.persistence.entity.search.SelectorUtils;
 import org.guiceside.persistence.hibernate.dao.hquery.Selector;
@@ -209,6 +210,7 @@ public class SysBudgetAmountAction extends ActionSupport<SysBudgetAmount> {
             if (totalAmount == null) {
                 totalAmount = 0.00d;
             }
+            totalAmount = NumberUtils.multiply(totalAmount,1,2);
 
         }
         return "success";  //To change body of implemented methods use File | Settings | File Templates.
@@ -517,6 +519,7 @@ public class SysBudgetAmountAction extends ActionSupport<SysBudgetAmount> {
                     if (totalAmount == null) {
                         totalAmount = 0.00d;
                     }
+                    totalAmount = NumberUtils.multiply(totalAmount,1,2);
                     department.setBudgetAmount(totalAmount);
                 }
             }
@@ -548,6 +551,7 @@ public class SysBudgetAmountAction extends ActionSupport<SysBudgetAmount> {
             if (totalAmount == null) {
                 totalAmount = 0.00d;
             }
+            totalAmount = NumberUtils.multiply(totalAmount,1,2);
             String startDateStr = currentYear + "-01-01 00:00:01";
             String endDateStr = currentYear + "-12-31 23:23:59";
             Date startDate = DateFormatUtil.parse(startDateStr, DateFormatUtil.YMDHMS_PATTERN);
@@ -560,23 +564,28 @@ public class SysBudgetAmountAction extends ActionSupport<SysBudgetAmount> {
             if (dailyIng == null) {
                 dailyIng = 0.00d;
             }
+            dailyIng = NumberUtils.multiply(dailyIng,1,2);
             if (dailyPass == null) {
                 dailyPass = 0.00d;
             }
+            dailyPass = NumberUtils.multiply(dailyPass,1,2);
             if (rePaymentIng == null) {
                 rePaymentIng = 0.00d;
             }
+            rePaymentIng = NumberUtils.multiply(rePaymentIng,1,2);
             if (rePaymentPass == null) {
                 rePaymentPass = 0.00d;
             }
+            rePaymentPass = NumberUtils.multiply(rePaymentPass,1,2);
             totalIngAmount = dailyIng + rePaymentIng;
-
+            totalIngAmount = NumberUtils.multiply(totalIngAmount,1,2);
             totalPassAmount = dailyPass + rePaymentPass;
-
+            totalPassAmount = NumberUtils.multiply(totalPassAmount,1,2);
             remnantAmount = totalPassAmount - totalAmount;
             if (remnantAmount.doubleValue() < 0) {
                 remnantAmount = 0.00d;
             }
+            remnantAmount = NumberUtils.multiply(remnantAmount,1,2);
         }
         return "success";  //To change body of implemented methods use File | Settings | File Templates.
     }
@@ -778,7 +787,7 @@ public class SysBudgetAmountAction extends ActionSupport<SysBudgetAmount> {
             if (totalAmount == null) {
                 totalAmount = 0.00d;
             }
-
+            totalAmount = NumberUtils.multiply(totalAmount,1,2);
             String startDateStr = currentYear + "-01-01 00:00:01";
             String endDateStr = currentYear + "-12-31 23:23:59";
             Date startDate = DateFormatUtil.parse(startDateStr, DateFormatUtil.YMDHMS_PATTERN);
@@ -791,23 +800,28 @@ public class SysBudgetAmountAction extends ActionSupport<SysBudgetAmount> {
             if (dailyIng == null) {
                 dailyIng = 0.00d;
             }
+            dailyIng = NumberUtils.multiply(dailyIng,1,2);
             if (dailyPass == null) {
                 dailyPass = 0.00d;
             }
+            dailyPass = NumberUtils.multiply(dailyPass,1,2);
             if (rePaymentIng == null) {
                 rePaymentIng = 0.00d;
             }
+            rePaymentIng = NumberUtils.multiply(rePaymentIng,1,2);
             if (rePaymentPass == null) {
                 rePaymentPass = 0.00d;
             }
+            rePaymentPass = NumberUtils.multiply(rePaymentPass,1,2);
             totalIngAmount = dailyIng + rePaymentIng;
-
+            totalIngAmount = NumberUtils.multiply(totalIngAmount,1,2);
             totalPassAmount = dailyPass + rePaymentPass;
-
+            totalPassAmount = NumberUtils.multiply(totalPassAmount,1,2);
             remnantAmount = totalPassAmount - totalAmount;
             if (remnantAmount.doubleValue() < 0) {
                 remnantAmount = 0.00d;
             }
+            remnantAmount = NumberUtils.multiply(remnantAmount,1,2);
         }
         return "success";  //To change body of implemented methods use File | Settings | File Templates.
     }
@@ -842,6 +856,7 @@ public class SysBudgetAmountAction extends ActionSupport<SysBudgetAmount> {
                     if (totalAmount == null) {
                         totalAmount = 0.00d;
                     }
+                    totalAmount = NumberUtils.multiply(totalAmount,1,2);
                     department.setBudgetAmount(totalAmount);
                 }
             }
@@ -934,7 +949,7 @@ public class SysBudgetAmountAction extends ActionSupport<SysBudgetAmount> {
             if (totalAmount == null) {
                 totalAmount = 0.00d;
             }
-
+            totalAmount = NumberUtils.multiply(totalAmount,1,2);
             String startDateStr = currentYear + "-01-01 00:00:01";
             String endDateStr = currentYear + "-12-31 23:23:59";
             Date startDate = DateFormatUtil.parse(startDateStr, DateFormatUtil.YMDHMS_PATTERN);
@@ -947,23 +962,28 @@ public class SysBudgetAmountAction extends ActionSupport<SysBudgetAmount> {
             if (dailyIng == null) {
                 dailyIng = 0.00d;
             }
+            dailyIng = NumberUtils.multiply(dailyIng,1,2);
             if (dailyPass == null) {
                 dailyPass = 0.00d;
             }
+            dailyPass = NumberUtils.multiply(dailyPass,1,2);
             if (rePaymentIng == null) {
                 rePaymentIng = 0.00d;
             }
+            rePaymentIng = NumberUtils.multiply(rePaymentIng,1,2);
             if (rePaymentPass == null) {
                 rePaymentPass = 0.00d;
             }
+            rePaymentPass = NumberUtils.multiply(rePaymentPass,1,2);
             totalIngAmount = dailyIng + rePaymentIng;
-
+            totalIngAmount = NumberUtils.multiply(totalIngAmount,1,2);
             totalPassAmount = dailyPass + rePaymentPass;
-
+            totalPassAmount = NumberUtils.multiply(totalPassAmount,1,2);
             remnantAmount = totalPassAmount - totalAmount;
             if (remnantAmount.doubleValue() < 0) {
                 remnantAmount = 0.00d;
             }
+            remnantAmount = NumberUtils.multiply(remnantAmount,1,2);
         }
         return "success";  //To change body of implemented methods use File | Settings | File Templates.
     }

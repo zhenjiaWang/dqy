@@ -89,7 +89,7 @@
             }
             sum += parseFloat(v);
         });
-        $('.yearAmountTotal').val('预算总额：'+sum);
+        $('.yearAmountTotal').val('预算总额：'+sum.toFixed(2));
     }
     function calSumAmount(index) {
         var sum = 0;
@@ -103,7 +103,7 @@
                 sum += parseFloat(v);
             });
 
-            $('#amountTotal'+index,tr).val(sum);
+            $('#amountTotal'+index,tr).val(sum.toFixed(2));
 
             var yearSum = 0;
             $('.amtTotal','.table-bordered-amt').each(function(i,o){
@@ -113,7 +113,7 @@
                 }
                 yearSum += parseFloat(v);
             });
-            $('.yearAmountTotal').text('预算总额：'+yearSum);
+            $('.yearAmountTotal').text('预算总额：'+yearSum.toFixed(2));
         }
     }
     $(document).ready(function () {

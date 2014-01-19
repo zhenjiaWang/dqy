@@ -17,6 +17,7 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.guiceside.commons.lang.BeanUtils;
 import org.guiceside.commons.lang.DateFormatUtil;
+import org.guiceside.commons.lang.NumberUtils;
 import org.guiceside.commons.lang.StringUtils;
 import org.guiceside.persistence.entity.search.SelectorUtils;
 import org.guiceside.persistence.hibernate.dao.hquery.Selector;
@@ -772,6 +773,7 @@ public class WfReqAction extends ActionSupport<WfReq> {
                 if(totalAmount==null){
                     totalAmount=0.00d;
                 }
+                totalAmount = NumberUtils.multiply(totalAmount, 1, 2);
                 String startDateStr=budgetYear+"-01-01 00:00:01";
                 String endDateStr=budgetYear+"-12-31 23:23:59";
                 Date startDate=DateFormatUtil.parse(startDateStr,DateFormatUtil.YMDHMS_PATTERN);
@@ -787,29 +789,37 @@ public class WfReqAction extends ActionSupport<WfReq> {
                 if(dailyIng==null){
                     dailyIng=0.00d;
                 }
+                dailyIng = NumberUtils.multiply(dailyIng,1,2);
                 if(dailyPass==null){
                     dailyPass=0.00d;
                 }
+                dailyPass = NumberUtils.multiply(dailyPass,1,2);
                 if(dailyTrueIng==null){
                     dailyTrueIng=0.00d;
                 }
+                dailyTrueIng = NumberUtils.multiply(dailyTrueIng,1,2);
                 if(dailyTruePass==null){
                     dailyTruePass=0.00d;
                 }
+                dailyTruePass = NumberUtils.multiply(dailyTruePass,1,2);
                 if(rePaymentIng==null){
                     rePaymentIng=0.00d;
                 }
+                rePaymentIng = NumberUtils.multiply(rePaymentIng,1,2);
                 if(rePaymentPass==null){
                     rePaymentPass=0.00d;
                 }
+                rePaymentPass = NumberUtils.multiply(rePaymentPass,1,2);
                 Double totalIngAmount=dailyIng+dailyTrueIng+rePaymentIng;
+                totalIngAmount = NumberUtils.multiply(totalIngAmount,1,2);
 
                 Double totalPassAmount=dailyPass+dailyTruePass+rePaymentPass;
-
+                totalPassAmount = NumberUtils.multiply(totalPassAmount,1,2);
                 Double remnantAmount=totalPassAmount-totalAmount;
                 if(remnantAmount.doubleValue()<0){
                     remnantAmount=0.00d;
                 }
+                remnantAmount = NumberUtils.multiply(remnantAmount,1,2);
                 root.put("result","0");
                 root.put("totalAmount",totalAmount);
                 root.put("totalIngAmount",totalIngAmount);

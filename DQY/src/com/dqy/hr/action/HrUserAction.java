@@ -393,7 +393,7 @@ public class HrUserAction extends ActionSupport<HrUser> {
                     int crypttype4 = 0;
                     int gid = 33;
                     int departmentid = -1;
-                    String username = EncryptUtil.getBASE64(hrUser.getUserName());
+                    String username = EncryptUtil.getBASE64(userid);
                     String offic = "";
                     String mobile = "";
                     String phone = "";
