@@ -29,6 +29,11 @@ public class SaleDeptSystemService extends HQuery {
     public List<SaleDeptSystem> getList(Long deptId) {
         return $($eq("deptId.id",deptId),$eq("useYn", "Y")).list(SaleDeptSystem.class);
     }
+
+    @Transactional(type = TransactionType.READ_ONLY)
+    public List<SaleDeptSystem> getList(List<Selector> selectorList) {
+        return $(selectorList).list(SaleDeptSystem.class);
+    }
     /**
      * @param id
      * @return 根据Id获取代码

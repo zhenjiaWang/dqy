@@ -29,6 +29,11 @@ public class SaleDeptService extends HQuery {
     public List<SaleDept> getList(Long channelId) {
         return $($eq("channelId.id",channelId),$eq("useYn", "Y")).list(SaleDept.class);
     }
+
+    @Transactional(type = TransactionType.READ_ONLY)
+    public List<SaleDept> getList(List<Selector> selectorList) {
+        return $(selectorList).list(SaleDept.class);
+    }
     /**
      * @param id
      * @return 根据Id获取代码

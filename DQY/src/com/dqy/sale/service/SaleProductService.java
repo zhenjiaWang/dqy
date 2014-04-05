@@ -26,6 +26,11 @@ public class SaleProductService extends HQuery {
     }
 
     @Transactional(type = TransactionType.READ_ONLY)
+    public List<SaleProduct> getList(List<Selector> selectorList) {
+        return $(selectorList).list(SaleProduct.class);
+    }
+
+    @Transactional(type = TransactionType.READ_ONLY)
     public List<SaleProduct> getList(Long seriesId) {
         return $($eq("seriesId.id",seriesId),$eq("useYn", "Y")).list(SaleProduct.class);
     }

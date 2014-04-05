@@ -29,6 +29,11 @@ public class SaleCustomerService extends HQuery {
     public List<SaleCustomer> getList(Long systemId) {
         return $($eq("systemId.id",systemId),$eq("useYn","Y")).list(SaleCustomer.class);
     }
+    @Transactional(type = TransactionType.READ_ONLY)
+    public List<SaleCustomer> getList(List<Selector> selectorList) {
+        return $(selectorList).list(SaleCustomer.class);
+    }
+
     /**
      * @param id
      * @return 根据Id获取代码
