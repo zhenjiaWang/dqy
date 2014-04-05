@@ -25,7 +25,10 @@ public class SaleSeriesService extends HQuery {
         return $(selectorList).page(SaleSeries.class, start, limit);
     }
 
-
+    @Transactional(type = TransactionType.READ_ONLY)
+    public List<SaleSeries> getList(List<Selector> selectorList) {
+        return $(selectorList).list(SaleSeries.class);
+    }
     /**
      * @param id
      * @return 根据Id获取代码
