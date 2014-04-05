@@ -158,7 +158,7 @@ public class LoginAction extends BaseAction {
             userInfo.setTopMenuBudget(0);
             userInfo.setTopMenuInfo(0);
             userInfo.setTopMenuSys(0);
-
+            userInfo.setTopMenuSale(0);
             Integer unRead = wfReqTaskService.getCountUnRead(userInfo.getOrgId(), userInfo.getUserId());
             if (unRead == null) {
                 unRead = 0;
@@ -279,6 +279,10 @@ public class LoginAction extends BaseAction {
                 }
                 if (roleList.contains("LOOK_BUDGET")) {
                     userInfo.setTopMenuBudget(1);
+                }
+
+                 if (roleList.contains("SALE_CUSTOMER") || roleList.contains("SALE_APPLY")|| roleList.contains("SALE_PRODUCT")) {
+                     userInfo.setTopMenuSale(1);
                 }
             }
             userInfo.setTopMenuApply(1);

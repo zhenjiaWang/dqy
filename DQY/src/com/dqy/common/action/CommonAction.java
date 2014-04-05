@@ -369,6 +369,30 @@ public class CommonAction extends BaseAction {
 
     @PageFlow(result = {@Result(name = "success", path = "${authUrl}", type = Dispatcher.Redirect),
             @Result(name = "index", path = "/common/login!index.dhtml", type = Dispatcher.Redirect)})
+    public String saleIndex() throws Exception {
+        UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
+        if (userInfo != null) {
+            List<String> roleList = userInfo.getRoleList();
+            if (roleList != null && !roleList.isEmpty()) {
+                if (roleList.contains("SALE_CUSTOMER") || roleList.contains("SALE_PRODUCT")) {
+                    if (roleList.contains("SALE_CUSTOMER")) {
+                        authUrl = "/sale/channel.dhtml";
+                    } else if (roleList.contains("SALE_PRODUCT")) {
+                        authUrl = "/sale/series.dhtml";
+                    }
+                }else if (roleList.contains("SALE_APPLY")) {
+                    authUrl = "/wf/variableGlobal.dhtml";
+                }
+                if (StringUtils.isNotBlank(authUrl)) {
+                    return "success";
+                }
+            }
+        }
+        return "index";  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @PageFlow(result = {@Result(name = "success", path = "${authUrl}", type = Dispatcher.Redirect),
+            @Result(name = "index", path = "/common/login!index.dhtml", type = Dispatcher.Redirect)})
     public String sysIndex() throws Exception {
         UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
         if (userInfo != null) {

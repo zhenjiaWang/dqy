@@ -151,6 +151,9 @@ public class SysAuthorizedAction extends ActionSupport<SysAuthorized> {
                 roleList.add("SYS_BUDGET");
                 roleList.add("LOOK_BUDGET");
                 roleList.add("SET_BUDGET");
+                roleList.add("SALE_CUSTOMER");
+                roleList.add("SALE_PRODUCT");
+                roleList.add("SALE_APPLY");
                 roleList.add("APPROVE_BUDGET");
                 roleList.add("TASK_FINANCIAL");
                 roleList.add("EMAIL_CD");
@@ -166,6 +169,9 @@ public class SysAuthorizedAction extends ActionSupport<SysAuthorized> {
                 roleNameMap.put("SYS_BUDGET", "预算科目管理");
                 roleNameMap.put("LOOK_BUDGET", "预算查看");
                 roleNameMap.put("SET_BUDGET","预算填报");
+                roleNameMap.put("SALE_CUSTOMER","销售门店管理");
+                roleNameMap.put("SALE_PRODUCT","销售产品管理");
+                roleNameMap.put("SALE_APPLY", "销售费用报销");
                 roleNameMap.put("APPROVE_BUDGET","预算审核");
                 roleNameMap.put("TASK_FINANCIAL", "财务审批");
                 roleNameMap.put("EMAIL_CD", "邮箱管理");

@@ -98,6 +98,8 @@ public class UserInfo implements Serializable {
 
     private Integer topMenuSys;
 
+    private Integer topMenuSale;
+
     public String getSessionId() {
         return sessionId;
     }
@@ -384,5 +386,13 @@ public class UserInfo implements Serializable {
 
     public void setExecuteUnRead(Integer executeUnRead) {
         this.executeUnRead = executeUnRead;
+    }
+
+    public Integer getTopMenuSale() {
+        return topMenuSale;
+    }
+
+    public void setTopMenuSale(Integer topMenuSale) {
+        this.topMenuSale = topMenuSale;
     }
 }
