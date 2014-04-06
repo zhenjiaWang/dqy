@@ -40,6 +40,8 @@
                             费用报销
                         <#elseif apply=="BUSINESS">
                             事务申请
+                        <#elseif apply=="SALE">
+                            销售费用报销
                         </#if>
                     </td>
                     <td>

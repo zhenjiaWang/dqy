@@ -46,6 +46,8 @@ public class WfReqSale extends IdEntity implements Tracker {
 
     private SaleProduct productId;
 
+    private Integer budgetYear;
+
     private Date created;
 
     private String createdBy;
@@ -213,5 +215,14 @@ public class WfReqSale extends IdEntity implements Tracker {
 
     public void setProductId(SaleProduct productId) {
         this.productId = productId;
+    }
+
+    @Column(name = "BUDGET_YEAR")
+    public Integer getBudgetYear() {
+        return budgetYear;
+    }
+
+    public void setBudgetYear(Integer budgetYear) {
+        this.budgetYear = budgetYear;
     }
 }

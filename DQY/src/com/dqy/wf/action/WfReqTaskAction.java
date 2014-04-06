@@ -306,6 +306,7 @@ public class WfReqTaskAction extends ActionSupport<WfReqTask> {
             @Result(name = "REPAYMENT", path = "/wf/rePayment!process.dhtml?taskId=${wfReqTask.id}", type = Dispatcher.Redirect),
             @Result(name = "DAILY", path = "/wf/daily!process.dhtml?taskId=${wfReqTask.id}", type = Dispatcher.Redirect),
             @Result(name = "BUSINESS", path = "/wf/business!process.dhtml?taskId=${wfReqTask.id}", type = Dispatcher.Redirect),
+            @Result(name = "SALE", path = "/wf/sale!process.dhtml?taskId=${wfReqTask.id}", type = Dispatcher.Redirect),
             @Result(name = "view", path = "/wf/req!view.dhtml?id=${wfReqTask.reqId.id}", type = Dispatcher.Redirect)})
     public String process() throws Exception {
         UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());

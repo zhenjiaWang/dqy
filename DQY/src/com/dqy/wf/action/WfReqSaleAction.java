@@ -170,8 +170,8 @@ public class WfReqSaleAction extends WfReqSupportAction<WfReqSale> {
     public String execute() throws Exception {
         UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
         if (userInfo != null) {
-            userInfo.setTopMenu("apply");
-            userInfo.setLeftMenu("sale");
+            userInfo.setTopMenu("sale");
+            userInfo.setLeftMenu("saleApply");
             userInfo.setChildMenu(null);
             sendDate = DateFormatUtil.getCurrentDate(true);
 

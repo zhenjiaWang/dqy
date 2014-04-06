@@ -67,7 +67,7 @@
                     <#if roleId?contains("SALE_PRODUCT")>
                         <ul class="item-nav"><!--ul上的current是为了控制当前这一组的背景色，li上的current是为了控制二级菜单-->
                             <li class="saleSeries">
-                                <a class="cur" href="/sale/series.dhtml">销售系列</a>
+                                <a class="cur" href="/sale/series.dhtml">品类系列</a>
                             </li>
                             <li class="saleProduct">
                                 <a class="cur" href="/sale/product.dhtml">销售单品</a>
@@ -79,7 +79,7 @@
                     <#if roleId?contains("SALE_APPLY")>
                         <ul class="item-nav"><!--ul上的current是为了控制当前这一组的背景色，li上的current是为了控制二级菜单-->
                             <li class="saleApply">
-                                <a class="cur" href="/sys/budgetAmount!monitor.dhtml">费用报销</a>
+                                <a class="cur" href="/wf/sale.dhtml">费用报销</a>
                             </li>
                         </ul>
                     </#if>

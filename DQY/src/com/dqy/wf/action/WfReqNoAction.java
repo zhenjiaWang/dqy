@@ -72,6 +72,7 @@ public class WfReqNoAction extends ActionSupport<WfReqNo> {
             applyList.add("REPAYMENT");
             applyList.add("DAILY");
             applyList.add("BUSINESS");
+            applyList.add("SALE");
             applyReqNoMap=new HashMap<String, String>();
             for(String apply:applyList){
                 wfReqNo = this.wfReqNoService.getCurrentReqNo(userInfo.getOrgId(),apply);
@@ -97,6 +98,8 @@ public class WfReqNoAction extends ActionSupport<WfReqNo> {
                 applyName="费用报销";
             }else if(applyId.equals("BUSINESS")){
                 applyName="事务申请";
+            }else if(applyId.equals("SALE")){
+                applyName="销售费用报销";
             }
         }
         return "success";  //To change body of implemented methods use File | Settings | File Templates.

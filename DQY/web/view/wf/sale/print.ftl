@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="/css/global.css" type="text/css">
     <link type="text/css" href="/css/dqy-style.css" rel="stylesheet">
     <script type="text/javascript">
+
     </script>
 </head>
 <body>
@@ -39,54 +40,55 @@
                 </td>
             </tr>
             <tr>
-                <th>预支申请</th>
+                <th>报销金额</th>
                 <td colspan="3">
-                ${(wfReqRePayment.advanceId.reqId.subject)?if_exists}
+                ${(wfReqSale.amount)?c}
                 </td>
             </tr>
             <tr>
-                <th>还款金额</th>
-                <td>
-                ${(wfReqRePayment.amount)?c}
+                <th>费用类别</th>
+                <td >
+                ${(wfReqSale.expenseType.expenseType)?if_exists}
                 </td>
-                <th width="80">支付方式</th>
-                <td>
-                <#if wfReqRePayment.payMethod?exists>
-                    <#if wfReqRePayment.payMethod==1>
-                        现金
-                    <#elseif wfReqRePayment.payMethod==2>
-                        银行转账
-                    <#elseif wfReqRePayment.payMethod==3>
-                        支票
-                    </#if>
-                </#if>
+                <th>费用项目</th>
+                <td >
+                ${(wfReqSale.expenseTitle.titleName)?if_exists}
                 </td>
             </tr>
-
-            <#if wfReqRePayment.payMethod?exists>
-                <#if wfReqRePayment.payMethod==2>
-                <tr>
-                    <th>收款单位</th>
-                    <td colspan="3">
-                    ${wfReqRePayment.payee?if_exists}
-                    </td>
-                </tr>
-                <tr>
-                    <th>开户行</th>
-                    <td>
-                    ${(wfReqRePayment.bank)?if_exists}
-                    </td>
-                    <th width="80">帐号</th>
-                    <td>
-                    ${(wfReqRePayment.bankAccount)?if_exists}
-                    </td>
-                </tr>
-                </#if>
-            </#if>
+            <tr>
+                <th>渠道</th>
+                <td >
+                ${(wfReqSale.channelId.channelName)?if_exists}
+                </td>
+                <th>业态/部门</th>
+                <td >
+                ${(wfReqSale.deptId.deptName)?if_exists}
+                </td>
+            </tr>
+            <tr>
+                <th>系统</th>
+                <td >
+                ${(wfReqSale.systemId.systemName)?if_exists}
+                </td>
+                <th>门店</th>
+                <td >
+                ${(wfReqSale.customerId.customerName)?if_exists}
+                </td>
+            </tr>
+            <tr>
+                <th>品类/系列</th>
+                <td >
+                ${(wfReqSale.seriesId.seriesName)?if_exists}
+                </td>
+                <th>单品</th>
+                <td >
+                (${(wfReqSale.productId.productCode)?if_exists})&nbsp;&nbsp;&nbsp;${(wfReqSale.productId.productName)?if_exists}
+                </td>
+            </tr>
             <tr>
                 <th>备注</th>
                 <td colspan="3">
-                ${(wfReqRePayment.remarks)?if_exists}
+                ${(wfReqSale.remarks)?if_exists}
                 </td>
             </tr>
             <#if wfReq.financialYn=="Y">
@@ -100,32 +102,6 @@
             </tbody>
         </table>
     </div>
-    <#if detailList?exists&&detailList?size gt 0>
-        <table width="100%" id="printTable" class="print-table mart10">
-            <thead>
-            <tr>
-                <th width="80" class="alignleft">费用部门</th>
-                <th width="60" class="alignleft">费用类型</th>
-                <th width="60"class="alignleft">费用项目</th>
-                <th width="70" class="alignleft">费用日期</th>
-                <th width="50" class="alignleft">金额</th>
-                <th class="alignleft">备注</th>
-            </tr>
-            </thead>
-            <tbody>
-                <#list detailList as detail>
-                <tr >
-                    <td>${(detail.expenseDept.deptName)?if_exists}</td>
-                    <td>${(detail.expenseType.expenseType)?if_exists}</td>
-                    <td>${(detail.expenseTitle.titleName)?if_exists}</td>
-                    <td>${detail.amountDate?string("yyyy-MM-dd")}</td>
-                    <td>${detail.amount?c}</td>
-                    <td>${detail.remarks?if_exists}</td>
-                </tr>
-                </#list>
-            </tbody>
-        </table>
-    </#if>
     <#if reqCommentsList?exists&&reqCommentsList?size gt 0>
         <table width="100%" class="print-table mart20">
             <thead>

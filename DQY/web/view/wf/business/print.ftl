@@ -7,14 +7,10 @@
     <meta http-equiv="Content-Language" content="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7"/>
     <title>打印 ${wfReq.subject?if_exists}</title>
-    <link type="text/css" href="/css/bootstrap.css" rel="stylesheet">
     <link rel="stylesheet" href="/css/global.css" type="text/css">
     <link type="text/css" href="/css/dqy-style.css" rel="stylesheet">
     <script type="text/javascript">
-        $(document).ready(function () {
-            $('body').off('.data-api')
-            WEBUTILS.popMask.close();
-        });
+
     </script>
 </head>
 <body>
@@ -45,7 +41,7 @@
             </tr>
             <tr>
                 <td colspan="4">
-                ${wfReqBusiness.content?if_exists}
+               ${wfReqBusiness.content?if_exists}
                 </td>
             </tr>
             <#if wfReq.financialYn=="Y">

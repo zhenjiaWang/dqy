@@ -232,7 +232,8 @@ public class WfReqExecuteAction extends WfReqSupportAction<WfReqExecute> {
             @Result(name = "ADVANCE_ACCOUNT", path = "/wf/advanceAccount!view.dhtml?reqId=${wfReq.id}", type = Dispatcher.Redirect),
             @Result(name = "REPAYMENT", path = "/wf/rePayment!view.dhtml?reqId=${wfReq.id}", type = Dispatcher.Redirect),
             @Result(name = "DAILY", path = "/wf/daily!view.dhtml?reqId=${wfReq.id}", type = Dispatcher.Redirect),
-            @Result(name = "BUSINESS", path = "/wf/business!view.dhtml?reqId=${wfReq.id}", type = Dispatcher.Redirect)})
+            @Result(name = "BUSINESS", path = "/wf/business!view.dhtml?reqId=${wfReq.id}", type = Dispatcher.Redirect),
+            @Result(name = "SALE", path = "/wf/sale!view.dhtml?reqId=${wfReq.id}", type = Dispatcher.Redirect)})
     public String process() throws Exception {
         UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
         if (id != null && userInfo != null) {

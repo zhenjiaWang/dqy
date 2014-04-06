@@ -44,6 +44,9 @@ public class WfReqService extends HQuery {
     private WfReqAdvanceAccountService wfReqAdvanceAccountService;
 
     @Inject
+    private WfReqSaleService wfReqSaleService;
+
+    @Inject
     private WfReqBusinessService wfReqBusinessService;
 
     @Inject
@@ -162,6 +165,7 @@ public class WfReqService extends HQuery {
             List<WfReqDailyDetail> reqDailyDetailList,
             List<WfReqDailyTrue> reqDailyTrueList,
             WfReqBusiness reqBusiness,
+            WfReqSale reqSale,
             List<WfReqComments> delReqCommentsList,
                        List<WfReqNodeApprove> delReqNodeApproveList, List<WfReqTask> delReqTaskList,List<WfReqAtt> reqAttList) {
 
@@ -197,6 +201,9 @@ public class WfReqService extends HQuery {
         }
         if(reqAttList!=null&&!reqAttList.isEmpty()){
             this.reqAttService.delete(reqAttList);
+        }
+        if(reqSale!=null){
+            this.wfReqSaleService.delete(reqSale);
         }
         $(wfReq).delete();
     }

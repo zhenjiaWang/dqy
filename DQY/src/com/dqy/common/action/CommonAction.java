@@ -8,6 +8,8 @@ import com.dqy.hr.entity.HrDepartment;
 import com.dqy.hr.entity.HrUser;
 import com.dqy.hr.service.HrDepartmentService;
 import com.dqy.hr.service.HrUserService;
+import com.dqy.sale.entity.*;
+import com.dqy.sale.service.*;
 import com.dqy.sys.entity.SysAuthorized;
 import com.dqy.sys.entity.SysBudgetTitle;
 import com.dqy.sys.entity.SysFinancialTitle;
@@ -72,6 +74,21 @@ public class CommonAction extends BaseAction {
 
     @Inject
     private SysFinancialTitleService sysFinancialTitleService;
+
+    @Inject
+    private SaleDeptService saleDeptService;
+
+    @Inject
+    private SaleDeptSystemService saleDeptSystemService;
+
+    @Inject
+    private SaleCustomerService saleCustomerService;
+
+    @Inject
+    private SaleSeriesService saleSeriesService;
+
+    @Inject
+    private SaleProductService saleProductService;
 
     @Inject
     private SysOrgService sysOrgService;
@@ -596,6 +613,115 @@ public class CommonAction extends BaseAction {
             }
         }
         root.put("titleList",jsonArray);
+        root.put("result",0);
+        writeJsonByAction(root.toString());
+        return null; //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    public String searchDept() throws Exception {
+        UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
+        JSONObject root=new JSONObject();
+        root.put("result",-1);
+        JSONArray jsonArray = new JSONArray();
+        JSONObject node = null;
+        if (userInfo != null&&id!=null) {
+            List<Selector> selectorList=new ArrayList<Selector>();
+            selectorList.add(SelectorUtils.$eq("channelId.id", id));
+            selectorList.add(SelectorUtils.$eq("useYn","Y"));
+            selectorList.add(SelectorUtils.$order("deptName"));
+            List<SaleDept> deptList =this.saleDeptService.getList(selectorList);
+            if(deptList!=null&&!deptList.isEmpty()){
+                for(SaleDept dept:deptList){
+                    node = new JSONObject();
+                    node.put("name", StringUtils.defaultIfEmpty(dept.getDeptName()));
+                    node.put("id", StringUtils.defaultIfEmpty(dept.getId()));
+                    jsonArray.add(node);
+                }
+            }
+        }
+        root.put("deptList",jsonArray);
+        root.put("result",0);
+        writeJsonByAction(root.toString());
+        return null; //To change body of implemented methods use File | Settings | File Templates.
+    }
+    public String searchSystem() throws Exception {
+        UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
+        JSONObject root=new JSONObject();
+        root.put("result",-1);
+        JSONArray jsonArray = new JSONArray();
+        JSONObject node = null;
+        if (userInfo != null&&id!=null) {
+            List<Selector> selectorList=new ArrayList<Selector>();
+            selectorList.add(SelectorUtils.$alias("systemId", "systemId"));
+            selectorList.add(SelectorUtils.$eq("deptId.id", id));
+            selectorList.add(SelectorUtils.$eq("systemId.useYn", "Y"));
+            selectorList.add(SelectorUtils.$eq("useYn","Y"));
+            selectorList.add(SelectorUtils.$order("systemId.systemName"));
+            List<SaleDeptSystem> deptSystemList =this.saleDeptSystemService.getList(selectorList);
+            if(deptSystemList!=null&&!deptSystemList.isEmpty()){
+                for(SaleDeptSystem deptSystem:deptSystemList){
+                    node = new JSONObject();
+                    node.put("name", StringUtils.defaultIfEmpty(deptSystem.getSystemId().getSystemName()));
+                    node.put("id", StringUtils.defaultIfEmpty(deptSystem.getSystemId().getId()));
+                    jsonArray.add(node);
+                }
+            }
+        }
+        root.put("systemList",jsonArray);
+        root.put("result",0);
+        writeJsonByAction(root.toString());
+        return null; //To change body of implemented methods use File | Settings | File Templates.
+    }
+    public String searchCustomer() throws Exception {
+        UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
+        JSONObject root=new JSONObject();
+        root.put("result",-1);
+        JSONArray jsonArray = new JSONArray();
+        JSONObject node = null;
+        if (userInfo != null&&id!=null) {
+            List<Selector> selectorList=new ArrayList<Selector>();
+            selectorList.add(SelectorUtils.$eq("systemId.id", id));
+            selectorList.add(SelectorUtils.$eq("useYn","Y"));
+            selectorList.add(SelectorUtils.$order("customerName"));
+            List<SaleCustomer> customerList =this.saleCustomerService.getList(selectorList);
+            if(customerList!=null&&!customerList.isEmpty()){
+                for(SaleCustomer customer:customerList){
+                    node = new JSONObject();
+                    node.put("name", StringUtils.defaultIfEmpty(customer.getCustomerName()));
+                    node.put("id", StringUtils.defaultIfEmpty(customer.getId()));
+                    jsonArray.add(node);
+                }
+            }
+        }
+        root.put("customerList",jsonArray);
+        root.put("result",0);
+        writeJsonByAction(root.toString());
+        return null; //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    public String searchProduct() throws Exception {
+        UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
+        JSONObject root=new JSONObject();
+        root.put("result",-1);
+        JSONArray jsonArray = new JSONArray();
+        JSONObject node = null;
+        if (userInfo != null&&id!=null) {
+            List<Selector> selectorList=new ArrayList<Selector>();
+            selectorList.add(SelectorUtils.$eq("seriesId.id", id));
+            selectorList.add(SelectorUtils.$eq("useYn","Y"));
+            selectorList.add(SelectorUtils.$order("productCode"));
+            List<SaleProduct> productList =this.saleProductService.getList(selectorList);
+            if(productList!=null&&!productList.isEmpty()){
+                for(SaleProduct product:productList){
+                    node = new JSONObject();
+                    node.put("code", StringUtils.defaultIfEmpty(product.getProductCode()));
+                    node.put("name", StringUtils.defaultIfEmpty(product.getProductName()));
+                    node.put("id", StringUtils.defaultIfEmpty(product.getId()));
+                    jsonArray.add(node);
+                }
+            }
+        }
+        root.put("productList",jsonArray);
         root.put("result",0);
         writeJsonByAction(root.toString());
         return null; //To change body of implemented methods use File | Settings | File Templates.

@@ -55,6 +55,9 @@ public class WfReqAction extends ActionSupport<WfReq> {
     @Inject
     private WfReqNoSeqService wfReqNoSeqService;
 
+    @Inject
+    private WfReqSaleService wfReqSaleService;
+
 
     @Inject
     private WfReqCommentsService wfReqCommentsService;
@@ -474,6 +477,7 @@ public class WfReqAction extends ActionSupport<WfReq> {
                 WfReqRePayment reqRePayment = null;
                 WfReqBusiness reqBusiness = null;
                 WfReqDaily reqDaily = null;
+                WfReqSale reqSale=null;
                 List<WfReqDailyDetail> reqDailyDetailList = null;
                 List<WfReqDailyTrue> reqDailyTrueList = null;
                 List<WfReqRePaymentDetail> rePaymentDetailList = null;
@@ -493,6 +497,8 @@ public class WfReqAction extends ActionSupport<WfReq> {
                     }
                 } else if (wfReq.getApplyId().equals("BUSINESS")) {
                     reqBusiness = this.wfReqBusinessService.getByReqId(wfReq.getId());
+                }else if (wfReq.getApplyId().equals("SALE")) {
+                    reqSale = this.wfReqSaleService.getByReqId(wfReq.getId());
                 }
                 reqAttList = wfReqAttService.getByReqId(wfReq.getId());
                 List<String> attSourceList = null;
@@ -506,7 +512,7 @@ public class WfReqAction extends ActionSupport<WfReq> {
                         }
                     }
                 }
-                this.wfReqService.delete(wfReq, advanceAccount, reqRePayment, rePaymentDetailList, reqDaily, reqDailyDetailList,reqDailyTrueList, reqBusiness,
+                this.wfReqService.delete(wfReq, advanceAccount, reqRePayment, rePaymentDetailList, reqDaily, reqDailyDetailList,reqDailyTrueList, reqBusiness,reqSale,
                         delReqCommentsList, delReqNodeApproveList, delReqTaskList, reqAttList);
                 if (attSourceList != null && !attSourceList.isEmpty()) {
                     for (String source : attSourceList) {
@@ -638,7 +644,8 @@ public class WfReqAction extends ActionSupport<WfReq> {
     @PageFlow(result = {@Result(name = "ADVANCE_ACCOUNT", path = "/wf/advanceAccount!print.dhtml?reqId=${wfReq.id}", type = Dispatcher.Redirect),
             @Result(name = "REPAYMENT", path = "/wf/rePayment!print.dhtml?reqId=${wfReq.id}", type = Dispatcher.Redirect),
             @Result(name = "DAILY", path = "/wf/daily!print.dhtml?reqId=${wfReq.id}", type = Dispatcher.Redirect),
-            @Result(name = "BUSINESS", path = "/wf/business!print.dhtml?reqId=${wfReq.id}", type = Dispatcher.Redirect)})
+            @Result(name = "BUSINESS", path = "/wf/business!print.dhtml?reqId=${wfReq.id}", type = Dispatcher.Redirect),
+            @Result(name = "SALE", path = "/wf/sale!print.dhtml?reqId=${wfReq.id}", type = Dispatcher.Redirect)})
     public String print() throws Exception {
         UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
         if (userInfo != null && id != null) {
@@ -653,7 +660,8 @@ public class WfReqAction extends ActionSupport<WfReq> {
     @PageFlow(result = {@Result(name = "ADVANCE_ACCOUNT", path = "/wf/advanceAccount!view.dhtml?reqId=${wfReq.id}", type = Dispatcher.Redirect),
             @Result(name = "REPAYMENT", path = "/wf/rePayment!view.dhtml?reqId=${wfReq.id}", type = Dispatcher.Redirect),
             @Result(name = "DAILY", path = "/wf/daily!view.dhtml?reqId=${wfReq.id}", type = Dispatcher.Redirect),
-            @Result(name = "BUSINESS", path = "/wf/business!view.dhtml?reqId=${wfReq.id}", type = Dispatcher.Redirect)})
+            @Result(name = "BUSINESS", path = "/wf/business!view.dhtml?reqId=${wfReq.id}", type = Dispatcher.Redirect),
+            @Result(name = "SALE", path = "/wf/sale!view.dhtml?reqId=${wfReq.id}", type = Dispatcher.Redirect)})
     public String view() throws Exception {
         UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
         if (userInfo != null && id != null) {
@@ -696,7 +704,8 @@ public class WfReqAction extends ActionSupport<WfReq> {
     @PageFlow(result = {@Result(name = "ADVANCE_ACCOUNT", path = "/wf/advanceAccount!financial.dhtml?reqId=${wfReq.id}", type = Dispatcher.Redirect),
             @Result(name = "REPAYMENT", path = "/wf/rePayment!financial.dhtml?reqId=${wfReq.id}", type = Dispatcher.Redirect),
             @Result(name = "DAILY", path = "/wf/daily!financial.dhtml?reqId=${wfReq.id}", type = Dispatcher.Redirect),
-            @Result(name = "BUSINESS", path = "/wf/business!financial.dhtml?reqId=${wfReq.id}", type = Dispatcher.Redirect)})
+            @Result(name = "BUSINESS", path = "/wf/business!financial.dhtml?reqId=${wfReq.id}", type = Dispatcher.Redirect),
+            @Result(name = "SALE", path = "/wf/sale!financial.dhtml?reqId=${wfReq.id}", type = Dispatcher.Redirect)})
     public String financial() throws Exception {
         UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
         if (userInfo != null && id != null) {
