@@ -48,6 +48,12 @@ public class WfReqSale extends IdEntity implements Tracker {
 
     private Integer budgetYear;
 
+    private Date startDate;
+
+    private Date endDate;
+
+    private Date payDate;
+
     private Date created;
 
     private String createdBy;
@@ -224,5 +230,32 @@ public class WfReqSale extends IdEntity implements Tracker {
 
     public void setBudgetYear(Integer budgetYear) {
         this.budgetYear = budgetYear;
+    }
+
+    @Column(name = "START_DATE")
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    @Column(name = "END_DATE")
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+
+    @Column(name = "PAY_DATE")
+    public Date getPayDate() {
+        return payDate;
+    }
+
+    public void setPayDate(Date payDate) {
+        this.payDate = payDate;
     }
 }

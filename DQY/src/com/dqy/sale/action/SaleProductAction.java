@@ -69,7 +69,7 @@ public class SaleProductAction extends ActionSupport<SaleProduct> {
         UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
         if (userInfo != null) {
             userInfo.setTopMenu("sale");
-            userInfo.setLeftMenu("saleCustomer");
+            userInfo.setLeftMenu("saleProduct");
             pageObj = this.saleProductService.getPageList(getStart(), rows, searchModeCallback());
             if (pageObj != null) {
                 productList = pageObj.getResultList();

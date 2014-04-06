@@ -117,6 +117,40 @@
                     <td>
                         <div class="control-group" style="margin-bottom: 5px;">
                             <label class="control-label" for="wfReqSale.expenseType"
+                                   style="width: 60px;color: #898989;">开始日期</label>
+
+                            <div class="controls" style="margin-left: 70px;*margin-left:0;">
+                                <label style="margin-top: 5px;padding-left:5px;font-size: 12px;">${(wfReqSale.startDate)?string("yyyy-MM-dd")}</label>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="control-group" style="margin-bottom: 5px;">
+                            <label class="control-label" for="wfReqSale.expenseTitle"
+                                   style="width: 60px;color: #898989;">结束日期</label>
+
+                            <div class="controls" style="margin-left: 70px;*margin-left:0;" >
+                                <label style="margin-top: 5px;padding-left:5px;font-size: 12px;">${(wfReqSale.endDate)?string("yyyy-MM-dd")}</label>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <div class="control-group" style="margin-bottom: 5px;">
+                            <label class="control-label" for="wfReqSale.expenseType"
+                                   style="width: 60px;color: #898989;">核销日期</label>
+
+                            <div class="controls" style="margin-left: 70px;*margin-left:0;">
+                                <label style="margin-top: 5px;padding-left:5px;font-size: 12px;">${(wfReqSale.payDate)?string("yyyy-MM-dd")}</label>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="control-group" style="margin-bottom: 5px;">
+                            <label class="control-label" for="wfReqSale.expenseType"
                                    style="width: 60px;color: #898989;">费用类别</label>
 
                             <div class="controls" style="margin-left: 70px;*margin-left:0;">

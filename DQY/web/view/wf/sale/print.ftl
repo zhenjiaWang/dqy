@@ -46,6 +46,22 @@
                 </td>
             </tr>
             <tr>
+                <th>开始日期</th>
+                <td >
+                ${(wfReqSale.startDate)?string("yyyy-MM-dd")}
+                </td>
+                <th>结束日期</th>
+                <td >
+                ${(wfReqSale.endDate)?string("yyyy-MM-dd")}
+                </td>
+            </tr>
+            <tr>
+                <th>核销日期</th>
+                <td colspan="3">
+                ${(wfReqSale.payDate)?string("yyyy-MM-dd")}
+                </td>
+            </tr>
+            <tr>
                 <th>费用类别</th>
                 <td >
                 ${(wfReqSale.expenseType.expenseType)?if_exists}

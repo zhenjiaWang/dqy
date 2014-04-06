@@ -1,6 +1,7 @@
 <#import "/view/template/structure/sale/saleCommon.ftl" as saleCommon>
 <#import "/view/common/core.ftl" as c>
 <@saleCommon.sale_common>
+<link href="/css/datepicker.css" rel="stylesheet"/>
 <link href="/css/validator/validator.css" rel="stylesheet"/>
 <link href="/js/editor/themes/default/css/umeditor.min.css" type="text/css" rel="stylesheet">
 <script type="text/javascript" src="/js/webutils/webutils.validator.js"></script>
@@ -8,7 +9,7 @@
 <script type="text/javascript" charset="utf-8" src="/js/editor/umeditor.config.js"></script>
 <script type="text/javascript" charset="utf-8" src="/js/editor/umeditor.min.js"></script>
 <script type="text/javascript" src="/js/editor/lang/zh-cn/zh-cn.js"></script>
-
+<script type="text/javascript" src="/js/bootstrap-datepicker.js"></script>
 <link href="/css/kendo.common.css" rel="stylesheet"/>
 <link href="/css/kendo.metro.min.css" rel="stylesheet"/>
 <link href="/css/kendo.dataviz.min.css" rel="stylesheet"/>
@@ -90,6 +91,27 @@
                     required: true,
                     pattern: [
                         {type: 'number', exp: '==', msg: '不能为空'}
+                    ]
+                },
+                {
+                    id: 'wfReqSale\\.startDate',
+                    required: true,
+                    pattern: [
+                        {type: 'blank', exp: '!=', msg: '不能为空'}
+                    ]
+                },
+                {
+                    id: 'wfReqSale\\.endDate',
+                    required: true,
+                    pattern: [
+                        {type: 'blank', exp: '!=', msg: '不能为空'}
+                    ]
+                },
+                {
+                    id: 'wfReqSale\\.payDate',
+                    required: true,
+                    pattern: [
+                        {type: 'blank', exp: '!=', msg: '不能为空'}
                     ]
                 }
             ]
@@ -396,6 +418,17 @@
             },
             template: kendo.template($('#fileTemplate').html())
         });
+
+        $('.dateTd').each(function(i,o){
+            var dateObj=$('input[type="text"]',o);
+            if(dateObj){
+                $(dateObj).datepicker({
+                    format: 'yyyy-mm-dd'
+                }).on('changeDate', function (ev) {
+                            $(dateObj).datepicker('hide')
+                        });
+            }
+        });
     });
 </script>
 <!--搜索begin-->
@@ -470,6 +503,42 @@
                                         </#list>
                                     </#if>
                                 </select>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td data-date-format="yyyy-mm-dd" data-date="" class="date dateTd">
+                        <div class="control-group" style="margin-bottom: 5px;">
+                            <label class="control-label" for="wfReqSale.startDate"
+                                   style="width: 60px;color: #898989;">开始日期</label>
+
+                            <div class="controls" style="margin-left: 70px;*margin-left:0;">
+                                <input type="text" class="int1 " id="wfReqSale.startDate" name="wfReqSale.startDate" >
+                                <span class="help-inline"></span>
+                            </div>
+                        </div>
+                    </td>
+                    <td data-date-format="yyyy-mm-dd" data-date="" class="date dateTd">
+                        <div class="control-group" style="margin-bottom: 5px;">
+                            <label class="control-label" for="wfReqSale.endDate"
+                                   style="width: 60px;color: #898989;">结束日期</label>
+                            <div class="controls" style="margin-left: 70px;*margin-left:0;">
+                                <input type="text" class="int1 " id="wfReqSale.endDate" name="wfReqSale.endDate" >
+                                <span class="help-inline"></span>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td data-date-format="yyyy-mm-dd" data-date="" class="date dateTd" colspan="2">
+                        <div class="control-group" style="margin-bottom: 5px;">
+                            <label class="control-label" for="wfReqSale.payDate"
+                                   style="width: 60px;color: #898989;">核销日期</label>
+
+                            <div class="controls" style="margin-left: 70px;*margin-left:0;">
+                                <input type="text" class="int1 " id="wfReqSale.payDate" name="wfReqSale.payDate" >
+                                <span class="help-inline"></span>
                             </div>
                         </div>
                     </td>
