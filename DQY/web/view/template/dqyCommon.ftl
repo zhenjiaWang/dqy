@@ -83,7 +83,7 @@
                     <li class="index"><a href="/common/login!index.dhtml"><em></em>首 页</a></li>
                     <li class="apply"><a href="/wf/advanceAccount.dhtml"><em></em>申请平台</a></li>
                     <li class="info no"><a href="#"><em></em>信息平台</a></li>
-                    <#if userInfo["topMenuBudget"] gt 0>
+                    <#if userInfo["topMenuSale"] gt 0>
                         <li class="sale"><a href="/common/common!saleIndex.dhtml"><em></em>销售管理</a></li>
                     <#else >
                         <li class="sale no"><a href="#"><em></em>销售管理</a></li>
