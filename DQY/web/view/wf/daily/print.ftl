@@ -214,7 +214,7 @@
             </#if>
         </tbody>
     </table>
-    <#if detailList?exists&&detailList?size gt 0>
+    <#if trueList?exists&&trueList?size gt 0>
         <p class="font16 mart30">费用明细</p>
         <table width="100%" class="printtab mart20">
             <thead>
@@ -228,7 +228,7 @@
             </tr>
             </thead>
             <tbody>
-                <#list detailList as detail>
+                <#list trueList as detail>
                 <tr>
                     <td>${(detail.expenseDept.deptName)?if_exists}</td>
                     <td>${(detail.expenseType.expenseType)?if_exists}</td>
