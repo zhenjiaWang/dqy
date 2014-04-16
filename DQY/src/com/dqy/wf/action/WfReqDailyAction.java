@@ -16,6 +16,7 @@ import com.google.inject.Inject;
 import net.sf.json.JSONObject;
 import org.guiceside.commons.TimeUtils;
 import org.guiceside.commons.lang.DateFormatUtil;
+import org.guiceside.commons.lang.NumberUtils;
 import org.guiceside.commons.lang.StringUtils;
 import org.guiceside.persistence.entity.search.SelectorUtils;
 import org.guiceside.persistence.hibernate.dao.hquery.Selector;
@@ -248,6 +249,7 @@ public class WfReqDailyAction extends WfReqSupportAction<WfReqDaily> {
             }
             wfReqDaily.setAmount(totalAmount);
             wfReqDaily.setTrueAmount(0.00d);
+            wfReqDaily.setAmount(NumberUtils.multiply(wfReqDaily.getAmount(),1,2));
             wfReqDaily.setReqId(wfReq);
             wfReqDaily.setUseYn("Y");
             bind(wfReqDaily);
@@ -333,6 +335,8 @@ public class WfReqDailyAction extends WfReqSupportAction<WfReqDaily> {
             }
             wfReqDaily.setAmount(totalAmount);
             wfReqDaily.setTrueAmount(trueAmount);
+            wfReqDaily.setAmount(NumberUtils.multiply(wfReqDaily.getAmount(),1,2));
+            wfReqDaily.setTrueAmount(NumberUtils.multiply(wfReqDaily.getTrueAmount(),1,2));
             wfReqDaily.setReqId(wfReq);
             wfReqDaily.setUseYn("Y");
             bind(wfReqDaily);

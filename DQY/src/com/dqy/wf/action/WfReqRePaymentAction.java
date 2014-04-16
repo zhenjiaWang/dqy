@@ -14,6 +14,7 @@ import com.dqy.wf.entity.*;
 import com.dqy.wf.service.*;
 import com.google.inject.Inject;
 import org.guiceside.commons.lang.DateFormatUtil;
+import org.guiceside.commons.lang.NumberUtils;
 import org.guiceside.commons.lang.StringUtils;
 import org.guiceside.persistence.entity.search.SelectorUtils;
 import org.guiceside.persistence.hibernate.dao.hquery.Selector;
@@ -246,9 +247,11 @@ public class WfReqRePaymentAction extends WfReqSupportAction<WfReqRePayment> {
                 }
             }
             wfReqRePayment.setAmount(totalAmount);
+            wfReqRePayment.setAmount(NumberUtils.multiply(wfReqRePayment.getAmount(), 1, 2));
             wfReqRePayment.setReqId(wfReq);
             wfReqRePayment.setUseYn("Y");
             bind(wfReqRePayment);
+
             this.wfReqRePaymentService.save(wfReqRePayment, detailList, wfReq, wfReqCommentsList, wfReqNoSeq, reqNodeApproveList, reqTaskList, wfReqMyFlowLast, reqAttList);
         }
         return "success";  //To change body of implemented methods use File | Settings | File Templates.

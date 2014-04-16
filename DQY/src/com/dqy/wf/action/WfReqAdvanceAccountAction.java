@@ -12,6 +12,7 @@ import com.dqy.wf.service.*;
 import com.google.inject.Inject;
 import net.sf.json.JSONObject;
 import org.guiceside.commons.lang.DateFormatUtil;
+import org.guiceside.commons.lang.NumberUtils;
 import org.guiceside.commons.lang.StringUtils;
 import org.guiceside.persistence.entity.search.SelectorUtils;
 import org.guiceside.persistence.hibernate.dao.hquery.Selector;
@@ -130,6 +131,7 @@ public class WfReqAdvanceAccountAction extends WfReqSupportAction<WfReqAdvanceAc
             wfReqAdvanceAccount.setUseYn("Y");
             wfReqAdvanceAccount.setRePayYn("N");
             bind(wfReqAdvanceAccount);
+            wfReqAdvanceAccount.setAmount(NumberUtils.multiply(wfReqAdvanceAccount.getAmount(), 1, 2));
             this.wfReqAdvanceAccountService.save(wfReqAdvanceAccount,wfReq,  wfReqCommentsList, wfReqNoSeq, reqNodeApproveList, reqTaskList, wfReqMyFlowLast,reqAttList);
         }
         return "success";  //To change body of implemented methods use File | Settings | File Templates.
