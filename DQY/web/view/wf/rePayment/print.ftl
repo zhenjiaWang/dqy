@@ -52,6 +52,8 @@
                     银行转账
                 <#elseif wfReqRePayment.payMethod==3>
                     支票
+                <#elseif wfReqRePayment.payMethod==4>
+                    帐扣
                 </#if>
             </#if>
             </td>

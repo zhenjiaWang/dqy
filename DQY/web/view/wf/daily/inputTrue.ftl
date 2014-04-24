@@ -622,6 +622,7 @@
                                     <option value="1">现金</option>
                                     <option value="2">银行转账</option>
                                     <option value="3">支票</option>
+                                    <option value="4">帐扣</option>
                                 </select>
                             </div>
                         </div>

@@ -140,6 +140,8 @@
                                             银行转账
                                         <#elseif wfReqAdvanceAccount.payMethod==3>
                                             支票
+                                        <#elseif wfReqAdvanceAccount.payMethod==4>
+                                            帐扣
                                         </#if>
                                     </#if>
                                 </label>
