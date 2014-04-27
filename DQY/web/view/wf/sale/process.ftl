@@ -227,28 +227,31 @@
                         </div>
                     </td>
                 </tr>
-                <tr>
-                    <td>
-                        <div class="control-group" style="margin-bottom: 5px;">
-                            <label class="control-label" for="wfReqSale.seriesId"
-                                   style="width: 60px;color: #898989;">品类/系列</label>
-
-                            <div class="controls" style="margin-left: 70px;*margin-left:0;">
-                                <label style="margin-top: 5px;padding-left:5px;font-size: 12px;">${(wfReqSale.seriesId.seriesName)?if_exists}</label>
-                            </div>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="control-group" style="margin-bottom: 5px;">
-                            <label class="control-label" for="wfReqSale.productId"
-                                   style="width: 60px;color: #898989;">单品</label>
-
-                            <div class="controls" style="margin-left: 70px;*margin-left:0;" >
-                                <label style="margin-top: 5px;padding-left:5px;font-size: 12px;">${(wfReqSale.productId.productCode)?if_exists})&nbsp;&nbsp;&nbsp;${(wfReqSale.productId.productName)?if_exists}</label>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
+                    <#if reqSaleDetailList?exists&&reqSaleDetailList?size gt 0>
+                    <tr>
+                        <td colspan="2">
+                            <table style="width: 100%;"
+                                   class="layout table table-bordered table-hover tableBgColor nomar nopadding">
+                                <thead>
+                                <tr>
+                                    <td width="200">品类/系列</td>
+                                    <td >单品</td>
+                                    <td width="80">金额</td>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                    <#list reqSaleDetailList as detail>
+                                    <tr >
+                                        <td>${(detail.seriesId.seriesName)?if_exists}</td>
+                                        <td>${(detail.productId.productName)?if_exists}</td>
+                                        <td>${detail.amount?c}</td>
+                                    </tr>
+                                    </#list>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                    </#if>
                 <tr>
                     <td colspan="2">
                         <div class="control-group" style="margin-bottom: 5px;">

@@ -340,5 +340,12 @@ var rePaymentDetailTrue='<tr seq="{seq}" class="detailTr{type}" type="{type}">' 
     '<td><input type="text" class="int1 " style="width: 95%;" id="remarks{seq}_{type}" name="remarks{seq}_{type}"></td>' +
     '</tr>';
 
+var saleDetail='<tr seq="{seq}" class="detailTr">' +
+    '<td><input type="text" class="int1 width-70 amt" id="productAmount{seq}" name="productAmount{seq}" value="0.00" style="ime-mode:disabled"></td>' +
+    '<td><select class="int2 width-160" id="seriesId{seq}" name="seriesId{seq}">' +
+    '</select></td>' +
+    '<td colspan="2"><select class="int2" id="productId{seq}" name="productId{seq}" style="width: 480px;">' +
+    '</select></td>' +
+    '</tr>';
 
 var flowApproveNodeShow='<li class="nodeLi" nodeSeq="{nodeSeq}" nodeType="{nodeType}" approveType="{approveType}" approveId="{approveId}"><a href="#"><span class="badge {className}">{nodeSeqText}</span>{text}</a></li><li><i class="dqy-ico dqy-r"></i></li>';

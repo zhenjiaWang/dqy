@@ -10,6 +10,7 @@ import org.hibernate.annotations.Parameter;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by IntelliJ IDEA.
@@ -30,6 +31,8 @@ public class WfReqSale extends IdEntity implements Tracker {
 
     private Double amount;
 
+    private Double trueAmount;
+
     private SysBudgetType expenseType;
 
     private SysBudgetTitle expenseTitle;
@@ -41,10 +44,6 @@ public class WfReqSale extends IdEntity implements Tracker {
     private SaleSystem systemId;
 
     private SaleCustomer customerId;
-
-    private SaleSeries seriesId;
-
-    private SaleProduct productId;
 
     private Integer budgetYear;
 
@@ -63,7 +62,6 @@ public class WfReqSale extends IdEntity implements Tracker {
     private String updatedBy;
 
     private String useYn;
-
 
     @Id
     @GeneratedValue(generator="WF_REQ_SALE")
@@ -203,25 +201,6 @@ public class WfReqSale extends IdEntity implements Tracker {
         this.customerId = customerId;
     }
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "SERIES_ID")
-    public SaleSeries getSeriesId() {
-        return seriesId;
-    }
-
-    public void setSeriesId(SaleSeries seriesId) {
-        this.seriesId = seriesId;
-    }
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "PRODUCT_ID")
-    public SaleProduct getProductId() {
-        return productId;
-    }
-
-    public void setProductId(SaleProduct productId) {
-        this.productId = productId;
-    }
 
     @Column(name = "BUDGET_YEAR")
     public Integer getBudgetYear() {
@@ -257,5 +236,14 @@ public class WfReqSale extends IdEntity implements Tracker {
 
     public void setPayDate(Date payDate) {
         this.payDate = payDate;
+    }
+
+    @Column(name = "TRUE_AMOUNT")
+    public Double getTrueAmount() {
+        return trueAmount;
+    }
+
+    public void setTrueAmount(Double trueAmount) {
+        this.trueAmount = trueAmount;
     }
 }

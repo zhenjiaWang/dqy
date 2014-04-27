@@ -94,6 +94,13 @@
                     ]
                 },
                 {
+                    id: 'productAmount1',
+                    required: true,
+                    pattern: [
+                        {type: 'number', exp: '==', msg: '不能为空'}
+                    ]
+                },
+                {
                     id: 'wfReqSale\\.startDate',
                     required: true,
                     pattern: [
@@ -299,31 +306,34 @@
         }
     }
 
-    function loadProduct(){
-        var seriesId=$('#wfReqSale\\.seriesId\\.id').val();
-        if(seriesId){
-            $.ajax({
-                type:'GET',
-                url:'/common/common!searchProduct.dhtml?id=' + seriesId,
-                dataType:'json',
-                success:function (jsonData) {
-                    if (jsonData) {
-                        if (jsonData['result'] == '0') {
-                            var productList=jsonData['productList'];
-                            if(productList){
-                                var productObj=$('#wfReqSale\\.productId\\.id');
-                                if(productObj){
-                                    $(productObj).empty();
-                                    $(productList).each(function(i,o){
-                                        $(productObj).append('<option value="'+o['id']+'">('+o['code']+')&nbsp;&nbsp;&nbsp;'+o['name']+'</option>');
-                                    });
+    function loadProduct(seriesObj,productObj){
+        if(seriesObj&&productObj){
+            $(seriesObj).off('change').on('change', function () {
+                var seriesId=$(this).val();
+                if(seriesId){
+                    $.ajax({
+                        type:'GET',
+                        url:'/common/common!searchProduct.dhtml?id=' + seriesId,
+                        dataType:'json',
+                        success:function (jsonData) {
+                            if (jsonData) {
+                                if (jsonData['result'] == '0') {
+                                    var productList=jsonData['productList'];
+                                    if(productList){
+                                        if(productObj){
+                                            $(productObj).empty();
+                                            $(productList).each(function(i,o){
+                                                $(productObj).append('<option value="'+o['id']+'">('+o['code']+')&nbsp;&nbsp;&nbsp;'+o['name']+'</option>');
+                                            });
+                                        }
+                                    }
                                 }
                             }
-                        }
-                    }
-                },
-                error:function (jsonData) {
+                        },
+                        error:function (jsonData) {
 
+                        }
+                    });
                 }
             });
         }
@@ -358,6 +368,35 @@
         }else{
         }
     }
+    function bindSelect(seq){
+        <#if seriesList?exists&&seriesList?size gt 0>
+            $('#seriesId'+seq).empty();
+            <#list seriesList as series>
+                $('#seriesId'+seq).append('<option value="${(series.id)?c}">${(series.seriesName)?if_exists}</option>');
+            </#list>
+        </#if>
+        <#if productList?exists&&productList?size gt 0>
+            $('#productId'+seq).empty();
+            <#list productList as product>
+                $('#productId'+seq).append('<option value="${product.id?c}">(${product.productCode?if_exists})&nbsp;&nbsp;&nbsp;${product.productName?if_exists}</option>');
+            </#list>
+        </#if>
+        $('#productAmount'+seq).off('blur').on('blur',function(){
+            var totalAm=0.00;
+            $('.amt').each(function(i,o){
+                var am=$(o).val();
+                if(am){
+                    am=parseFloat(am);
+                    if(am){
+                        am=am.toFixed(2);
+                        am=parseFloat(am);
+                        totalAm+=am;
+                    }
+                }
+            });
+            $('#wfReqSale\\.amount').val(totalAm);
+        });
+    }
     $(document).ready(function () {
         initValidator();
         loadBudgetAmount();
@@ -375,23 +414,41 @@
         $('#wfReqSale\\.systemId\\.id').off('change').on('change', function () {
             loadCustomer();
         });
-        $('#wfReqSale\\.seriesId\\.id').off('change').on('change', function () {
-            loadProduct();
-        });
+        loadProduct($('#seriesId1'),$('#productId1'));
         $('#wfReqSale\\.budgetYear').off('change').on('change', function () {
             loadBudgetAmount();
         });
         $('#nextBtn').off('click').on('click', function () {
             WEBUTILS.validator.checkAll();
-            window.setTimeout(function () {
-                var passed = WEBUTILS.validator.isPassed();
-                $('#wfReqSale\\.remarks').val(getContent());
-                if (passed) {
-                    WEBUTILS.popWindow.createPopWindow(750, 535, '选择流程', '/wf/reqMyFlow!myFlowList.dhtml?applyId=${applyId?if_exists}');
-                } else {
-                    WEBUTILS.validator.showErrors();
+            var detailCount = $('.detailTr').last().attr('seq');
+            if(detailCount){
+                $('#detailCount').val(detailCount);
+                window.setTimeout(function () {
+                    var passed = WEBUTILS.validator.isPassed();
+                    $('#wfReqSale\\.remarks').val(getContent());
+                    if (passed) {
+                        WEBUTILS.popWindow.createPopWindow(750, 535, '选择流程', '/wf/reqMyFlow!myFlowList.dhtml?applyId=${applyId?if_exists}');
+                    } else {
+                        WEBUTILS.validator.showErrors();
+                    }
+                }, 500);
+            }
+        });
+
+        $('#productAmount1').off('blur').on('blur',function(){
+            var totalAm=0.00;
+            $('.amt').each(function(i,o){
+                var am=$(o).val();
+                if(am){
+                    am=parseFloat(am);
+                    if(am){
+                        am=am.toFixed(2);
+                        am=parseFloat(am);
+                        totalAm+=am;
+                    }
                 }
-            }, 500);
+            });
+            $('#wfReqSale\\.amount').val(totalAm);
         });
 
         $("#upload").kendoUpload({
@@ -427,6 +484,41 @@
                 }).on('changeDate', function (ev) {
                             $(dateObj).datepicker('hide')
                         });
+            }
+        });
+
+        $('#addDetail').off('click').on('click', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            var currentNodeSeq = $('.detailTr').last().attr('seq');
+            if (currentNodeSeq) {
+                currentNodeSeq = parseInt(currentNodeSeq);
+                var nextNodeSeq = currentNodeSeq + 1;
+                $('.detailTr').last().after(String.formatmodel(saleDetail, {seq: nextNodeSeq}));
+                WEBUTILS.validator.addMode({
+                    id: 'productAmount' + nextNodeSeq,
+                    required: true,
+                    pattern: [
+                        {type: 'number', exp: '==', msg: ''}
+                    ]
+                });
+                bindSelect(nextNodeSeq);
+                loadProduct($('#seriesId'+nextNodeSeq),$('#productId'+nextNodeSeq));
+                submited = false;
+            }
+        });
+        $('#deleteDetail').off('click').on('click', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            var currentNodeSeq = $('.detailTr').last().attr('seq');
+            if (currentNodeSeq) {
+                currentNodeSeq = parseInt(currentNodeSeq);
+                if (currentNodeSeq > 1) {
+                    $('.detailTr').last().remove();
+                    WEBUTILS.validator.removeMode({
+                        id: 'productAmount' + currentNodeSeq
+                    });
+                }
             }
         });
     });
@@ -484,9 +576,8 @@
                         <div class="control-group" style="margin-bottom: 5px;">
                             <label class="control-label" for="wfReqSale.amount"
                                    style="width: 60px;color: #898989;">报销金额</label>
-
                             <div class="controls" style="margin-left: 70px;*margin-left:0;">
-                                <input type="text" onfocus=" this.style.imeMode='disabled' "  id="wfReqSale.amount" name="wfReqSale.amount" placeholder="报销金额" maxlength="10">
+                                <input type="text" onfocus=" this.style.imeMode='disabled' "  id="wfReqSale.amount" name="wfReqSale.amount" placeholder="报销金额" maxlength="10" readonly>
                                 <span class="help-inline"></span>
                             </div>
                         </div>
@@ -646,46 +737,66 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>
-                        <div class="control-group" style="margin-bottom: 5px;">
-                            <label class="control-label" for="wfReqSale.seriesId.id"
-                                   style="width: 60px;color: #898989;">品类/系列</label>
-
-                            <div class="controls" style="margin-left: 70px;*margin-left:0;" >
-                                <select class="int2 width-160" id="wfReqSale.seriesId.id" name="wfReqSale.seriesId.id">
-                                    <#if seriesList?exists&&seriesList?size gt 0>
-                                        <#list seriesList as series>
-                                            <option value="${(series.id)?c}">${(series.seriesName)?if_exists}</option>
-                                        </#list>
-                                    </#if>
-                                </select>
-                            </div>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="control-group" style="margin-bottom: 5px;">
-                            <label class="control-label" for="wfReqSale.productId.id"
-                                   style="width: 60px;color: #898989;">单品</label>
-
-                            <div class="controls" style="margin-left: 70px;*margin-left:0;" >
-                                <select class="int2" id="wfReqSale.productId.id" name="wfReqSale.productId.id" style="width: 250px;">
-                                    <#if productList?exists&&productList?size gt 0>
-                                        <#list productList as product>
-                                            <option value="${product.id?c}">(${product.productCode?if_exists})&nbsp;&nbsp;&nbsp;${product.productName?if_exists}</option>
-                                        </#list>
-                                    </#if>
-                                </select>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-
-
-                <tr>
                     <td colspan="2" style="border-top: 0px;">
                         <div style="width:790px;">
                             <script type="text/plain" id="editor" style="width:790px;height:200px;"></script>
                         </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <table class="table nomar">
+                            <tbody><tr>
+                                <td class="nopadding p-top5 "><span class="label label-info yearAmountTotal">预算总额：<span id="totalAmount">00.00</span></span></td>
+                                <td class="nopadding p-top5"><span class="label label-success">已产生-已审批：<span id="totalPassAmount">00.00</span></span></td>
+                                <td class="nopadding p-top5"><span class="label label-warning">已产生-待审批：<span id="totalIngAmount">00.00</span></span></td>
+                                <td class="nopadding p-top5"><span class="label label-important">超出预算金额：<span id="remnantAmount">00.00</span></span></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <table style="width: 100%;"
+                               class="layout table table-bordered table-hover tableBgColor nomar nopadding">
+                            <thead>
+                            <tr>
+                                <td width="80">金额</td>
+                                <td width="160">品类/系列</td>
+                                <td width="250">单品</td>
+                                <td>
+                                    <a href="##" id="addDetail" ><i class="icon-plus"></i> 增加</a>
+                                    <a href="##" id="deleteDetail" ><i class="icon-minus"></i>
+                                        删除</a>
+                                    <a href="##" id="trueDetail" ><i class="icon-eye-open"></i>&nbsp;</a>
+                                </td>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr seq="1" class="detailTr">
+                                <td><input type="text" class="int1 width-70 amt" id="productAmount1" name="productAmount1" value="0.00" style="ime-mode:disabled"></td>
+                                <td>
+                                    <select class="int2 width-160" id="seriesId1" name="seriesId1">
+                                        <#if seriesList?exists&&seriesList?size gt 0>
+                                            <#list seriesList as series>
+                                                <option value="${(series.id)?c}">${(series.seriesName)?if_exists}</option>
+                                            </#list>
+                                        </#if>
+                                    </select>
+                                </td>
+                                <td colspan="2">
+                                    <select class="int2" id="productId1" name="productId1" style="width: 480px;">
+                                        <#if productList?exists&&productList?size gt 0>
+                                            <#list productList as product>
+                                                <option value="${product.id?c}">(${product.productCode?if_exists})&nbsp;&nbsp;&nbsp;${product.productName?if_exists}</option>
+                                            </#list>
+                                        </#if>
+                                    </select>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
                     </td>
                 </tr>
                 <tr>
@@ -703,19 +814,7 @@
                         </div>
                     </td>
                 </tr>
-                <tr>
-                    <td colspan="2">
-                        <table class="table nomar">
-                            <tbody><tr>
-                                <td class="nopadding p-top5 "><span class="label label-info yearAmountTotal">预算总额：<span id="totalAmount">00.00</span></span></td>
-                                <td class="nopadding p-top5"><span class="label label-success">已产生-已审批：<span id="totalPassAmount">00.00</span></span></td>
-                                <td class="nopadding p-top5"><span class="label label-warning">已产生-待审批：<span id="totalIngAmount">00.00</span></span></td>
-                                <td class="nopadding p-top5"><span class="label label-important">超出预算金额：<span id="remnantAmount">00.00</span></span></td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </td>
-                </tr>
+
                 </tbody>
             </table>
             <p class="mart10  clearfix" style="width: 800px;">
@@ -727,6 +826,7 @@
             <input type="hidden" name="wfReqSale.remarks" id="wfReqSale.remarks">
             <input type="hidden" name="attToken" id="attToken" value="<@c.tokenValue/>">
             <input type="hidden" name="wfReq.nodeCount" id="wfReq.nodeCount" value="0">
+            <input type="hidden" name="detailCount" id="detailCount">
             <div id="nodeFlowHidden"></div>
         </form>
     </div>

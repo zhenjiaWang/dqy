@@ -217,6 +217,7 @@
                 $('.amt1').each(function(i,o){
                     var am=$(o).val();
                     if(am){
+                        am=am.toFixed(2);
                         am=parseFloat(am);
                         if(am){
                             totalAm+=am;
@@ -231,6 +232,7 @@
                 $('.amt2').each(function(i,o){
                     var am=$(o).val();
                     if(am){
+                        am=am.toFixed(2);
                         am=parseFloat(am);
                         if(am){
                             totalAm+=am;
@@ -468,6 +470,8 @@
                 if(am){
                     am=parseFloat(am);
                     if(am){
+                        am=am.toFixed(2);
+                        am=parseFloat(am);
                         totalAm+=am;
                     }
                 }
@@ -481,6 +485,8 @@
                 if(am){
                     am=parseFloat(am);
                     if(am){
+                        am=am.toFixed(2);
+                        am=parseFloat(am);
                         totalAm+=am;
                     }
                 }

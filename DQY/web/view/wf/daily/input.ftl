@@ -192,6 +192,8 @@
                 if(am){
                     am=parseFloat(am);
                     if(am){
+                        am=am.toFixed(2);
+                        am=parseFloat(am);
                         totalAm+=am;
                     }
                 }
@@ -416,6 +418,8 @@
                 if(am){
                     am=parseFloat(am);
                     if(am){
+                        am=am.toFixed(2);
+                        am=parseFloat(am);
                         totalAm+=am;
                     }
                 }

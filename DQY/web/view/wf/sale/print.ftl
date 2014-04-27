@@ -68,12 +68,6 @@
             <td>${(wfReqSale.customerId.customerName)?if_exists}</td>
         </tr>
         <tr>
-            <th style="width: 140px;">品类/系列</th>
-            <td style="width: 200px;">${(wfReqSale.seriesId.seriesName)?if_exists}</td>
-            <th style="width: 140px;">单品</th>
-            <td>${(wfReqSale.productId.productCode)?if_exists})&nbsp;&nbsp;&nbsp;${(wfReqSale.productId.productName)?if_exists}</td>
-        </tr>
-        <tr>
             <th style="width: 140px;">备注</th>
             <td colspan="3">
             ${wfReqSale.remarks?if_exists}
@@ -90,6 +84,27 @@
         </tbody>
     </table>
 
+<#if reqSaleDetailList?exists&&reqSaleDetailList?size gt 0>
+        <p class="font16 mart30">费用明细</p>
+        <table width="100%" class="printtab mart20">
+            <thead>
+            <tr>
+                <td width="200">品类/系列</td>
+                <td >单品</td>
+                <td width="80">金额</td>
+            </tr>
+            </thead>
+            <tbody>
+                <#list reqSaleDetailList as detail>
+                <tr >
+                    <td>${(detail.seriesId.seriesName)?if_exists}</td>
+                    <td>${(detail.productId.productName)?if_exists}</td>
+                    <td>${detail.amount?c}</td>
+                </tr>
+                </#list>
+            </tbody>
+        </table>
+    </#if>
     <div class="clearfix mart30">
         <div class="floatleft font14">
             <p class="p-top10">申请人：${wfReq.userId.userName?if_exists}</p>

@@ -47,6 +47,9 @@ public class WfReqSaleAction extends WfReqSupportAction<WfReqSale> {
     private WfReqSaleService wfReqSaleService;
 
     @Inject
+    private WfReqSaleDetailService wfReqSaleDetailService;
+
+    @Inject
     private WfReqCommentsService wfReqCommentsService;
 
     @Inject
@@ -165,6 +168,12 @@ public class WfReqSaleAction extends WfReqSupportAction<WfReqSale> {
     @ReqSet
     private Integer currentYear;
 
+    @ReqGet
+    private Integer detailCount;
+
+    @ReqSet
+    private List<WfReqSaleDetail> reqSaleDetailList;
+
 
     @Override
     @PageFlow(result = {@Result(name = "success", path = "/view/wf/sale/input.ftl", type = Dispatcher.FreeMarker)})
@@ -261,9 +270,38 @@ public class WfReqSaleAction extends WfReqSupportAction<WfReqSale> {
             initReq();
             wfReqSale.setReqId(wfReq);
             wfReqSale.setUseYn("Y");
+            wfReqSale.setTrueAmount(0.00d);
             bind(wfReqSale);
-            wfReqSale.setAmount(NumberUtils.multiply(wfReqSale.getAmount(), 1, 2));
-            this.wfReqSaleService.save(wfReqSale, wfReq, wfReqCommentsList, wfReqNoSeq, reqNodeApproveList, reqTaskList, wfReqMyFlowLast, reqAttList);
+            Double totalAmount = 0.00d;
+
+            if (detailCount != null) {
+                reqSaleDetailList = new ArrayList<WfReqSaleDetail>();
+                for (int i = 1; i <= detailCount; i++) {
+                    Long productId = getParameter("productId" + i, Long.class);
+                    Long seriesId = getParameter("seriesId" + i, Long.class);
+                    Double productAmount = getParameter("productAmount" + i, Double.class);
+                    if (seriesId != null && productId != null && productAmount != null) {
+                        if (productAmount == null) {
+                            productAmount = 0.00d;
+                        }
+                        SaleSeries saleSeries = this.saleSeriesService.getById(seriesId);
+                        SaleProduct saleProduct = this.saleProductService.getById(productId);
+                        if (saleSeries!=null&&saleProduct != null) {
+                            WfReqSaleDetail saleDetail = new WfReqSaleDetail();
+                            saleDetail.setSeriesId(saleSeries);
+                            saleDetail.setProductId(saleProduct);
+                            saleDetail.setSaleId(wfReqSale);
+                            saleDetail.setAmount(productAmount);
+                            bind(saleDetail);
+                            saleDetail.setUseYn("Y");
+                            totalAmount += productAmount;
+                            reqSaleDetailList.add(saleDetail);
+                        }
+                    }
+                }
+            }
+            wfReqSale.setAmount(NumberUtils.multiply(totalAmount, 1, 2));
+            this.wfReqSaleService.save(wfReqSale,reqSaleDetailList, wfReq, wfReqCommentsList, wfReqNoSeq, reqNodeApproveList, reqTaskList, wfReqMyFlowLast, reqAttList);
         }
         return "success";  //To change body of implemented methods use File | Settings | File Templates.
     }
@@ -306,6 +344,7 @@ public class WfReqSaleAction extends WfReqSupportAction<WfReqSale> {
                 if (wfReq != null) {
                     reqCommentsList = this.wfReqCommentsService.getCommentsListByReqId(wfReq.getId());
                     reqAttList = wfReqAttService.getByReqId(wfReq.getId());
+                    reqSaleDetailList = this.wfReqSaleDetailService.getBySaleId(wfReqSale.getId());
                 }
             }
         }
@@ -322,6 +361,7 @@ public class WfReqSaleAction extends WfReqSupportAction<WfReqSale> {
                 if (wfReq != null) {
                     reqCommentsList = this.wfReqCommentsService.getCommentsListByReqId(wfReq.getId());
                     reqAttList = wfReqAttService.getByReqId(wfReq.getId());
+                    reqSaleDetailList = this.wfReqSaleDetailService.getBySaleId(wfReqSale.getId());
                 }
             }
         }
@@ -339,6 +379,7 @@ public class WfReqSaleAction extends WfReqSupportAction<WfReqSale> {
                     wfReqSale = this.wfReqSaleService.getByReqId(wfReq.getId());
                     reqCommentsList = this.wfReqCommentsService.getCommentsListByReqId(wfReq.getId());
                     reqAttList = wfReqAttService.getByReqId(wfReq.getId());
+                    reqSaleDetailList = this.wfReqSaleDetailService.getBySaleId(wfReqSale.getId());
                 }
             }
         }
