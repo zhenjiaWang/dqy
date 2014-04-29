@@ -107,6 +107,12 @@ public class WfReqAction extends ActionSupport<WfReq> {
     @Inject
     private SysBudgetAmountService sysBudgetAmountService;
 
+    @Inject
+    private WfReqSaleDetailService wfReqSaleDetailService;
+
+    @Inject
+    private WfReqSaleDetailTrueService wfReqSaleDetailTrueService;
+
     @ReqGet
     @ReqSet
     private Integer budgetYear;
@@ -480,6 +486,8 @@ public class WfReqAction extends ActionSupport<WfReq> {
                 WfReqSale reqSale=null;
                 List<WfReqDailyDetail> reqDailyDetailList = null;
                 List<WfReqDailyTrue> reqDailyTrueList = null;
+                List<WfReqSaleDetail> reqSaleDetailList=null;
+                List<WfReqSaleDetailTrue> reqSaleDetailTrueList=null;
                 List<WfReqRePaymentDetail> rePaymentDetailList = null;
                 List<WfReqAtt> reqAttList = null;
                 if (wfReq.getApplyId().equals("ADVANCE_ACCOUNT")) {
@@ -499,6 +507,10 @@ public class WfReqAction extends ActionSupport<WfReq> {
                     reqBusiness = this.wfReqBusinessService.getByReqId(wfReq.getId());
                 }else if (wfReq.getApplyId().equals("SALE")) {
                     reqSale = this.wfReqSaleService.getByReqId(wfReq.getId());
+                    if(reqSale!=null){
+                        reqSaleDetailList=this.wfReqSaleDetailService.getBySaleId(reqSale.getId());
+                        reqSaleDetailTrueList=this.wfReqSaleDetailTrueService.getBySaleId(reqSale.getId());
+                    }
                 }
                 reqAttList = wfReqAttService.getByReqId(wfReq.getId());
                 List<String> attSourceList = null;
@@ -512,7 +524,7 @@ public class WfReqAction extends ActionSupport<WfReq> {
                         }
                     }
                 }
-                this.wfReqService.delete(wfReq, advanceAccount, reqRePayment, rePaymentDetailList, reqDaily, reqDailyDetailList,reqDailyTrueList, reqBusiness,reqSale,
+                this.wfReqService.delete(wfReq, advanceAccount, reqRePayment, rePaymentDetailList, reqDaily, reqDailyDetailList,reqDailyTrueList, reqBusiness,reqSale,reqSaleDetailList, reqSaleDetailTrueList,
                         delReqCommentsList, delReqNodeApproveList, delReqTaskList, reqAttList);
                 if (attSourceList != null && !attSourceList.isEmpty()) {
                     for (String source : attSourceList) {

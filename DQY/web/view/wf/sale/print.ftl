@@ -138,5 +138,131 @@
     </#if>
     </div>
 </div>
+
+<#if reqSaleDetailTrueList?exists&&reqSaleDetailTrueList?size gt 0>
+<p style="page-break-after: always;"></p>
+<div style="width:760px;margin:0 auto;position: relative;margin-top: 50px;">
+    <div class="clearfix">
+        <span style="position: absolute;left:0;"><img src="../images/cssimg/dqy-logo.png"></span>
+        <p class="alignright p-top40 font20">${applyName?if_exists}</p>
+        <p class="mart30 alignright font14">单据编号：${wfReq.reqNo?if_exists}</p>
+    </div>
+    <table width="100%" class="printtab mart30">
+        <tbody>
+
+        <tr>
+            <th style="width: 140px;">标题</th>
+            <td style="width: auto;" colspan="3">${wfReq.subject?if_exists}</td>
+        </tr>
+        <tr>
+            <th style="width: 140px;">申请人</th>
+            <td style="width: 200px;">${(wfReq.userId.userName)?if_exists}</td>
+            <th style="width: 140px;">申请日期</th>
+            <td>${wfReq.sendDate?string("yyyy-MM-dd HH:mm:ss")}</td>
+        </tr>
+        <tr>
+            <th style="width: 140px;">实际金额</th>
+            <td style="width: auto;" colspan="3">${(wfReqSale.trueAmount)?c}</td>
+        </tr>
+        <tr>
+            <th style="width: 140px;">开始日期</th>
+            <td style="width: 200px;">${(wfReqSale.startDate)?string("yyyy-MM-dd")}</td>
+            <th style="width: 140px;">结束日期</th>
+            <td>${(wfReqSale.endDate)?string("yyyy-MM-dd")}</td>
+        </tr>
+        <tr>
+            <th style="width: 140px;">核销日期</th>
+            <td style="width: auto;" colspan="3">${(wfReqSale.payDate)?string("yyyy-MM-dd")}</td>
+        </tr>
+        <tr>
+            <th style="width: 140px;">费用类别</th>
+            <td style="width: 200px;">${(wfReqSale.expenseTitle1.titleName)?if_exists}</td>
+            <th style="width: 140px;">费用项目</th>
+            <td>${(wfReqSale.channelId1.channelName)?if_exists}</td>
+        </tr>
+        <tr>
+            <th style="width: 140px;">渠道</th>
+            <td style="width: 200px;">${(wfReqSale.channelId.channelName)?if_exists}</td>
+            <th style="width: 140px;">业态/部门</th>
+            <td>${(wfReqSale.deptId.deptName)?if_exists}</td>
+        </tr>
+        <tr>
+            <th style="width: 140px;">系统</th>
+            <td style="width: 200px;">${(wfReqSale.systemId.systemName)?if_exists}</td>
+            <th style="width: 140px;">门店</th>
+            <td>${(wfReqSale.customerId.customerName)?if_exists}</td>
+        </tr>
+        <tr>
+            <th style="width: 140px;">备注</th>
+            <td colspan="3">
+            ${wfReqSale.remarks?if_exists}
+            </td>
+        </tr>
+            <#if wfReq.financialYn=="Y">
+            <tr>
+                <th style="width: 140px;">财务</th>
+                <td style="width: auto;" colspan="3">
+                    [已办理] ${wfReq.financialDesc?if_exists}
+                </td>
+            </tr>
+            </#if>
+        </tbody>
+    </table>
+
+    <#if reqSaleDetailTrueList?exists&&reqSaleDetailTrueList?size gt 0>
+        <p class="font16 mart30">费用明细</p>
+        <table width="100%" class="printtab mart20">
+            <thead>
+            <tr>
+                <td width="200">品类/系列</td>
+                <td >单品</td>
+                <td width="80">金额</td>
+            </tr>
+            </thead>
+            <tbody>
+                <#list reqSaleDetailList as detail>
+                <tr >
+                    <td>${(detail.seriesId.seriesName)?if_exists}</td>
+                    <td>${(detail.productId.productName)?if_exists}</td>
+                    <td>${detail.amount?c}</td>
+                </tr>
+                </#list>
+            </tbody>
+        </table>
+    </#if>
+    <div class="clearfix mart30">
+        <div class="floatleft font14">
+            <p class="p-top10">申请人：${wfReq.userId.userName?if_exists}</p>
+            <p class="p-top10">签字：&nbsp;</p>
+        </div>
+        <#if reqCommentsList?exists&&reqCommentsList?size gt 0>
+            <div class="floatright">
+                <table style="width: 500px;" class="printtab">
+                    <thead>
+                    <tr>
+                        <th style="width: 60px;">操作人</th>
+                        <th style="width: 75px;">操作</th>
+                        <th style="width: 120px;">操作时间</th>
+                        <th>备注</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <#list reqCommentsList as comments>
+                            <#if comments.action gt 2>
+                            <tr>
+                                <td>${(comments.userId.userName)?if_exists}</td>
+                                <td>${comments.actionDesc?if_exists}</td>
+                                <td>${comments.created?string("yyyy-MM-dd HH:mm")}</td>
+                                <td>${comments.content?if_exists}</td>
+                            </tr>
+                            </#if>
+                        </#list>
+                    </tbody>
+                </table>
+            </div>
+        </#if>
+    </div>
+</div>
+</#if>
 </body>
 </html>

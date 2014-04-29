@@ -50,6 +50,9 @@ public class WfReqSaleAction extends WfReqSupportAction<WfReqSale> {
     private WfReqSaleDetailService wfReqSaleDetailService;
 
     @Inject
+    private WfReqSaleDetailTrueService wfReqSaleDetailTrueService;
+
+    @Inject
     private WfReqCommentsService wfReqCommentsService;
 
     @Inject
@@ -171,12 +174,22 @@ public class WfReqSaleAction extends WfReqSupportAction<WfReqSale> {
     @ReqGet
     private Integer detailCount;
 
+    @ReqGet
+    private Integer detailCount1;
+
     @ReqSet
     private List<WfReqSaleDetail> reqSaleDetailList;
 
+    @ReqSet
+    private List<WfReqSaleDetailTrue> reqSaleDetailTrueList;
+
+    @ReqGet
+    @ReqSet
+    private String trueAmount;
 
     @Override
-    @PageFlow(result = {@Result(name = "success", path = "/view/wf/sale/input.ftl", type = Dispatcher.FreeMarker)})
+    @PageFlow(result = {@Result(name = "success", path = "/view/wf/sale/input.ftl", type = Dispatcher.FreeMarker),
+            @Result(name = "true", path = "/view/wf/sale/inputTrue.ftl", type = Dispatcher.FreeMarker)})
     public String execute() throws Exception {
         UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
         if (userInfo != null) {
@@ -260,6 +273,9 @@ public class WfReqSaleAction extends WfReqSupportAction<WfReqSale> {
             yearList.add(currentYear);
             yearList.add(currentYear + 1);
         }
+        if(StringUtils.isNotBlank(trueAmount)){
+            return "true";
+        }
         return "success";  //To change body of implemented methods use File | Settings | File Templates.
     }
 
@@ -306,6 +322,76 @@ public class WfReqSaleAction extends WfReqSupportAction<WfReqSale> {
         return "success";  //To change body of implemented methods use File | Settings | File Templates.
     }
 
+    @PageFlow(result = {@Result(name = "success", path = "/wf/req!ingList.dhtml", type = Dispatcher.Redirect)})
+    public String saveTrue() throws Exception {
+        UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
+        if (userInfo != null && wfReqSale != null) {
+            initReq();
+            wfReqSale.setReqId(wfReq);
+            wfReqSale.setUseYn("Y");
+            bind(wfReqSale);
+            Double totalAmount = 0.00d;
+            Double trueTotalAmount = 0.00d;
+            if (detailCount != null) {
+                reqSaleDetailList = new ArrayList<WfReqSaleDetail>();
+                for (int i = 1; i <= detailCount; i++) {
+                    Long productId = getParameter("productId" + i, Long.class);
+                    Long seriesId = getParameter("seriesId" + i, Long.class);
+                    Double productAmount = getParameter("productAmount" + i, Double.class);
+                    if (seriesId != null && productId != null && productAmount != null) {
+                        if (productAmount == null) {
+                            productAmount = 0.00d;
+                        }
+                        SaleSeries saleSeries = this.saleSeriesService.getById(seriesId);
+                        SaleProduct saleProduct = this.saleProductService.getById(productId);
+                        if (saleSeries!=null&&saleProduct != null) {
+                            WfReqSaleDetail saleDetail = new WfReqSaleDetail();
+                            saleDetail.setSeriesId(saleSeries);
+                            saleDetail.setProductId(saleProduct);
+                            saleDetail.setSaleId(wfReqSale);
+                            saleDetail.setAmount(productAmount);
+                            bind(saleDetail);
+                            saleDetail.setUseYn("Y");
+                            totalAmount += productAmount;
+                            reqSaleDetailList.add(saleDetail);
+                        }
+                    }
+                }
+            }
+
+            if (detailCount1 != null) {
+                reqSaleDetailTrueList = new ArrayList<WfReqSaleDetailTrue>();
+                for (int i = 1; i <= detailCount1; i++) {
+                    Long productId = getParameter("productId1" + i, Long.class);
+                    Long seriesId = getParameter("seriesId1" + i, Long.class);
+                    Double productAmount = getParameter("productAmount1" + i, Double.class);
+                    if (seriesId != null && productId != null && productAmount != null) {
+                        if (productAmount == null) {
+                            productAmount = 0.00d;
+                        }
+                        SaleSeries saleSeries = this.saleSeriesService.getById(seriesId);
+                        SaleProduct saleProduct = this.saleProductService.getById(productId);
+                        if (saleSeries!=null&&saleProduct != null) {
+                            WfReqSaleDetailTrue saleDetailTrue = new WfReqSaleDetailTrue();
+                            saleDetailTrue.setSeriesId(saleSeries);
+                            saleDetailTrue.setProductId(saleProduct);
+                            saleDetailTrue.setSaleId(wfReqSale);
+                            saleDetailTrue.setAmount(productAmount);
+                            bind(saleDetailTrue);
+                            saleDetailTrue.setUseYn("Y");
+                            trueTotalAmount += productAmount;
+                            reqSaleDetailTrueList.add(saleDetailTrue);
+                        }
+                    }
+                }
+            }
+            wfReqSale.setAmount(NumberUtils.multiply(totalAmount, 1, 2));
+            wfReqSale.setTrueAmount(NumberUtils.multiply(trueTotalAmount, 1, 2));
+            this.wfReqSaleService.saveTrue(wfReqSale,reqSaleDetailList,reqSaleDetailTrueList, wfReq, wfReqCommentsList, wfReqNoSeq, reqNodeApproveList, reqTaskList, wfReqMyFlowLast, reqAttList);
+        }
+        return "success";  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
     @PageFlow(result = {@Result(name = "success", path = "/view/wf/sale/print.ftl", type = Dispatcher.FreeMarker)})
     public String print() throws Exception {
         UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
@@ -315,6 +401,8 @@ public class WfReqSaleAction extends WfReqSupportAction<WfReqSale> {
                 wfReq = wfReqSale.getReqId();
                 if (wfReq != null) {
                     reqCommentsList = this.wfReqCommentsService.getCommentsListByReqId(wfReq.getId());
+                    reqSaleDetailList = this.wfReqSaleDetailService.getBySaleId(wfReqSale.getId());
+                    reqSaleDetailTrueList=this.wfReqSaleDetailTrueService.getBySaleId(wfReqSale.getId());
                 }
                 if (StringUtils.isNotBlank(applyId)) {
                     if (applyId.equals("ADVANCE_ACCOUNT")) {
@@ -345,6 +433,7 @@ public class WfReqSaleAction extends WfReqSupportAction<WfReqSale> {
                     reqCommentsList = this.wfReqCommentsService.getCommentsListByReqId(wfReq.getId());
                     reqAttList = wfReqAttService.getByReqId(wfReq.getId());
                     reqSaleDetailList = this.wfReqSaleDetailService.getBySaleId(wfReqSale.getId());
+                    reqSaleDetailTrueList=this.wfReqSaleDetailTrueService.getBySaleId(wfReqSale.getId());
                 }
             }
         }
@@ -362,6 +451,7 @@ public class WfReqSaleAction extends WfReqSupportAction<WfReqSale> {
                     reqCommentsList = this.wfReqCommentsService.getCommentsListByReqId(wfReq.getId());
                     reqAttList = wfReqAttService.getByReqId(wfReq.getId());
                     reqSaleDetailList = this.wfReqSaleDetailService.getBySaleId(wfReqSale.getId());
+                    reqSaleDetailTrueList=this.wfReqSaleDetailTrueService.getBySaleId(wfReqSale.getId());
                 }
             }
         }
@@ -380,6 +470,7 @@ public class WfReqSaleAction extends WfReqSupportAction<WfReqSale> {
                     reqCommentsList = this.wfReqCommentsService.getCommentsListByReqId(wfReq.getId());
                     reqAttList = wfReqAttService.getByReqId(wfReq.getId());
                     reqSaleDetailList = this.wfReqSaleDetailService.getBySaleId(wfReqSale.getId());
+                    reqSaleDetailTrueList=this.wfReqSaleDetailTrueService.getBySaleId(wfReqSale.getId());
                 }
             }
         }

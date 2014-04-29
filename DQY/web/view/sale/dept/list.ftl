@@ -21,7 +21,7 @@
         $('.editBT').off('click').on('click', function () {
             var uid = $(this).attr('uid');
             if (uid) {
-                WEBUTILS.popWindow.createPopWindow(550, null, '编辑业态部门', '/sale/dept!input.dhtml?id='+uid);
+                WEBUTILS.popWindow.createPopWindow(550, 500, '编辑业态部门', '/sale/dept!input.dhtml?id='+uid);
             }
         });
 

@@ -1,5 +1,7 @@
-package com.dqy.sale.entity;
+package com.dqy.wf.entity;
 
+import com.dqy.sale.entity.SaleProduct;
+import com.dqy.sale.entity.SaleSeries;
 import org.guiceside.persistence.entity.IdEntity;
 import org.guiceside.persistence.entity.Tracker;
 import org.hibernate.annotations.GenericGenerator;
@@ -16,14 +18,20 @@ import java.util.Date;
  * To change this template use File | Settings | File Templates.
  */
 @Entity
-@Table(name = "SALE_SYSTEM")
-public class SaleSystem extends IdEntity implements Tracker {
+@Table(name = "WF_REQ_SALE_DETAIL_TRUE")
+public class WfReqSaleDetailTrue extends IdEntity implements Tracker {
 
     private static final long serialVersionUID = 1L;
 
     private Long id;
 
-    private String systemName;
+    private WfReqSale saleId;
+
+    private Double amount;
+
+    private SaleSeries seriesId;
+
+    private SaleProduct productId;
 
     private Date created;
 
@@ -35,11 +43,10 @@ public class SaleSystem extends IdEntity implements Tracker {
 
     private String useYn;
 
-    private String checked;
 
     @Id
-    @GeneratedValue(generator="SALE_SYSTEM")
-    @GenericGenerator(name="SALE_SYSTEM",strategy="seqhilo",parameters={@Parameter(name="sequence",value="SEQ_SALE_SYSTEM")})
+    @GeneratedValue(generator="WF_REQ_SALE_DETAIL_TRUE")
+    @GenericGenerator(name="WF_REQ_SALE_DETAIL_TRUE",strategy="seqhilo",parameters={@Parameter(name="sequence",value="SEQ_WF_REQ_SALE_DETAIL_TRUE")})
     public Long getId() {
         return id;
     }
@@ -94,21 +101,45 @@ public class SaleSystem extends IdEntity implements Tracker {
         this.useYn = useYn;
     }
 
-    @Column(name = "SYSTEM_NAME")
-    public String getSystemName() {
-        return systemName;
+
+
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "SERIES_ID")
+    public SaleSeries getSeriesId() {
+        return seriesId;
     }
 
-    public void setSystemName(String systemName) {
-        this.systemName = systemName;
+    public void setSeriesId(SaleSeries seriesId) {
+        this.seriesId = seriesId;
     }
 
-    @Transient
-    public String getChecked() {
-        return checked;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "PRODUCT_ID")
+    public SaleProduct getProductId() {
+        return productId;
     }
 
-    public void setChecked(String checked) {
-        this.checked = checked;
+    public void setProductId(SaleProduct productId) {
+        this.productId = productId;
+    }
+
+    @Column(name = "AMOUNT")
+    public Double getAmount() {
+        return amount;
+    }
+
+    public void setAmount(Double amount) {
+        this.amount = amount;
+    }
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "SALE_ID")
+    public WfReqSale getSaleId() {
+        return saleId;
+    }
+
+    public void setSaleId(WfReqSale saleId) {
+        this.saleId = saleId;
     }
 }

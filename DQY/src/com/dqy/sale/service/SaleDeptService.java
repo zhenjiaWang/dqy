@@ -2,6 +2,8 @@ package com.dqy.sale.service;
 
 import com.dqy.sale.entity.SaleCustomer;
 import com.dqy.sale.entity.SaleDept;
+import com.dqy.sale.entity.SaleDeptSystem;
+import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import org.guiceside.commons.Page;
 import org.guiceside.persistence.TransactionType;
@@ -19,21 +21,25 @@ import java.util.List;
 @Singleton
 public class SaleDeptService extends HQuery {
 
+    @Inject
+    private SaleDeptSystemService saleDeptSystemService;
+
     @Transactional(type = TransactionType.READ_ONLY)
     public Page<SaleDept> getPageList(int start,
-                                         int limit, List<Selector> selectorList) {
+                                      int limit, List<Selector> selectorList) {
         return $(selectorList).page(SaleDept.class, start, limit);
     }
 
     @Transactional(type = TransactionType.READ_ONLY)
     public List<SaleDept> getList(Long channelId) {
-        return $($eq("channelId.id",channelId),$eq("useYn", "Y")).list(SaleDept.class);
+        return $($eq("channelId.id", channelId), $eq("useYn", "Y")).list(SaleDept.class);
     }
 
     @Transactional(type = TransactionType.READ_ONLY)
     public List<SaleDept> getList(List<Selector> selectorList) {
         return $(selectorList).list(SaleDept.class);
     }
+
     /**
      * @param id
      * @return 根据Id获取代码
@@ -51,6 +57,18 @@ public class SaleDeptService extends HQuery {
     public void save(SaleDept saleDept) {
         $(saleDept).save();
     }
+
+    @Transactional(type = TransactionType.READ_WRITE)
+    public void save(SaleDept saleDept, List<SaleDeptSystem> saleDeptSystemList, List<SaleDeptSystem> delSaleDeptSystemList) {
+        $(saleDept).save();
+        if (delSaleDeptSystemList != null && !delSaleDeptSystemList.isEmpty()) {
+            this.saleDeptSystemService.delete(delSaleDeptSystemList);
+        }
+        if (saleDeptSystemList != null && !saleDeptSystemList.isEmpty()) {
+            this.saleDeptSystemService.save(saleDeptSystemList);
+        }
+    }
+
 
     /**
      * 删除对象

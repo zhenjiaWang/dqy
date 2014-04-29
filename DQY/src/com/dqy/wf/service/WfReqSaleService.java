@@ -22,6 +22,9 @@ public class WfReqSaleService extends HQuery {
 
     @Inject
     private WfReqSaleDetailService wfReqSaleDetailService;
+
+    @Inject
+    private WfReqSaleDetailTrueService wfReqSaleDetailTrueService;
     /**
      * @param id
      * @return 根据Id获取代码
@@ -84,4 +87,17 @@ public class WfReqSaleService extends HQuery {
         }
     }
 
+    @Transactional(type = TransactionType.READ_WRITE)
+    public void saveTrue(WfReqSale wfReqSale,List<WfReqSaleDetail> reqSaleDetailList,List<WfReqSaleDetailTrue> reqSaleDetailTrueList, WfReq wfReq, List<WfReqComments> reqCommentsList,
+                     WfReqNoSeq wfReqNoSeq, List<WfReqNodeApprove> reqNodeApproveList, List<WfReqTask> reqTaskList,
+                     WfReqMyFlowLast wfReqMyFlowLast,List<WfReqAtt> reqAttList) {
+        this.wfReqService.save(wfReq,  reqCommentsList, wfReqNoSeq, reqNodeApproveList, reqTaskList, wfReqMyFlowLast,reqAttList);
+        this.save(wfReqSale);
+        if(reqSaleDetailList!=null&&!reqSaleDetailList.isEmpty()){
+            this.wfReqSaleDetailService.save(reqSaleDetailList);
+        }
+        if(reqSaleDetailTrueList!=null&&!reqSaleDetailTrueList.isEmpty()){
+            this.wfReqSaleDetailTrueService.save(reqSaleDetailTrueList);
+        }
+    }
 }

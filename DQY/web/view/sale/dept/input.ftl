@@ -83,6 +83,34 @@
                 </label>
             </div>
         </div>
+        <#if systemList?exists&&systemList?size gt 0>
+            <div class="pop-in mart10">
+                <table width="90%" class="sq-tb">
+                    <tbody>
+                        <#list systemList as system>
+                            <#assign odd=system_index%3/>
+                            <#if odd==0>
+                            <tr>
+                            </#if>
+                            <td style="width: 123px;">
+                                <label>
+                                    <input type="checkbox"  name="systemIds" value="${system.id?c}" <#if system.checked?exists&&system.checked=="Y"> checked="checked"</#if> > ${system.systemName?if_exists}
+                                </label>
+                            </td>
+                            <#if odd==2>
+                            </tr>
+                            <#elseif !system_has_next>
+                                <#list 1..((3-odd)-1) as bq>
+                                <td style="width: 123px;">&nbsp;</td>
+                                </#list>
+                            </tr>
+                            </#if>
+                        </#list>
+                    </tbody>
+                </table>
+            </div>
+        </#if>
+
         <input type="hidden" name="saleDept.id" id="saleDept.id">
         <@c.token/>
     </form>
