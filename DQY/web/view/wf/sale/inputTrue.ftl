@@ -399,16 +399,18 @@
     }
 
     function bindSelectTrue(seq){
-        <#if seriesList?exists&&seriesList?size gt 0>
-            $('#seriesId1'+seq).empty();
-            <#list seriesList as series>
-                $('#seriesId1'+seq).append('<option value="${(series.id)?c}">${(series.seriesName)?if_exists}</option>');
+
+        <#if typeList?exists&&typeList?size gt 0>
+            $('#expType'+seq).empty();
+            <#list typeList as type>
+                $('#expType'+seq).append('<option value="${(type.id)?c}">${(type.expenseType)?if_exists}</option>');
             </#list>
         </#if>
-        <#if productList?exists&&productList?size gt 0>
-            $('#productId1'+seq).empty();
-            <#list productList as product>
-                $('#productId1'+seq).append('<option value="${product.id?c}">(${product.productCode?if_exists})&nbsp;&nbsp;&nbsp;${product.productName?if_exists}</option>');
+
+        <#if titleList?exists&&titleList?size gt 0>
+            $('#expTitle'+seq).empty();
+            <#list titleList as title>
+                $('#expTitle'+seq).append('<option value="${title.id?c}">${title.titleName?if_exists}</option>');
             </#list>
         </#if>
         $('#productAmount1'+seq).off('blur').on('blur',function(){
@@ -445,7 +447,6 @@
             loadCustomer();
         });
         loadProduct($('#seriesId1'),$('#productId1'));
-        loadProduct($('#seriesId11'),$('#productId11'));
         $('#wfReqSale\\.budgetYear').off('change').on('change', function () {
             loadBudgetAmount();
         });
@@ -587,7 +588,6 @@
                     ]
                 });
                 bindSelectTrue(nextNodeSeq);
-                loadProduct($('#seriesId1'+nextNodeSeq),$('#productId1'+nextNodeSeq));
                 submited = false;
             }
         });
@@ -899,48 +899,14 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>
-                        <div class="control-group" style="margin-bottom: 5px;">
-                            <label class="control-label" for="wfReqSale.expenseType1.id"
-                                   style="width: 60px;color: #898989;">替票类别</label>
-
-                            <div class="controls" style="margin-left: 70px;*margin-left:0;" >
-                                <select class="int2 width-160" id="wfReqSale.expenseType1.id" name="wfReqSale.expenseType1.id">
-                                    <#if typeList?exists&&typeList?size gt 0>
-                                        <#list typeList as type>
-                                            <option value="${type.id?c}">${type.expenseType?if_exists}</option>
-                                        </#list>
-                                    </#if>
-                                </select>
-                            </div>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="control-group" style="margin-bottom: 5px;">
-                            <label class="control-label" for="wfReqSale.expenseTitle1.id"
-                                   style="width: 60px;color: #898989;">替票项目</label>
-
-                            <div class="controls" style="margin-left: 70px;*margin-left:0;" >
-                                <select class="int2 width-160" id="wfReqSale.expenseTitle1.id" name="wfReqSale.expenseTitle1.id">
-                                    <#if titleList?exists&&titleList?size gt 0>
-                                        <#list titleList as title>
-                                            <option value="${title.id?c}">${title.titleName?if_exists}</option>
-                                        </#list>
-                                    </#if>
-                                </select>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
                     <td colspan="2">
                         <table style="width: 100%;"
                                class="layout table table-bordered table-hover tableBgColor nomar nopadding">
                             <thead>
                             <tr>
                                 <td width="80">金额</td>
-                                <td width="160">品类/系列</td>
-                                <td width="250">单品</td>
+                                <td width="160">费用类别</td>
+                                <td width="250">费用项目</td>
                                 <td>
                                     <a href="##" id="addDetail1" ><i class="icon-plus"></i> 增加</a>
                                     <a href="##" id="deleteDetail1" ><i class="icon-minus"></i>
@@ -952,19 +918,19 @@
                             <tr seq="1" class="detailTr1">
                                 <td><input type="text" class="int1 width-70 amt" id="productAmount11" name="productAmount11" value="0.00" style="ime-mode:disabled"></td>
                                 <td>
-                                    <select class="int2 width-160" id="seriesId11" name="seriesId11">
-                                        <#if seriesList?exists&&seriesList?size gt 0>
-                                            <#list seriesList as series>
-                                                <option value="${(series.id)?c}">${(series.seriesName)?if_exists}</option>
+                                    <select class="int2 width-160" id="expType1" name="expType1">
+                                        <#if typeList?exists&&typeList?size gt 0>
+                                            <#list typeList as type>
+                                                <option value="${type.id?c}">${type.expenseType?if_exists}</option>
                                             </#list>
                                         </#if>
                                     </select>
                                 </td>
                                 <td colspan="2">
-                                    <select class="int2" id="productId11" name="productId11" style="width: 480px;">
-                                        <#if productList?exists&&productList?size gt 0>
-                                            <#list productList as product>
-                                                <option value="${product.id?c}">(${product.productCode?if_exists})&nbsp;&nbsp;&nbsp;${product.productName?if_exists}</option>
+                                    <select class="int2" id="expTitle1" name="expTitle1" style="width: 480px;">
+                                        <#if titleList?exists&&titleList?size gt 0>
+                                            <#list titleList as title>
+                                                <option value="${title.id?c}">${title.titleName?if_exists}</option>
                                             </#list>
                                         </#if>
                                     </select>

@@ -266,43 +266,21 @@
                     </#if>
                     <#if reqSaleDetailTrueList?exists&&reqSaleDetailTrueList?size gt 0>
                     <tr>
-                        <td>
-                            <div class="control-group" style="margin-bottom: 5px;">
-                                <label class="control-label" for="wfReqSale.expenseType"
-                                       style="width: 60px;color: #898989;">替票类别</label>
-
-                                <div class="controls" style="margin-left: 70px;*margin-left:0;">
-                                    <label style="margin-top: 5px;padding-left:5px;font-size: 12px;">${(wfReqSale.expenseType1.expenseType)?if_exists}</label>
-                                </div>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="control-group" style="margin-bottom: 5px;">
-                                <label class="control-label" for="wfReqSale.expenseTitle"
-                                       style="width: 60px;color: #898989;">替票项目</label>
-
-                                <div class="controls" style="margin-left: 70px;*margin-left:0;" >
-                                    <label style="margin-top: 5px;padding-left:5px;font-size: 12px;">${(wfReqSale.expenseTitle1.titleName)?if_exists}</label>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
                         <td colspan="2">
                             <table style="width: 100%;"
                                    class="layout table table-bordered table-hover tableBgColor nomar nopadding">
                                 <thead>
                                 <tr>
-                                    <td width="200">品类/系列</td>
-                                    <td >单品</td>
+                                    <td width="200">费用类别</td>
+                                    <td >费用项目</td>
                                     <td width="80">金额</td>
                                 </tr>
                                 </thead>
                                 <tbody>
                                     <#list reqSaleDetailTrueList as detail>
                                     <tr >
-                                        <td>${(detail.seriesId.seriesName)?if_exists}</td>
-                                        <td>${(detail.productId.productName)?if_exists}</td>
+                                        <td>${(detail.expenseType.expenseType)?if_exists}</td>
+                                        <td>${(detail.expenseTitle.titleName)?if_exists}</td>
                                         <td>${detail.amount?c}</td>
                                     </tr>
                                     </#list>

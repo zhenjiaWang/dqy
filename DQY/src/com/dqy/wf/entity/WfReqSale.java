@@ -53,10 +53,6 @@ public class WfReqSale extends IdEntity implements Tracker {
 
     private Date payDate;
 
-    private SysBudgetType expenseType1;
-
-    private SysBudgetTitle expenseTitle1;
-
     private Date created;
 
     private String createdBy;
@@ -249,25 +245,5 @@ public class WfReqSale extends IdEntity implements Tracker {
 
     public void setTrueAmount(Double trueAmount) {
         this.trueAmount = trueAmount;
-    }
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "EXPENSE_TYPE1")
-    public SysBudgetType getExpenseType1() {
-        return expenseType1;
-    }
-
-    public void setExpenseType1(SysBudgetType expenseType1) {
-        this.expenseType1 = expenseType1;
-    }
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "EXPENSE_TITLE1")
-    public SysBudgetTitle getExpenseTitle1() {
-        return expenseTitle1;
-    }
-
-    public void setExpenseTitle1(SysBudgetTitle expenseTitle1) {
-        this.expenseTitle1 = expenseTitle1;
     }
 }

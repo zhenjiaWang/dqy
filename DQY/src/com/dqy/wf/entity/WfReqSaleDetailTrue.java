@@ -2,6 +2,8 @@ package com.dqy.wf.entity;
 
 import com.dqy.sale.entity.SaleProduct;
 import com.dqy.sale.entity.SaleSeries;
+import com.dqy.sys.entity.SysBudgetTitle;
+import com.dqy.sys.entity.SysBudgetType;
 import org.guiceside.persistence.entity.IdEntity;
 import org.guiceside.persistence.entity.Tracker;
 import org.hibernate.annotations.GenericGenerator;
@@ -29,9 +31,9 @@ public class WfReqSaleDetailTrue extends IdEntity implements Tracker {
 
     private Double amount;
 
-    private SaleSeries seriesId;
+    private SysBudgetType expenseType;
 
-    private SaleProduct productId;
+    private SysBudgetTitle expenseTitle;
 
     private Date created;
 
@@ -101,27 +103,24 @@ public class WfReqSaleDetailTrue extends IdEntity implements Tracker {
         this.useYn = useYn;
     }
 
-
-
-
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "SERIES_ID")
-    public SaleSeries getSeriesId() {
-        return seriesId;
+    @JoinColumn(name = "EXPENSE_TYPE")
+    public SysBudgetType getExpenseType() {
+        return expenseType;
     }
 
-    public void setSeriesId(SaleSeries seriesId) {
-        this.seriesId = seriesId;
+    public void setExpenseType(SysBudgetType expenseType) {
+        this.expenseType = expenseType;
     }
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "PRODUCT_ID")
-    public SaleProduct getProductId() {
-        return productId;
+    @JoinColumn(name = "EXPENSE_TITLE")
+    public SysBudgetTitle getExpenseTitle() {
+        return expenseTitle;
     }
 
-    public void setProductId(SaleProduct productId) {
-        this.productId = productId;
+    public void setExpenseTitle(SysBudgetTitle expenseTitle) {
+        this.expenseTitle = expenseTitle;
     }
 
     @Column(name = "AMOUNT")

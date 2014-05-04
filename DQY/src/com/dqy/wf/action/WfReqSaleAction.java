@@ -362,19 +362,19 @@ public class WfReqSaleAction extends WfReqSupportAction<WfReqSale> {
             if (detailCount1 != null) {
                 reqSaleDetailTrueList = new ArrayList<WfReqSaleDetailTrue>();
                 for (int i = 1; i <= detailCount1; i++) {
-                    Long productId = getParameter("productId1" + i, Long.class);
-                    Long seriesId = getParameter("seriesId1" + i, Long.class);
+                    Long typeId = getParameter("expType" + i, Long.class);
+                    Long titleId = getParameter("expTitle" + i, Long.class);
                     Double productAmount = getParameter("productAmount1" + i, Double.class);
-                    if (seriesId != null && productId != null && productAmount != null) {
+                    if (typeId != null && titleId != null && productAmount != null) {
                         if (productAmount == null) {
                             productAmount = 0.00d;
                         }
-                        SaleSeries saleSeries = this.saleSeriesService.getById(seriesId);
-                        SaleProduct saleProduct = this.saleProductService.getById(productId);
-                        if (saleSeries!=null&&saleProduct != null) {
+                        SysBudgetType sysBudgetType = this.sysBudgetTypeService.getById(typeId);
+                        SysBudgetTitle sysBudgetTitle = this.sysBudgetTitleService.getById(titleId);
+                        if (sysBudgetType!=null&&sysBudgetTitle != null) {
                             WfReqSaleDetailTrue saleDetailTrue = new WfReqSaleDetailTrue();
-                            saleDetailTrue.setSeriesId(saleSeries);
-                            saleDetailTrue.setProductId(saleProduct);
+                            saleDetailTrue.setExpenseType(sysBudgetType);
+                            saleDetailTrue.setExpenseTitle(sysBudgetTitle);
                             saleDetailTrue.setSaleId(wfReqSale);
                             saleDetailTrue.setAmount(productAmount);
                             bind(saleDetailTrue);

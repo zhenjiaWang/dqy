@@ -175,12 +175,6 @@
             <td style="width: auto;" colspan="3">${(wfReqSale.payDate)?string("yyyy-MM-dd")}</td>
         </tr>
         <tr>
-            <th style="width: 140px;">费用类别</th>
-            <td style="width: 200px;">${(wfReqSale.expenseTitle1.titleName)?if_exists}</td>
-            <th style="width: 140px;">费用项目</th>
-            <td>${(wfReqSale.channelId1.channelName)?if_exists}</td>
-        </tr>
-        <tr>
             <th style="width: 140px;">渠道</th>
             <td style="width: 200px;">${(wfReqSale.channelId.channelName)?if_exists}</td>
             <th style="width: 140px;">业态/部门</th>
@@ -214,16 +208,16 @@
         <table width="100%" class="printtab mart20">
             <thead>
             <tr>
-                <td width="200">品类/系列</td>
-                <td >单品</td>
+                <td width="200">费用类别</td>
+                <td >费用项目</td>
                 <td width="80">金额</td>
             </tr>
             </thead>
             <tbody>
                 <#list reqSaleDetailList as detail>
                 <tr >
-                    <td>${(detail.seriesId.seriesName)?if_exists}</td>
-                    <td>${(detail.productId.productName)?if_exists}</td>
+                    <td>${(detail.expenseType.expenseType)?if_exists}</td>
+                    <td>${(detail.expenseTitle.titleName)?if_exists}</td>
                     <td>${detail.amount?c}</td>
                 </tr>
                 </#list>

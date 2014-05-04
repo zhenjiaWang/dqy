@@ -350,9 +350,9 @@ var saleDetail='<tr seq="{seq}" class="detailTr">' +
 
 var saleDetailTrue='<tr seq="{seq}" class="detailTr1">' +
     '<td><input type="text" class="int1 width-70 amt" id="productAmount1{seq}" name="productAmount1{seq}" value="0.00" style="ime-mode:disabled"></td>' +
-    '<td><select class="int2 width-160" id="seriesId1{seq}" name="seriesId1{seq}">' +
+    '<td><select class="int2 width-160" id="expType{seq}" name="expType{seq}">' +
     '</select></td>' +
-    '<td colspan="2"><select class="int2" id="productId1{seq}" name="productId1{seq}" style="width: 480px;">' +
+    '<td colspan="2"><select class="int2" id="expTitle{seq}" name="expTitle{seq}" style="width: 480px;">' +
     '</select></td>' +
     '</tr>';
 
