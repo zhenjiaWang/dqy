@@ -75,15 +75,11 @@
                         </ul>
                     </#if>
                 </#if>
-                <#if roleId?exists>
-                    <#if roleId?contains("SALE_APPLY")>
-                        <ul class="item-nav"><!--ul上的current是为了控制当前这一组的背景色，li上的current是为了控制二级菜单-->
-                            <li class="saleApply">
-                                <a class="cur" href="/wf/sale.dhtml">费用报销</a>
-                            </li>
-                        </ul>
-                    </#if>
-                </#if>
+                <ul class="item-nav"><!--ul上的current是为了控制当前这一组的背景色，li上的current是为了控制二级菜单-->
+                    <li class="saleApply">
+                        <a class="cur" href="/wf/sale.dhtml">费用报销</a>
+                    </li>
+                </ul>
                 <!--一组over-->
             </div>
         </div>
