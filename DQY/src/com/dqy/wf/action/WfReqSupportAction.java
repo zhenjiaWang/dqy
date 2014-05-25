@@ -114,6 +114,7 @@ public class WfReqSupportAction<T> extends ActionSupport<T> {
                     wfReqAtt.setMonth(att.getMonth());
                     wfReqAtt.setDay(att.getDay());
                     wfReqAtt.setUseYn("Y");
+                    bind(wfReqAtt);
                     attList.add(wfReqAtt);
                 }
                 this.tempAttService.delete(tempAttList);

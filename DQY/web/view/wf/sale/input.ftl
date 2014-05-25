@@ -577,6 +577,44 @@
                         </div>
                     </td>
                 </tr>
+
+                <tr>
+                    <td colspan="2">
+                        <div class="control-group" style="margin-bottom: 5px;">
+                            <label class="control-label" for="wfReqSale.payee"
+                                   style="width: 60px;color: #898989;">收款单位</label>
+
+                            <div class="controls" style="margin-left: 70px;*margin-left:0;">
+                                <input style="width: 95%;" type="text" id="wfReqSale.payee" name="wfReqSale.payee"
+                                       placeholder="收款单位/人" maxlength="60">
+                                <span class="help-inline"></span>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="control-group" style="margin-bottom: 5px;">
+                            <label class="control-label" for="wfReqSale.bank"
+                                   style="width: 60px;color: #898989;">开户行</label>
+
+                            <div class="controls" style="margin-left: 70px;*margin-left:0;">
+                                <input type="text" id="wfReqSale.bank" name="wfReqSale.bank" placeholder="开户行" maxlength="60">
+                                <span class="help-inline"></span>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="control-group" style="margin-bottom: 5px;">
+                            <label class="control-label" for="wfReqSale.bankAccount"
+                                   style="width: 60px;color: #898989;">帐号</label>
+                            <div class="controls" style="margin-left: 70px;*margin-left:0;">
+                                <input type="text" id="wfReqSale.bankAccount" name="wfReqSale.bankAccount" placeholder="银行帐号" maxlength="60">
+                                <span class="help-inline"></span>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
                 <tr>
                     <td >
                         <div class="control-group" style="margin-bottom: 5px;" colspan="2">
@@ -588,7 +626,21 @@
                             </div>
                         </div>
                     </td>
+                    <td >
+                        <div class="control-group" style="margin-bottom: 5px;">
+                            <label class="control-label" for="wfReqSale.payMethod"
+                                   style="width: 60px;color: #898989;">支付方式</label>
 
+                            <div class="controls" style="margin-left: 70px;*margin-left:0;" >
+                                <select class="int2 width-160" id="wfReqSale.payMethod" name="wfReqSale.payMethod">
+                                    <option value="1">现金</option>
+                                    <option value="2">银行转账</option>
+                                    <option value="3">支票</option>
+                                    <option value="4">帐扣</option>
+                                </select>
+                            </div>
+                        </div>
+                    </td>
                 </tr>
                 <tr>
                     <td data-date-format="yyyy-mm-dd" data-date="" class="date dateTd">
@@ -597,7 +649,7 @@
                                    style="width: 60px;color: #898989;">开始日期</label>
 
                             <div class="controls" style="margin-left: 70px;*margin-left:0;">
-                                <input type="text" class="int1 " id="wfReqSale.startDate" name="wfReqSale.startDate" >
+                                <input type="text" class="int1 " id="wfReqSale.startDate" name="wfReqSale.startDate" readonly="readonly">
                                 <span class="help-inline"></span>
                             </div>
                         </div>
@@ -607,7 +659,7 @@
                             <label class="control-label" for="wfReqSale.endDate"
                                    style="width: 60px;color: #898989;">结束日期</label>
                             <div class="controls" style="margin-left: 70px;*margin-left:0;">
-                                <input type="text" class="int1 " id="wfReqSale.endDate" name="wfReqSale.endDate" >
+                                <input type="text" class="int1 " id="wfReqSale.endDate" name="wfReqSale.endDate" readonly="readonly">
                                 <span class="help-inline"></span>
                             </div>
                         </div>
@@ -620,7 +672,7 @@
                                    style="width: 60px;color: #898989;">核销日期</label>
 
                             <div class="controls" style="margin-left: 70px;*margin-left:0;">
-                                <input type="text" class="int1 " id="wfReqSale.payDate" name="wfReqSale.payDate" >
+                                <input type="text" class="int1 " id="wfReqSale.payDate" name="wfReqSale.payDate" readonly="readonly">
                                 <span class="help-inline"></span>
                             </div>
                         </div>

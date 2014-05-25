@@ -101,7 +101,64 @@
                         </div>
                     </td>
                 </tr>
+                <tr>
+                    <td colspan="2">
+                        <div class="control-group" style="margin-bottom: 5px;">
+                            <label class="control-label" for="wfReq.subject"
+                                   style="width: 60px;color: #898989;">收款单位</label>
+
+                            <div class="controls" style="margin-left: 70px;*margin-left:0;">
+                                <label style="margin-top: 5px;padding-left:5px;font-size: 12px;word-wrap: break-word;word-break: break-all;">${wfReqSale.payee?if_exists}</label>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="control-group" style="margin-bottom: 5px;">
+                            <label class="control-label"
+                                   style="width: 60px;color: #898989;">开户行</label>
+
+                            <div class="controls" style="margin-left: 70px;*margin-left:0;">
+                                <label style="margin-top: 5px;padding-left:5px;font-size: 12px;">${(wfReqSale.bank)?if_exists}</label>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="control-group" style="margin-bottom: 5px;">
+                            <label class="control-label"
+                                   style="width: 60px;color: #898989;">帐号</label>
+
+                            <div class="controls" style="margin-left: 70px;*margin-left:0;">
+                                <label style="margin-top: 5px;padding-left:5px;font-size: 12px;">${(wfReqSale.bankAccount)?if_exists}</label>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
                 <#if reqSaleDetailTrueList?exists&&reqSaleDetailTrueList?size gt 0>
+                <tr>
+                    <td colspan="2">
+                        <div class="control-group" style="margin-bottom: 5px;">
+                            <label class="control-label" for="wfReqSale.payMethod"
+                                   style="width: 60px;color: #898989;">支付方式</label>
+                            <div class="controls" style="margin-left: 70px;*margin-left:0;" >
+                                <label style="margin-top: 5px;padding-left:5px;font-size: 12px;">
+                                    <#if wfReqSale.payMethod?exists>
+                                        <#if wfReqSale.payMethod==1>
+                                            现金
+                                        <#elseif wfReqSale.payMethod==2>
+                                            银行转账
+                                        <#elseif wfReqSale.payMethod==3>
+                                            支票
+                                        <#elseif wfReqSale.payMethod==4>
+                                            帐扣
+                                        </#if>
+                                    </#if>
+                                </label>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
                 <tr>
                     <td >
                         <div class="control-group" style="margin-bottom: 5px;">
@@ -126,13 +183,34 @@
                 </tr>
                 <#else>
                 <tr>
-                    <td colspan="2">
+                    <td >
                         <div class="control-group" style="margin-bottom: 5px;">
                             <label class="control-label" for="wfReqSale.amount"
                                    style="width: 60px;color: #898989;">报销金额</label>
 
                             <div class="controls" style="margin-left: 70px;*margin-left:0;">
                                 <label style="margin-top: 5px;padding-left:5px;font-size: 12px;">${(wfReqSale.amount)?c}</label>
+                            </div>
+                        </div>
+                    </td>
+                    <td >
+                        <div class="control-group" style="margin-bottom: 5px;">
+                            <label class="control-label" for="wfReqSale.payMethod"
+                                   style="width: 60px;color: #898989;">支付方式</label>
+                            <div class="controls" style="margin-left: 70px;*margin-left:0;" >
+                                <label style="margin-top: 5px;padding-left:5px;font-size: 12px;">
+                                    <#if wfReqSale.payMethod?exists>
+                                        <#if wfReqSale.payMethod==1>
+                                            现金
+                                        <#elseif wfReqSale.payMethod==2>
+                                            银行转账
+                                        <#elseif wfReqSale.payMethod==3>
+                                            支票
+                                        <#elseif wfReqSale.payMethod==4>
+                                            帐扣
+                                        </#if>
+                                    </#if>
+                                </label>
                             </div>
                         </div>
                     </td>
