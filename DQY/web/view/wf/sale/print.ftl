@@ -36,33 +36,8 @@
             <td>${wfReq.sendDate?string("yyyy-MM-dd HH:mm:ss")}</td>
         </tr>
         <tr>
-            <th style="width: 140px;">收款单位</th>
-            <td style="width: auto;" colspan="3">${wfReqDaily.payee?if_exists}</td>
-        </tr>
-        <tr>
-            <th style="width: 140px;">开户行</th>
-            <td style="width: 200px;">${(wfReqDaily.bank)?if_exists}</td>
-            <th style="width: 140px;">帐号</th>
-            <td>${(wfReqDaily.bankAccount)?if_exists}</td>
-        </tr>
-
-        <tr>
             <th style="width: 140px;">报销金额</th>
-            <td style="width: 200px;" >${(wfReqSale.amount)?c}</td>
-            <th style="width: 140px;">支付方式</th>
-            <td>
-            <#if wfReqDaily.payMethod?exists>
-                <#if wfReqDaily.payMethod==1>
-                    现金
-                <#elseif wfReqDaily.payMethod==2>
-                    银行转账
-                <#elseif wfReqDaily.payMethod==3>
-                    支票
-                <#elseif wfReqDaily.payMethod==4>
-                    帐扣
-                </#if>
-            </#if>
-            </td>
+            <td style="width: auto;" colspan="3" >${(wfReqSale.amount)?c}</td>
         </tr>
         <tr>
             <th style="width: 140px;">支付方式</th>
@@ -229,25 +204,7 @@
         </tr>
         <tr>
             <th style="width: 140px;">实际金额</th>
-            <td style="width: 200px;">${(wfReqSale.trueAmount)?c}</td>
-            <th style="width: 140px;">支付方式</th>
-            <td>
-                <#if wfReqDaily.payMethod?exists>
-                    <#if wfReqDaily.payMethod==1>
-                        现金
-                    <#elseif wfReqDaily.payMethod==2>
-                        银行转账
-                    <#elseif wfReqDaily.payMethod==3>
-                        支票
-                    <#elseif wfReqDaily.payMethod==4>
-                        帐扣
-                    </#if>
-                </#if>
-            </td>
-        </tr>
-        <tr>
-            <th style="width: 140px;">报销金额</th>
-            <td style="width: auto;" colspan="3">${(wfReqSale.amount)?c}</td>
+            <td style="width: auto;" colspan="3">${(wfReqSale.trueAmount)?c}</td>
         </tr>
         <tr>
             <th style="width: 140px;">支付方式</th>
