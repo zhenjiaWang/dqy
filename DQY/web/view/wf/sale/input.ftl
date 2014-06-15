@@ -665,21 +665,6 @@
                             </div>
                         </div>
                     </td>
-                    <td >
-                        <div class="control-group" style="margin-bottom: 5px;">
-                            <label class="control-label" for="wfReqSale.payMethod"
-                                   style="width: 60px;color: #898989;">支付方式</label>
-
-                            <div class="controls" style="margin-left: 70px;*margin-left:0;" >
-                                <select class="int2 width-160" id="wfReqSale.payMethod" name="wfReqSale.payMethod">
-                                    <option value="1">现金</option>
-                                    <option value="2">银行转账</option>
-                                    <option value="3">支票</option>
-                                    <option value="4">帐扣</option>
-                                </select>
-                            </div>
-                        </div>
-                    </td>
                 </tr>
                 <tr>
                     <td colspan="2">

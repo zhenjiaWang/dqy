@@ -193,16 +193,6 @@
             <td>${wfReq.sendDate?string("yyyy-MM-dd HH:mm:ss")}</td>
         </tr>
         <tr>
-            <th style="width: 140px;">收款单位</th>
-            <td style="width: auto;" colspan="3">${wfReqDaily.payee?if_exists}</td>
-        </tr>
-        <tr>
-            <th style="width: 140px;">开户行</th>
-            <td style="width: 200px;">${(wfReqDaily.bank)?if_exists}</td>
-            <th style="width: 140px;">帐号</th>
-            <td>${(wfReqDaily.bankAccount)?if_exists}</td>
-        </tr>
-        <tr>
             <th style="width: 140px;">实际金额</th>
             <td style="width: auto;" colspan="3">${(wfReqSale.trueAmount)?c}</td>
         </tr>
