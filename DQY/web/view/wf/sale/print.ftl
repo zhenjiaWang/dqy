@@ -65,6 +65,38 @@
             </td>
         </tr>
         <tr>
+            <th style="width: 140px;">支付方式</th>
+            <td style="width: auto;" colspan="3">
+            <#if wfReqSale.payMethod?exists>
+                <#if wfReqSale.payMethod==1>
+                    现金
+                <#elseif wfReqSale.payMethod==2>
+                    银行转账
+                <#elseif wfReqSale.payMethod==3>
+                    支票
+                <#elseif wfReqSale.payMethod==4>
+                    帐扣
+                </#if>
+            </#if>
+            </td>
+        </tr>
+        <#if wfReqSale.payMethod?exists>
+            <#if wfReqSale.payMethod==2>
+            <tr>
+                <th style="width: 140px;">收款单位</th>
+                <td style="width: auto;" colspan="3">
+                ${wfReqSale.payee?if_exists}
+                </td>
+            </tr>
+            <tr>
+                <th style="width: 140px;">开户行</th>
+                <td style="width: 200px;">${(wfReqSale.bank)?if_exists}</td>
+                <th style="width: 140px;">帐号</th>
+                <td>${(wfReqSale.bankAccount)?if_exists}</td>
+            </tr>
+            </#if>
+        </#if>
+        <tr>
             <th style="width: 140px;">开始日期</th>
             <td style="width: 200px;">${(wfReqSale.startDate)?string("yyyy-MM-dd")}</td>
             <th style="width: 140px;">结束日期</th>
@@ -76,9 +108,9 @@
         </tr>
         <tr>
             <th style="width: 140px;">费用类别</th>
-            <td style="width: 200px;">${(wfReqSale.expenseTitle.titleName)?if_exists}</td>
+            <td style="width: 200px;">${(wfReqSale.expenseType.expenseType)?if_exists}</td>
             <th style="width: 140px;">费用项目</th>
-            <td>${(wfReqSale.channelId.channelName)?if_exists}</td>
+            <td>${(wfReqSale.expenseTitle.titleName)?if_exists}</td>
         </tr>
         <tr>
             <th style="width: 140px;">渠道</th>
@@ -214,6 +246,42 @@
             </td>
         </tr>
         <tr>
+            <th style="width: 140px;">报销金额</th>
+            <td style="width: auto;" colspan="3">${(wfReqSale.amount)?c}</td>
+        </tr>
+        <tr>
+            <th style="width: 140px;">支付方式</th>
+            <td style="width: auto;" colspan="3">
+                <#if wfReqSale.payMethod?exists>
+                    <#if wfReqSale.payMethod==1>
+                        现金
+                    <#elseif wfReqSale.payMethod==2>
+                        银行转账
+                    <#elseif wfReqSale.payMethod==3>
+                        支票
+                    <#elseif wfReqSale.payMethod==4>
+                        帐扣
+                    </#if>
+                </#if>
+            </td>
+        </tr>
+            <#if wfReqSale.payMethod?exists>
+                <#if wfReqSale.payMethod==2>
+                <tr>
+                    <th style="width: 140px;">收款单位</th>
+                    <td style="width: auto;" colspan="3">
+                    ${wfReqSale.payee?if_exists}
+                    </td>
+                </tr>
+                <tr>
+                    <th style="width: 140px;">开户行</th>
+                    <td style="width: 200px;">${(wfReqSale.bank)?if_exists}</td>
+                    <th style="width: 140px;">帐号</th>
+                    <td>${(wfReqSale.bankAccount)?if_exists}</td>
+                </tr>
+                </#if>
+            </#if>
+        <tr>
             <th style="width: 140px;">开始日期</th>
             <td style="width: 200px;">${(wfReqSale.startDate)?string("yyyy-MM-dd")}</td>
             <th style="width: 140px;">结束日期</th>
@@ -263,7 +331,7 @@
             </tr>
             </thead>
             <tbody>
-                <#list reqSaleDetailList as detail>
+                <#list reqSaleDetailTrueList as detail>
                 <tr >
                     <td>${(detail.expenseType.expenseType)?if_exists}</td>
                     <td>${(detail.expenseTitle.titleName)?if_exists}</td>
