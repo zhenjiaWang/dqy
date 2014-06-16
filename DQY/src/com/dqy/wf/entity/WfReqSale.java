@@ -61,6 +61,7 @@ public class WfReqSale extends IdEntity implements Tracker {
 
     private String bankAccount;
 
+    private String remarks;
 
     private Date created;
 
@@ -290,5 +291,15 @@ public class WfReqSale extends IdEntity implements Tracker {
 
     public void setBankAccount(String bankAccount) {
         this.bankAccount = bankAccount;
+    }
+
+
+    @Column(name = "REMARKS")
+    public String getRemarks() {
+        return remarks;
+    }
+
+    public void setRemarks(String remarks) {
+        this.remarks = remarks;
     }
 }
