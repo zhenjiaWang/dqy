@@ -18,7 +18,7 @@
 <body>
 <div style="width:760px;margin:0 auto;position: relative;margin-top: 50px;">
     <div class="clearfix">
-        <span style="position: absolute;left:0;"><img src="../images/cssimg/dqy-logo.png"></span>
+        <span style="position: absolute;left:0;"><img width="104" height="77" src="../images/${(wfReq.orgId.orgNo)?if_exists}.jpg" onerror="this.src='/images/1100.jpg'" >${(wfReq.orgId.orgName)?if_exists}</span>
         <p class="alignright p-top40 font20">${applyName?if_exists}</p>
         <p class="mart30 alignright font14">单据编号：${wfReq.reqNo?if_exists}</p>
     </div>
