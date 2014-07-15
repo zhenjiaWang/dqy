@@ -156,6 +156,10 @@ public class SysAuthorizedAction extends ActionSupport<SysAuthorized> {
                 roleList.add("SALE_APPLY");
                 roleList.add("APPROVE_BUDGET");
                 roleList.add("TASK_FINANCIAL");
+                roleList.add("REPORT_SALE");
+                roleList.add("REPORT_ADVANCE");
+                roleList.add("REPORT_REPAYMENT");
+                roleList.add("REPORT_DAILY");
                 roleList.add("EMAIL_CD");
                 roleList.add("EMAIL_PWD");
                 roleList.add("GENERAL");
@@ -174,6 +178,10 @@ public class SysAuthorizedAction extends ActionSupport<SysAuthorized> {
                 roleNameMap.put("SALE_APPLY", "销售费用报销");
                 roleNameMap.put("APPROVE_BUDGET","预算审核");
                 roleNameMap.put("TASK_FINANCIAL", "财务审批");
+                roleNameMap.put("REPORT_SALE", "销售费用导出");
+                roleNameMap.put("REPORT_ADVANCE", "预支申请导出");
+                roleNameMap.put("REPORT_REPAYMENT", "还款申请导出");
+                roleNameMap.put("REPORT_DAILY", "费用报销导出");
                 roleNameMap.put("EMAIL_CD", "邮箱管理");
                 roleNameMap.put("EMAIL_PWD", "邮箱密码");
                 roleNameMap.put("GENERAL", "普通用户");

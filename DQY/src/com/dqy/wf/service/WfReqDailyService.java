@@ -6,6 +6,7 @@ import com.google.inject.Singleton;
 import org.guiceside.persistence.TransactionType;
 import org.guiceside.persistence.Transactional;
 import org.guiceside.persistence.hibernate.dao.hquery.HQuery;
+import org.guiceside.persistence.hibernate.dao.hquery.Selector;
 
 import java.util.List;
 
@@ -35,6 +36,11 @@ public class WfReqDailyService extends HQuery {
     @Transactional(type = TransactionType.READ_ONLY)
     public WfReqDaily getById(Long id) {
         return $(id).get(WfReqDaily.class);
+    }
+
+    @Transactional(type = TransactionType.READ_ONLY)
+    public List<WfReqDaily> getByList(List<Selector> selectorList) {
+        return $(selectorList).list(WfReqDaily.class);
     }
 
     @Transactional(type = TransactionType.READ_ONLY)
@@ -82,8 +88,8 @@ public class WfReqDailyService extends HQuery {
     @Transactional(type = TransactionType.READ_WRITE)
     public void save(WfReqDaily wfReqDaily, List<WfReqDailyDetail> detailList, WfReq wfReq, List<WfReqComments> reqCommentsList,
                      WfReqNoSeq wfReqNoSeq, List<WfReqNodeApprove> reqNodeApproveList, List<WfReqTask> reqTaskList,
-                     WfReqMyFlowLast wfReqMyFlowLast,List<WfReqAtt> reqAttList) {
-        this.wfReqService.save(wfReq, reqCommentsList, wfReqNoSeq, reqNodeApproveList, reqTaskList, wfReqMyFlowLast,reqAttList);
+                     WfReqMyFlowLast wfReqMyFlowLast, List<WfReqAtt> reqAttList) {
+        this.wfReqService.save(wfReq, reqCommentsList, wfReqNoSeq, reqNodeApproveList, reqTaskList, wfReqMyFlowLast, reqAttList);
         this.save(wfReqDaily);
         if (detailList != null && !detailList.isEmpty()) {
             wfReqDailyDetailService.save(detailList);
@@ -91,10 +97,10 @@ public class WfReqDailyService extends HQuery {
     }
 
     @Transactional(type = TransactionType.READ_WRITE)
-    public void save(WfReqDaily wfReqDaily, List<WfReqDailyDetail> detailList,List<WfReqDailyTrue> trueList, WfReq wfReq, List<WfReqComments> reqCommentsList,
+    public void save(WfReqDaily wfReqDaily, List<WfReqDailyDetail> detailList, List<WfReqDailyTrue> trueList, WfReq wfReq, List<WfReqComments> reqCommentsList,
                      WfReqNoSeq wfReqNoSeq, List<WfReqNodeApprove> reqNodeApproveList, List<WfReqTask> reqTaskList,
-                     WfReqMyFlowLast wfReqMyFlowLast,List<WfReqAtt> reqAttList) {
-        this.wfReqService.save(wfReq, reqCommentsList, wfReqNoSeq, reqNodeApproveList, reqTaskList, wfReqMyFlowLast,reqAttList);
+                     WfReqMyFlowLast wfReqMyFlowLast, List<WfReqAtt> reqAttList) {
+        this.wfReqService.save(wfReq, reqCommentsList, wfReqNoSeq, reqNodeApproveList, reqTaskList, wfReqMyFlowLast, reqAttList);
         this.save(wfReqDaily);
         if (detailList != null && !detailList.isEmpty()) {
             wfReqDailyDetailService.save(detailList);

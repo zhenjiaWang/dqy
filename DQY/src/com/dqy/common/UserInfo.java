@@ -92,7 +92,7 @@ public class UserInfo implements Serializable {
 
     private Integer topMenuApply;
 
-    private Integer topMenuInfo;
+    private Integer topMenuReport;
 
     private Integer topMenuBudget;
 
@@ -348,12 +348,13 @@ public class UserInfo implements Serializable {
         this.topMenuApply = topMenuApply;
     }
 
-    public Integer getTopMenuInfo() {
-        return topMenuInfo;
+
+    public Integer getTopMenuReport() {
+        return topMenuReport;
     }
 
-    public void setTopMenuInfo(Integer topMenuInfo) {
-        this.topMenuInfo = topMenuInfo;
+    public void setTopMenuReport(Integer topMenuReport) {
+        this.topMenuReport = topMenuReport;
     }
 
     public Integer getTopMenuBudget() {

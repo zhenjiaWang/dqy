@@ -66,6 +66,7 @@
         </view>
         <packages>
             <value>com.dqy.common.action</value>
+            <value>com.dqy.repot.action</value>
             <value>com.dqy.wf.action</value>
             <value>com.dqy.sale.action</value>
             <value>com.dqy.sys.action</value>

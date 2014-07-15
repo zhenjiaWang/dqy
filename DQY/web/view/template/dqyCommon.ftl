@@ -82,7 +82,11 @@
                 <ul class="nav font14 clearfix floatleft" id="topMenu">
                     <li class="index"><a href="/common/login!index.dhtml"><em></em>首 页</a></li>
                     <li class="apply"><a href="/wf/advanceAccount.dhtml"><em></em>申请平台</a></li>
-                    <li class="info no"><a href="#"><em></em>信息平台</a></li>
+                    <#if userInfo["topMenuReport"] gt 0>
+                        <li class="report"><a href="/common/common!reportIndex.dhtml"><em></em>报表系统</a></li>
+                    <#else >
+                        <li class="report no"><a href="#"><em></em>报表系统</a></li>
+                    </#if>
                     <li class="sale"><a href="/wf/sale.dhtml"><em></em>销售管理</a></li>
                     <#--<#if userInfo["topMenuSale"] gt 0>-->
                         <#--<li class="sale"><a href="/common/common!saleIndex.dhtml"><em></em>销售管理</a></li>-->

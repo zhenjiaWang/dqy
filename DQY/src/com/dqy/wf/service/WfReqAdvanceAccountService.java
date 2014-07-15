@@ -6,6 +6,7 @@ import com.google.inject.Singleton;
 import org.guiceside.persistence.TransactionType;
 import org.guiceside.persistence.Transactional;
 import org.guiceside.persistence.hibernate.dao.hquery.HQuery;
+import org.guiceside.persistence.hibernate.dao.hquery.Selector;
 
 import java.util.List;
 
@@ -26,6 +27,11 @@ public class WfReqAdvanceAccountService extends HQuery {
     @Transactional(type = TransactionType.READ_ONLY)
     public WfReqAdvanceAccount getById(Long id) {
         return $(id).get(WfReqAdvanceAccount.class);
+    }
+
+    @Transactional(type = TransactionType.READ_ONLY)
+    public List<WfReqAdvanceAccount> getByList(List<Selector> selectorList) {
+        return $(selectorList).list(WfReqAdvanceAccount.class);
     }
 
     @Transactional(type = TransactionType.READ_ONLY)

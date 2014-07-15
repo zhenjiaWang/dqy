@@ -460,6 +460,30 @@ public class CommonAction extends BaseAction {
         return "index";  //To change body of implemented methods use File | Settings | File Templates.
     }
 
+    @PageFlow(result = {@Result(name = "success", path = "${authUrl}", type = Dispatcher.Redirect),
+            @Result(name = "index", path = "/common/login!index.dhtml", type = Dispatcher.Redirect)})
+    public String reportIndex() throws Exception {
+        UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
+        if (userInfo != null) {
+            List<String> roleList = userInfo.getRoleList();
+            if (roleList != null && !roleList.isEmpty()) {
+                if (roleList.contains("REPORT_SALE")) {
+                    authUrl = "/report/req!saleList.dhtml";
+                }else if (roleList.contains("REPORT_ADVANCE")) {
+                    authUrl = "/wf/variableGlobal.dhtml";
+                }else if (roleList.contains("REPORT_REPAYMENT")) {
+                    authUrl = "/wf/variableGlobal.dhtml";
+                }else if (roleList.contains("REPORT_DAILY")) {
+                    authUrl = "/wf/variableGlobal.dhtml";
+                }
+                if (StringUtils.isNotBlank(authUrl)) {
+                    return "success";
+                }
+            }
+        }
+        return "index";  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
 
     public String upload() throws Exception {
         UserInfo userInfo = UserSession.getUserInfo(getHttpServletRequest());
